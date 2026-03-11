@@ -45,7 +45,9 @@ def summarize_results(run_root: Path) -> dict[str, object]:
             "task_id": task["id"],
             "smell_type": task["smell_type"],
             "target_file": task["target_file"],
-            "agent_status": task_summary.get("agent_execution", {}).get("status", "missing"),
+            "agent_status": task_summary.get("agent_execution", {}).get("refactor", {}).get("status", "missing"),
+            "accepted_attempt": task_summary.get("accepted_attempt"),
+            "attempt_count": len(task_summary.get("attempts", [])),
             "validation_status": validation.get("status", "missing"),
             "artifacts": {
                 "task_summary": str(task_summary_path),
@@ -54,7 +56,7 @@ def summarize_results(run_root: Path) -> dict[str, object]:
             },
         }
         task_summaries.append(merged)
-        if merged["agent_status"] in {"simulated", "skipped"}:
+        if merged["attempt_count"] > 0 or merged["agent_status"] in {"simulated", "skipped"}:
             attempted += 1
         if merged["validation_status"] == "passed":
             builds_passed += 1
