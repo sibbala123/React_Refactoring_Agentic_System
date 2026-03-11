@@ -1,0 +1,31 @@
+pipeline:
+  max_tasks: 25
+  smell_types:
+    - Large Component
+    - Too Many Props
+  dry_run: true
+  apply_agent_changes: false
+
+detector:
+  reactsniffer_command: "python {reactsniffer_root}/main.py --target {target_root}"
+  heuristic_fallback: true
+
+context:
+  max_context_files: 10
+  snippet_radius: 40
+
+manifest:
+  allowed_edit_scope: file_and_local_imports
+  validation_commands:
+    - pnpm lint
+    - pnpm test -- --runInBand
+
+agent:
+  adapter: placeholder
+  attempts: 1
+
+validation:
+  build_command: pnpm build
+
+artifacts:
+  output_root: agentic_refactor_system/runs

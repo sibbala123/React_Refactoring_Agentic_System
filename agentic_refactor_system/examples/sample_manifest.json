@@ -1,0 +1,44 @@
+{
+  "repo_name": "supabase_design_system",
+  "run_root": "agentic_refactor_system/runs/20260310T120000Z_supabase_design_system",
+  "target_root": "supabase/apps/design-system/app",
+  "task_count": 1,
+  "tasks": [
+    {
+      "id": "task_7d1fd95fa0",
+      "repo_name": "supabase_design_system",
+      "target_root": "supabase/apps/design-system/app",
+      "smell_id": "heuristic_large_0000",
+      "smell_type": "Large Component",
+      "target_file": "components/Button.tsx",
+      "symbol_name": "Button",
+      "line_start": 1,
+      "line_end": 240,
+      "allowed_edit_scope": {
+        "mode": "bounded_file_and_local_imports",
+        "allowed_files": [
+          "components/Button.tsx",
+          "components/Button.types.ts"
+        ]
+      },
+      "relevant_context_files": [
+        "components/Button.tsx",
+        "components/Button.types.ts",
+        "components/Button.test.tsx"
+      ],
+      "build_command": "pnpm build",
+      "validation_commands": [
+        "pnpm lint"
+      ],
+      "task_prompt_file": "tasks/task_7d1fd95fa0/prompt.txt",
+      "metadata": {
+        "confidence": 0.45,
+        "severity": "medium",
+        "detector_metadata": {
+          "source": "heuristic_fallback"
+        },
+        "context_file_count": 3
+      }
+    }
+  ]
+}

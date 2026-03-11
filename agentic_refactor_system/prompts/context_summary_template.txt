@@ -1,0 +1,11 @@
+Primary file: {target_file}
+Component or symbol: {symbol_name}
+Line focus: {line_start}-{line_end}
+Nearby summary:
+{primary_snippet}
+
+Imported local dependencies:
+{import_summary}
+
+Nearby tests and sibling files:
+{related_files_summary}

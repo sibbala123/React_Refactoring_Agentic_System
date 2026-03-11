@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["run_root", "repo_name", "target_root", "task_count", "tasks"],
+  "properties": {
+    "run_root": { "type": "string" },
+    "repo_name": { "type": "string" },
+    "target_root": { "type": "string" },
+    "task_count": { "type": "integer", "minimum": 0 },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "repo_name",
+          "target_root",
+          "smell_type",
+          "target_file",
+          "allowed_edit_scope",
+          "relevant_context_files",
+          "build_command",
+          "validation_commands",
+          "task_prompt_file",
+          "metadata"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "repo_name": { "type": "string" },
+          "target_root": { "type": "string" },
+          "smell_id": { "type": "string" },
+          "smell_type": { "type": "string" },
+          "target_file": { "type": "string" },
+          "symbol_name": { "type": ["string", "null"] },
+          "line_start": { "type": "integer", "minimum": 1 },
+          "line_end": { "type": "integer", "minimum": 1 },
+          "allowed_edit_scope": { "type": "object" },
+          "relevant_context_files": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "build_command": { "type": "string" },
+          "validation_commands": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "task_prompt_file": { "type": "string" },
+          "metadata": { "type": "object" }
+        }
+      }
+    }
+  }
+}

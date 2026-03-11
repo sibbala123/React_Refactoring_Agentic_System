@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["repo_name", "target_root", "smells", "smell_count"],
+  "properties": {
+    "repo_name": { "type": "string" },
+    "target_root": { "type": "string" },
+    "smell_count": { "type": "integer", "minimum": 0 },
+    "detector": { "type": "object" },
+    "smells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["smell_id", "smell_type", "file_path", "line_start", "line_end"],
+        "properties": {
+          "smell_id": { "type": "string" },
+          "smell_type": { "type": "string" },
+          "file_path": { "type": "string" },
+          "component_name": { "type": ["string", "null"] },
+          "line_start": { "type": "integer", "minimum": 1 },
+          "line_end": { "type": "integer", "minimum": 1 },
+          "severity": { "type": "string" },
+          "confidence": { "type": "number" },
+          "detector_metadata": { "type": "object" }
+        }
+      }
+    }
+  }
+}

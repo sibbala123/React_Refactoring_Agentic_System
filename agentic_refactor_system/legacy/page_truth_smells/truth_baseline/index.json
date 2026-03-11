@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-03-02T00:48:47.455Z",
+  "files": [
+    {
+      "file": "truth__home__default.json",
+      "route": "/",
+      "state": "default",
+      "generatedAt": "2026-03-02T00:48:45.249Z"
+    },
+    {
+      "file": "truth__customers__default.json",
+      "route": "/customers",
+      "state": "default",
+      "generatedAt": "2026-03-02T00:48:45.949Z"
+    },
+    {
+      "file": "truth__reports__default.json",
+      "route": "/reports",
+      "state": "default",
+      "generatedAt": "2026-03-02T00:48:46.641Z"
+    }
+  ]
+}

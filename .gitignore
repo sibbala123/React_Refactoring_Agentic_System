@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+agentic_refactor_system/runs/*
+!agentic_refactor_system/runs/.gitkeep
+vendor/reactsniffer/node_modules/

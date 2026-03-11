@@ -1,0 +1,37 @@
+{
+  "name": "reactsniffer",
+  "version": "1.0.18",
+  "description": "Detect Code Smells in React-based Web Systems",
+  "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "reactsniffer": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabiosferreira/reactsniffer.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "React",
+    "Anti-Patterns",
+    "Code",
+    "Smells",
+    "Maintainability",
+    "Software",
+    "Design"
+  ],
+  "author": "Fabio Ferreira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabiosferreira/reactsniffer/issues"
+  },
+  "homepage": "https://github.com/fabiosferreira/reactsniffer#readme",
+  "dependencies": {
+    "@babel/parser": "^7.15.6",
+    "csv-writer": "^1.6.0"
+  }
+}

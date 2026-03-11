@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "run_root",
+    "smells_detected",
+    "tasks_attempted",
+    "task_count",
+    "builds_passed",
+    "builds_failed",
+    "builds_skipped",
+    "tasks"
+  ],
+  "properties": {
+    "run_root": { "type": "string" },
+    "smells_detected": { "type": "integer", "minimum": 0 },
+    "tasks_attempted": { "type": "integer", "minimum": 0 },
+    "task_count": { "type": "integer", "minimum": 0 },
+    "builds_passed": { "type": "integer", "minimum": 0 },
+    "builds_failed": { "type": "integer", "minimum": 0 },
+    "builds_skipped": { "type": "integer", "minimum": 0 },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["task_id", "smell_type", "target_file", "agent_status", "validation_status"],
+        "properties": {
+          "task_id": { "type": "string" },
+          "smell_type": { "type": "string" },
+          "target_file": { "type": "string" },
+          "agent_status": { "type": "string" },
+          "validation_status": { "type": "string" },
+          "artifacts": { "type": "object" }
+        }
+      }
+    }
+  }
+}

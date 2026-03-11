@@ -1,0 +1,133 @@
+{
+  "dataset_version": "v0.1",
+  "app": "page-truth-smells",
+  "smells": [
+    "Large Component",
+    "Duplicated Code",
+    "Too Many Props",
+    "Prop Drilling",
+    "Inline Logic in Render"
+  ],
+  "tasks": [
+    {
+      "id": "ex01",
+      "smell": "Large Component",
+      "before_branch": "ex01_smelly",
+      "after_branch": "ex01_refactored",
+      "routes": ["/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex02",
+      "smell": "Large Component",
+      "before_branch": "ex02_smelly",
+      "after_branch": "ex02_refactored",
+      "routes": ["/customers"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex03",
+      "smell": "Large Component",
+      "before_branch": "ex03_smelly",
+      "after_branch": "ex03_refactored",
+      "routes": ["/", "/customers", "/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex04",
+      "smell": "Duplicated Code",
+      "before_branch": "ex04_smelly",
+      "after_branch": "ex04_refactored",
+      "routes": ["/customers", "/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex05",
+      "smell": "Duplicated Code",
+      "before_branch": "ex05_smelly",
+      "after_branch": "ex05_refactored",
+      "routes": ["/customers", "/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex06",
+      "smell": "Duplicated Code",
+      "before_branch": "ex06_smelly",
+      "after_branch": "ex06_refactored",
+      "routes": ["/", "/customers"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex07",
+      "smell": "Too Many Props",
+      "before_branch": "ex07_smelly",
+      "after_branch": "ex07_refactored",
+      "routes": ["/customers"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex08",
+      "smell": "Too Many Props",
+      "before_branch": "ex08_smelly",
+      "after_branch": "ex08_refactored",
+      "routes": ["/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex09",
+      "smell": "Too Many Props",
+      "before_branch": "ex09_smelly",
+      "after_branch": "ex09_refactored",
+      "routes": ["/customers"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex10",
+      "smell": "Prop Drilling",
+      "before_branch": "ex10_smelly",
+      "after_branch": "ex10_refactored",
+      "routes": ["/", "/customers", "/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex11",
+      "smell": "Prop Drilling",
+      "before_branch": "ex11_smelly",
+      "after_branch": "ex11_refactored",
+      "routes": ["/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex12",
+      "smell": "Prop Drilling",
+      "before_branch": "ex12_smelly",
+      "after_branch": "ex12_refactored",
+      "routes": ["/", "/customers", "/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex13",
+      "smell": "Inline Logic in Render",
+      "before_branch": "ex13_smelly",
+      "after_branch": "ex13_refactored",
+      "routes": ["/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex14",
+      "smell": "Inline Logic in Render",
+      "before_branch": "ex14_smelly",
+      "after_branch": "ex14_refactored",
+      "routes": ["/customers"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    },
+    {
+      "id": "ex15",
+      "smell": "Inline Logic in Render",
+      "before_branch": "ex15_smelly",
+      "after_branch": "ex15_refactored",
+      "routes": ["/customers", "/reports"],
+      "states": ["default", "help_open", "opened_report", "pinned_ready"]
+    }
+  ]
+}

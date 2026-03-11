@@ -1,0 +1,43 @@
+pipeline:
+  max_tasks: null
+  smell_types: []
+  dry_run: false
+  apply_agent_changes: false
+
+detector:
+  reactsniffer_command: ""
+  heuristic_fallback: true
+  include_patterns:
+    - "*.js"
+    - "*.jsx"
+    - "*.ts"
+    - "*.tsx"
+  exclude_dirs:
+    - node_modules
+    - dist
+    - build
+    - coverage
+    - .next
+    - .turbo
+    - .git
+  thresholds:
+    large_component_lines: 220
+    too_many_props: 7
+
+context:
+  max_context_files: 8
+  snippet_radius: 30
+
+manifest:
+  allowed_edit_scope: file_and_local_imports
+  validation_commands: []
+
+agent:
+  adapter: placeholder
+  attempts: 1
+
+validation:
+  build_command: ""
+
+artifacts:
+  output_root: agentic_refactor_system/runs

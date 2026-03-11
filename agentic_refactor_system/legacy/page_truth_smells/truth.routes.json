@@ -1,0 +1,8 @@
+{
+  "baseUrl": "http://localhost:5173",
+  "routes": [
+    { "path": "/", "states": [{ "name": "default", "steps": [] }] },
+    { "path": "/customers", "states": [{ "name": "default", "steps": [] }] },
+    { "path": "/reports", "states": [{ "name": "default", "steps": [] }] }
+  ]
+}
