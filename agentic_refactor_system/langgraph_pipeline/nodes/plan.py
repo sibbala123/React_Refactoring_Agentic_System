@@ -1,42 +1,275 @@
 from __future__ import annotations
 
+import json
 import logging
+import os
 from typing import Any
 
-from ..state import TaskState, STATUS_PLANNING
+from openai import OpenAI
+
+from ..schemas.plan import (
+    RISK_LOW,
+    RISK_MEDIUM,
+    RISK_HIGH,
+    RefactorPlan,
+    validate_refactor_plan,
+)
+from ..state import TaskState, STATUS_PLANNING, STATUS_SKIPPED
+from ..tactics import get_tactic, tactic_names_for_smell
 
 logger = logging.getLogger(__name__)
+
+# OpenAI function definition that maps exactly to RefactorPlan.
+_PLAN_FUNCTION = {
+    "name": "record_refactor_plan",
+    "description": (
+        "Record a bounded, tactic-specific refactor plan for an actionable React code smell. "
+        "If no tactic safely applies, call this function with tactic_name='NO_TACTIC' and "
+        "explain in expected_smell_resolution why the smell cannot be planned."
+    ),
+    "parameters": {
+        "type": "object",
+        "required": [
+            "tactic_name",
+            "files_to_edit",
+            "risk_level",
+            "invariants",
+            "expected_smell_resolution",
+            "abort_reasons",
+        ],
+        "additionalProperties": False,
+        "properties": {
+            "tactic_name": {
+                "type": "string",
+                "description": (
+                    "Exact name of the chosen tactic from the provided tactic list "
+                    "(e.g. 'extract_component'). Use 'NO_TACTIC' if none applies."
+                ),
+            },
+            "files_to_edit": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": (
+                    "Relative paths of files the edit node may modify. "
+                    "Must be a non-empty subset of the allowed files listed in the prompt."
+                ),
+            },
+            "risk_level": {
+                "type": "string",
+                "enum": [RISK_LOW, RISK_MEDIUM, RISK_HIGH],
+                "description": "Estimated risk of this transformation.",
+            },
+            "invariants": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": (
+                    "Behaviours that must be preserved after the edit "
+                    "(e.g. 'component public props API unchanged')."
+                ),
+            },
+            "expected_smell_resolution": {
+                "type": "string",
+                "description": (
+                    "Plain-language description of how applying this tactic resolves the smell. "
+                    "If tactic_name is NO_TACTIC, explain why no tactic safely applies."
+                ),
+            },
+            "abort_reasons": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": (
+                    "Conditions under which the edit node should abandon the attempt "
+                    "(e.g. 'component is used in more than 10 call sites')."
+                ),
+            },
+        },
+    },
+}
+
+_SYSTEM_PROMPT = """\
+You are a senior React engineer producing a precise, bounded refactoring plan.
+You will be given a detected code smell, its context, and a list of candidate
+refactoring tactics with full definitions.
+
+Your job is to pick the single best tactic and fill in a RefactorPlan.
+
+Rules
+-----
+1. Only choose a tactic from the provided candidate list. Do not invent tactics.
+2. files_to_edit must be a non-empty subset of the allowed files listed in the prompt.
+3. Set risk_level honestly: low = routine change, medium = interface-touching, high = structural.
+4. invariants must be specific to this smell instance, not generic boilerplate.
+5. abort_reasons must list concrete conditions that would make the edit unsafe.
+6. If no candidate tactic safely applies (e.g. preconditions are not met, risk is
+   unacceptably high, or the edit scope is too narrow), return tactic_name='NO_TACTIC'
+   and explain clearly in expected_smell_resolution. Do NOT force a bad plan.
+"""
+
+
+def _build_user_prompt(state: TaskState) -> str:
+    smell = state["smell"]
+    context = state["context"]
+    actionability = state["actionability"]
+    snippet = context.get("primary_snippet", {})
+
+    smell_type = smell.get("smell_type", "unknown")
+    allowed_files: list[str] = (
+        state["manifest_task"]
+        .get("allowed_edit_scope", {})
+        .get("allowed_files", [state["target_file"]])
+    )
+
+    lines: list[str] = [
+        f"Repository: {state['repo_name']}",
+        f"File:       {state['target_file']}",
+        f"Component:  {smell.get('component_name') or 'unknown'}",
+        f"Smell type: {smell_type}",
+        f"Lines:      {smell.get('line_start')} - {smell.get('line_end')}",
+        "",
+        "Classifier verdict",
+        "------------------",
+        f"Label:      {actionability['label']}",
+        f"Confidence: {actionability['confidence']:.2f}",
+        f"Rationale:  {actionability['rationale']}",
+    ]
+
+    if actionability.get("caveats"):
+        lines.append("Caveats:")
+        for c in actionability["caveats"]:
+            lines.append(f"  - {c}")
+
+    lines += [
+        "",
+        "Allowed files the edit node may touch:",
+    ]
+    for f in allowed_files:
+        lines.append(f"  - {f}")
+
+    code = snippet.get("content", "").strip()
+    if code:
+        lines += [
+            "",
+            f"Code snippet (lines {snippet.get('start_line')} - {snippet.get('end_line')}):",
+            "```",
+            code,
+            "```",
+        ]
+    else:
+        lines.append("\n(No code snippet available)")
+
+    details = smell.get("detector_metadata", {}).get("details", "")
+    if details:
+        lines += ["", f"Detector details: {details}"]
+
+    # Append full tactic definitions for all candidates
+    candidate_names = tactic_names_for_smell(smell_type)
+    if candidate_names:
+        lines += [
+            "",
+            "Candidate tactics for this smell type",
+            "--------------------------------------",
+        ]
+        for name in candidate_names:
+            tactic = get_tactic(name)
+            if not tactic:
+                continue
+            lines += [
+                f"Tactic: {tactic['name']} — {tactic['display_name']}",
+                f"  edit_shape:    {tactic['edit_shape']}",
+                f"  preconditions: {'; '.join(tactic['preconditions'])}",
+                f"  invariants:    {'; '.join(tactic['invariants'])}",
+                f"  risks:         {tactic['risks']}",
+                f"  abort_if:      {'; '.join(tactic['abort_if'])}",
+                "",
+            ]
+    else:
+        lines += ["", "(No candidate tactics found for this smell type — use NO_TACTIC)"]
+
+    return "\n".join(lines)
 
 
 def plan_node(state: TaskState) -> dict[str, Any]:
     """
-    Planner node — creates a bounded, tactic-specific refactor plan for
-    every smell that the classifier confirmed as actionable.
+    B4 — Planner node.
 
-    A2: stub that passes through with status=planning.
-         plan remains None.
+    Calls the OpenAI API with a function-calling prompt to produce a bounded,
+    tactic-specific RefactorPlan for every smell the classifier confirmed as
+    actionable.
 
-    B4: replace the body of this function with a real LLM call that
-        consumes state["actionability"] and state["context"], then
-        returns a populated RefactorPlan written to state["plan"].
+    Reads from state:  actionability, smell, context, manifest_task, repo_name, target_file
+    Writes to state:   plan, status  (and skip_reason when no tactic applies)
     """
     task_id = state["task_id"]
+    smell_type = state["smell"].get("smell_type", "unknown")
     actionability = state.get("actionability")
-    label = actionability["label"] if actionability else "unknown (stub)"
+    label = actionability["label"] if actionability else "unknown"
 
-    logger.info("[%s] plan | actionability=%s | TODO: real LLM call (B4)", task_id, label)
+    logger.info("[%s] plan | smell_type=%s | actionability=%s | calling OpenAI", task_id, smell_type, label)
 
-    # B4 will return something like:
-    # return {
-    #     "status": STATUS_PLANNING,
-    #     "plan": RefactorPlan(
-    #         tactic_name="add_controlled_state",
-    #         files_to_edit=["src/Form.tsx"],
-    #         risk_level=RISK_LOW,
-    #         invariants=["component props API unchanged"],
-    #         expected_smell_resolution="Replaces uncontrolled <input> with useState hook",
-    #         abort_reasons=["component used in >10 call sites"],
-    #     ),
-    # }
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        raise EnvironmentError(
+            "OPENAI_API_KEY environment variable is not set. "
+            "Set it before running the pipeline."
+        )
 
-    return {"status": STATUS_PLANNING}
+    client = OpenAI(api_key=api_key)
+    user_prompt = _build_user_prompt(state)
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": _SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+        functions=[_PLAN_FUNCTION],
+        function_call={"name": "record_refactor_plan"},
+        temperature=0,
+    )
+
+    raw: dict[str, Any] = json.loads(
+        response.choices[0].message.function_call.arguments
+    )
+
+    # If the model determined no tactic safely applies, skip this task.
+    if raw.get("tactic_name") == "NO_TACTIC":
+        reason = raw.get("expected_smell_resolution", "Planner found no applicable tactic.")
+        logger.info("[%s] plan | NO_TACTIC -> skipping | reason=%s", task_id, reason[:120])
+        return {
+            "status": STATUS_SKIPPED,
+            "skip_reason": reason,
+        }
+
+    allowed_files: list[str] = (
+        state["manifest_task"]
+        .get("allowed_edit_scope", {})
+        .get("allowed_files", [state["target_file"]])
+    )
+
+    errors = validate_refactor_plan(raw, allowed_files=allowed_files)
+    if errors:
+        raise ValueError(
+            f"[{task_id}] OpenAI returned an invalid RefactorPlan: {errors}\nraw={raw}"
+        )
+
+    plan: RefactorPlan = {
+        "tactic_name": raw["tactic_name"],
+        "files_to_edit": list(raw["files_to_edit"]),
+        "risk_level": raw["risk_level"],
+        "invariants": list(raw.get("invariants", [])),
+        "expected_smell_resolution": raw["expected_smell_resolution"],
+        "abort_reasons": list(raw.get("abort_reasons", [])),
+    }
+
+    logger.info(
+        "[%s] plan | tactic=%s | risk=%s | files=%s",
+        task_id,
+        plan["tactic_name"],
+        plan["risk_level"],
+        plan["files_to_edit"],
+    )
+
+    return {
+        "status": STATUS_PLANNING,
+        "plan": plan,
+    }
