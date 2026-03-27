@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LangGraphTaskState",
+  "description": "A1 — Serialised form of the LangGraph TaskState. Documents all fields that flow through the pipeline. Used for artifact validation and debugging.",
+  "type": "object",
+  "required": [
+    "task_id",
+    "repo_name",
+    "target_file",
+    "smell",
+    "context",
+    "manifest_task",
+    "status",
+    "retry_count",
+    "changed_files",
+    "artifact_paths"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Stable hash-based task ID from the existing manifest (e.g. task_28cdfabba7)."
+    },
+    "repo_name": {
+      "type": "string",
+      "description": "Repository name used for artifact organisation."
+    },
+    "target_file": {
+      "type": "string",
+      "description": "Relative path to the primary file containing the smell."
+    },
+    "smell": {
+      "type": "object",
+      "description": "Full smell object as produced by detect_smells.py.",
+      "required": ["smell_id", "smell_type", "file_path", "line_start", "line_end"],
+      "properties": {
+        "smell_id": { "type": "string" },
+        "smell_type": { "type": "string" },
+        "file_path": { "type": "string" },
+        "component_name": { "type": ["string", "null"] },
+        "line_start": { "type": "integer", "minimum": 1 },
+        "line_end": { "type": "integer", "minimum": 1 },
+        "severity": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "detector_metadata": { "type": "object" }
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Full context object as produced by gather_context.py.",
+      "required": ["task_id", "smell_id", "target_file"],
+      "properties": {
+        "task_id": { "type": "string" },
+        "smell_id": { "type": "string" },
+        "target_file": { "type": "string" },
+        "symbol_name": { "type": ["string", "null"] },
+        "line_start": { "type": "integer" },
+        "line_end": { "type": "integer" },
+        "local_imports": { "type": "array", "items": { "type": "string" } },
+        "related_files": { "type": "array", "items": { "type": "string" } },
+        "relevant_context_files": { "type": "array", "items": { "type": "string" } },
+        "primary_snippet": { "type": "object" }
+      }
+    },
+    "manifest_task": {
+      "type": "object",
+      "description": "Full manifest task object as produced by build_manifest.py.",
+      "required": ["id", "repo_name", "smell_type", "target_file", "allowed_edit_scope"],
+      "properties": {
+        "id": { "type": "string" },
+        "repo_name": { "type": "string" },
+        "smell_type": { "type": "string" },
+        "target_file": { "type": "string" },
+        "allowed_edit_scope": { "type": "object" }
+      }
+    },
+    "actionability": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "../schemas/actionability_result.schema.json" }
+      ],
+      "description": "B1 classifier output. Null until the classifier node runs."
+    },
+    "plan": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "../schemas/refactor_plan.schema.json" }
+      ],
+      "description": "B3 planner output. Null until the planner node runs."
+    },
+    "edit_result": {
+      "type": ["object", "null"],
+      "description": "Raw result dict from the agent adapter. Null until the edit node runs."
+    },
+    "changed_files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Relative paths of files actually modified by the edit node."
+    },
+    "verification_result": {
+      "type": ["object", "null"],
+      "description": "Verification node output. Null until the verify node runs."
+    },
+    "critique_result": {
+      "type": ["object", "null"],
+      "description": "Critique node output. Null until the critique node runs."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "classifying",
+        "planning",
+        "editing",
+        "verifying",
+        "accepted",
+        "rejected",
+        "skipped",
+        "failed"
+      ],
+      "description": "Current lifecycle position of the task."
+    },
+    "skip_reason": {
+      "type": ["string", "null"],
+      "description": "Set when status is skipped. Explains why the task was not attempted."
+    },
+    "error": {
+      "type": ["string", "null"],
+      "description": "Set when status is failed. Records the exception or error message."
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of edit-verify-critique cycles attempted so far."
+    },
+    "artifact_paths": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Maps node name to the absolute path of the artifact file written by that node."
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RefactorPlan",
+  "description": "B3 — Output of the planner node. A bounded, tactic-specific plan produced before any file edits are made.",
+  "type": "object",
+  "required": [
+    "tactic_name",
+    "files_to_edit",
+    "risk_level",
+    "invariants",
+    "expected_smell_resolution",
+    "abort_reasons"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "tactic_name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Name of the refactoring tactic to apply (e.g. extract_component, add_controlled_state). References the tactic library (B5) by name."
+    },
+    "files_to_edit": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Relative paths of files the edit node may modify. Must be a subset of manifest_task.allowed_edit_scope.allowed_files."
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Estimated risk of the transformation. High-risk plans may be held for human review."
+    },
+    "invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Behaviours that must be preserved after the edit. Enforced by the verifier and critic."
+    },
+    "expected_smell_resolution": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plain-language description of how this tactic resolves the detected smell."
+    },
+    "abort_reasons": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions under which the edit node should abandon the attempt rather than produce a partial or risky change."
+    }
+  }
+}
