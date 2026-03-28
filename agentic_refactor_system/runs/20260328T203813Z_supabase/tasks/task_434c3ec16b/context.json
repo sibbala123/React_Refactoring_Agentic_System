@@ -1,0 +1,33 @@
+{
+  "line_end": 25,
+  "line_start": 25,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { AlertTriangle, ChevronRight, Mail, Phone, User } from 'lucide-react'\nimport { useCallback, useMemo } from 'react'\nimport { z } from 'zod'\n\nimport {\n  authEmailProviderSchema,\n  authFieldLabels,\n  authGeneralSettingsSchema,\n  authGoogleProviderSchema,\n  authPhoneProviderSchema,\n  type AuthGeneralSettingsSchema,\n} from '../../lib/schemas/auth'\nimport { Alert, AlertDescription, AlertTitle } from '@/registry/default/components/ui/alert'\nimport { Button } from '@/registry/default/components/ui/button'\nimport { Skeleton } from '@/registry/default/components/ui/skeleton'\nimport { DynamicForm } from '@/registry/default/platform/platform-kit-nextjs/components/dynamic-form'\nimport { useSheetNavigation } from '@/registry/default/platform/platform-kit-nextjs/contexts/SheetNavigationContext'\nimport {\n  useGetAuthConfig,\n  useUpdateAuthConfig,\n} from '@/registry/default/platform/platform-kit-nextjs/hooks/use-auth'\n\nfunction ProviderSettingsView({\n  projectRef,\n  schema,\n  title,\n  initialValues: allInitialValues,\n  onSuccess,\n}: {\n  projectRef: string\n  schema: z.ZodObject<any> | z.ZodEffects<z.ZodObject<any>>\n  title: string\n  initialValues: any\n  onSuccess: () => void\n}) {\n  const { mutate: updateAuthConfig, isPending: isUpdatingConfig } = useUpdateAuthConfig()\n\n  const actualSchema = 'shape' in schema ? schema : (schema._def.schema as z.ZodObject<any>)\n\n  const handleUpdateAuthConfig = (formData: z.infer<typeof actualSchema>) => {\n    const payload = Object.fromEntries(\n      Object.entries(formData).filter(([_, value]) => value !== undefined)\n    )\n\n    if (Object.keys(payload).length === 0) {\n      alert('No changes to submit. Please modify a field to update.')\n      return\n    }\n\n    updateAuthConfig(\n      {\n        projectRef,\n        payload,",
+    "end_line": 55,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/database.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/index.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/logs.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/secrets.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/storage.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/suggestions.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/users.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/auth.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/database.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/index.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/logs.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/secrets.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/storage.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/suggestions.tsx",
+    "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/users.tsx"
+  ],
+  "smell_id": "heuristic_props_4338",
+  "symbol_name": "AuthManager",
+  "target_file": "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/auth.tsx",
+  "task_id": "task_434c3ec16b"
+}

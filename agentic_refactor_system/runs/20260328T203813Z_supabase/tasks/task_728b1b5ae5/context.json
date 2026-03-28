@@ -1,0 +1,51 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [
+    "packages/ui-patterns/src/FilterBar/CommandListItem.tsx",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.tsx",
+    "packages/ui-patterns/src/FilterBar/types.ts",
+    "packages/ui-patterns/src/FilterBar/utils.ts"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { useEffect, useMemo, useRef } from 'react'\n\nimport { CommandListItem } from './CommandListItem'\nimport { EmptyState, GroupHeader, GroupSeparator } from './DefaultCommandList.helpers'\nimport { MenuItem, MenuItemGroup, OPERATOR_GROUP_LABELS } from './types'\nimport { groupMenuItemsByOperator } from './utils'\n\nexport type DefaultCommandListProps = {\n  items: MenuItem[]\n  highlightedIndex: number\n  onSelect: (item: MenuItem) => void\n  includeIcon?: boolean\n  grouped?: boolean\n}\n\nexport function DefaultCommandList({\n  items,\n  highlightedIndex,\n  onSelect,\n  includeIcon = true,\n  grouped = false,\n}: DefaultCommandListProps) {\n  const listRef = useRef<HTMLDivElement>(null)\n  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())\n\n  const groups: MenuItemGroup[] = useMemo(() => {\n    if (grouped) {\n      return groupMenuItemsByOperator(items)\n    }\n    // Non-grouped items are treated as a single uncategorized group\n    return [\n      {\n        group: 'uncategorized',\n        items: items.map((item, index) => ({ item, index })),\n      },\n    ]\n  }, [grouped, items])\n\n  const showGroupHeaders = groups.length > 1\n\n  useEffect(() => {\n    const itemEl = itemRefs.current.get(highlightedIndex)\n    if (itemEl && listRef.current) {\n      itemEl.scrollIntoView({ block: 'center', behavior: 'smooth' })\n    }\n  }, [highlightedIndex])",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui-patterns/src/FilterBar/CommandListItem.tsx",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.helpers.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.test.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBarContext.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterCondition.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterGroup.tsx",
+    "packages/ui-patterns/src/FilterBar/OperatorSymbolBadge.tsx",
+    "packages/ui-patterns/src/FilterBar/hooks.test.ts",
+    "packages/ui-patterns/src/FilterBar/hooks.ts",
+    "packages/ui-patterns/src/FilterBar/index.ts",
+    "packages/ui-patterns/src/FilterBar/menuItems.test.ts",
+    "packages/ui-patterns/src/FilterBar/menuItems.ts",
+    "packages/ui-patterns/src/FilterBar/types.ts",
+    "packages/ui-patterns/src/FilterBar/useAIFilter.ts",
+    "packages/ui-patterns/src/FilterBar/useCommandHandling.ts",
+    "packages/ui-patterns/src/FilterBar/useCommandMenu.ts",
+    "packages/ui-patterns/src/FilterBar/useKeyboardNavigation.ts",
+    "packages/ui-patterns/src/FilterBar/utils.test.ts",
+    "packages/ui-patterns/src/FilterBar/utils.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.tsx",
+    "packages/ui-patterns/src/FilterBar/CommandListItem.tsx",
+    "packages/ui-patterns/src/FilterBar/types.ts",
+    "packages/ui-patterns/src/FilterBar/utils.ts",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.helpers.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.test.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBarContext.tsx"
+  ],
+  "smell_id": "heuristic_props_6211",
+  "symbol_name": "DefaultCommandList",
+  "target_file": "packages/ui-patterns/src/FilterBar/DefaultCommandList.tsx",
+  "task_id": "task_728b1b5ae5"
+}

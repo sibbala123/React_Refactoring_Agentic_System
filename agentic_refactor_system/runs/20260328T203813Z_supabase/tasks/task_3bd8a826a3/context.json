@@ -1,0 +1,44 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { Branch } from 'data/branches/branches-query'\nimport { Github } from 'lucide-react'\nimport Link from 'next/link'\nimport { BranchSelector } from './BranchSelector'\n\nimport { DocsButton } from 'components/ui/DocsButton'\nimport { DOCS_URL } from 'lib/constants'\nimport { Button } from 'ui'\n\nconst EMPTY_STATE_CONTAINER = 'flex items-center flex-col gap-0.5 justify-center w-full py-10 px-4'\n\nexport const PullRequestsEmptyState = ({\n  url,\n  projectRef,\n  branches,\n  onBranchSelected,\n  isUpdating,\n  githubConnection,\n  gitlessBranching = false,\n}: {\n  url: string\n  projectRef: string\n  branches: Branch[]\n  onBranchSelected: (branch: Branch) => void\n  isUpdating: boolean\n  githubConnection?: any\n  gitlessBranching: boolean\n}) => {\n  return (\n    <div className={EMPTY_STATE_CONTAINER}>\n      <p>No merge requests</p>\n      <p className=\"text-foreground-lighter text-center text-balance\">\n        Create your first merge request to merge changes back to the main branch\n      </p>\n      <div className=\"flex items-center space-x-2 mt-4\">\n        {githubConnection ? (\n          <Button type=\"outline\" asChild icon={<Github />}>\n            <a href={url} target=\"_blank\" rel=\"noopener noreferrer\">\n              Create pull request\n            </a>\n          </Button>\n        ) : (",
+    "end_line": 42,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EdgeFunctionsDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewRow.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogs.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx"
+  ],
+  "smell_id": "heuristic_props_1118",
+  "symbol_name": "PullRequestsEmptyState",
+  "target_file": "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+  "task_id": "task_3bd8a826a3"
+}

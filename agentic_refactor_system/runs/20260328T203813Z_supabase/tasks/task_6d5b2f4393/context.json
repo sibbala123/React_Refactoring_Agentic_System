@@ -1,0 +1,33 @@
+{
+  "line_end": 6,
+  "line_start": 6,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useTheme } from 'next-themes'\nimport React from 'react'\nimport { cn } from 'ui'\nimport Panel from '~/components/Panel'\n\nexport default function LaunchWeekPrizeCard({\n  content,\n  className,\n  contentClassName,\n}: {\n  content: any\n  className?: string\n  contentClassName?: string\n}) {\n  const { resolvedTheme } = useTheme()\n\n  return (\n    <Panel\n      hasShimmer\n      outerClassName={cn('relative rounded-lg overflow-hidden', className)}\n      innerClassName={cn(\n        'relative h-full flex flex-col rounded-lg overflow-hidden',\n        contentClassName\n      )}\n      shimmerToColor={\n        resolvedTheme?.includes('dark') ? 'hsl(var(--background-alternative-default))' : undefined\n      }\n      shimmerFromColor={resolvedTheme?.includes('dark') ? 'hsl(var(--border-default))' : undefined}\n    >\n      {content}\n    </Panel>\n  )\n}",
+    "end_line": 33,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/LaunchWeek/12/HackathonCallout.tsx",
+    "apps/www/components/LaunchWeek/12/LW12Background.tsx",
+    "apps/www/components/LaunchWeek/12/LWMeetups.tsx",
+    "apps/www/components/LaunchWeek/12/LWSummary.tsx",
+    "apps/www/components/LaunchWeek/12/LabelBadge.tsx",
+    "apps/www/components/LaunchWeek/12/LaunchWeekLogoHeader.tsx",
+    "apps/www/components/LaunchWeek/12/LaunchWeekPrizeSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/LaunchWeek/12/LaunchWeekPrizeCard.tsx",
+    "apps/www/components/LaunchWeek/12/HackathonCallout.tsx",
+    "apps/www/components/LaunchWeek/12/LW12Background.tsx",
+    "apps/www/components/LaunchWeek/12/LWMeetups.tsx",
+    "apps/www/components/LaunchWeek/12/LWSummary.tsx",
+    "apps/www/components/LaunchWeek/12/LabelBadge.tsx",
+    "apps/www/components/LaunchWeek/12/LaunchWeekLogoHeader.tsx",
+    "apps/www/components/LaunchWeek/12/LaunchWeekPrizeSection.tsx"
+  ],
+  "smell_id": "heuristic_props_4567",
+  "symbol_name": "LaunchWeekPrizeCard",
+  "target_file": "apps/www/components/LaunchWeek/12/LaunchWeekPrizeCard.tsx",
+  "task_id": "task_6d5b2f4393"
+}

@@ -1,0 +1,33 @@
+{
+  "line_end": 39,
+  "line_start": 39,
+  "local_imports": [
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/components/Radio/RadioContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/lib/utils/randomIdGenerator.ts"
+  ],
+  "primary_snippet": {
+    "content": "import { RadioContext } from './RadioContext'\n\ninterface GroupProps {\n  allowedValues?: any\n  checkboxes?: any\n  id?: any\n  layout?: 'horizontal' | 'vertical'\n  error?: any\n  descriptionText?: any\n  label?: any\n  afterLabel?: string\n  beforeLabel?: string\n  labelOptional?: any\n  name?: any\n  type?: 'cards' | 'list' | 'small-cards' | 'large-cards'\n  transform?: any\n  value?: any\n  className?: any\n  children?: React.ReactNode\n  options?: Array<InputProps>\n  onChange?(x: React.ChangeEvent<HTMLInputElement>): void\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge'\n  validation?: (x: any) => void\n  groupClassName?: string\n  labelsLayout?: 'horizontal' | 'vertical'\n}\n\n/**\n * @deprecated Use `import { RadioGroup_Shadcn_ } from \"ui\"` instead\n */\nfunction RadioGroup({\n  id,\n  layout,\n  error,\n  descriptionText,\n  label,\n  afterLabel,\n  beforeLabel,\n  labelOptional,\n  children,\n  className,\n  type = 'list',\n  options,\n  value,\n  name,\n  onChange,\n  size = 'medium',\n  validation,\n  groupClassName,\n  labelsLayout = 'vertical',\n}: GroupProps) {\n  const [activeId, setActiveId] = useState('')\n\n  const __styles = styleHandler('radio')\n\n  const {\n    formContextOnChange,\n    values,\n    errors,\n    // handleBlur,\n    touched,",
+    "end_line": 69,
+    "start_line": 9
+  },
+  "related_files": [
+    "packages/ui/src/components/Radio/RadioContext.tsx",
+    "packages/ui/src/components/Radio/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Radio/Radio.tsx",
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/components/Radio/RadioContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/lib/utils/randomIdGenerator.ts",
+    "packages/ui/src/components/Radio/index.tsx"
+  ],
+  "smell_id": "heuristic_props_6014",
+  "symbol_name": "RadioGroup",
+  "target_file": "packages/ui/src/components/Radio/Radio.tsx",
+  "task_id": "task_cc9423e66e"
+}

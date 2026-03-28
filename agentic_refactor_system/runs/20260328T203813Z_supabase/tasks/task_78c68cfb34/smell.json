@@ -1,0 +1,14 @@
+{
+  "component_name": "CustomersVisual",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Products/VectorAI/CustomersVisual.tsx",
+  "line_end": 812,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4761",
+  "smell_type": "Large Component"
+}

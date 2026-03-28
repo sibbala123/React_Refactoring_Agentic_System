@@ -1,0 +1,43 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import type { LucideIcon } from 'lucide-react'\nimport { cn, TabsTrigger_Shadcn_ } from 'ui'\n\nexport interface ProjectBranchSelectorSheetTabTriggerProps {\n  value: 'organization' | 'project' | 'branch'\n  label: string\n  icon: LucideIcon\n  isMainBranch?: boolean\n  isLast: boolean\n}\n\nexport function ProjectBranchSelectorSheetTabTrigger({\n  value,\n  label,\n  icon: Icon,\n  isMainBranch = false,\n  isLast,\n}: ProjectBranchSelectorSheetTabTriggerProps) {\n  const isBranch = value === 'branch'\n  const isProductionBranch = isBranch && isMainBranch\n\n  return (\n    <TabsTrigger_Shadcn_\n      value={value}\n      className={cn(\n        'group relative text-xs flex flex-col items-center gap-1.5 px-4 py-3 data-[state=active]:bg-surface-200 data-[state=active]:border-foreground-light border-b duration-0',\n        isProductionBranch &&\n          'text-warning data-[state=active]:text-warning hover:text-warning hover:opacity-70'\n      )}\n    >\n      <Icon className=\"shrink-0\" size={16} strokeWidth={1.5} />\n      <span className=\"truncate max-w-full text-xs leading-tight\" title={label}>\n        {label}\n      </span>\n\n      {!isLast && (\n        <svg\n          aria-hidden=\"true\"\n          width=\"100%\"\n          height=\"100%\"\n          viewBox=\"0 0 6 63\"\n          fill=\"none\"",
+    "end_line": 42,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconButton.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconLink.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.test.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorPopover.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/StudioMobileSheetNav.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconButton.tsx"
+  ],
+  "smell_id": "heuristic_props_2516",
+  "symbol_name": "ProjectBranchSelectorSheetTabTrigger",
+  "target_file": "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx",
+  "task_id": "task_256c80ca32"
+}

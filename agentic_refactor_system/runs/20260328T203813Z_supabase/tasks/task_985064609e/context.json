@@ -1,0 +1,33 @@
+{
+  "line_end": 5,
+  "line_start": 5,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import React from 'react'\nimport { cn } from 'ui'\nimport Panel from '~/components/Panel'\n\nexport default function LaunchWeekPrizeCard({\n  content,\n  className,\n  contentClassName,\n}: {\n  content: any\n  className?: string\n  contentClassName?: string\n}) {\n  return (\n    <Panel\n      hasShimmer\n      outerClassName={cn('relative rounded-lg overflow-hidden shadow-lg', className)}\n      innerClassName={cn(\n        'relative h-full flex flex-col bg-[#121516] rounded-lg overflow-hidden text-[#EDEDED]',\n        contentClassName\n      )}\n      shimmerToColor=\"hsl(var(--background-alternative-default))\"\n      shimmerFromColor=\"hsl(var(--border-default))\"\n    >\n      {content}\n    </Panel>\n  )\n}",
+    "end_line": 28,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/LaunchWeek/X/FaviconImports.tsx",
+    "apps/www/components/LaunchWeek/X/LWXMeetups.tsx",
+    "apps/www/components/LaunchWeek/X/LWXSummary.tsx",
+    "apps/www/components/LaunchWeek/X/LabelBadge.tsx",
+    "apps/www/components/LaunchWeek/X/LaunchWeekLogoHeader.tsx",
+    "apps/www/components/LaunchWeek/X/LaunchWeekPrizeSection.tsx",
+    "apps/www/components/LaunchWeek/X/X.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/LaunchWeek/X/LaunchWeekPrizeCard.tsx",
+    "apps/www/components/LaunchWeek/X/FaviconImports.tsx",
+    "apps/www/components/LaunchWeek/X/LWXMeetups.tsx",
+    "apps/www/components/LaunchWeek/X/LWXSummary.tsx",
+    "apps/www/components/LaunchWeek/X/LabelBadge.tsx",
+    "apps/www/components/LaunchWeek/X/LaunchWeekLogoHeader.tsx",
+    "apps/www/components/LaunchWeek/X/LaunchWeekPrizeSection.tsx",
+    "apps/www/components/LaunchWeek/X/X.tsx"
+  ],
+  "smell_id": "heuristic_props_4675",
+  "symbol_name": "LaunchWeekPrizeCard",
+  "target_file": "apps/www/components/LaunchWeek/X/LaunchWeekPrizeCard.tsx",
+  "task_id": "task_985064609e"
+}

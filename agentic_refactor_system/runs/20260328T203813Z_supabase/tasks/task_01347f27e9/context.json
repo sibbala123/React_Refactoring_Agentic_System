@@ -1,0 +1,25 @@
+{
+  "line_end": 10,
+  "line_start": 10,
+  "local_imports": [
+    "apps/docs/features/ui/CodeBlock/CodeBlock.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { Check, Copy, WrapText, ArrowRightFromLine } from 'lucide-react'\nimport { type MouseEvent, useCallback, useEffect, useState, useRef } from 'react'\nimport { type ThemedToken } from 'shiki'\nimport { type NodeHover } from 'twoslash'\nimport { cn, copyToClipboard, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\nimport { getFontStyle } from './CodeBlock.utils'\n\nexport function AnnotatedSpan({\n  token,\n  annotations,\n}: {\n  token: ThemedToken\n  annotations: Array<NodeHover>\n}) {\n  const [open, setOpen] = useState(false)\n\n  const [isTouchDevice, setIsTouchDevice] = useState(false)\n  useEffect(() => {\n    const touchDevice = !window.matchMedia('(pointer: fine)').matches\n    setIsTouchDevice(touchDevice)\n  }, [])\n\n  const handleClick = useCallback(\n    (evt: MouseEvent) => {\n      if (isTouchDevice) {\n        evt.preventDefault()\n        evt.stopPropagation()\n        setOpen((open) => !open)\n      }\n    },\n    [isTouchDevice]\n  )\n  const onOpenChange = useCallback(\n    (open: boolean) => {\n      if (!isTouchDevice || !open) {\n        setOpen(open)\n      }\n    },",
+    "end_line": 40,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/docs/features/ui/CodeBlock/CodeBlock.tsx",
+    "apps/docs/features/ui/CodeBlock/CodeBlock.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/docs/features/ui/CodeBlock/CodeBlock.client.tsx",
+    "apps/docs/features/ui/CodeBlock/CodeBlock.tsx",
+    "apps/docs/features/ui/CodeBlock/CodeBlock.utils.ts"
+  ],
+  "smell_id": "heuristic_props_0585",
+  "symbol_name": "AnnotatedSpan",
+  "target_file": "apps/docs/features/ui/CodeBlock/CodeBlock.client.tsx",
+  "task_id": "task_01347f27e9"
+}

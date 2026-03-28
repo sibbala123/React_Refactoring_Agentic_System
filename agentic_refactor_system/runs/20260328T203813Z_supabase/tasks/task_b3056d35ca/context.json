@@ -1,0 +1,43 @@
+{
+  "line_end": 50,
+  "line_start": 50,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { WarningIcon } from 'ui'\nimport type { ChartData } from './Charts.types'\n\ninterface ChartHandlerProps {\n  id?: string\n  label: string\n  attribute: string\n  provider: 'infra-monitoring' | 'daily-stats'\n  startDate: string\n  endDate: string\n  interval: string\n  customDateFormat?: string\n  defaultChartStyle?: 'bar' | 'line'\n  hideChartType?: boolean\n  data?: ChartData\n  isLoading?: boolean\n  format?: string\n  highlightedValue?: string | number\n  syncId?: string\n}\n\n/**\n * Controls chart display state. Optionally fetches static chart data if data is not provided.\n *\n * If the `data` prop is provided, it will disable automatic chart data fetching and pass the data directly to the chart render.\n * - loading state can also be provided through the `isLoading` prop, to display loading placeholders. Ignored if `data` key not provided.\n * - if `isLoading=true` and `data` is `undefined`, loading error message will be shown.\n *\n * Provided data must be in the expected chart format.\n */\nconst ChartHandler = ({\n  label,\n  attribute,\n  provider,\n  startDate,\n  endDate,\n  interval,\n  customDateFormat,\n  children = null,\n  defaultChartStyle = 'bar',\n  hideChartType = false,\n  data,\n  isLoading,\n  format,\n  highlightedValue,\n  syncId,\n  ...otherProps\n}: PropsWithChildren<ChartHandlerProps>) => {\n  const router = useRouter()\n  const { ref } = router.query\n\n  const state = useDatabaseSelectorStateSnapshot()\n  const [chartStyle, setChartStyle] = useState<string>(defaultChartStyle)\n\n  const databaseIdentifier = state.selectedDatabaseId\n\n  const { data: dailyStatsData, isPending: isFetchingDailyStats } = useProjectDailyStatsQuery(\n    {\n      projectRef: ref as string,\n      attribute: attribute as ProjectDailyStatsAttribute,\n      startDate: dayjs(startDate).format('YYYY-MM-DD'),",
+    "end_line": 80,
+    "start_line": 20
+  },
+  "related_files": [
+    "apps/studio/components/ui/Charts/AreaChart.tsx",
+    "apps/studio/components/ui/Charts/BarChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/ChartHighlightActions.tsx",
+    "apps/studio/components/ui/Charts/Charts.constants.ts",
+    "apps/studio/components/ui/Charts/Charts.types.tsx",
+    "apps/studio/components/ui/Charts/Charts.utils.test.ts",
+    "apps/studio/components/ui/Charts/Charts.utils.tsx",
+    "apps/studio/components/ui/Charts/ComposedChart.tsx",
+    "apps/studio/components/ui/Charts/ComposedChart.utils.tsx",
+    "apps/studio/components/ui/Charts/ComposedChartHandler.tsx",
+    "apps/studio/components/ui/Charts/NoDataPlaceholder.tsx",
+    "apps/studio/components/ui/Charts/ReportSettings.tsx",
+    "apps/studio/components/ui/Charts/StackedBarChart.tsx",
+    "apps/studio/components/ui/Charts/useChartHighlight.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.test.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/Charts/ChartHandler.tsx",
+    "apps/studio/components/ui/Charts/AreaChart.tsx",
+    "apps/studio/components/ui/Charts/BarChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/ChartHighlightActions.tsx",
+    "apps/studio/components/ui/Charts/Charts.constants.ts",
+    "apps/studio/components/ui/Charts/Charts.types.tsx",
+    "apps/studio/components/ui/Charts/Charts.utils.test.ts"
+  ],
+  "smell_id": "heuristic_props_2680",
+  "symbol_name": "ChartHandler",
+  "target_file": "apps/studio/components/ui/Charts/ChartHandler.tsx",
+  "task_id": "task_b3056d35ca"
+}

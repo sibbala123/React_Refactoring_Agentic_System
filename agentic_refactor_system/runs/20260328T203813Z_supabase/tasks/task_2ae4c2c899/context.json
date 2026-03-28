@@ -1,0 +1,45 @@
+{
+  "line_end": 51,
+  "line_start": 51,
+  "local_imports": [
+    "apps/www/components/Contribute/Icons.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  DialogDescription,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogSectionSeparator,\n  DialogTitle,\n  Label_Shadcn_,\n  TextArea_Shadcn_,\n  Tooltip,\n  TooltipContent,\n  TooltipProvider,\n  TooltipTrigger,\n} from 'ui'\n\nimport { ChannelIcon } from './Icons'\n\nfunction getChannelFromUrl(url: string): ThreadSource {\n  const u = url.toLowerCase()\n  if (u.includes('discord')) return 'discord'\n  if (u.includes('reddit')) return 'reddit'\n  if (u.includes('github')) return 'github'\n  // TODO: handle unknown URL patterns more explicitly, don\u2019t just default to GitHub\n  return 'github'\n}\n\ninterface SimilarSolvedThreadsProps {\n  threads: SimilarSolvedThread[]\n  parentThreadId: string\n}\n\nconst SimilarThreadCard = ({\n  thread,\n  className,\n}: {\n  thread: SimilarSolvedThread\n  className?: string\n}) => {\n  const channel = getChannelFromUrl(thread.external_activity_url || '')\n  const filteredStack = thread.stack?.filter((s) => s !== 'Other') ?? []\n  const hasStack = filteredStack.length > 0\n\n  const url = thread.external_activity_url || null\n  const linkClassName = cn(\n    'border-b border-border px-6 py-4 flex items-center gap-3 overflow-hidden hover:bg-surface-200 transition-colors',\n    className\n  )\n  const content = (\n    <>\n      <div className=\"flex items-center justify-center bg-surface-200 dark:bg-surface-300 h-10 w-10 rounded-md shrink-0\">\n        <ChannelIcon channel={channel} />\n      </div>\n      <div className=\"min-w-0 flex-1 flex flex-col\">\n        <h4 className=\"text-base text-foreground truncate block\">{thread.subject}</h4>\n        {thread.problem_description ? (\n          <p className=\"text-sm text-foreground-lighter leading-relaxed line-clamp-2\">\n            {thread.problem_description}\n          </p>\n        ) : null}\n        {hasStack ? (\n          <div className=\"flex flex-wrap gap-x-1.5 gap-y-1 overflow-hidden pt-1\">\n            {filteredStack.map((tech) => (",
+    "end_line": 81,
+    "start_line": 21
+  },
+  "related_files": [
+    "apps/www/components/Contribute/BackToThreadsLink.tsx",
+    "apps/www/components/Contribute/ContributePageLayout.tsx",
+    "apps/www/components/Contribute/ContributorBenefits.tsx",
+    "apps/www/components/Contribute/Conversation.tsx",
+    "apps/www/components/Contribute/FilterPopover.tsx",
+    "apps/www/components/Contribute/GithubAvatar.tsx",
+    "apps/www/components/Contribute/HelpOnPlatformButton.tsx",
+    "apps/www/components/Contribute/Hero.tsx",
+    "apps/www/components/Contribute/Icons.tsx",
+    "apps/www/components/Contribute/Leaderboard.tsx",
+    "apps/www/components/Contribute/LeaderboardContent.tsx",
+    "apps/www/components/Contribute/PlatformTabs.tsx",
+    "apps/www/components/Contribute/RepliesList.tsx",
+    "apps/www/components/Contribute/UnansweredThreads.tsx",
+    "apps/www/components/Contribute/UnansweredThreadsTable.tsx",
+    "apps/www/components/Contribute/UserProfile.tsx",
+    "apps/www/components/Contribute/markdownComponents.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Contribute/SimilarSolvedThreads.tsx",
+    "apps/www/components/Contribute/Icons.tsx",
+    "apps/www/components/Contribute/BackToThreadsLink.tsx",
+    "apps/www/components/Contribute/ContributePageLayout.tsx",
+    "apps/www/components/Contribute/ContributorBenefits.tsx",
+    "apps/www/components/Contribute/Conversation.tsx",
+    "apps/www/components/Contribute/FilterPopover.tsx",
+    "apps/www/components/Contribute/GithubAvatar.tsx"
+  ],
+  "smell_id": "heuristic_props_4499",
+  "symbol_name": "SimilarThreadCard",
+  "target_file": "apps/www/components/Contribute/SimilarSolvedThreads.tsx",
+  "task_id": "task_2ae4c2c899"
+}

@@ -1,0 +1,52 @@
+{
+  "line_end": 227,
+  "line_start": 1,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import 'swiper/css'\n\nimport { AnimatePresence, motion, useAnimation } from 'framer-motion'\nimport Image from 'next/image'\nimport Link from 'next/link'\nimport { ReactNode, useEffect, useState } from 'react'\nimport { Swiper, SwiperSlide } from 'swiper/react'\nimport { Button } from 'ui'\nimport CodeBlock from '~/components/CodeBlock/CodeBlock'\nimport SectionContainer from '~/components/Layouts/SectionContainer'\nimport { ArrowUpRight } from 'lucide-react'\n\ninterface TabProps {\n  label: string\n  paragraph?: string\n  isActive: boolean\n  onClick: VoidFunction\n  progress: number | undefined\n  intervalDuration?: number\n}\n\nconst Tab = ({ isActive, label, paragraph, onClick, progress, intervalDuration }: TabProps) => (\n  <button\n    onClick={onClick}\n    className={`text-left text-lg flex flex-col group gap-1 transition-all ${\n      isActive ? 'flex-[2] text-foreground' : 'flex-[1] text-foreground-light'\n    }`}\n    aria-selected={isActive}\n    role=\"tab\"\n  >\n    <div className=\"relative w-full h-[2px] bg-border-strong opacity-80 group-hover:opacity-100 rounded-full overflow-hidden\">\n      {isActive && (\n        <motion.div\n          className={[\n            'absolute inset-0 w-full right-full bg-brand h-full transition-opacity',\n            progress! > 99.7 ? 'opacity-0' : 'opacity-100',\n          ].join(' ')}\n          style={{ x: `${progress! - 100}%` }}\n          transition={{ duration: intervalDuration }}\n        />\n      )}\n    </div>\n    <div className=\"md:h-20\">\n      {label}\n      {isActive && (\n        <motion.p\n          initial={{ opacity: 0 }}\n          animate={{ opacity: 1, transition: { delay: 0.2 } }}\n          className=\"hidden md:block mt-1 text-foreground-lighter text-sm\"\n        >\n          {paragraph}\n        </motion.p>\n      )}\n    </div>\n  </button>\n)\n\ninterface Tab {\n  label: string\n  paragraph?: string\n  panel?: JSX.Element\n  colabUrl: string\n  code?: string\n}\n\ninterface Props {\n  title: string | ReactNode\n  paragraph: string\n  cta?: {\n    label?: string\n    link: string\n  }\n  tabs: Tab[]\n  intervalDuration?: number\n  updateFrequency?: number\n}\n\nconst TimedTabsSection = ({\n  title,\n  paragraph,\n  cta,\n  tabs,\n  intervalDuration = 25,\n  updateFrequency = 10,\n}: Props) => {\n  const [activeTab, setActiveTab] = useState(0)\n  const [progress, setProgress] = useState(0)\n  const [apiSwiper, setApiSwiper] = useState(undefined)\n  const controls = useAnimation()\n\n  useEffect(() => {\n    if (!apiSwiper) return\n    // @ts-ignore\n    apiSwiper.slideTo(activeTab)\n  }, [activeTab])\n\n  const restartInterval = (tabIndex: number) => {\n    setProgress(0)\n    setActiveTab(tabIndex)\n  }\n\n  const animation = {\n    width: '100%',\n    transition: { duration: intervalDuration, ease: 'linear' },\n  }\n\n  useEffect(() => {\n    const progressIncrement = (100 / intervalDuration) * (updateFrequency / 1000)\n\n    controls.start(animation)\n\n    const progressInterval = setInterval(() => {\n      setProgress((prevProgress) => (prevProgress + progressIncrement) % 101)\n    }, updateFrequency)\n\n    return () => {\n      clearInterval(progressInterval)\n      setProgress(0)\n    }\n  }, [activeTab, controls])\n\n  useEffect(() => {\n    if (progress >= 100.9) {\n      setActiveTab((prevActiveTab) => (prevActiveTab === tabs.length - 1 ? 0 : prevActiveTab + 1))\n    }\n  }, [progress])\n\n  const handleTabClick = (tabIndex: number) => {\n    restartInterval(tabIndex)\n  }\n\n  return (\n    <SectionContainer className=\"flex flex-col gap-8\">\n      <div className=\"flex flex-col lg:flex-row gap-8 xl:gap-10 justify-between\">\n        <div className=\"w-full lg:w-1/2 gap-2 flex flex-col items-start\">\n          <h2 className=\"text-3xl xl:text-4xl max-w-[280px] sm:max-w-xs xl:max-w-[360px] tracking-[-1px]\">\n            {title}\n          </h2>\n          <p className=\"text-foreground-lighter mb-4 max-w-sm\">{paragraph}</p>\n          {cta && (\n            <Button asChild type=\"default\" size=\"small\" icon={<ArrowUpRight />}>\n              <Link href={cta.link}>{cta.label ?? 'Explore more'}</Link>\n            </Button>\n          )}\n        </div>\n        <div className=\"relative w-full lg:w-1/2 min-h-[300px]\">\n          <Swiper\n            // @ts-ignore\n            onSwiper={setApiSwiper}\n            style={{ zIndex: 0, marginRight: '1px' }}\n            initialSlide={activeTab}\n            spaceBetween={0}\n            slidesPerView={1}\n            speed={300}\n            allowTouchMove={false}\n          >\n            {tabs.map((tab, i) => (\n              <SwiperSlide key={i}>\n                <>\n                  <OpenInColab\n                    colabUrl={tabs[activeTab].colabUrl}\n                    className=\"hidden md:flex absolute top-4 right-4\"\n                  />\n                  <CodeBlock hideCopy key={i} lang=\"py\" size=\"large\" background=\"#1A1A1A\">\n                    {tab.code}\n                  </CodeBlock>\n                </>\n              </SwiperSlide>\n            ))}\n          </Swiper>\n          <OpenInColab\n            colabUrl={tabs[activeTab]?.colabUrl}\n            className=\"flex md:hidden !relative !top-0 !right-0 mt-8 w-full justify-center\"\n          />\n        </div>\n      </div>\n      <div className=\"w-full col-span-full flex gap-4 lg:gap-8 xl:gap-10\" role=\"tablist\">\n        {tabs.map((tab, index) => (\n          <Tab\n            key={index}\n            isActive={index === activeTab}\n            label={tab.label}\n            paragraph={tab.paragraph}\n            onClick={() => handleTabClick(index)}\n            progress={index === activeTab ? progress : undefined}\n            intervalDuration={intervalDuration}\n          />\n        ))}\n      </div>\n      <div className=\"block md:hidden\">\n        <AnimatePresence mode=\"wait\">\n          <motion.p\n            key={tabs[activeTab]?.paragraph}\n            initial={{ opacity: 0 }}\n            animate={{ opacity: 1, transition: { duration: 0.1, delay: 0.2 } }}\n            exit={{ opacity: 0, transition: { duration: 0.05 } }}\n            className=\"text-foreground-lighter text-sm\"\n          >\n            {tabs[activeTab]?.paragraph}\n          </motion.p>\n        </AnimatePresence>\n      </div>\n    </SectionContainer>\n  )\n}\n\nconst OpenInColab = ({ colabUrl, className }: { colabUrl: string; className?: string }) => (\n  <Link\n    href={colabUrl}\n    target=\"_blank\"\n    className={[\n      'flex items-center z-10 h-10 bg-surface-100 hover:bg-surface-200 hover:text-foreground-lighter text-sm text-foreground-lighter shadow-lg hover:shadow-md rounded-full py-1 px-3 gap-2',\n      className,\n    ].join(' ')}\n  >\n    <Image\n      className=\"opacity-100 hover:opacity-80 transition-opacity contrast-[.2] filter\"\n      src=\"/images/logos/google-colaboratory.svg\"\n      alt=\"Google Colaboratory logo\"\n      width={30}\n      height={30}\n    />\n    <span>Open in Colab</span>\n  </Link>\n)\n\nexport default TimedTabsSection",
+    "end_line": 227,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/Sections/APISection.tsx",
+    "apps/www/components/Sections/CenteredImage.tsx",
+    "apps/www/components/Sections/CenteredTitleImage.tsx",
+    "apps/www/components/Sections/CommunitySlider.tsx",
+    "apps/www/components/Sections/CustomerQuotesSection.tsx",
+    "apps/www/components/Sections/EnterpriseCta.tsx",
+    "apps/www/components/Sections/FeatureSection.tsx",
+    "apps/www/components/Sections/FeaturesSection.tsx",
+    "apps/www/components/Sections/FunctionsUsecases.tsx",
+    "apps/www/components/Sections/GithubExamples.tsx",
+    "apps/www/components/Sections/HighlightCards.tsx",
+    "apps/www/components/Sections/HighlightColumns.tsx",
+    "apps/www/components/Sections/ImageParagraphSection.tsx",
+    "apps/www/components/Sections/ParagraphSection.tsx",
+    "apps/www/components/Sections/ProductHeader.tsx",
+    "apps/www/components/Sections/ProductHeader2.tsx",
+    "apps/www/components/Sections/ProductHeaderCentered.tsx",
+    "apps/www/components/Sections/ProductModulesHeader.tsx",
+    "apps/www/components/Sections/ProductsCta.tsx",
+    "apps/www/components/Sections/ProductsCta2.tsx",
+    "apps/www/components/Sections/SingleQuote.tsx",
+    "apps/www/components/Sections/TimedAccordionPanels.tsx",
+    "apps/www/components/Sections/TimedAccordionSection.tsx",
+    "apps/www/components/Sections/TwitterSocialProof.tsx",
+    "apps/www/components/Sections/TwitterSocialProofMobile.tsx",
+    "apps/www/components/Sections/UseCasesSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Sections/TimedTabsSection.tsx",
+    "apps/www/components/Sections/APISection.tsx",
+    "apps/www/components/Sections/CenteredImage.tsx",
+    "apps/www/components/Sections/CenteredTitleImage.tsx",
+    "apps/www/components/Sections/CommunitySlider.tsx",
+    "apps/www/components/Sections/CustomerQuotesSection.tsx",
+    "apps/www/components/Sections/EnterpriseCta.tsx",
+    "apps/www/components/Sections/FeatureSection.tsx"
+  ],
+  "smell_id": "heuristic_large_4809",
+  "symbol_name": "Tab",
+  "target_file": "apps/www/components/Sections/TimedTabsSection.tsx",
+  "task_id": "task_49a33732a0"
+}

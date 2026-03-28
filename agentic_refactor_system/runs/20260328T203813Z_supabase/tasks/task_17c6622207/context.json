@@ -1,0 +1,25 @@
+{
+  "line_end": 7,
+  "line_start": 7,
+  "local_imports": [
+    "apps/www/app/contribute/ContributeGuard.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { Hero } from '~/components/Contribute/Hero'\nimport { UnansweredThreads } from '~/components/Contribute/UnansweredThreads'\nimport DefaultLayout from '~/components/Layouts/Default'\nimport { ContributeGuard } from './ContributeGuard'\n\n// eslint-disable-next-line no-restricted-exports\nexport default async function ContributePage({\n  searchParams,\n}: {\n  searchParams: Promise<{\n    product_area?: string | string[]\n    channel?: string\n    stack?: string | string[]\n    search?: string\n  }>\n}) {\n  const { product_area, channel, stack, search } = await searchParams\n\n  return (\n    <ContributeGuard>\n      <DefaultLayout>\n        <main className=\"min-h-screen flex flex-col items-center\">\n          <div className=\"flex-1 w-full flex flex-col gap-20 items-center\">\n            <div className=\"flex-1 flex flex-col gap-6 w-full\">\n              <div className=\"max-w-5xl mx-auto px-5 w-full\">\n                <Hero />\n              </div>\n              <UnansweredThreads\n                product_area={product_area}\n                channel={channel}\n                stack={stack}\n                search={search}\n              />\n            </div>\n          </div>\n        </main>\n      </DefaultLayout>",
+    "end_line": 37,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/app/contribute/ContributeGuard.tsx",
+    "apps/www/app/contribute/actions.ts"
+  ],
+  "relevant_context_files": [
+    "apps/www/app/contribute/page.tsx",
+    "apps/www/app/contribute/ContributeGuard.tsx",
+    "apps/www/app/contribute/actions.ts"
+  ],
+  "smell_id": "heuristic_props_4431",
+  "symbol_name": "ContributePage",
+  "target_file": "apps/www/app/contribute/page.tsx",
+  "task_id": "task_17c6622207"
+}

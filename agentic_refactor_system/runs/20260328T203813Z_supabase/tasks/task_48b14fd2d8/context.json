@@ -1,0 +1,38 @@
+{
+  "line_end": 10,
+  "line_start": 10,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Copy } from 'lucide-react'\nimport { useCallback, useState } from 'react'\nimport { toast } from 'sonner'\n\nimport { Button } from 'ui'\nimport { getDecryptedValue } from 'data/vault/vault-secret-decrypted-value-query'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { copyToClipboard } from 'ui'\n\nexport const CopyEnvButton = ({\n  serverOptions,\n  values,\n}: {\n  serverOptions: { name: string; secureEntry: boolean }[]\n  values: Record<string, string>\n}) => {\n  const { data: project } = useSelectedProjectQuery()\n  const [isLoading, setIsLoading] = useState(false)\n\n  const onCopy = useCallback(async () => {\n    setIsLoading(true)\n    const envFile = Promise.all(\n      serverOptions.map(async (option) => {\n        if (option.secureEntry) {\n          const decryptedValue = await getDecryptedValue({\n            projectRef: project?.ref,\n            connectionString: project?.connectionString,\n            id: values[option.name],\n          })\n          return `${option.name.toUpperCase().replace('VAULT_', '')}=${decryptedValue[0].decrypted_secret}`\n        }\n        return `${option.name.toUpperCase().replace('.', '_')}=${values[option.name]}`\n      })\n    ).then((values) => values.join('\\n'))\n\n    copyToClipboard(envFile, () => {\n      toast.success('Copied to clipboard as environment variables')\n      setIsLoading(false)\n    })\n  }, [serverOptions, values])",
+    "end_line": 40,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.constants.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.utils.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/BucketHeader.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/ConnectTablesDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/DecryptedReadOnlyInput.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/InitializeForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/SimpleConfigurationDetails.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/UpdateForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/index.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/useAnalyticsBucketAssociatedEntities.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/useAnalyticsBucketWrapperInstance.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/useIcebergWrapper.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/CopyEnvButton.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.constants.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.utils.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/BucketHeader.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/ConnectTablesDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/DecryptedReadOnlyInput.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/InitializeForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/SimpleConfigurationDetails.tsx"
+  ],
+  "smell_id": "heuristic_props_2166",
+  "symbol_name": "CopyEnvButton",
+  "target_file": "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/CopyEnvButton.tsx",
+  "task_id": "task_48b14fd2d8"
+}

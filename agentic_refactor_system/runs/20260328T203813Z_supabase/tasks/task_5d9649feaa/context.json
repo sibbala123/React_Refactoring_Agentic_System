@@ -1,0 +1,41 @@
+{
+  "line_end": 32,
+  "line_start": 32,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "\nimport { useParams } from 'common'\nimport { useReplicationPipelineStatusQuery } from 'data/replication/pipeline-status-query'\nimport { useReplicationPipelineVersionQuery } from 'data/replication/pipeline-version-query'\nimport { Pipeline } from 'data/replication/pipelines-query'\nimport { useRestartPipelineHelper } from 'data/replication/restart-pipeline-helper'\nimport { useUpdatePipelineVersionMutation } from 'data/replication/update-pipeline-version-mutation'\nimport { ChevronDown } from 'lucide-react'\nimport {\n  PipelineStatusRequestStatus,\n  usePipelineRequestStatus,\n} from 'state/replication-pipeline-request-status'\nimport {\n  Collapsible_Shadcn_,\n  CollapsibleContent_Shadcn_,\n  CollapsibleTrigger_Shadcn_,\n  DialogSectionSeparator,\n} from 'ui'\nimport ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'\nimport { getStatusName } from './Pipeline.utils'\nimport { PipelineStatusName, STATUS_REFRESH_FREQUENCY_MS } from './Replication.constants'\n\ninterface UpdateVersionModalProps {\n  visible: boolean\n  pipeline?: Pipeline\n  confirmLabel?: string\n  confirmLabelLoading?: string\n  onClose: () => void\n}\n\nexport const UpdateVersionModal = ({\n  visible,\n  pipeline,\n  confirmLabel,\n  confirmLabelLoading = 'Updating',\n  onClose,\n}: UpdateVersionModalProps) => {\n  const { ref: projectRef } = useParams()\n  const { setRequestStatus } = usePipelineRequestStatus()\n\n  const { data: pipelineStatusData } = useReplicationPipelineStatusQuery(\n    { projectRef, pipelineId: pipeline?.id },\n    { refetchInterval: STATUS_REFRESH_FREQUENCY_MS }\n  )\n  const pipelineStatus = pipelineStatusData?.status\n  const statusName = getStatusName(pipelineStatus)\n  const isStopped = statusName === PipelineStatusName.STOPPED\n\n  const { data: versionData, isPending: isLoadingVersion } = useReplicationPipelineVersionQuery({\n    projectRef,\n    pipelineId: pipeline?.id,\n  })\n  const currentVersionName = versionData?.version?.name\n  const newVersionName = versionData?.new_version?.name\n\n  const { mutateAsync: updatePipelineVersion } = useUpdatePipelineVersionMutation()\n  const { restartPipeline } = useRestartPipelineHelper()\n\n  const onConfirmUpdate = async () => {\n    if (!projectRef || !pipeline?.id) return\n    const versionId = versionData?.new_version?.id",
+    "end_line": 62,
+    "start_line": 2
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/BatchRestartDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DeleteDestination.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Destinations.tsx",
+    "apps/studio/components/interfaces/Database/Replication/EnableReplicationCallout.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErrorDetailsDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Pipeline.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/PipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Replication.constants.ts",
+    "apps/studio/components/interfaces/Database/Replication/RestartTableDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/RetryCountdown.tsx",
+    "apps/studio/components/interfaces/Database/Replication/RowMenu.tsx",
+    "apps/studio/components/interfaces/Database/Replication/useDestinationInformation.ts",
+    "apps/studio/components/interfaces/Database/Replication/useIsETLPrivateAlpha.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/UpdateVersionModal.tsx",
+    "apps/studio/components/interfaces/Database/Replication/BatchRestartDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DeleteDestination.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Destinations.tsx",
+    "apps/studio/components/interfaces/Database/Replication/EnableReplicationCallout.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErrorDetailsDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx"
+  ],
+  "smell_id": "heuristic_props_1334",
+  "symbol_name": "UpdateVersionModal",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/UpdateVersionModal.tsx",
+  "task_id": "task_5d9649feaa"
+}

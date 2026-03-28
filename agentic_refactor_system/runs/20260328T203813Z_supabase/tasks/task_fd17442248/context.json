@@ -1,0 +1,52 @@
+{
+  "line_end": 75,
+  "line_start": 75,
+  "local_imports": [
+    "packages/common/auth.tsx",
+    "packages/common/configcat.ts",
+    "packages/common/consent-state.ts",
+    "packages/common/fetchWrappers.tsx",
+    "packages/common/helpers.ts",
+    "packages/common/hooks/index.ts"
+  ],
+  "primary_snippet": {
+    "content": "  if (!consent) return undefined\n  await post(`${ensurePlatformSuffix(API_URL)}/telemetry/feature-flags/track`, { body })\n}\n\nexport type FeatureFlagContextType = {\n  API_URL?: string\n  configcat: { [key: string]: boolean | number | string | null }\n  posthog: CallFeatureFlagsResponse\n  hasLoaded?: boolean\n}\n\nexport const FeatureFlagContext = createContext<FeatureFlagContextType>({\n  API_URL: undefined,\n  configcat: {},\n  posthog: {},\n  hasLoaded: false,\n})\n\nfunction getCookies() {\n  const pairs = document.cookie.split(';')\n  let cookies: Record<string, string> = {}\n  for (var i = 0; i < pairs.length; i++) {\n    var [t_key, value] = pairs[i].split('=')\n    const key = t_key.trim()\n\n    cookies[key] = unescape(value)\n  }\n  return cookies\n}\n\nexport const FeatureFlagProvider = ({\n  API_URL,\n  enabled = true,\n  organizationSlug,\n  projectRef,\n  getConfigCatFlags,\n  children,\n}: PropsWithChildren<{\n  API_URL?: string\n  /** Accepts either `boolean` which controls all feature flags or `{ cc: boolean, ph: boolean }` for individual providers */\n  enabled?: boolean | { cc: boolean; ph: boolean }\n  organizationSlug?: string\n  projectRef?: string\n  /** Custom fetcher for ConfigCat flags if passing in custom attributes */\n  getConfigCatFlags?: (\n    userEmail?: string\n  ) => Promise<{ settingKey: string; settingValue: boolean | number | string | null | undefined }[]>\n}>) => {\n  const { session, isLoading } = useAuth()\n  const userEmail = session?.user?.email\n  const params = useParams()\n  const resolvedOrganizationSlug = organizationSlug ?? params.slug\n  const resolvedProjectRef = projectRef ?? params.ref\n  const lastSentGroupContextRef = useRef<string | null>(null)\n\n  const [store, setStore] = useState<FeatureFlagContextType>({\n    API_URL,\n    configcat: {},\n    posthog: {},\n    hasLoaded: false,\n  })",
+    "end_line": 105,
+    "start_line": 45
+  },
+  "related_files": [
+    "packages/common/Providers.tsx",
+    "packages/common/auth.tsx",
+    "packages/common/configcat.test.ts",
+    "packages/common/configcat.ts",
+    "packages/common/consent-state.test.ts",
+    "packages/common/consent-state.ts",
+    "packages/common/database-types.ts",
+    "packages/common/fetchWrappers.tsx",
+    "packages/common/first-referrer-cookie.test.ts",
+    "packages/common/first-referrer-cookie.ts",
+    "packages/common/gotrue.ts",
+    "packages/common/helpers.ts",
+    "packages/common/index.tsx",
+    "packages/common/postcss.config.js",
+    "packages/common/posthog-client.ts",
+    "packages/common/tailwind.config.js",
+    "packages/common/telemetry-constants.ts",
+    "packages/common/telemetry-utils.ts",
+    "packages/common/telemetry.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/common/feature-flags.tsx",
+    "packages/common/auth.tsx",
+    "packages/common/configcat.ts",
+    "packages/common/consent-state.ts",
+    "packages/common/fetchWrappers.tsx",
+    "packages/common/helpers.ts",
+    "packages/common/hooks/index.ts",
+    "packages/common/Providers.tsx"
+  ],
+  "smell_id": "heuristic_props_5629",
+  "symbol_name": "FeatureFlagProvider",
+  "target_file": "packages/common/feature-flags.tsx",
+  "task_id": "task_fd17442248"
+}

@@ -1,0 +1,23 @@
+{
+  "line_end": 72,
+  "line_start": 72,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "\nfunction useMultiSelect() {\n  const context = React.useContext(MultiSelectContext)\n  if (!context) {\n    throw new Error('useMultiSelect must be used within a MultiSelectProvider')\n  }\n  return context\n}\n\nconst MultiSelectorVariants = cva('', {\n  variants: {\n    size: {\n      ...SIZE_VARIANTS,\n    },\n  },\n  defaultVariants: {\n    size: SIZE_VARIANTS_DEFAULT,\n  },\n})\n\ntype MultiSelectorMode = 'combobox' | 'inline-combobox'\n\ntype MultiSelectorProps = {\n  mode?: MultiSelectorMode\n  values: string[]\n  onValuesChange: (value: string[]) => void\n  disabled?: boolean\n} & React.ComponentPropsWithoutRef<typeof Command> &\n  VariantProps<typeof MultiSelectorVariants>\n\nfunction MultiSelector({\n  values = [],\n  onValuesChange,\n  disabled,\n  dir,\n  size,\n  className,\n  children,\n  ...props\n}: MultiSelectorProps) {\n  const ref = React.useRef(null)\n  const [open, setOpen] = React.useState<boolean>(false)\n  const [inputValue, setInputValue] = React.useState<string>('')\n  const [activeIndex, setActiveIndex] = React.useState<number>(-1)\n\n  const [dropdownPlacement, setDropdownPlacement] = React.useState<'top' | 'bottom'>('bottom')\n  const [dropdownMaxHeight, setDropdownMaxHeight] = React.useState<number>(DROPDOWN_MAX_HEIGHT)\n\n  const toggleValue = React.useCallback(\n    (toggledValue: string) => {\n      if (values.includes(toggledValue)) {\n        onValuesChange(values.filter((value) => value !== toggledValue) || [])\n      } else {\n        onValuesChange([...values, toggledValue])\n      }\n    },\n    [values]\n  )\n\n  const updateDropdownMetrics = React.useCallback(() => {\n    if (typeof window === 'undefined') return",
+    "end_line": 102,
+    "start_line": 42
+  },
+  "related_files": [
+    "packages/ui-patterns/src/multi-select/index.tsx",
+    "packages/ui-patterns/src/multi-select/multi-select.test.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/multi-select/multi-select.tsx",
+    "packages/ui-patterns/src/multi-select/index.tsx",
+    "packages/ui-patterns/src/multi-select/multi-select.test.tsx"
+  ],
+  "smell_id": "heuristic_props_6262",
+  "symbol_name": "MultiSelector",
+  "target_file": "packages/ui-patterns/src/multi-select/multi-select.tsx",
+  "task_id": "task_16c8dec0e3"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "FormContent",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=14",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Forms/ApplyToSupaSquadForm.tsx",
+  "line_end": 119,
+  "line_start": 119,
+  "severity": "low",
+  "smell_id": "heuristic_props_4533",
+  "smell_type": "Too Many Props"
+}

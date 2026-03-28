@@ -1,0 +1,42 @@
+{
+  "line_end": 40,
+  "line_start": 40,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetFileUpload.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetImportConfiguration.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetTextInput.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImportPreview.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useTableEditorStateSnapshot } from 'state/table-editor'\nimport { SidePanel, Tabs } from 'ui'\nimport { ActionBar } from '../ActionBar'\nimport type { ImportContent } from '../TableEditor/TableEditor.types'\nimport SpreadSheetFileUpload from './SpreadSheetFileUpload'\nimport SpreadsheetImportConfiguration from './SpreadSheetImportConfiguration'\nimport SpreadSheetTextInput from './SpreadSheetTextInput'\nimport { EMPTY_SPREADSHEET_DATA } from './SpreadsheetImport.constants'\nimport type { SpreadsheetData } from './SpreadsheetImport.types'\nimport {\n  flagInvalidFileImport,\n  parseSpreadsheet,\n  parseSpreadsheetText,\n} from './SpreadsheetImport.utils'\nimport { SpreadsheetImportPreview } from './SpreadsheetImportPreview'\n\ninterface SpreadsheetImportProps {\n  debounceDuration?: number\n  headers?: string[]\n  rows?: any[]\n  visible: boolean\n  selectedTable?: PostgresTable\n  saveContent: (prefillData: ImportContent) => void\n  closePanel: () => void\n  updateEditorDirty?: (value: boolean) => void\n}\n\nconst csvParseErrorMessage =\n  'Some issues have been detected. More details below the content preview.'\n\nexport const SpreadsheetImport = ({\n  visible = false,\n  debounceDuration = 250,\n  headers = [],\n  rows = [],\n  selectedTable,\n  saveContent,\n  closePanel,\n  updateEditorDirty = noop,\n}: SpreadsheetImportProps) => {\n  const { ref: projectRef } = useParams()\n  const { data: org } = useSelectedOrganizationQuery()\n  const tableEditorSnap = useTableEditorStateSnapshot()\n\n  const fileFromState =\n    tableEditorSnap.sidePanel?.type === 'csv-import' ? tableEditorSnap.sidePanel.file : undefined\n\n  const visiblityChanged = useChanged(visible)\n  const [tab, setTab] = useState<'fileUpload' | 'pasteText'>('fileUpload')\n  const [input, setInput] = useState<string>('')\n  const [uploadedFile, setUploadedFile] = useState<File>()\n  const [parseProgress, setParseProgress] = useState<number>(0)\n  const [spreadsheetData, setSpreadsheetData] = useState<SpreadsheetData>({\n    headers: headers,\n    rows: rows,\n    rowCount: 0,\n    columnTypeMap: {},\n  })\n  const [errors, setErrors] = useState<any>([])\n  const [selectedHeaders, setSelectedHeaders] = useState<string[]>([])\n",
+    "end_line": 70,
+    "start_line": 10
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetFileUpload.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetImportConfiguration.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetTextInput.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.utils.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImportPreview.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetPreviewGrid.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetFileUpload.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetImportConfiguration.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetTextInput.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImportPreview.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.constants.ts"
+  ],
+  "smell_id": "heuristic_props_2346",
+  "symbol_name": "SpreadsheetImport",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+  "task_id": "task_62ab785218"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "PGvectorImg",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Products/VectorAI/PGvectorImg.tsx",
+  "line_end": 491,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4765",
+  "smell_type": "Large Component"
+}

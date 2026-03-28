@@ -1,0 +1,43 @@
+{
+  "line_end": 25,
+  "line_start": 25,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { OrganizationDropdown } from 'components/layouts/AppLayout/OrganizationDropdown'\nimport { Boxes } from 'lucide-react'\nimport type { Organization } from 'types'\nimport {\n  SheetHeader,\n  SheetTitle,\n  Tabs_Shadcn_,\n  TabsContent_Shadcn_,\n  TabsList_Shadcn_,\n  TabsTrigger_Shadcn_,\n} from 'ui'\nimport MobileSheetNav from 'ui-patterns/MobileSheetNav/MobileSheetNav'\n\nconst embeddedClassName =\n  'bg-transparent border-0 shadow-none min-h-0 flex-1 flex flex-col overflow-hidden rounded-none'\n\nexport interface OrgSelectorSheetProps {\n  open: boolean\n  onOpenChange: (open: boolean) => void\n  onClose: () => void\n  selectedOrganization?: Organization | null\n  selectedOrganizationName?: string | null\n}\n\nexport function OrgSelectorSheet({\n  open,\n  onOpenChange,\n  onClose,\n  selectedOrganization,\n  selectedOrganizationName,\n}: OrgSelectorSheetProps) {\n  const orgLabel = selectedOrganizationName ?? selectedOrganization?.name ?? 'Select organization'\n\n  return (\n    <MobileSheetNav\n      open={open}\n      onOpenChange={onOpenChange}\n      className=\"flex flex-col overflow-hidden h-[85dvh] md:max-h-[500px]\"\n    >\n      <Tabs_Shadcn_\n        defaultValue=\"organization\"\n        className=\"flex flex-col flex-1 min-h-0 overflow-hidden p-0\"\n      >\n        <SheetHeader className=\"border-0 border-default p-0 shrink-0\">\n          <SheetTitle className=\"sr-only\">Switch organization</SheetTitle>\n          <TabsList_Shadcn_ className=\"w-full grid grid-cols-1 shrink-0\">\n            <TabsTrigger_Shadcn_\n              value=\"organization\"\n              className=\"text-xs flex flex-col items-center gap-1.5 px-4 py-3 data-[state=active]:border-0\"\n            >\n              <Boxes className=\"shrink-0\" size={16} strokeWidth={1.5} />\n              <span className=\"truncate max-w-full text-xs leading-tight\" title={orgLabel}>\n                {orgLabel}\n              </span>\n            </TabsTrigger_Shadcn_>",
+    "end_line": 55,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconButton.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconLink.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.test.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorPopover.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/StudioMobileSheetNav.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconButton.tsx"
+  ],
+  "smell_id": "heuristic_props_2510",
+  "symbol_name": "OrgSelectorSheet",
+  "target_file": "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelectorSheet.tsx",
+  "task_id": "task_6c68945e40"
+}

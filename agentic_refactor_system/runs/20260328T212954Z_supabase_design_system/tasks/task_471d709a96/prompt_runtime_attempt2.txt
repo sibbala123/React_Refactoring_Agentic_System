@@ -1,0 +1,185 @@
+You are a senior React refactoring agent.
+
+Task ID: task_471d709a96
+Repository: supabase_design_system
+Target root: D:\Agentic\React\supabase\apps\design-system
+
+Refactor objective:
+- Smell type: Too Many Props
+- Target file: components/code-fragment.tsx
+- Symbol: CodeFragment
+- Line range: 21-21
+
+Relevant context files:
+- components/code-fragment.tsx
+- components/callout.tsx
+- components/class-label.tsx
+- components/click-counter.tsx
+- components/code-block-wrapper.tsx
+- components/colors.tsx
+- components/command-menu.tsx
+- components/component-example.tsx
+
+Allowed edit scope:
+{
+  "allowed_files": [
+    "components/code-fragment.tsx"
+  ],
+  "mode": "bounded_file_and_local_imports"
+}
+
+Constraints:
+- Preserve behavior.
+- Minimize changes.
+- Keep public APIs intact unless explicitly justified.
+- Avoid edits outside the allowed scope.
+- If scope expansion is necessary, explain why before proposing it.
+- Prefer small, local refactors over architectural rewrites.
+- Keep imports, exports, and types valid.
+
+Context summary:
+Primary file: components/code-fragment.tsx
+Component or symbol: CodeFragment
+Line focus: 21-21
+Nearby summary:
+'use client'
+
+import * as React from 'react'
+import { cn } from 'ui'
+
+import { Index } from '@/__registry__'
+import { useConfig } from '@/hooks/use-config'
+import { styles } from '@/registry/styles'
+
+interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
+  name: string
+  extractClassname?: boolean
+  extractedClassNames?: string
+  align?: 'center' | 'start' | 'end'
+  peekCode?: boolean
+  showGrid?: boolean
+  showDottedGrid?: boolean
+  wide?: boolean
+}
+
+export function CodeFragment({
+  name,
+  children,
+  className,
+  extractClassname,
+  extractedClassNames,
+  align = 'center',
+  peekCode = false,
+  showGrid = false,
+  showDottedGrid = true,
+  wide = false,
+  ...props
+}: ComponentPreviewProps) {
+  const [config] = useConfig()
+  const index = styles.findIndex((style) => style.name === config.style)
+
+  const Codes = React.Children.toArray(children) as React.ReactElement[]
+  const Code = Codes[index]
+
+  const [expand, setExpandState] = React.useState(false)
+
+  const Preview = React.useMemo(() => {
+    // console.log('Index', Index)
+    // console.log('name', name)
+    // console.log('config.style', config.style)
+
+    const Component = Index[config.style][name]?.component
+    // const Component = Index[name]?.component
+
+    if (!Component) {
+      return (
+
+Imported local dependencies:
+- none
+
+Nearby tests and sibling files:
+- components/callout.tsx
+- components/class-label.tsx
+- components/click-counter.tsx
+- components/code-block-wrapper.tsx
+- components/colors.tsx
+- components/command-menu.tsx
+- components/component-example.tsx
+- components/component-preview.tsx
+- components/component-props.tsx
+- components/component-source.tsx
+- components/copy-button.tsx
+- components/example-label.tsx
+- components/grid.tsx
+- components/homepage-svg-handler.tsx
+- components/icons.tsx
+- components/mdx-components.tsx
+- components/mobile-sidebar-sheet.tsx
+- components/pager.tsx
+- components/side-navigation-item.tsx
+- components/side-navigation.tsx
+- components/site-footer.tsx
+- components/sonner-expand-config.tsx
+- components/sonner-expand-position.tsx
+- components/source-panel.tsx
+- components/style-wrapper.tsx
+- components/theme-settings.tsx
+- components/theme-switcher-dropdown.tsx
+- components/toc.tsx
+- components/top-navigation-search.tsx
+- components/top-navigation.tsx
+
+
+Task metadata:
+{
+  "confidence": 0.4,
+  "context_file_count": 8,
+  "detector_metadata": {
+    "reason": "destructured parameter count=13",
+    "source": "heuristic_fallback"
+  },
+  "severity": "low"
+}
+
+Output format:
+- Provide either a unified patch or full-file replacement blocks.
+- If emitting file blocks, use:
+  BEGIN_FILE: relative/path
+  ```language
+  ...full file content...
+  ```
+  END_FILE
+- If no safe refactor is possible, say so explicitly and explain the blocker.
+
+
+Retry guidance from previous attempt:
+
+{
+  "critique_acceptable": false,
+  "critique_score": 0.35,
+  "issues": [
+    "Mock refactor adapter did not generate real edits.",
+    "No repository changes were applied, so the smell remains unresolved."
+  ],
+  "previous_changed_files": [
+    "components/code-fragment.tsx"
+  ],
+  "previous_response_excerpt": "To address the \"Too Many Props\" smell in the `CodeFragment` component, we can refactor by grouping related props into a single object. This will reduce the number of props being passed directly to the component, making it cleaner and easier to manage.\n\nHere's the refactored version of the `components/code-fragment.tsx` file:\n\nBEGIN_FILE: components/code-fragment.tsx\n```tsx\n'use client'\n\nimport * as React from 'react'\nimport { cn } from 'ui'\n\nimport { Index } from '@/__registry__'\nimport { useConfig } from '@/hooks/use-config'\nimport { styles } from '@/registry/styles'\n\ninterface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {\n  name: string\n  extractClassname?: boolean\n  extractedClassNames?: string\n  align?: 'center' | 'start' | 'end'\n  peekCode?: boolean\n  showGrid?: boolean\n  showDottedGrid?: boolean\n  wide?: boolean\n}\n\ninterface DisplayOptions {\n  align?: 'center' | 'start' | 'end'\n  peekCode?: boolean\n  showGrid?: boolean\n  showDottedGrid?: boolean\n  wide?: boolean\n}\n\nexport function CodeFragment({\n  name,\n  children,\n  className,\n  extractClassname,\n  extractedClassNames,\n  align = 'center',\n  peekCode = false,\n  showGrid = false,\n  showDottedGrid = true,\n  wide = false,\n  ...props\n}: ComponentPreviewProps) {\n  const displayOptions: DisplayOptions = {\n    align,\n    peekCode,\n    showGrid,\n    showDottedGrid,\n    wide,\n  }\n\n  const [config] = useConfig()\n  const index = styles.findIndex((style) => style.name === config.style)\n\n  const Codes = React.Children.toArray(children) as React.ReactElement[]\n  const Code = Codes[index]\n\n  const [expand, setExpandState] = React.useState(false)\n\n  const Preview = React.useMemo(() => {\n    const Component = Index[config.style][name]?.component\n\n    if (!Component) {\n      return null\n    }\n\n    return (\n      <div className={cn(className, extractedClassNames)} {...props}>\n        <Component {...displayOptions} />\n      </div>\n    )\n  }, [className, config.style, extractedClassNames, name, props, displayOptions])\n\n  return (\n    <div>\n      {Preview}\n      <button onClick={() => setExpandState(!expand)}>\n        {expand ? 'Collapse' : 'Expand'}\n      </button>\n    </div>\n  )\n}\n```\nEND_FILE\n\n### Explanation:\n- **Grouping Related Props**: I introduced a `DisplayOptions` interface to group the display-related props (`align`, `peekCode`, `showGrid`, `showDottedGrid`, `wide`). This reduces the number of props directly passed to the `CodeFragment` component.\n- **Preserving Functionality**: The behavior of the component remains unchanged. The `displayOptions` object is used to pass the grouped props to the `Component` within the `Preview`.\n- **Minimal Changes**: The refactor is minimal and keeps the public API of the `CodeFragment` component intact. The props are still destructured in the function signature, but they are grouped internally for cleaner management.",
+  "recommendations": [
+    "Replace the mock refactor adapter with a real editing agent.",
+    "Require the refactor agent to emit valid full-file blocks only for allowed files."
+  ],
+  "task_id": "task_471d709a96"
+}
+
+Produce a corrected attempt that addresses the critique exactly.
+
+You are the Final Editor Agent. Your sole job is to execute the instructions in the finalized plan.
+Output the full updated file contents wrapped in BEGIN_FILE/END_FILE blocks.
+Example:
+BEGIN_FILE: path/to/file.tsx
+```tsx
+// ... whole file content ...
+```
+END_FILE
+Do NOT output unified diffs. Output ONLY full-file contents for allowed files.

@@ -1,0 +1,33 @@
+{
+  "line_end": 8,
+  "line_start": 8,
+  "local_imports": [
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/useStripeSyncStatus.ts"
+  ],
+  "primary_snippet": {
+    "content": "import { useParams } from 'common'\nimport { Button } from 'ui'\n\nimport { useStripeSyncStatus } from './useStripeSyncStatus'\nimport AlertError from '@/components/ui/AlertError'\nimport { useSelectedProjectQuery } from '@/hooks/misc/useSelectedProject'\n\nexport const InstallationError = ({\n  error,\n  handleUninstall,\n  handleOpenInstallSheet,\n  isUpgrade,\n  installing,\n  uninstalling,\n}: {\n  error: 'install' | 'uninstall'\n  handleUninstall: () => void\n  handleOpenInstallSheet: () => void\n  isUpgrade?: boolean\n  installing?: boolean\n  uninstalling?: boolean\n}) => {\n  const { data: project } = useSelectedProjectQuery()\n\n  const {\n    schemaComment: { errorMessage },\n  } = useStripeSyncStatus({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n  })\n\n  if (error === 'uninstall') {\n    return (\n      <AlertError\n        layout=\"horizontal\"\n        subject=\"Failed to uninstall Stripe Sync Engine\"\n        error={errorMessage ? { message: errorMessage } : undefined}\n        description=\"There was an error during the uninstallation of the Stripe Sync Engine, please try again. If the problem persists, contact support.\"",
+    "end_line": 38,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/InstallationOverview.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/StatusDisplay.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/StripeSyncChangesCard.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/StripeSyncSettingsPage.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/stripe-sync-status.ts",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/useStripeSyncStatus.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/InstallationError.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/useStripeSyncStatus.ts",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/InstallationOverview.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/StatusDisplay.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/StripeSyncChangesCard.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/StripeSyncSettingsPage.tsx",
+    "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/stripe-sync-status.ts"
+  ],
+  "smell_id": "heuristic_props_1555",
+  "symbol_name": "InstallationError",
+  "target_file": "apps/studio/components/interfaces/Integrations/templates/StripeSyncEngine/InstallationError.tsx",
+  "task_id": "task_1609c2a9a7"
+}

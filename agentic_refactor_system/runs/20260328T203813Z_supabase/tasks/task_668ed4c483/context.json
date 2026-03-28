@@ -1,0 +1,27 @@
+{
+  "line_end": 39,
+  "line_start": 39,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { RoleImpersonationState, wrapWithRoleImpersonation } from 'lib/role-impersonation'\nimport { useRoleImpersonationStateSnapshot } from 'state/role-impersonation-state'\nimport {\n  Button,\n  cn,\n  CodeBlock,\n  Dialog,\n  DialogContent,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogSectionSeparator,\n  DialogTitle,\n  Tabs_Shadcn_,\n  TabsContent_Shadcn_,\n  TabsList_Shadcn_,\n  TabsTrigger_Shadcn_,\n} from 'ui'\nimport { Admonition } from 'ui-patterns'\n\ninterface ExportDialogProps {\n  table?: SupaTable\n  filters?: Filter[]\n  sorts?: Sort[]\n  ignoreRoleImpersonation?: boolean\n\n  open: boolean\n  onOpenChange: (open: boolean) => void\n}\n\nexport const ExportDialog = ({\n  table,\n  filters = [],\n  sorts = [],\n  ignoreRoleImpersonation = false,\n  open,\n  onOpenChange,\n}: ExportDialogProps) => {\n  const { ref: projectRef } = useParams()\n  const roleImpersonationState = useRoleImpersonationStateSnapshot()\n\n  const [selectedTab, setSelectedTab] = useState<string>('csv')\n\n  const { data: databases } = useReadReplicasQuery({ projectRef })\n  const primaryDatabase = (databases ?? []).find((db) => db.identifier === projectRef)\n  const DB_FIELDS = ['db_host', 'db_name', 'db_port', 'db_user', 'inserted_at']\n  const emptyState = { db_user: '', db_host: '', db_port: '', db_name: '' }\n\n  const connectionInfo = pluckObjectFields(primaryDatabase || emptyState, DB_FIELDS)\n  const { db_host, db_port, db_user, db_name } = connectionInfo\n\n  const connectionStrings = getConnectionStrings({\n    connectionInfo,\n    metadata: { projectRef },\n    // [Joshen] We don't need any pooler details for this context, we only want direct\n    poolingInfo: { connectionString: '', db_host: '', db_name: '', db_port: 0, db_user: '' },\n  })\n\n  const outputName = `${table?.name}_rows`\n  const queryChains = !table ? undefined : getAllTableRowsSql({ table, sorts, filters })\n  const queryWithSemicolon = !!queryChains",
+    "end_line": 69,
+    "start_line": 9
+  },
+  "related_files": [
+    "apps/studio/components/grid/components/header/Header.tsx",
+    "apps/studio/components/grid/components/header/Header.utils.ts",
+    "apps/studio/components/grid/components/header/HeaderNew.tsx",
+    "apps/studio/components/grid/components/header/RefreshButton.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/grid/components/header/ExportDialog.tsx",
+    "apps/studio/components/grid/components/header/Header.tsx",
+    "apps/studio/components/grid/components/header/Header.utils.ts",
+    "apps/studio/components/grid/components/header/HeaderNew.tsx",
+    "apps/studio/components/grid/components/header/RefreshButton.tsx"
+  ],
+  "smell_id": "heuristic_props_0836",
+  "symbol_name": "ExportDialog",
+  "target_file": "apps/studio/components/grid/components/header/ExportDialog.tsx",
+  "task_id": "task_668ed4c483"
+}

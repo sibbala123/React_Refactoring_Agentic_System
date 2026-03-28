@@ -1,0 +1,44 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuGuideListItems.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport * as Accordion from '@radix-ui/react-accordion'\n\nimport { type NavMenuSection } from '../Navigation.types'\nimport * as NavItems from './NavigationMenu.constants'\nimport NavigationMenuGuideListItems from './NavigationMenuGuideListItems'\nimport { usePathname } from 'next/navigation'\nimport { PropsWithChildren } from 'react'\nimport { MenuId } from './NavigationMenu'\n\nconst NavigationMenuGuideList = ({\n  id,\n  additionalNavItems,\n}: {\n  id: string\n  additionalNavItems?: Record<string, Partial<NavMenuSection>[]>\n}) => {\n  const pathname = usePathname()\n  const firstLevelRoute = pathname?.split('/')?.slice(0, 4)?.join('/')\n\n  // eslint-disable-next-line import/namespace -- dynamic access, can't lint properly\n  let menu = NavItems[id]\n\n  if (id === MenuId.Integrations && additionalNavItems?.integrations) {\n    const integrationsListIndex = menu.items.findIndex((item) => item.name === 'Integrations')\n    if (integrationsListIndex !== -1) {\n      menu = {\n        ...menu,\n        items: [\n          ...menu.items.slice(0, integrationsListIndex),\n          {\n            ...menu.items[integrationsListIndex],\n            items: [...menu.items[integrationsListIndex].items, ...additionalNavItems.integrations],\n          },\n          ...menu.items.slice(integrationsListIndex + 1),\n        ],\n      }\n    }\n  }\n\n  // Inject federated prompts into the 'AI Tools > Prompts' section",
+    "end_line": 42,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/docs/components/Navigation/NavigationMenu/GlobalMobileMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/GlobalNavigationMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/MenuIconPicker.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/MenuIcons.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.Context.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.constants.ts",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.utils.ts",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuCliList.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuGuideListItems.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuRefList.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuRefListItems.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/TopNavBar.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/TopNavDropdown.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/useDropdownMenu.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuGuideList.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenuGuideListItems.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/GlobalMobileMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/GlobalNavigationMenu.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/MenuIconPicker.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/MenuIcons.tsx",
+    "apps/docs/components/Navigation/NavigationMenu/NavigationMenu.Context.tsx"
+  ],
+  "smell_id": "heuristic_props_0491",
+  "symbol_name": "NavigationMenuGuideListWrapper",
+  "target_file": "apps/docs/components/Navigation/NavigationMenu/NavigationMenuGuideList.tsx",
+  "task_id": "task_1b9e7933a6"
+}

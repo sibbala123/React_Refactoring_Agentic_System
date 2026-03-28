@@ -1,0 +1,35 @@
+{
+  "line_end": 6,
+  "line_start": 6,
+  "local_imports": [
+    "packages/marketing/src/go/schemas.ts",
+    "packages/marketing/src/go/sections/Confetti.tsx",
+    "packages/marketing/src/go/sections/HeroSection.tsx",
+    "packages/marketing/src/go/sections/SectionRenderer.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { ThankYouPage } from '../schemas'\nimport Confetti from '../sections/Confetti'\nimport HeroSection from '../sections/HeroSection'\nimport SectionRenderer, { type CustomSectionRenderers } from '../sections/SectionRenderer'\n\nexport default function ThankYouTemplate({\n  page,\n  customRenderers,\n}: {\n  page: ThankYouPage\n  customRenderers?: CustomSectionRenderers\n}) {\n  return (\n    <div className=\"flex flex-col gap-16 sm:gap-24\">\n      <div className=\"relative\">\n        <HeroSection section={page.hero} compact />\n        <Confetti />\n      </div>\n      {page.sections?.map((section, i) => (\n        <SectionRenderer key={i} section={section} customRenderers={customRenderers} />\n      ))}\n    </div>\n  )\n}",
+    "end_line": 24,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/marketing/src/go/templates/GoPageRenderer.tsx",
+    "packages/marketing/src/go/templates/LeadGenTemplate.tsx",
+    "packages/marketing/src/go/templates/LegalTemplate.tsx",
+    "packages/marketing/src/go/templates/index.ts"
+  ],
+  "relevant_context_files": [
+    "packages/marketing/src/go/templates/ThankYouTemplate.tsx",
+    "packages/marketing/src/go/schemas.ts",
+    "packages/marketing/src/go/sections/Confetti.tsx",
+    "packages/marketing/src/go/sections/HeroSection.tsx",
+    "packages/marketing/src/go/sections/SectionRenderer.tsx",
+    "packages/marketing/src/go/templates/GoPageRenderer.tsx",
+    "packages/marketing/src/go/templates/LeadGenTemplate.tsx",
+    "packages/marketing/src/go/templates/LegalTemplate.tsx"
+  ],
+  "smell_id": "heuristic_props_5749",
+  "symbol_name": "ThankYouTemplate",
+  "target_file": "packages/marketing/src/go/templates/ThankYouTemplate.tsx",
+  "task_id": "task_ac653f61af"
+}

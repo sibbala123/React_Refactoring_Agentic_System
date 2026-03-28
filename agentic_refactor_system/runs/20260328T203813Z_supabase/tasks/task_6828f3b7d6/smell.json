@@ -1,0 +1,14 @@
+{
+  "component_name": "DetailItem",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointDetails.tsx",
+  "line_end": 389,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_1783",
+  "smell_type": "Large Component"
+}

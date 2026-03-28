@@ -1,0 +1,18 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import 'swiper/css'\n\nimport { useRef } from 'react'\nimport { ArrowLeft, ArrowRight } from 'lucide-react'\nimport { Button, cn } from 'ui'\nimport Link from 'next/link'\nimport { CTA } from '~/types/common'\n\nimport ExampleCard from '~/components/ExampleCard'\nimport { Swiper, SwiperSlide } from 'swiper/react'\n// import Swiper core and required modules\nimport SwiperCore from 'swiper'\nimport { Navigation, Pagination } from 'swiper/modules'\n\n// install Swiper modules\nSwiperCore.use([Navigation, Pagination])\n\nconst ExamplesCarousel = ({\n  title,\n  cta,\n  examples,\n}: {\n  title: string | React.ReactNode\n  cta: CTA\n  examples: any[]\n}) => {\n  const prevRef = useRef(null)\n  const nextRef = useRef(null)\n\n  return (\n    <div id=\"examples\" className=\"container\">\n      <div className=\"w-full flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4\">\n        <h3 className=\"h2 !mb-0\">{title}</h3>\n        {cta && (\n          <Button asChild type=\"default\" size=\"tiny\">\n            <Link href={cta.href}>{cta.label}</Link>\n          </Button>\n        )}\n      </div>\n      <div className=\"mt-8 lg:mt-10\">\n        <Swiper\n          style={{ overflow: 'visible' }}\n          loop={true}\n          initialSlide={0}\n          spaceBetween={10}\n          slidesPerView={3}\n          autoplay={{\n            delay: 2400,",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [],
+  "relevant_context_files": [
+    "apps/www/components/Examples/ExamplesCarousel.tsx"
+  ],
+  "smell_id": "heuristic_props_4528",
+  "symbol_name": "ExamplesCarousel",
+  "target_file": "apps/www/components/Examples/ExamplesCarousel.tsx",
+  "task_id": "task_ce04238dea"
+}

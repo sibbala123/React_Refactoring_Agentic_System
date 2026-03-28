@@ -1,0 +1,29 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { HTMLAttributes } from 'react'\n\nimport { cn } from 'ui'\nimport { calculateImprovement } from './index-advisor.utils'\n\ninterface IndexImprovementTextProps extends HTMLAttributes<HTMLParagraphElement> {\n  indexStatements: string[]\n  totalCostBefore: number\n  totalCostAfter: number\n}\n\nexport const IndexImprovementText = ({\n  indexStatements,\n  totalCostBefore,\n  totalCostAfter,\n  className,\n  ...props\n}: IndexImprovementTextProps) => {\n  const improvement = calculateImprovement(totalCostBefore, totalCostAfter)\n\n  return (\n    <p className={cn('text-sm text-foreground-light mb-3', className)} {...props}>\n      Query's performance can be improved by{' '}\n      <span className=\"text-brand\">{improvement.toFixed(2)}%</span> by creating this{' '}\n      {indexStatements.length > 1 ? 'indexes' : 'index'}:\n    </p>\n  )\n}",
+    "end_line": 28,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/EnableIndexAdvisorButton.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexAdvisorDisabledState.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexAdvisorNotice.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexSuggestionIcon.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/index-advisor.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexImprovementText.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/EnableIndexAdvisorButton.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexAdvisorDisabledState.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexAdvisorNotice.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexSuggestionIcon.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/index-advisor.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1907",
+  "symbol_name": "IndexImprovementText",
+  "target_file": "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexImprovementText.tsx",
+  "task_id": "task_8a4220b21e"
+}

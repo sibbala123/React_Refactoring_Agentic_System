@@ -1,0 +1,109 @@
+{
+  "count": 13,
+  "tasks": [
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_471d709a96"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_3c6ffe73f9"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_0fd508880b"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_0bb8076a5c"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_8d0d67772c"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_899bfa2ab5"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_909ce35787"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_e9f8a87287"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_77fe152959"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_32f400451f"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_2e70077825"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_5fac2256da"
+    },
+    {
+      "build_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\build.log",
+      "command": "pnpm build",
+      "returncode": null,
+      "status": "skipped",
+      "success": null,
+      "task_id": "task_db08d4ed68"
+    }
+  ]
+}

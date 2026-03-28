@@ -1,0 +1,51 @@
+{
+  "line_end": 100,
+  "line_start": 100,
+  "local_imports": [
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx"
+  ],
+  "primary_snippet": {
+    "content": "    // For ranges < 2min, use 15sec range\n    rangeOffset = 7.5\n    rangeUnit = 'second'\n  }\n\n  return {\n    start: dayjs(datumTimestamp).subtract(rangeOffset, rangeUnit).toISOString(),\n    end: dayjs(datumTimestamp).add(rangeOffset, rangeUnit).toISOString(),\n  }\n}\n\n/**\n * Acts as a container component for the entire log display\n *\n * ## Query Params Syncing\n * Query params are synced on query submission.\n *\n * params used are:\n * - `s` for search query.\n * - `te` for timestamp start value.\n */\ninterface LogsPreviewerProps {\n  projectRef: string\n  queryType: QueryType\n  filterOverride?: Filters\n  condensedLayout?: boolean\n  tableName?: LogsTableName\n  EmptyState?: React.ReactNode\n  filterPanelClassName?: string\n}\nexport const LogsPreviewer = ({\n  projectRef,\n  queryType,\n  filterOverride,\n  condensedLayout = false,\n  tableName,\n  children,\n  EmptyState,\n  filterPanelClassName,\n}: PropsWithChildren<LogsPreviewerProps>) => {\n  const router = useRouter()\n  const { db } = useParams()\n  const { data: organization } = useSelectedOrganizationQuery()\n  const state = useDatabaseSelectorStateSnapshot()\n\n  const [showChart, setShowChart] = useState(true)\n  const [selectedDatePickerValue, setSelectedDatePickerValue] = useState<DatePickerValue>(\n    getDefaultDatePickerValue()\n  )\n\n  const { search, setSearch, timestampStart, timestampEnd, setTimeRange, filters, setFilters } =\n    useLogsUrlState()\n\n  useEffect(() => {\n    if (timestampStart && timestampEnd) {\n      setSelectedDatePickerValue({\n        to: timestampEnd,\n        from: timestampStart,\n        text: `${dayjs(timestampStart).format('DD MMM, HH:mm')} - ${dayjs(timestampEnd).format('DD MMM, HH:mm')}`,\n        isHelper: false,\n      })",
+    "end_line": 130,
+    "start_line": 70
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.constants.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.types.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.ts",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFilterPopover.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFormatters.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsQueryPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsTableEmptyState.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/MultiSelectActionBar.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanelWithUniversal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/RecentQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/logsDateRange.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Logs/LogsPreviewer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx"
+  ],
+  "smell_id": "heuristic_props_2105",
+  "symbol_name": "LogsPreviewer",
+  "target_file": "apps/studio/components/interfaces/Settings/Logs/LogsPreviewer.tsx",
+  "task_id": "task_9b260c4368"
+}

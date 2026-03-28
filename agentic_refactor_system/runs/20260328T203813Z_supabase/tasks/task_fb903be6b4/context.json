@@ -1,0 +1,30 @@
+{
+  "line_end": 25,
+  "line_start": 25,
+  "local_imports": [
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts",
+    "packages/ui-patterns/src/McpUrlBuilder/utils/getMcpButtonData.ts"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { stringify as stringifyToml } from '@std/toml/stringify'\nimport yaml from 'js-yaml'\nimport { ExternalLink } from 'lucide-react'\nimport Image from 'next/image'\nimport { Button, cn } from 'ui'\nimport { CodeBlock, type CodeBlockLang } from 'ui/src/components/CodeBlock'\n\nimport type { McpClient, McpClientConfig, McpOnCopyCallback } from '../types'\nimport { getMcpButtonData } from '../utils/getMcpButtonData'\n\ninterface McpConfigurationDisplayProps {\n  selectedClient: McpClient\n  clientConfig: McpClientConfig\n  className?: string\n  theme?: 'light' | 'dark'\n  onCopyCallback: (type?: McpOnCopyCallback) => void\n  onInstallCallback?: () => void\n  isPlatform?: boolean\n}\n\ntype ConfigFormat = CodeBlockLang | 'toml'\n\nexport function McpConfigurationDisplay({\n  selectedClient,\n  clientConfig,\n  className,\n  theme = 'dark',\n  onCopyCallback,\n  onInstallCallback,\n  isPlatform,\n}: McpConfigurationDisplayProps) {\n  const mcpButtonData = getMcpButtonData({\n    theme,\n    client: selectedClient,\n    clientConfig,\n    isPlatform,\n  })\n\n  // Extract file extension and determine format\n  const fileExtension = selectedClient.configFile?.split('.').pop()?.toLowerCase()\n  // If the file extension is not 'json', 'yaml', or 'toml', default to 'txt'\n  let configFormat: ConfigFormat | undefined\n  if (['json', 'yaml', 'toml'].includes(fileExtension ?? '')) {\n    configFormat = fileExtension as ConfigFormat\n  }\n\n  // Serialize config based on format\n  let configValue: string\n  switch (configFormat) {\n    case 'yaml':\n      configValue = yaml.dump(clientConfig, { indent: 2, lineWidth: -1 })\n      break\n    case 'toml':",
+    "end_line": 55,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui-patterns/src/McpUrlBuilder/components/ClientSelectDropdown.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ConnectionIcon.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationDisplay.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts",
+    "packages/ui-patterns/src/McpUrlBuilder/utils/getMcpButtonData.ts",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ClientSelectDropdown.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ConnectionIcon.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx"
+  ],
+  "smell_id": "heuristic_props_6244",
+  "symbol_name": "McpConfigurationDisplay",
+  "target_file": "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationDisplay.tsx",
+  "task_id": "task_fb903be6b4"
+}

@@ -1,0 +1,43 @@
+{
+  "line_end": 29,
+  "line_start": 29,
+  "local_imports": [
+    "apps/studio/components/interfaces/Connect/Connect.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionIcon.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { Box, Check, ChevronDown } from 'lucide-react'\nimport { useState } from 'react'\n\nimport {\n  Button,\n  CommandEmpty_Shadcn_,\n  CommandGroup_Shadcn_,\n  CommandInput_Shadcn_,\n  CommandItem_Shadcn_,\n  CommandList_Shadcn_,\n  Command_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  Popover_Shadcn_,\n  cn,\n} from 'ui'\nimport { ConnectionType } from './Connect.constants'\nimport { ConnectionIcon } from './ConnectionIcon'\n\ninterface ConnectDropdownProps {\n  state: string\n  updateState: (state: string) => void\n  label: string\n  items: ConnectionType[]\n  iconFolder?: string\n  supportsDarkMode?: boolean\n}\n\nexport const ConnectDropdown = ({\n  state,\n  updateState,\n  label,\n\n  items,\n  iconFolder,\n  supportsDarkMode,\n}: ConnectDropdownProps) => {\n  const [open, setOpen] = useState(false)\n\n  function onSelectLib(key: string) {\n    updateState(key)\n    setOpen(false)\n  }\n\n  const selectedItem = items.find((item) => item.key === state)\n\n  return (\n    <Popover_Shadcn_ open={open} onOpenChange={setOpen} modal={false}>\n      <div className=\"flex \">\n        <span className=\"flex items-center text-foreground-lighter px-3 rounded-lg rounded-r-none text-xs border border-button border-r-0\">\n          {label}\n        </span>\n        <PopoverTrigger_Shadcn_ asChild>\n          <Button\n            size=\"small\"\n            type=\"default\"\n            className=\"gap-0 rounded-l-none\"\n            iconRight={<ChevronDown strokeWidth={1.5} />}\n          >",
+    "end_line": 59,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Connect/ApiKeysTabContent.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.constants.ts",
+    "apps/studio/components/interfaces/Connect/Connect.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.types.ts",
+    "apps/studio/components/interfaces/Connect/Connect.utils.ts",
+    "apps/studio/components/interfaces/Connect/ConnectTabContent.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectTabs.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionIcon.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionPanel.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionParameters.tsx",
+    "apps/studio/components/interfaces/Connect/DatabaseConnectionString.tsx",
+    "apps/studio/components/interfaces/Connect/DatabaseSettings.utils.ts",
+    "apps/studio/components/interfaces/Connect/DirectConnectionExamples.tsx",
+    "apps/studio/components/interfaces/Connect/McpTabContent.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Connect/ConnectDropdown.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionIcon.tsx",
+    "apps/studio/components/interfaces/Connect/ApiKeysTabContent.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.constants.ts",
+    "apps/studio/components/interfaces/Connect/Connect.types.ts",
+    "apps/studio/components/interfaces/Connect/Connect.utils.ts",
+    "apps/studio/components/interfaces/Connect/ConnectTabContent.tsx"
+  ],
+  "smell_id": "heuristic_props_1130",
+  "symbol_name": "ConnectDropdown",
+  "target_file": "apps/studio/components/interfaces/Connect/ConnectDropdown.tsx",
+  "task_id": "task_794939c0db"
+}

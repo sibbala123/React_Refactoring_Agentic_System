@@ -1,0 +1,14 @@
+{
+  "component_name": "RenameQueryModal",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/SQLEditor/RenameQueryModal.tsx",
+  "line_end": 250,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_2135",
+  "smell_type": "Large Component"
+}

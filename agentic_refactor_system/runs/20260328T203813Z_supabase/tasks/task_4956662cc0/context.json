@@ -1,0 +1,30 @@
+{
+  "line_end": 24,
+  "line_start": 24,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeyRow.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useState } from 'react'\nimport { Button } from 'ui'\n\nimport AlertError from 'components/ui/AlertError'\nimport { useForeignKeyConstraintsQuery } from 'data/database/foreign-key-constraints-query'\nimport { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport type { ResponseError } from 'types'\nimport { GenericSkeletonLoader } from 'ui-patterns/ShimmeringLoader'\nimport { ForeignKeySelector } from '../../ForeignKeySelector/ForeignKeySelector'\nimport type { ForeignKey } from '../../ForeignKeySelector/ForeignKeySelector.types'\nimport type { TableField } from '../TableEditor.types'\nimport { ForeignKeyRow } from './ForeignKeyRow'\nimport { checkIfRelationChanged } from './ForeignKeysManagement.utils'\n\ninterface ForeignKeysManagementProps {\n  table: TableField\n  relations: ForeignKey[]\n  closePanel: () => void\n  setEditorDirty: () => void\n  onUpdateFkRelations: (relations: ForeignKey[]) => void\n}\n\nexport const ForeignKeysManagement = ({\n  table,\n  relations,\n  closePanel,\n  setEditorDirty,\n  onUpdateFkRelations,\n}: ForeignKeysManagementProps) => {\n  const { data: project } = useSelectedProjectQuery()\n  const { selectedSchema } = useQuerySchemaState()\n\n  const [open, setOpen] = useState(false)\n  const [selectedFk, setSelectedFk] = useState<ForeignKey>()\n\n  const {\n    data,\n    error,\n    isPending: isLoading,\n    isSuccess,\n    isError,\n  } = useForeignKeyConstraintsQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    schema: selectedSchema,\n  })\n\n  const getRelationStatus = (fk: ForeignKey) => {\n    const existingRelation = (data ?? []).find((x) => x.id === fk.id)\n    const stateRelation = relations.find((x) => x.id === fk.id)\n\n    if (stateRelation?.toRemove) return 'REMOVE'\n    if (existingRelation === undefined && stateRelation !== undefined) return 'ADD'",
+    "end_line": 54,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeyRow.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeyRow.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2357",
+  "symbol_name": "ForeignKeysManagement",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx",
+  "task_id": "task_4956662cc0"
+}

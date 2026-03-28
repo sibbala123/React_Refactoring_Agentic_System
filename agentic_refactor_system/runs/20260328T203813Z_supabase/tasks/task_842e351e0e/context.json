@@ -1,0 +1,30 @@
+{
+  "line_end": 28,
+  "line_start": 28,
+  "local_imports": [
+    "apps/studio/components/interfaces/App/FeaturePreview/FeaturePreviewContext.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { ProfileImage } from 'components/ui/ProfileImage'\nimport { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'\nimport { IS_PLATFORM } from 'lib/constants'\nimport { useProfileNameAndPicture } from 'lib/profile'\nimport { FlaskConical, Loader2, ScrollText, Settings } from 'lucide-react'\nimport { useTheme } from 'next-themes'\nimport Link from 'next/link'\nimport { useRouter } from 'next/router'\nimport { useAppStateSnapshot } from 'state/app-state'\nimport {\n  Button,\n  cn,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuGroup,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenuRadioGroup,\n  DropdownMenuRadioItem,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n  singleThemes,\n  Theme,\n} from 'ui'\n\nimport { useFeaturePreviewModal } from './App/FeaturePreview/FeaturePreviewContext'\n\nexport function UserDropdown({\n  triggerClassName,\n  contentClassName,\n}: {\n  triggerClassName?: string\n  contentClassName?: string\n}) {\n  const router = useRouter()\n  const { theme, setTheme } = useTheme()\n  const appStateSnapshot = useAppStateSnapshot()\n  const profileShowEmailEnabled = useIsFeatureEnabled('profile:show_email')\n  const { username, avatarUrl, primaryEmail, isLoading } = useProfileNameAndPicture()\n\n  const { toggleFeaturePreviewModal } = useFeaturePreviewModal()\n\n  return (\n    <DropdownMenu>\n      <DropdownMenuTrigger asChild className={cn('border flex-shrink-0 px-3', triggerClassName)}>\n        <Button\n          type=\"default\"\n          className=\"[&>span]:flex px-0 py-0 rounded-full overflow-hidden h-8 w-8\"\n        >\n          {isLoading ? (\n            <div className=\"w-full h-full flex items-center justify-center\">\n              <Loader2 className=\"animate-spin text-foreground-lighter\" size={16} />\n            </div>\n          ) : (\n            <ProfileImage alt={username} src={avatarUrl} className=\"w-8 h-8 rounded-md\" />\n          )}\n        </Button>\n      </DropdownMenuTrigger>",
+    "end_line": 58,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/HomePageActions.tsx",
+    "apps/studio/components/interfaces/LocalDropdown.tsx",
+    "apps/studio/components/interfaces/Markdown.tsx",
+    "apps/studio/components/interfaces/Sidebar.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/UserDropdown.tsx",
+    "apps/studio/components/interfaces/App/FeaturePreview/FeaturePreviewContext.tsx",
+    "apps/studio/components/interfaces/HomePageActions.tsx",
+    "apps/studio/components/interfaces/LocalDropdown.tsx",
+    "apps/studio/components/interfaces/Markdown.tsx",
+    "apps/studio/components/interfaces/Sidebar.tsx"
+  ],
+  "smell_id": "heuristic_props_2406",
+  "symbol_name": "UserDropdown",
+  "target_file": "apps/studio/components/interfaces/UserDropdown.tsx",
+  "task_id": "task_842e351e0e"
+}

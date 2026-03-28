@@ -1,0 +1,14 @@
+{
+  "component_name": "DynamicForm",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/dynamic-form.tsx",
+  "line_end": 418,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4334",
+  "smell_type": "Large Component"
+}

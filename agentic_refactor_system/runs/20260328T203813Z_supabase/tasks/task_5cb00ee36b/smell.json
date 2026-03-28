@@ -1,0 +1,14 @@
+{
+  "component_name": "ProjectLinker",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=17",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Integrations/VercelGithub/ProjectLinker.tsx",
+  "line_end": 66,
+  "line_start": 66,
+  "severity": "low",
+  "smell_id": "heuristic_props_1575",
+  "smell_type": "Too Many Props"
+}

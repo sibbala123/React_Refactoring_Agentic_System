@@ -1,0 +1,21 @@
+{
+  "adapter": "direct_editor",
+  "model": "gpt-4o",
+  "response_text": "BEGIN_FILE: components/code-fragment.tsx\n```tsx\n'use client'\n\nimport * as React from 'react'\nimport { cn } from 'ui'\n\nimport { Index } from '@/__registry__'\nimport { useConfig } from '@/hooks/use-config'\nimport { styles } from '@/registry/styles'\n\ninterface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {\n  name: string\n  extractClassname?: boolean\n  extractedClassNames?: string\n  align?: 'center' | 'start' | 'end'\n  peekCode?: boolean\n  showGrid?: boolean\n  showDottedGrid?: boolean\n  wide?: boolean\n}\n\ninterface DisplayOptions {\n  align?: 'center' | 'start' | 'end'\n  peekCode?: boolean\n  showGrid?: boolean\n  showDottedGrid?: boolean\n  wide?: boolean\n}\n\nexport function CodeFragment({\n  name,\n  children,\n  className,\n  extractClassname,\n  extractedClassNames,\n  align = 'center',\n  peekCode = false,\n  showGrid = false,\n  showDottedGrid = true,\n  wide = false,\n  ...props\n}: ComponentPreviewProps) {\n  const displayOptions: DisplayOptions = {\n    align,\n    peekCode,\n    showGrid,\n    showDottedGrid,\n    wide,\n  }\n\n  const [config] = useConfig()\n  const index = styles.findIndex((style) => style.name === config.style)\n\n  const Codes = React.Children.toArray(children) as React.ReactElement[]\n  const Code = Codes[index]\n\n  const [expand, setExpandState] = React.useState(false)\n\n  const Preview = React.useMemo(() => {\n    const Component = Index[config.style][name]?.component\n\n    if (!Component) {\n      return null\n    }\n\n    return (\n      <div className={cn(className, extractedClassNames)} {...props}>\n        <Component {...displayOptions} />\n      </div>\n    )\n  }, [className, config.style, extractedClassNames, name, props, displayOptions])\n\n  return (\n    <div>\n      {Preview}\n      <button onClick={() => setExpandState(!expand)}>\n        {expand ? 'Collapse' : 'Expand'}\n      </button>\n    </div>\n  )\n}\n```\nEND_FILE",
+  "status": "completed",
+  "usage": {
+    "completion_tokens": 477,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens": 1980,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "total_tokens": 2457
+  }
+}

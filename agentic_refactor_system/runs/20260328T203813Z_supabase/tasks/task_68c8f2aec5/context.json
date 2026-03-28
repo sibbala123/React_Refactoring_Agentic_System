@@ -1,0 +1,23 @@
+{
+  "line_end": 187,
+  "line_start": 187,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "            payloadFill: null,\n            meetupsAmount: null,\n            peopleOnline: null,\n            ...nonNullableKeys,\n          }\n\n      return {\n        ...state,\n        gaugesData: newGaugeData,\n      }\n    }\n    case 'URL_PARAMS_LOADED': {\n      return { ...state, urlParamsLoaded: true, referal: action.payload.referal }\n    }\n    default:\n      action satisfies never\n      return state\n  }\n}\n\nexport const Lw14ConfDataContext = createContext<[LwState, Dispatch<LwAction>] | null>(null)\n\nfunction takeFirst(param: string | string[] | undefined): string | undefined {\n  if (Array.isArray(param)) {\n    return param[0]\n  }\n\n  return param ?? undefined\n}\n\nexport const Lw14ConfDataProvider = ({\n  children,\n  initState,\n}: {\n  children: React.ReactNode\n  initState?: Partial<LwState>\n}) => {\n  const { query, isReady } = useRouter()\n\n  const providerValue = useReducer(lwReducer, {\n    userTicketData: {},\n    ticketState: 'loading',\n    session: null,\n    ticketLoadingState: 'unloaded',\n    ticketVisibility: false,\n    userTicketDataState: 'unloaded',\n    userTicketDataError: null,\n    claimFormState: 'initial',\n    realtimeGaugesChannel: null,\n    partymodeStatus: 'off',\n    gaugesData: null,\n    urlParamsLoaded: false,\n    ...initState,\n  })\n  const [, dispatch] = providerValue\n\n  useEffect(() => {\n    if (isReady) {\n      dispatch({\n        type: 'URL_PARAMS_LOADED',\n        payload: { referal: takeFirst(query.referal) ?? takeFirst(query.username) },",
+    "end_line": 217,
+    "start_line": 157
+  },
+  "related_files": [
+    "apps/www/components/LaunchWeek/14/hooks/use-partymode.ts",
+    "apps/www/components/LaunchWeek/14/hooks/use-registration.ts"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/LaunchWeek/14/hooks/use-conf-data.tsx",
+    "apps/www/components/LaunchWeek/14/hooks/use-partymode.ts",
+    "apps/www/components/LaunchWeek/14/hooks/use-registration.ts"
+  ],
+  "smell_id": "heuristic_props_4599",
+  "symbol_name": "Lw14ConfDataProvider",
+  "target_file": "apps/www/components/LaunchWeek/14/hooks/use-conf-data.tsx",
+  "task_id": "task_68c8f2aec5"
+}

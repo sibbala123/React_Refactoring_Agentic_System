@@ -1,0 +1,31 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import dynamic from 'next/dynamic'\nimport Image from 'next/image'\nimport Link from 'next/link'\nimport { useMemo, useState } from 'react'\nimport type { ComponentType } from 'react'\nimport type { PostReturnType, ProcessedBlogData, StaticAuthor, Tag } from 'types/post'\nimport { Badge } from 'ui'\n\nimport { BLOG_POST_HERO_IMAGE_SIZES, getBlogThumbnailImage } from '@/lib/blog-images'\nimport mdxComponents from '@/lib/mdx/mdxComponents'\n\nconst ShareArticleActions = dynamic(() => import('@/components/Blog/ShareArticleActions'))\nconst CTABanner = dynamic(() => import('@/components/CTABanner'))\nconst LW11Summary = dynamic(() => import('@/components/LaunchWeek/11/LW11Summary'))\nconst LW12Summary = dynamic(() => import('@/components/LaunchWeek/12/LWSummary'))\nconst LW13Summary = dynamic(() => import('@/components/LaunchWeek/13/Releases/LWSummary'))\nconst LW14Summary = dynamic(() => import('@/components/LaunchWeek/14/Releases/LWSummary'))\nconst LW15Summary = dynamic(() => import('@/components/LaunchWeek/15/LWSummary'))\nconst BlogLinks = dynamic(() => import('@/components/LaunchWeek/7/BlogLinks'))\nconst LWXSummary = dynamic(() => import('@/components/LaunchWeek/X/LWXSummary'))\nconst DefaultLayout = dynamic(() => import('@/components/Layouts/Default'))\nconst DraftModeBanner = dynamic(() => import('@/components/Blog/DraftModeBanner'))\nconst ReactMarkdown = dynamic<{ children: string }>(\n  () =>\n    import('react-markdown').then(\n      (m) => m.default as unknown as ComponentType<{ children: string }>\n    ),\n  { ssr: false }\n)\n\nconst BlogPostRenderer = ({\n  blog,\n  blogMetaData,\n  isDraftMode,\n  prevPost,\n  nextPost,\n  authors,\n}: {\n  blog: ProcessedBlogData\n  blogMetaData: ProcessedBlogData\n  isDraftMode: boolean\n  prevPost?: PostReturnType | null\n  nextPost?: PostReturnType | null\n  authors: StaticAuthor[]\n}) => {\n  const [previewData] = useState<ProcessedBlogData>(blog)\n\n  // For LivePreview, we'll use the raw content directly with ReactMarkdown\n  // instead of trying to use MDXRemote which requires specific serialization\n  const isLivePreview = isDraftMode && previewData !== blog\n\n  // Extract raw content from data if available\n  const livePreviewContent = useMemo(() => {\n    // Priority 2: Use data from postMessage updates\n    if (isDraftMode && previewData !== blog) {\n      // If content is a string, use it directly\n      if (typeof (previewData as unknown as { content?: unknown }).content === 'string') {\n        return (previewData as unknown as { content?: string }).content as string\n      }\n\n      // If content is from source property",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/www/components/Blog/BlogFilters.tsx",
+    "apps/www/components/Blog/BlogGridItem.tsx",
+    "apps/www/components/Blog/BlogListItem.tsx",
+    "apps/www/components/Blog/DraftModeBanner.tsx",
+    "apps/www/components/Blog/FeaturedThumb.tsx",
+    "apps/www/components/Blog/ShareArticleActions.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Blog/BlogPostRenderer.tsx",
+    "apps/www/components/Blog/BlogFilters.tsx",
+    "apps/www/components/Blog/BlogGridItem.tsx",
+    "apps/www/components/Blog/BlogListItem.tsx",
+    "apps/www/components/Blog/DraftModeBanner.tsx",
+    "apps/www/components/Blog/FeaturedThumb.tsx",
+    "apps/www/components/Blog/ShareArticleActions.tsx"
+  ],
+  "smell_id": "heuristic_props_4459",
+  "symbol_name": "BlogPostRenderer",
+  "target_file": "apps/www/components/Blog/BlogPostRenderer.tsx",
+  "task_id": "task_daf755598e"
+}

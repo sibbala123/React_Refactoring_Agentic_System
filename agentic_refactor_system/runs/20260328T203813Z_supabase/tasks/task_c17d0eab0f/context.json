@@ -1,0 +1,33 @@
+{
+  "line_end": 27,
+  "line_start": 27,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/Usage/SectionHeader.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { ScaffoldContainer } from 'components/layouts/Scaffold'\nimport { DataPoint } from 'data/analytics/constants'\nimport { PricingMetric } from 'data/analytics/org-daily-stats-query'\nimport type { OrgSubscription } from 'data/subscriptions/types'\nimport { useOrgUsageQuery } from 'data/usage/org-usage-query'\nimport SectionHeader from '../SectionHeader'\nimport { CategoryMetaKey, USAGE_CATEGORIES } from '../Usage.constants'\nimport AttributeUsage from './AttributeUsage'\nimport DatabaseSizeUsage from './DatabaseSizeUsage'\nimport { DiskUsage } from './DiskUsage'\n\nexport interface ChartMeta {\n  [key: string]: { data: DataPoint[]; margin: number; isLoading: boolean }\n}\n\nexport interface UsageSectionProps {\n  orgSlug: string\n  projectRef?: string | null\n  categoryKey: CategoryMetaKey\n  subscription?: OrgSubscription\n  chartMeta: ChartMeta\n  currentBillingCycleSelected: boolean\n  startDate?: string\n  endDate?: string\n}\n\nconst UsageSection = ({\n  orgSlug,\n  projectRef,\n  categoryKey,\n  chartMeta,\n  subscription,\n  currentBillingCycleSelected,\n  startDate,\n  endDate,\n}: UsageSectionProps) => {\n  const {\n    data: usage,\n    error: usageError,\n    isPending: isLoadingUsage,\n    isError: isErrorUsage,\n    isSuccess: isSuccessUsage,\n  } = useOrgUsageQuery({\n    orgSlug,\n    projectRef,\n    start: !currentBillingCycleSelected && startDate ? new Date(startDate) : undefined,\n    end: !currentBillingCycleSelected && endDate ? new Date(endDate) : undefined,\n  })\n\n  const categoryMeta = USAGE_CATEGORIES(subscription).find(\n    (category) => category.key === categoryKey\n  )\n  if (!categoryMeta) return null\n\n  return (\n    <>\n      <ScaffoldContainer>",
+    "end_line": 57,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionHeader.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx"
+  ],
+  "smell_id": "heuristic_props_1771",
+  "symbol_name": "UsageSection",
+  "target_file": "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx",
+  "task_id": "task_c17d0eab0f"
+}

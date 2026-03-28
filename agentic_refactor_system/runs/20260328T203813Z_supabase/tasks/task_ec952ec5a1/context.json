@@ -1,0 +1,48 @@
+{
+  "line_end": 28,
+  "line_start": 28,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Box, Check, ChevronDown } from 'lucide-react'\nimport { useState } from 'react'\nimport {\n  Button,\n  CommandEmpty_Shadcn_,\n  CommandGroup_Shadcn_,\n  CommandInput_Shadcn_,\n  CommandItem_Shadcn_,\n  CommandList_Shadcn_,\n  Command_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  Popover_Shadcn_,\n  cn,\n} from 'ui'\n\nimport { ConnectionType } from '@/components/interfaces/ConnectSheet/Connect.constants'\nimport { ConnectionIcon } from '@/components/interfaces/ConnectSheet/ConnectionIcon'\n\ninterface FrameworkSelectorProps {\n  value: string\n  onChange: (value: string) => void\n  items: ConnectionType[]\n  className?: string\n  size?: 'tiny' | 'small'\n}\n\nexport const FrameworkSelector = ({\n  value,\n  onChange,\n  items,\n  className,\n  size = 'tiny',\n}: FrameworkSelectorProps) => {\n  const [open, setOpen] = useState(false)\n\n  const selectedItem = items.find((item) => item.key === value)\n\n  function handleSelect(key: string) {\n    onChange(key)\n    setOpen(false)\n  }\n\n  return (\n    <Popover_Shadcn_ open={open} onOpenChange={setOpen} modal={false}>\n      <div className={cn('flex', className)}>\n        <PopoverTrigger_Shadcn_ asChild>\n          <Button\n            size={size}\n            type=\"default\"\n            className={cn('gap-0 justify-between', className?.includes('w-full') && 'w-full')}\n            iconRight={<ChevronDown strokeWidth={1.5} />}\n          >\n            <div className=\"flex items-center gap-2\">\n              {selectedItem?.icon ? <ConnectionIcon icon={selectedItem.icon} /> : <Box size={12} />}\n              {selectedItem?.label}\n            </div>\n          </Button>",
+    "end_line": 58,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/ConnectSheet/Connect.constants.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.types.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectConfigSection.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheet.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheetStep.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectStepsSection.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectionIcon.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectionParameters.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectionString.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/CopyPromptAdmonition.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/DatabaseSettings.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/DirectConnectionExamples.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/connect.resolver.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/connect.resolver.ts",
+    "apps/studio/components/interfaces/ConnectSheet/connect.schema.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/connect.schema.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useAvailableConnectModes.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useConnectState.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useConnectState.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useMcpUrl.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/ConnectSheet/FrameworkSelector.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.constants.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.types.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectConfigSection.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheet.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheetStep.tsx"
+  ],
+  "smell_id": "heuristic_props_1218",
+  "symbol_name": "FrameworkSelector",
+  "target_file": "apps/studio/components/interfaces/ConnectSheet/FrameworkSelector.tsx",
+  "task_id": "task_ec952ec5a1"
+}

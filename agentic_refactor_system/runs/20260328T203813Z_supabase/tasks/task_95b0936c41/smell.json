@@ -1,0 +1,14 @@
+{
+  "component_name": "OG_PADDING_X",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/supabase/functions/lwx-og/handler.tsx",
+  "line_end": 332,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_5073",
+  "smell_type": "Large Component"
+}

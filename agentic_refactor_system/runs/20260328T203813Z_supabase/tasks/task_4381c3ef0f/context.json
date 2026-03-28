@@ -1,0 +1,40 @@
+{
+  "line_end": 23,
+  "line_start": 23,
+  "local_imports": [
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationPanel.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { ChangeEvent } from 'react'\nimport type { UseFormReturn } from 'react-hook-form'\nimport {\n  Accordion_Shadcn_,\n  AccordionContent_Shadcn_,\n  AccordionItem_Shadcn_,\n  AccordionTrigger_Shadcn_,\n  Badge,\n  FormControl_Shadcn_,\n  FormField_Shadcn_,\n  Input_Shadcn_,\n  PrePostTab,\n  Select_Shadcn_,\n  SelectContent_Shadcn_,\n  SelectItem_Shadcn_,\n  SelectTrigger_Shadcn_,\n} from 'ui'\nimport { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'\n\nimport { DestinationType } from '../DestinationPanel.types'\nimport { type DestinationPanelSchemaType } from './DestinationForm.schema'\n\nexport const AdvancedSettings = ({\n  type,\n  form,\n}: {\n  type: DestinationType\n  form: UseFormReturn<DestinationPanelSchemaType>\n}) => {\n  const handleNumberChange =\n    (field: { onChange: (value?: number) => void }) => (e: ChangeEvent<HTMLInputElement>) => {\n      const val = e.target.value\n      field.onChange(val === '' ? undefined : Number(val))\n    }\n\n  return (\n    <div className=\"px-5\">\n      <Accordion_Shadcn_ type=\"single\" collapsible>\n        <AccordionItem_Shadcn_ value=\"item-1\" className=\"border-none\">\n          <AccordionTrigger_Shadcn_ className=\"font-normal gap-2 justify-between text-sm py-3 hover:no-underline\">\n            <div className=\"flex flex-col items-start gap-0.5\">\n              <span className=\"text-sm font-medium\">Advanced settings</span>\n              <span className=\"text-sm text-foreground-lighter font-normal\">\n                Optional performance tuning\n              </span>\n            </div>\n          </AccordionTrigger_Shadcn_>\n          <AccordionContent_Shadcn_ className=\"!pb-0 pt-3 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-4\">\n            {/* Batch wait time - applies to all destinations */}\n            <FormField_Shadcn_\n              control={form.control}\n              name=\"maxFillMs\"\n              render={({ field }) => (",
+    "end_line": 53,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationForm.constants.ts",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationForm.schema.ts",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationForm.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationNameInput.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationPanelFields.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/NewPublicationPanel.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/NoDestinationsAvailable.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/PublicationSelection.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/PublicationsComboBox.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/ReplicationDisclaimerDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/ValidationFailuresSection.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/AdvancedSettings.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationPanel.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationForm.constants.ts",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationForm.schema.ts",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationForm.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationNameInput.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/DestinationPanelFields.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/NewPublicationPanel.tsx"
+  ],
+  "smell_id": "heuristic_props_1290",
+  "symbol_name": "AdvancedSettings",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/DestinationPanel/DestinationForm/AdvancedSettings.tsx",
+  "task_id": "task_4381c3ef0f"
+}

@@ -1,0 +1,39 @@
+{
+  "accepted_attempt": null,
+  "agent_execution": {
+    "critique": {
+      "acceptable": null,
+      "adapter": "mock",
+      "issues": [
+        "Dry-run enabled; critique agent execution skipped."
+      ],
+      "recommendations": [],
+      "score": null,
+      "status": "skipped"
+    },
+    "refactor": {
+      "adapter": "direct_editor",
+      "applied_changes": false,
+      "notes": [
+        "Dry-run enabled; refactor agent execution skipped."
+      ],
+      "status": "skipped"
+    }
+  },
+  "artifacts": {
+    "agent_workspace": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\agent_workspace",
+    "attempt_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\refactor_attempt1.log",
+    "attempt_text": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\refactor_attempt1.txt",
+    "critique_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_attempt1.log",
+    "critique_prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_prompt.txt",
+    "critique_text": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_attempt1.txt",
+    "post_snapshot": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\post_snapshot.json",
+    "pre_snapshot": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\pre_snapshot.json",
+    "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\prompt.txt"
+  },
+  "attempts": [],
+  "changed_files": [],
+  "smell_type": "Too Many Props",
+  "target_file": "components/component-example.tsx",
+  "task_id": "task_3c6ffe73f9"
+}

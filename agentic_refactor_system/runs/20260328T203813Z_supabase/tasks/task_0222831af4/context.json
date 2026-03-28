@@ -1,0 +1,31 @@
+{
+  "line_end": 24,
+  "line_start": 24,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/helpers.ts"
+  ],
+  "primary_snippet": {
+    "content": "import Link from 'next/link'\n\nimport { UpgradePlanButton } from 'components/ui/UpgradePlanButton'\nimport { PricingMetric } from 'data/analytics/org-daily-stats-query'\nimport type { OrgSubscription } from 'data/subscriptions/types'\nimport type { OrgUsageResponse } from 'data/usage/org-usage-query'\nimport { formatCurrency } from 'lib/helpers'\nimport { ChevronRight } from 'lucide-react'\nimport { useMemo } from 'react'\nimport { cn, HoverCard, HoverCardContent, HoverCardTrigger } from 'ui'\nimport { billingMetricUnit, formatUsage } from '../helpers'\nimport { Metric, USAGE_APPROACHING_THRESHOLD } from './BillingBreakdown.constants'\n\nexport interface BillingMetricProps {\n  idx: number\n  slug?: string\n  metric: Metric\n  usage: OrgUsageResponse\n  subscription: OrgSubscription\n  relativeToSubscription: boolean\n  className?: string\n}\n\nexport const BillingMetric = ({\n  slug,\n  metric,\n  usage,\n  subscription,\n  relativeToSubscription,\n  className,\n}: BillingMetricProps) => {\n  const usageMeta = usage.usages.find((x) => x.metric === metric.key)\n\n  const usageLabel = useMemo(() => {\n    if (!usageMeta) return ''\n\n    if (relativeToSubscription && usageMeta.available_in_plan === false) {\n      return 'Unavailable in plan'\n    } else if (\n      (usageMeta.cost && usageMeta.cost > 0) ||\n      !relativeToSubscription ||\n      usageMeta.unlimited ||\n      usageMeta.pricing_free_units === 0\n    ) {\n      return metric.units === 'bytes' || metric.units === 'gigabytes'\n        ? `${usageMeta.usage.toLocaleString() ?? 0} GB`\n        : usageMeta.usage.toLocaleString() + (metric.unitName ? ` ${metric.unitName}` : '')\n    } else {\n      return metric.units === 'bytes' || metric.units === 'gigabytes'\n        ? `${usageMeta.usage.toLocaleString() ?? 0} / ${usageMeta.pricing_free_units ?? 0} GB`\n        : `${usageMeta.usage.toLocaleString()} / ${usageMeta.pricing_free_units?.toLocaleString()}` +\n            (metric.unitName ? ` ${metric.unitName}` : '')\n    }\n  }, [usageMeta, relativeToSubscription, metric])",
+    "end_line": 54,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.constants.ts",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/ComputeMetric.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/UpcomingInvoice.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingMetric.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/helpers.ts",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.constants.ts",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/ComputeMetric.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/UpcomingInvoice.tsx"
+  ],
+  "smell_id": "heuristic_props_1640",
+  "symbol_name": "BillingMetric",
+  "target_file": "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingMetric.tsx",
+  "task_id": "task_0222831af4"
+}

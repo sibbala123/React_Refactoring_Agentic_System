@@ -1,0 +1,14 @@
+{
+  "component_name": "ShadcnPanel",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/design-system/components/source-panel.tsx",
+  "line_end": 314,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0039",
+  "smell_type": "Large Component"
+}

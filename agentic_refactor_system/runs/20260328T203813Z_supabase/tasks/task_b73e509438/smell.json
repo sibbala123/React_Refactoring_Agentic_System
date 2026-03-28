@@ -1,0 +1,14 @@
+{
+  "component_name": "IconMenuHome",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/docs/components/Navigation/NavigationMenu/MenuIcons.tsx",
+  "line_end": 718,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0485",
+  "smell_type": "Large Component"
+}

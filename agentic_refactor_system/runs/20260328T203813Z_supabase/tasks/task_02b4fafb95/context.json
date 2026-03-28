@@ -1,0 +1,29 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/DrilldownViewer/DrilldownViewer.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/JsonCodeEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { MAX_CHARACTERS } from '@supabase/pg-meta/src/query/table-row-query'\nimport { AlignLeft } from 'lucide-react'\nimport { useCallback, useEffect, useState } from 'react'\nimport { toast } from 'sonner'\n\nimport { useParams } from 'common'\nimport { ButtonTooltip } from 'components/ui/ButtonTooltip'\nimport TwoOptionToggle from 'components/ui/TwoOptionToggle'\nimport { useTableEditorQuery } from 'data/table-editor/table-editor-query'\nimport { isTableLike } from 'data/table-editor/table-editor-types'\nimport { useGetCellValueMutation } from 'data/table-rows/get-cell-value-mutation'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { minifyJSON, prettifyJSON, removeJSONTrailingComma, tryParseJson } from 'lib/helpers'\nimport { Button, SidePanel, cn } from 'ui'\nimport { ActionBar } from '../../ActionBar'\nimport { isValueTruncated } from '../RowEditor.utils'\nimport { DrilldownViewer } from './DrilldownViewer/DrilldownViewer'\nimport { JsonCodeEditor } from './JsonCodeEditor'\n\ninterface JsonEditProps {\n  row?: { [key: string]: any }\n  column: string\n  visible: boolean\n  backButtonLabel?: string\n  applyButtonLabel?: string\n  readOnly?: boolean\n  closePanel: () => void\n  onSaveJSON: (value: string | number | null, resolve: () => void) => void\n}\n\nexport const JsonEditor = ({\n  row,\n  column,\n  visible,\n  backButtonLabel,\n  applyButtonLabel,\n  readOnly = false,\n  closePanel,\n  onSaveJSON,\n}: JsonEditProps) => {\n  const { id: _id } = useParams()\n  const id = _id ? Number(_id) : undefined\n  const { data: project } = useSelectedProjectQuery()\n\n  const { data: selectedTable } = useTableEditorQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    id,\n  })\n\n  const [view, setView] = useState<'edit' | 'view'>('edit')\n  const [jsonStr, setJsonStr] = useState('')\n  // sometimes the value is a JSON object if it was truncated, then fully loaded from the grid.\n  const value = row?.[column as keyof typeof row] as unknown\n  const jsonString = typeof value === 'object' ? JSON.stringify(value) : (value as string)\n  const isTruncated = isValueTruncated(jsonString)\n\n  const { mutate: getCellValue, isPending, isSuccess, reset } = useGetCellValueMutation()\n\n  const validateJSON = async (resolve: () => void) => {\n    try {",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/JsonCodeEditor.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/index.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/DrilldownViewer/DrilldownViewer.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/JsonCodeEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx"
+  ],
+  "smell_id": "heuristic_props_2330",
+  "symbol_name": "JsonEditor",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/index.tsx",
+  "task_id": "task_02b4fafb95"
+}

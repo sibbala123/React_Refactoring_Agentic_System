@@ -1,0 +1,14 @@
+{
+  "component_name": "RightClickBrandLogo",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Nav/RightClickBrandLogo.tsx",
+  "line_end": 332,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4707",
+  "smell_type": "Large Component"
+}

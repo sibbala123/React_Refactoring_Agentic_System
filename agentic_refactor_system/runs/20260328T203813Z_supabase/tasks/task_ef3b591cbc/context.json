@@ -1,0 +1,21 @@
+{
+  "line_end": 25,
+  "line_start": 25,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import type { editor as monacoEditor } from 'monaco-editor'\nimport { useCallback, useEffect, useRef, useState } from 'react'\n\nimport { AskAIWidget } from 'components/interfaces/SQLEditor/AskAIWidget'\nimport InlineWidget from 'components/interfaces/SQLEditor/InlineWidget'\n\ninterface ResizableAIWidgetProps {\n  editor: monacoEditor.IStandaloneCodeEditor | monacoEditor.IStandaloneDiffEditor\n  id: string\n  value: string\n  onChange: (value: string) => void\n  onSubmit: (prompt: string) => void\n  onAccept?: () => void\n  onReject?: () => void\n  onCancel?: () => void\n  isDiffVisible: boolean\n  isLoading?: boolean\n  startLineNumber: number\n  endLineNumber: number\n}\n\nconst LINE_HEIGHT = 20 // height of each line in pixels\nconst MIN_LINES = 3 // minimum number of lines to show\n\nconst ResizableAIWidget = ({\n  editor,\n  id,\n  value,\n  onChange,\n  onSubmit,\n  onAccept,\n  onReject,\n  onCancel,\n  isDiffVisible,\n  isLoading = false,\n  startLineNumber,\n  endLineNumber,\n}: ResizableAIWidgetProps) => {\n  const containerRef = useRef<HTMLDivElement>(null)\n  const [heightInLines, setHeightInLines] = useState(MIN_LINES)\n\n  const updateHeight = useCallback(() => {\n    if (containerRef.current) {\n      const height = containerRef.current.offsetHeight\n      const newHeightInLines = Math.max(MIN_LINES, Math.ceil(height / LINE_HEIGHT))\n      setHeightInLines(newHeightInLines)\n    }\n  }, [])\n\n  useEffect(() => {\n    // Update height on value change\n    updateHeight()\n\n    // Set up resize observer to track height changes\n    const resizeObserver = new ResizeObserver(updateHeight)",
+    "end_line": 55,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/AIEditor/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/AIEditor/ResizableAIWidget.tsx",
+    "apps/studio/components/ui/AIEditor/index.tsx"
+  ],
+  "smell_id": "heuristic_props_2665",
+  "symbol_name": "ResizableAIWidget",
+  "target_file": "apps/studio/components/ui/AIEditor/ResizableAIWidget.tsx",
+  "task_id": "task_ef3b591cbc"
+}

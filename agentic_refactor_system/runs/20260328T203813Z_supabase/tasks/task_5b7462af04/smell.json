@@ -1,0 +1,14 @@
+{
+  "component_name": "SqlEditor",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=14",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/sql-editor.tsx",
+  "line_end": 54,
+  "line_start": 54,
+  "severity": "low",
+  "smell_id": "heuristic_props_4337",
+  "smell_type": "Too Many Props"
+}

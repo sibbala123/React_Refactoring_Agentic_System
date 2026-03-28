@@ -1,0 +1,21 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import dayjs from 'dayjs'\nimport { Edit } from 'lucide-react'\nimport { ReactNode } from 'react'\n\nimport {\n  Button,\n  cn,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n  Input,\n} from 'ui'\nimport { getColumnType } from './DateTimeInput.utils'\n\ninterface DateTimeInputProps {\n  name: string\n  format: string\n  value: string\n  isNullable: boolean\n  description: string | ReactNode\n  onChange: (value: string) => void\n  disabled?: boolean\n}\n\n/**\n * Note: HTML Input cannot accept timezones within the value string\n * e.g Yes: 2022-05-13T14:29:03\n *     No:  2022-05-13T14:29:03+0800\n */\nexport const DateTimeInput = ({\n  value,\n  onChange,\n  name,\n  isNullable,\n  format,\n  description,\n  disabled = false,\n}: DateTimeInputProps) => {\n  const inputType = getColumnType(format)\n\n  return (\n    <Input\n      layout=\"horizontal\"\n      className={cn('w-full [&>div>div>div>input]:pr-10')}\n      label={name}\n      descriptionText={\n        <div className=\"space-y-1\">\n          {description}\n          {format.includes('tz') && (\n            <p>Your local timezone will be automatically applied ({dayjs().format('ZZ')})</p>\n          )}\n        </div>\n      }\n      labelOptional={format}\n      size=\"small\"\n      value={value}\n      type={inputType}\n      step={inputType == 'datetime-local' || inputType == 'time' ? '1' : undefined}\n      actions={\n        !disabled && (",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/DateTimeInput/DateTimeInput.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/DateTimeInput/index.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/DateTimeInput/DateTimeInput.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2321",
+  "symbol_name": "DateTimeInput",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/DateTimeInput/index.tsx",
+  "task_id": "task_57ecc63796"
+}

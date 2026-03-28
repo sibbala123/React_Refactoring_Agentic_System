@@ -1,0 +1,37 @@
+{
+  "line_end": 105,
+  "line_start": 105,
+  "local_imports": [
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/AwsRegionSelector.tsx"
+  ],
+  "primary_snippet": {
+    "content": "            className=\"hover:decoration-brand underline hover:text-foreground transition\"\n            href={`${DOCS_URL}/guides/auth/third-party/clerk`}\n          >\n            documentation\n          </a>\n          .\n        </>\n      )\n\n    case 'workos':\n      return (\n        <>\n          Allow users to use Supabase with WorkOS. Additional setup may be required. You can read\n          more in the{' '}\n          <a\n            className=\"hover:decoration-brand underline hover:text-foreground transition\"\n            href={`${DOCS_URL}/guides/auth/third-party/workos`}\n          >\n            documentation\n          </a>\n          .\n        </>\n      )\n\n    case 'custom':\n    default:\n      return 'Custom'\n  }\n}\n\nexport const IntegrationTypeContent = ({\n  type,\n  integration,\n}: {\n  type: INTEGRATION_TYPES\n  integration: ThirdPartyAuthIntegration\n}) => {\n  switch (type) {\n    case 'firebase': {\n      const projectName =\n        integration.oidc_issuer_url?.replace('https://securetoken.google.com/', '') || ''\n\n      return (\n        <div className=\"text-sm flex flex-row gap-x-4\">\n          <span className=\"text-foreground-light w-36\">Firebase Project ID</span>\n          <span className=\"text-foreground\">{projectName}</span>\n        </div>\n      )\n    }\n    case 'auth0':\n      const domainName =\n        integration.oidc_issuer_url?.replace('https://', '').replace('.auth0.com', '') || ''\n\n      return (\n        <div className=\"text-sm flex flex-row gap-x-4\">\n          <span className=\"text-foreground-light w-36\">Auth0 Domain Name</span>\n          <span className=\"text-foreground\">{domainName}</span>\n        </div>\n      )\n    case 'awsCognito': {\n      const region =",
+    "end_line": 135,
+    "start_line": 75
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/AddIntegrationDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/AwsRegionSelector.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateAuth0Dialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateAwsCognitoAuthDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateClerkAuthDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateFirebaseAuthDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateWorkOSDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/ThirdPartyAuthForm.utils.ts",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/IntegrationCard.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/AwsRegionSelector.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/AddIntegrationDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateAuth0Dialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateAwsCognitoAuthDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateClerkAuthDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateFirebaseAuthDialog.tsx",
+    "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/CreateWorkOSDialog.tsx"
+  ],
+  "smell_id": "heuristic_props_1071",
+  "symbol_name": "IntegrationTypeContent",
+  "target_file": "apps/studio/components/interfaces/Auth/ThirdPartyAuthForm/IntegrationCard.tsx",
+  "task_id": "task_afb0c8090e"
+}

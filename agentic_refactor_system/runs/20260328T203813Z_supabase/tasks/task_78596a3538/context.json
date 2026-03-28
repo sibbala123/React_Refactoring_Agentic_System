@@ -1,0 +1,51 @@
+{
+  "line_end": 113,
+  "line_start": 113,
+  "local_imports": [
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheetStep.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/CopyPromptAdmonition.tsx"
+  ],
+  "primary_snippet": {
+    "content": "      ? getConnectionStrings({\n          connectionInfo,\n          poolingInfo: {\n            connectionString: poolingConfigurationDedicated.connection_string,\n            db_host: poolingConfigurationDedicated.db_host,\n            db_name: poolingConfigurationDedicated.db_name,\n            db_port: poolingConfigurationDedicated.db_port,\n            db_user: poolingConfigurationDedicated.db_user,\n          },\n          metadata: { projectRef },\n        })\n      : undefined\n\n  return useMemo(\n    () => ({\n      transactionShared: connectionStringsShared.pooler.uri,\n      sessionShared: connectionStringsShared.pooler.uri.replace('6543', '5432'),\n      transactionDedicated: connectionStringsDedicated?.pooler.uri,\n      sessionDedicated: connectionStringsDedicated?.pooler.uri.replace('6543', '5432'),\n      ipv4SupportedForDedicatedPooler: !!ipv4Addon,\n      direct: connectionStringsShared.direct.uri,\n    }),\n    [connectionStringsShared, connectionStringsDedicated, ipv4Addon]\n  )\n}\n\n/**\n * Dynamically loads and renders a content component from the content directory.\n * All step content uses this unified loader - no built-in component registry needed.\n */\nfunction StepContent({\n  contentId,\n  state,\n  projectKeys,\n  connectionStringPooler,\n}: {\n  contentId: string\n  state: ConnectState\n  projectKeys: ProjectKeys\n  connectionStringPooler: ConnectionStringPooler\n}) {\n  // Resolve any template placeholders in the content path\n  const filePath = useMemo(() => resolveContentPath(contentId, state), [contentId, state])\n\n  // Dynamically import the content component\n  const ContentComponent = useMemo(() => {\n    return dynamic<StepContentProps>(() => import(`./content/${filePath}/content`), {\n      loading: () => (\n        <div className=\"p-4 min-h-[200px]\">\n          <GenericSkeletonLoader />\n        </div>\n      ),\n    })\n  }, [filePath])\n\n  return (\n    <ContentComponent\n      state={state}\n      projectKeys={projectKeys}\n      connectionStringPooler={connectionStringPooler}\n    />",
+    "end_line": 143,
+    "start_line": 83
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/ConnectSheet/Connect.constants.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.types.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectConfigSection.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheet.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheetStep.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectionIcon.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectionParameters.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectionString.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/CopyPromptAdmonition.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/DatabaseSettings.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/DirectConnectionExamples.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/FrameworkSelector.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/connect.resolver.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/connect.resolver.ts",
+    "apps/studio/components/interfaces/ConnectSheet/connect.schema.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/connect.schema.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useAvailableConnectModes.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useConnectState.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useConnectState.ts",
+    "apps/studio/components/interfaces/ConnectSheet/useMcpUrl.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/ConnectSheet/ConnectStepsSection.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectSheetStep.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/CopyPromptAdmonition.tsx",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.constants.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.types.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.test.ts",
+    "apps/studio/components/interfaces/ConnectSheet/Connect.utils.ts",
+    "apps/studio/components/interfaces/ConnectSheet/ConnectConfigSection.tsx"
+  ],
+  "smell_id": "heuristic_props_1177",
+  "symbol_name": "ConnectStepsSection",
+  "target_file": "apps/studio/components/interfaces/ConnectSheet/ConnectStepsSection.tsx",
+  "task_id": "task_78596a3538"
+}

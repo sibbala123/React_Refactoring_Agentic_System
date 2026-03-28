@@ -1,0 +1,37 @@
+{
+  "line_end": 27,
+  "line_start": 27,
+  "local_imports": [
+    "packages/ui-patterns/src/McpUrlBuilder/components/ClientSelectDropdown.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationDisplay.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/constants.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts",
+    "packages/ui-patterns/src/McpUrlBuilder/utils/getMcpUrl.ts",
+    "packages/ui-patterns/src/info-tooltip.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport React, { useMemo, useState } from 'react'\nimport { cn, CodeBlock, Separator } from 'ui'\n\nimport { InfoTooltip } from '../info-tooltip'\nimport { ClientSelectDropdown } from './components/ClientSelectDropdown'\nimport { McpConfigurationDisplay } from './components/McpConfigurationDisplay'\nimport { McpConfigurationOptions } from './components/McpConfigurationOptions'\nimport { FEATURE_GROUPS_NON_PLATFORM, FEATURE_GROUPS_PLATFORM, MCP_CLIENTS } from './constants'\nimport type { McpClient, McpOnCopyCallback } from './types'\nimport { getMcpUrl } from './utils/getMcpUrl'\n\nexport interface McpConfigPanelProps {\n  baseUrl?: string\n  projectRef?: string\n  initialSelectedClient?: McpClient\n  onClientSelect?: (client: McpClient) => void\n  onCopyCallback: (type?: McpOnCopyCallback) => void\n  onInstallCallback?: () => void\n  theme?: 'light' | 'dark'\n  className?: string\n  isPlatform: boolean // For docs this is controlled by state, for studio by environment variable\n  apiUrl?: string\n}\n\nexport function McpConfigPanel({\n  projectRef,\n  initialSelectedClient,\n  onClientSelect,\n  onCopyCallback,\n  onInstallCallback,\n  className,\n  theme = 'dark',\n  isPlatform,\n  apiUrl,\n}: McpConfigPanelProps) {\n  const [readonly, setReadonly] = useState(false)\n  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])\n  const [selectedClient, setSelectedClient] = useState(initialSelectedClient ?? MCP_CLIENTS[0])\n\n  const supportedFeatures = isPlatform ? FEATURE_GROUPS_PLATFORM : FEATURE_GROUPS_NON_PLATFORM\n  const selectedFeaturesSupported = useMemo(() => {\n    return selectedFeatures.filter((feature) =>\n      supportedFeatures.some((group) => group.id === feature)\n    )\n  }, [selectedFeatures, supportedFeatures])\n\n  const { mcpUrl, clientConfig } = getMcpUrl({\n    projectRef,\n    isPlatform,\n    apiUrl,\n    readonly,\n    features: selectedFeaturesSupported,\n    selectedClient,\n  })\n",
+    "end_line": 57,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui-patterns/src/McpUrlBuilder/constants.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/index.ts",
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/McpUrlBuilder/McpConfigPanel.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ClientSelectDropdown.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationDisplay.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/constants.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts",
+    "packages/ui-patterns/src/McpUrlBuilder/utils/getMcpUrl.ts",
+    "packages/ui-patterns/src/info-tooltip.tsx"
+  ],
+  "smell_id": "heuristic_props_6248",
+  "symbol_name": "McpConfigPanel",
+  "target_file": "packages/ui-patterns/src/McpUrlBuilder/McpConfigPanel.tsx",
+  "task_id": "task_1ba496ad84"
+}

@@ -1,0 +1,40 @@
+{
+  "line_end": 15,
+  "line_start": 15,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useTheme } from 'next-themes'\nimport Image from 'next/image'\n\nimport { BASE_PATH } from 'lib/constants'\nimport { cn } from 'ui'\n\ninterface ConnectionIconProps {\n  icon: string\n  iconFolder?: string\n  supportsDarkMode?: boolean\n  size?: number\n  className?: string\n}\n\nexport const ConnectionIcon = ({\n  icon,\n  iconFolder,\n  supportsDarkMode,\n  size = 14,\n  className,\n}: ConnectionIconProps) => {\n  const { resolvedTheme } = useTheme()\n\n  const imageFolder =\n    iconFolder || (['ionic-angular'].includes(icon) ? 'icons/frameworks' : 'libraries')\n\n  const imageExtension = imageFolder === 'icons/frameworks' ? '' : '-icon'\n\n  const shouldUseDarkMode =\n    supportsDarkMode ||\n    ['expo', 'nextjs', 'prisma', 'drizzle', 'astro', 'remix', 'refine'].includes(icon.toLowerCase())\n\n  const iconImgSrc = icon.startsWith('http')\n    ? icon\n    : `${BASE_PATH}/img/${imageFolder}/${icon.toLowerCase()}${\n        shouldUseDarkMode && resolvedTheme?.includes('dark') ? '-dark' : ''\n      }${imageExtension}.svg`\n\n  return (\n    <Image\n      className={cn('transition-all group-hover:scale-110', className)}\n      src={iconImgSrc}\n      alt={`${icon} logo`}\n      width={size}\n      height={size}",
+    "end_line": 45,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Connect/ApiKeysTabContent.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.constants.ts",
+    "apps/studio/components/interfaces/Connect/Connect.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.types.ts",
+    "apps/studio/components/interfaces/Connect/Connect.utils.ts",
+    "apps/studio/components/interfaces/Connect/ConnectDropdown.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectTabContent.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectTabs.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionPanel.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectionParameters.tsx",
+    "apps/studio/components/interfaces/Connect/DatabaseConnectionString.tsx",
+    "apps/studio/components/interfaces/Connect/DatabaseSettings.utils.ts",
+    "apps/studio/components/interfaces/Connect/DirectConnectionExamples.tsx",
+    "apps/studio/components/interfaces/Connect/McpTabContent.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Connect/ConnectionIcon.tsx",
+    "apps/studio/components/interfaces/Connect/ApiKeysTabContent.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.constants.ts",
+    "apps/studio/components/interfaces/Connect/Connect.tsx",
+    "apps/studio/components/interfaces/Connect/Connect.types.ts",
+    "apps/studio/components/interfaces/Connect/Connect.utils.ts",
+    "apps/studio/components/interfaces/Connect/ConnectDropdown.tsx",
+    "apps/studio/components/interfaces/Connect/ConnectTabContent.tsx"
+  ],
+  "smell_id": "heuristic_props_1131",
+  "symbol_name": "ConnectionIcon",
+  "target_file": "apps/studio/components/interfaces/Connect/ConnectionIcon.tsx",
+  "task_id": "task_494d845805"
+}

@@ -1,0 +1,26 @@
+{
+  "line_end": 54,
+  "line_start": 54,
+  "local_imports": [
+    "apps/www/components/CodeBlock/CodeBlock.tsx"
+  ],
+  "primary_snippet": {
+    "content": "      status: 'active',\n      metadata: { role: 'admin', last_login: '2024-01-14' },\n    },\n    {\n      id: 2,\n      name: 'Jane Smith',\n      email: 'jane@example.com',\n      created_at: '2024-01-14T15:30:00Z',\n      status: 'pending',\n      metadata: null,\n    },\n    {\n      id: 3,\n      name: 'Bob Wilson',\n      email: 'bob@example.com',\n      created_at: '2024-01-13T09:15:00Z',\n      status: 'active',\n      metadata: { role: 'user', last_login: '2024-01-12' },\n    },\n  ],\n}\n\nconst MOCK_CHART_DATA = [\n  { name: 'Jan', value: 400 },\n  { name: 'Feb', value: 300 },\n  { name: 'Mar', value: 600 },\n  { name: 'Apr', value: 800 },\n  { name: 'May', value: 700 },\n]\n\nexport const SqlSnippet = ({\n  id,\n  sql,\n  title = 'SQL Query',\n  resultType = 'table',\n  mockData,\n}: SqlSnippetProps) => {\n  const [showCode, setShowCode] = useState(!mockData)\n  const [isExecuting, setIsExecuting] = useState(false)\n  const [showResults, setShowResults] = useState(false)\n  const [results, setResults] = useState<any>(null)\n\n  const handleExecute = () => {\n    setIsExecuting(true)\n    setShowResults(false)\n\n    // Simulate SQL execution delay\n    setTimeout(() => {\n      setIsExecuting(false)\n      if (mockData) {\n        setShowResults(true)\n        // Use provided mock data or default mock data\n        setResults(\n          resultType === 'chart'\n            ? mockData || MOCK_CHART_DATA\n            : mockData?.rows || MOCK_TABLE_DATA.rows\n        )\n      }\n    }, 1000)\n  }\n",
+    "end_line": 84,
+    "start_line": 24
+  },
+  "related_files": [
+    "apps/www/components/AIDemo/DotGrid.tsx",
+    "apps/www/components/AIDemo/Panel.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/AIDemo/SqlSnippet.tsx",
+    "apps/www/components/CodeBlock/CodeBlock.tsx",
+    "apps/www/components/AIDemo/DotGrid.tsx",
+    "apps/www/components/AIDemo/Panel.tsx"
+  ],
+  "smell_id": "heuristic_props_4452",
+  "symbol_name": "SqlSnippet",
+  "target_file": "apps/www/components/AIDemo/SqlSnippet.tsx",
+  "task_id": "task_4137040f45"
+}

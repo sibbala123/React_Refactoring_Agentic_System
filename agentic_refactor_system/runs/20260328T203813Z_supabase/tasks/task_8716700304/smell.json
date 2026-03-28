@@ -1,0 +1,14 @@
+{
+  "component_name": "TimeSplitInput",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/ui/DatePicker/TimeSplitInput.tsx",
+  "line_end": 288,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_2747",
+  "smell_type": "Large Component"
+}

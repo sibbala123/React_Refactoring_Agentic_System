@@ -1,0 +1,14 @@
+{
+  "component_name": "FunctionList",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=11",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Database/Functions/FunctionsList/FunctionList.tsx",
+  "line_end": 37,
+  "line_start": 37,
+  "severity": "low",
+  "smell_id": "heuristic_props_1258",
+  "smell_type": "Too Many Props"
+}

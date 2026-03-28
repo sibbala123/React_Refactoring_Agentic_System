@@ -1,0 +1,35 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/BlockField.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/types.ts"
+  ],
+  "primary_snippet": {
+    "content": "import { Table } from '@tanstack/react-table'\nimport { X } from 'lucide-react'\nimport { useState } from 'react'\n\nimport { DataTableFilterField } from 'components/ui/DataTable/DataTable.types'\nimport {\n  Badge,\n  Collapsible_Shadcn_ as Collapsible,\n  CollapsibleContent_Shadcn_ as CollapsibleContent,\n  CollapsibleTrigger_Shadcn_ as CollapsibleTrigger,\n  Skeleton,\n} from 'ui'\nimport { BlockFieldConfig } from '../../types'\nimport { BlockField } from './BlockField'\n\n// Single source of truth for field row styling\nexport const FieldRow = ({\n  label,\n  value,\n  expandButton,\n}: {\n  label: string\n  value: React.ReactNode\n  expandButton?: React.ReactNode\n}) => (\n  <div className=\"flex justify-between items-center py-1 px-2\">\n    <dt className=\"flex items-center gap-2 text-[13.5px] text-foreground-light\">\n      <span>{label}</span>\n      {expandButton}\n    </dt>\n    <dd className=\"text-right\">{value}</dd>\n  </div>\n)\n\ninterface FieldWithSeeMoreProps {\n  primaryField: BlockFieldConfig\n  additionalFields: BlockFieldConfig[]\n  data: any\n  enrichedData?: any\n  isLoading?: boolean\n  filterFields: DataTableFilterField<any>[]\n  table: Table<any>\n  showValueAsBadge?: boolean\n}\n\n// Primary field with expandable additional details\nexport const FieldWithSeeMore = ({",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/Block.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/BlockField.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/CollapsibleSection.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/EventMessage.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/TimelineStep.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/TruncatedTextWithPopover.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/FieldWithSeeMore.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/BlockField.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/types.ts",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/Block.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/CollapsibleSection.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/EventMessage.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/TimelineStep.tsx",
+    "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/TruncatedTextWithPopover.tsx"
+  ],
+  "smell_id": "heuristic_props_2389",
+  "symbol_name": "FieldRow",
+  "target_file": "apps/studio/components/interfaces/UnifiedLogs/ServiceFlow/components/shared/FieldWithSeeMore.tsx",
+  "task_id": "task_7842908b55"
+}

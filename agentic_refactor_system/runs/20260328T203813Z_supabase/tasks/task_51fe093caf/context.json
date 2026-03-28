@@ -1,0 +1,28 @@
+{
+  "line_end": 44,
+  "line_start": 44,
+  "local_imports": [
+    "packages/ui/src/components/Button/Button.tsx",
+    "packages/ui/src/components/shadcn/ui/tooltip.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "    Dialog.DialogProps,\n    Pick<\n      Dialog.DialogContentProps,\n      | 'onOpenAutoFocus'\n      | 'onCloseAutoFocus'\n      | 'onEscapeKeyDown'\n      | 'onPointerDownOutside'\n      | 'onInteractOutside'\n    > {}\n\ninterface CustomProps {\n  id?: String | undefined\n  disabled?: boolean\n  className?: String\n  children?: React.ReactNode\n  header?: string | React.ReactNode\n  visible: boolean\n  size?: 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'xxxlarge' | 'xxxxlarge'\n  loading?: boolean\n  align?: 'right' | 'left'\n  hideFooter?: boolean\n  customFooter?: React.ReactNode\n  onCancel?: () => void\n  cancelText?: String\n  onConfirm?: () => void\n  confirmText?: String\n  triggerElement?: React.ReactNode\n  tooltip?: string\n}\n\nconst SidePanel = ({\n  id,\n  disabled,\n  className,\n  children,\n  header,\n  visible,\n  open,\n  size = 'medium',\n  loading,\n  align = 'right',\n  hideFooter = false,\n  customFooter = undefined,\n  onConfirm,\n  onCancel,\n  confirmText = 'Confirm',\n  cancelText = 'Cancel',\n  triggerElement,\n  defaultOpen,\n  tooltip,\n  ...props\n}: SidePanelProps) => {\n  const __styles = styleHandler('sidepanel')\n\n  const footerContent = customFooter ? (\n    customFooter\n  ) : (\n    <div className={__styles.footer}>\n      <div>\n        <Button disabled={loading} type=\"default\" onClick={() => (onCancel ? onCancel() : null)}>\n          {cancelText}",
+    "end_line": 74,
+    "start_line": 14
+  },
+  "related_files": [
+    "packages/ui/src/components/SidePanel/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/SidePanel/SidePanel.tsx",
+    "packages/ui/src/components/Button/Button.tsx",
+    "packages/ui/src/components/shadcn/ui/tooltip.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/SidePanel/index.tsx"
+  ],
+  "smell_id": "heuristic_props_6075",
+  "symbol_name": "Separator",
+  "target_file": "packages/ui/src/components/SidePanel/SidePanel.tsx",
+  "task_id": "task_51fe093caf"
+}

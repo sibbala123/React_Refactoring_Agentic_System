@@ -1,0 +1,14 @@
+{
+  "component_name": "AssistantCommandsPopover",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/AssistantChat/AssistantCommandsPopover.tsx",
+  "line_end": 222,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_6134",
+  "smell_type": "Large Component"
+}

@@ -1,0 +1,23 @@
+{
+  "line_end": 33,
+  "line_start": 33,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { getHasInstalledObject } from 'components/layouts/IntegrationsLayout/Integrations.utils'\nimport PartnerIcon from 'components/ui/PartnerIcon'\nimport { useIntegrationsQuery } from 'data/integrations/integrations-query'\nimport type { IntegrationName } from 'data/integrations/integrations.types'\nimport { useOrganizationsQuery } from 'data/organizations/organizations-query'\nimport { ChevronDown } from 'lucide-react'\nimport type { Organization } from 'types'\nimport {\n  Badge,\n  Button,\n  CommandEmpty_Shadcn_,\n  CommandGroup_Shadcn_,\n  CommandInput_Shadcn_,\n  CommandItem_Shadcn_,\n  CommandList_Shadcn_,\n  Command_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  Popover_Shadcn_,\n  cn,\n} from 'ui'\n\nexport interface OrganizationPickerProps {\n  integrationName: IntegrationName\n  configurationId?: string\n  selectedOrg: Organization | null\n  onSelectedOrgChange: (organization: Organization) => void\n  disabled?: boolean\n}\n\nconst OrganizationPicker = ({\n  integrationName,\n  configurationId,\n  selectedOrg,\n  onSelectedOrgChange,\n  disabled,\n}: OrganizationPickerProps) => {\n  const [open, setOpen] = useState(false)\n  const ref = useRef<HTMLButtonElement>(null)\n\n  const { data: integrationData } = useIntegrationsQuery()\n  const { data: organizationsData, isPending: isLoadingOrganization } = useOrganizationsQuery()\n\n  const installed = useMemo(\n    () =>\n      integrationData && organizationsData\n        ? getHasInstalledObject({\n            integrationName,\n            integrationData,\n            organizationsData,\n            installationId: configurationId,\n          })\n        : {},\n    [configurationId, integrationData, integrationName, organizationsData]\n  )\n\n  return (\n    <>\n      <Popover_Shadcn_ open={open} onOpenChange={setOpen}>\n        <PopoverTrigger_Shadcn_ asChild>\n          <Button",
+    "end_line": 63,
+    "start_line": 3
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Integrations/Vercel/Integrations-Vercel.constants.ts",
+    "apps/studio/components/interfaces/Integrations/Vercel/VercelIntegration.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Integrations/Vercel/OrganizationPicker.tsx",
+    "apps/studio/components/interfaces/Integrations/Vercel/Integrations-Vercel.constants.ts",
+    "apps/studio/components/interfaces/Integrations/Vercel/VercelIntegration.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1571",
+  "symbol_name": "OrganizationPicker",
+  "target_file": "apps/studio/components/interfaces/Integrations/Vercel/OrganizationPicker.tsx",
+  "task_id": "task_306a199feb"
+}

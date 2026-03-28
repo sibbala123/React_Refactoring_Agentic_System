@@ -1,0 +1,25 @@
+{
+  "line_end": 13,
+  "line_start": 13,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import Link from 'next/link'\nimport { toast } from 'sonner'\n\nimport { WrapperMeta } from 'components/interfaces/Integrations/Wrappers/Wrappers.types'\nimport { ScaffoldSection } from 'components/layouts/Scaffold'\nimport { InlineLink } from 'components/ui/InlineLink'\nimport { DatabaseExtension } from 'data/database-extensions/database-extensions-query'\nimport { useS3VectorsWrapperCreateMutation } from 'data/storage/s3-vectors-wrapper-create-mutation'\nimport { DOCS_URL } from 'lib/constants'\nimport { Button } from 'ui'\nimport { Admonition } from 'ui-patterns/admonition'\n\nexport const ExtensionNotInstalled = ({\n  projectRef,\n  wrapperMeta,\n  wrappersExtension,\n}: {\n  projectRef: string\n  wrapperMeta: WrapperMeta\n  wrappersExtension: DatabaseExtension\n}) => {\n  const databaseNeedsUpgrading =\n    (wrappersExtension?.default_version ?? '') < (wrapperMeta.minimumExtensionVersion ?? '')\n\n  return (\n    <ScaffoldSection isFullWidth>\n      <Admonition type=\"warning\" title=\"Missing required extension\">\n        <p>\n          The Wrappers extension is required in order to query vector tables.{' '}\n          {databaseNeedsUpgrading &&\n            'Please first upgrade your database and then install the extension.'}{' '}\n          <InlineLink\n            href={`${DOCS_URL}/guides/database/extensions/wrappers/s3_vectors`}\n            target=\"_blank\"\n          >\n            Learn more\n          </InlineLink>\n        </p>\n        <Button type=\"default\" asChild className=\"mt-2\">\n          <Link\n            href={\n              databaseNeedsUpgrading\n                ? `/project/${projectRef}/settings/infrastructure`",
+    "end_line": 43,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/InitializeForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/VectorBucketTableExamplesSheet.tsx",
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/VectorBucketCallouts.tsx",
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/InitializeForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/VectorBucketTableExamplesSheet.tsx",
+    "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/index.tsx"
+  ],
+  "smell_id": "heuristic_props_2261",
+  "symbol_name": "ExtensionNotInstalled",
+  "target_file": "apps/studio/components/interfaces/Storage/VectorBuckets/VectorBucketDetails/VectorBucketCallouts.tsx",
+  "task_id": "task_b0da9e017b"
+}

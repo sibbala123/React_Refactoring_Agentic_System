@@ -1,0 +1,14 @@
+{
+  "component_name": "DeleteEventTrigger",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=7",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Database/Triggers/DeleteEventTrigger.tsx",
+  "line_end": 12,
+  "line_start": 12,
+  "severity": "low",
+  "smell_id": "heuristic_props_1359",
+  "smell_type": "Too Many Props"
+}

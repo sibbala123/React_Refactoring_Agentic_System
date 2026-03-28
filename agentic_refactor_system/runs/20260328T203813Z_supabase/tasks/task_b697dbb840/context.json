@@ -1,0 +1,59 @@
+{
+  "line_end": 30,
+  "line_start": 30,
+  "local_imports": [
+    "apps/docs/features/docs/Reference.ui.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport type { HTMLAttributes, PropsWithChildren } from 'react'\nimport { useContext, useEffect, useRef, useState } from 'react'\nimport { useInView } from 'react-intersection-observer'\nimport { safeHistoryReplaceState } from '~/lib/historyUtils'\n\nimport {\n  cn,\n  Select_Shadcn_,\n  SelectContent_Shadcn_,\n  SelectGroup_Shadcn_,\n  SelectItem_Shadcn_,\n  SelectTrigger_Shadcn_,\n  SelectValue_Shadcn_,\n} from 'ui'\n\nimport { ReferenceContentInitiallyScrolledContext } from '~/features/docs/Reference.navigation.client'\nimport { type IApiEndPoint } from './Reference.api.utils'\nimport { API_REFERENCE_REQUEST_BODY_SCHEMA_DATA_ATTRIBUTES } from './Reference.ui.shared'\n\n/**\n * Wrap a reference section with client-side functionality:\n *\n * - Intersection observer to auto-update the URL when the user scrolls the page\n * - An ID to scroll to programmatically. This is on the entire section rather\n *   than the heading to avoid problems with scroll-to position when the heading\n *   is sticky.\n */\nexport function ReferenceSectionWrapper({\n  id,\n  link,\n  children,\n  className,\n}: PropsWithChildren<{ id: string; link: string; className?: string }> &\n  HTMLAttributes<HTMLElement>) {\n  const initialScrollHappened = useContext(ReferenceContentInitiallyScrolledContext)\n\n  const { ref } = useInView({\n    threshold: 0,\n    rootMargin: '-10% 0% -50% 0%',\n    onChange: (inView) => {\n      if (\n        inView &&\n        initialScrollHappened &&\n        window.scrollY > 0 /* Don't update on first navigation to introduction */\n      ) {\n        safeHistoryReplaceState(link)\n      }\n    },\n  })\n\n  return (\n    <section\n      ref={ref}\n      id={id}\n      className={cn('scroll-mt-[calc(var(--header-height)+4rem)]', className)}\n    >\n      {children}\n    </section>",
+    "end_line": 60,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/docs/features/docs/GuidesMdx.client.tsx",
+    "apps/docs/features/docs/GuidesMdx.state.ts",
+    "apps/docs/features/docs/GuidesMdx.template.tsx",
+    "apps/docs/features/docs/GuidesMdx.utils.tsx",
+    "apps/docs/features/docs/MdxBase.shared.tsx",
+    "apps/docs/features/docs/MdxBase.tsx",
+    "apps/docs/features/docs/NavigationPageStatus.utils.ts",
+    "apps/docs/features/docs/Reference.api.utils.ts",
+    "apps/docs/features/docs/Reference.apiPage.tsx",
+    "apps/docs/features/docs/Reference.cliPage.tsx",
+    "apps/docs/features/docs/Reference.generated.script.ts",
+    "apps/docs/features/docs/Reference.generated.singleton.ts",
+    "apps/docs/features/docs/Reference.header.tsx",
+    "apps/docs/features/docs/Reference.introduction.tsx",
+    "apps/docs/features/docs/Reference.mdx.tsx",
+    "apps/docs/features/docs/Reference.navigation.client.tsx",
+    "apps/docs/features/docs/Reference.navigation.tsx",
+    "apps/docs/features/docs/Reference.sdkPage.tsx",
+    "apps/docs/features/docs/Reference.sections.tsx",
+    "apps/docs/features/docs/Reference.selfHostingPage.tsx",
+    "apps/docs/features/docs/Reference.typeSpec.test.ts",
+    "apps/docs/features/docs/Reference.typeSpec.ts",
+    "apps/docs/features/docs/Reference.ui.shared.ts",
+    "apps/docs/features/docs/Reference.ui.tsx",
+    "apps/docs/features/docs/Reference.utils.ts",
+    "apps/docs/features/docs/Troubleshooting.page.tsx",
+    "apps/docs/features/docs/Troubleshooting.ui.client.tsx",
+    "apps/docs/features/docs/Troubleshooting.ui.tsx",
+    "apps/docs/features/docs/Troubleshooting.utils.shared.ts",
+    "apps/docs/features/docs/Troubleshooting.utils.ts",
+    "apps/docs/features/docs/TroubleshootingSection.page.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/docs/features/docs/Reference.ui.client.tsx",
+    "apps/docs/features/docs/Reference.ui.tsx",
+    "apps/docs/features/docs/GuidesMdx.client.tsx",
+    "apps/docs/features/docs/GuidesMdx.state.ts",
+    "apps/docs/features/docs/GuidesMdx.template.tsx",
+    "apps/docs/features/docs/GuidesMdx.utils.tsx",
+    "apps/docs/features/docs/MdxBase.shared.tsx",
+    "apps/docs/features/docs/MdxBase.tsx"
+  ],
+  "smell_id": "heuristic_props_0564",
+  "symbol_name": "ReferenceSectionWrapper",
+  "target_file": "apps/docs/features/docs/Reference.ui.client.tsx",
+  "task_id": "task_b697dbb840"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "DefaultCommandList",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=7",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/FilterBar/DefaultCommandList.tsx",
+  "line_end": 18,
+  "line_start": 18,
+  "severity": "low",
+  "smell_id": "heuristic_props_6211",
+  "smell_type": "Too Many Props"
+}

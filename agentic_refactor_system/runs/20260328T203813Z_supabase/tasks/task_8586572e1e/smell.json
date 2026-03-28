@@ -1,0 +1,14 @@
+{
+  "component_name": "MAX_EXPORT_ROW_COUNT_MESSAGE",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.tsx",
+  "line_end": 457,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_2602",
+  "smell_type": "Large Component"
+}

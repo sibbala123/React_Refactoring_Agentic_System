@@ -1,0 +1,14 @@
+{
+  "component_name": "FilterableInput",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Reports/ReportFilterPopover.tsx",
+  "line_end": 25,
+  "line_start": 25,
+  "severity": "low",
+  "smell_id": "heuristic_props_1961",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,21 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { zodResolver } from '@hookform/resolvers/zod'\nimport { useForm } from 'react-hook-form'\nimport { toast } from 'sonner'\nimport * as z from 'zod'\n\nimport { FormActions } from 'components/ui/Forms/FormActions'\nimport type {\n  EnvironmentTargets,\n  Integration,\n  IntegrationProjectConnection,\n} from 'data/integrations/integrations.types'\nimport { useVercelConnectionUpdateMutation } from 'data/integrations/vercel-connection-update-mutate'\nimport { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'\nimport { DOCS_URL } from 'lib/constants'\nimport Link from 'next/link'\nimport {\n  AlertDescription_Shadcn_,\n  AlertTitle_Shadcn_,\n  Alert_Shadcn_,\n  FormControl_Shadcn_,\n  FormDescription_Shadcn_,\n  FormField_Shadcn_,\n  FormItem_Shadcn_,\n  FormLabel_Shadcn_,\n  FormMessage_Shadcn_,\n  Form_Shadcn_,\n  Input_Shadcn_,\n  Switch,\n} from 'ui'\n\nconst VercelIntegrationConnectionForm = ({\n  disabled,\n  connection,\n  integration,\n}: {\n  disabled?: boolean\n  connection: IntegrationProjectConnection\n  integration: Integration\n}) => {\n  // NOTE(kamil): Ignore sync targets for Vercel Marketplace as it's not synchronized using integration,\n  // but through a separate marketplace mechanism. It's not theoretically necessary, but we might have some stale data.\n  const { data: org } = useSelectedOrganizationQuery()\n  const envSyncTargets =\n    org?.managed_by === 'vercel-marketplace' ? [] : (connection.env_sync_targets ?? [])\n\n  const FormSchema = z.object({\n    environmentVariablesProduction: z.boolean().default(envSyncTargets.includes('production')),\n    environmentVariablesPreview: z.boolean().default(envSyncTargets.includes('preview')),\n    environmentVariablesDevelopment: z.boolean().default(envSyncTargets.includes('development')),\n    publicEnvVarPrefix: z.string().optional(),\n  })\n\n  const form = useForm<z.infer<typeof FormSchema>>({\n    resolver: zodResolver(FormSchema),\n    defaultValues: {\n      environmentVariablesProduction: envSyncTargets.includes('production'),\n      environmentVariablesPreview: envSyncTargets.includes('preview'),\n      environmentVariablesDevelopment: envSyncTargets.includes('development'),\n      publicEnvVarPrefix: connection.public_env_var_prefix,\n    },\n  })",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Integrations/VercelIntegration/VercelSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Integrations/VercelIntegration/VercelIntegrationConnectionForm.tsx",
+    "apps/studio/components/interfaces/Settings/Integrations/VercelIntegration/VercelSection.tsx"
+  ],
+  "smell_id": "heuristic_props_2080",
+  "symbol_name": "VercelIntegrationConnectionForm",
+  "target_file": "apps/studio/components/interfaces/Settings/Integrations/VercelIntegration/VercelIntegrationConnectionForm.tsx",
+  "task_id": "task_a7c8e8dd5b"
+}

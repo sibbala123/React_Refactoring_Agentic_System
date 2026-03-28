@@ -1,0 +1,45 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { Organization } from 'types'\nimport {\n  cn,\n  SheetHeader,\n  SheetTitle,\n  Tabs_Shadcn_,\n  TabsContent_Shadcn_,\n  TabsList_Shadcn_,\n} from 'ui'\nimport MobileSheetNav from 'ui-patterns/MobileSheetNav/MobileSheetNav'\n\nimport { ProjectBranchSelectorSheetTabTrigger } from './ProjectBranchSelectorSheetTabTrigger'\n\nconst EMBEDDED_CLASSNAME =\n  'bg-transparent border-0 shadow-none min-h-0 flex-1 flex flex-col overflow-hidden rounded-none'\n\nexport interface ProjectBranchSelectorSheetProps {\n  open: boolean\n  onOpenChange: (open: boolean) => void\n  selectedRef: string | undefined\n  onClose: () => void\n  selectedOrganization?: Organization | null\n  displayProject?: ProjectDetail | null\n  selectedBranch?: Branch | null\n  selectedOrganizationName?: string | null\n  selectedProjectName?: string | null\n  selectedBranchName?: string | null\n  isMainBranch?: boolean\n}\n\nexport function ProjectBranchSelectorSheet({\n  open,\n  onOpenChange,\n  selectedRef,\n  onClose,\n  selectedOrganization,\n  displayProject,\n  selectedBranch,\n  selectedOrganizationName,\n  selectedProjectName,\n  selectedBranchName,\n  isMainBranch,\n}: ProjectBranchSelectorSheetProps) {\n  const orgLabel = selectedOrganizationName ?? selectedOrganization?.name\n  const projectLabel = selectedProjectName ?? displayProject?.name\n  const branchLabel = selectedBranchName ?? selectedBranch?.name ?? 'main'\n\n  const tabs = [\n    orgLabel && {\n      value: 'organization' as const,\n      label: orgLabel,\n      icon: Boxes,\n    },\n    projectLabel && {\n      value: 'project' as const,\n      label: projectLabel,\n      icon: Box,\n    },\n    branchLabel && {\n      value: 'branch' as const,\n      label: branchLabel,",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconButton.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconLink.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.test.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorPopover.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/StudioMobileSheetNav.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx"
+  ],
+  "smell_id": "heuristic_props_2515",
+  "symbol_name": "ProjectBranchSelectorSheet",
+  "target_file": "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheet.tsx",
+  "task_id": "task_e5a40c3fe3"
+}

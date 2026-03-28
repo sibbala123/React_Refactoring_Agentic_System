@@ -1,0 +1,37 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCardStatus.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useCustomContent } from 'hooks/custom-content/useCustomContent'\nimport { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'\nimport { BASE_PATH } from 'lib/constants'\nimport { Copy, Github, MoreVertical, Settings } from 'lucide-react'\nimport { useRouter } from 'next/router'\nimport InlineSVG from 'react-inlinesvg'\nimport { toast } from 'sonner'\nimport type { Organization } from 'types'\nimport {\n  Button,\n  copyToClipboard,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from 'ui'\n\nimport { inferProjectStatus } from './ProjectCard.utils'\nimport { ProjectCardStatus } from './ProjectCardStatus'\n\nexport interface ProjectCardProps {\n  slug?: string\n  project: OrgProject\n  organization?: Organization\n  rewriteHref?: string\n  githubIntegration?: IntegrationProjectConnection\n  vercelIntegration?: IntegrationProjectConnection\n  resourceWarnings?: ResourceWarning\n}\n\nexport const ProjectCard = ({\n  slug,\n  project,\n  rewriteHref,\n  githubIntegration,\n  vercelIntegration,\n  resourceWarnings,\n}: ProjectCardProps) => {\n  const router = useRouter()\n  const { name, ref: projectRef } = project\n\n  const { infraAwsNimbusLabel } = useCustomContent(['infra:aws_nimbus_label'])\n  const providerLabel =\n    project.cloud_provider === 'AWS_NIMBUS' ? infraAwsNimbusLabel : project.cloud_provider\n\n  const desc = `${providerLabel} | ${project.region}`\n\n  const { projectHomepageShowInstanceSize } = useIsFeatureEnabled([\n    'project_homepage:show_instance_size',\n  ])\n\n  const isGithubIntegrated = githubIntegration !== undefined\n  const isVercelIntegrated = vercelIntegration !== undefined\n  const githubRepository = githubIntegration?.metadata.name ?? undefined\n  const projectStatus = inferProjectStatus(project.status)\n\n  return (\n    <>\n      <li className=\"list-none h-min\">\n        <CardButton\n          linkHref={rewriteHref ? rewriteHref : `/project/${projectRef}`}",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Home/ProjectList/EmptyStates.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/LoadMoreRow.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCardStatus.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectList.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectListSort.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectTableRow.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ShimmeringCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCardStatus.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/EmptyStates.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/LoadMoreRow.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectList.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectListSort.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectTableRow.tsx"
+  ],
+  "smell_id": "heuristic_props_1474",
+  "symbol_name": "ProjectCard",
+  "target_file": "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.tsx",
+  "task_id": "task_4b9dd7f1ac"
+}

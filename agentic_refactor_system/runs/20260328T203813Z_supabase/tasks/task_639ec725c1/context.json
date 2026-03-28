@@ -1,0 +1,36 @@
+{
+  "line_end": 5,
+  "line_start": 5,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useEffect, useState } from 'react'\n\nconst TIMER_DURATION = 3000\n\nexport function SurveyWordCloud({\n  answers,\n  label,\n}: {\n  answers: { text: string; count: number }[]\n  label: string\n}) {\n  const [currentItems, setCurrentItems] = useState<{ text: string; count: number }[]>([])\n  const [isRotating, setIsRotating] = useState(false)\n  const [scramblingTexts, setScramblingTexts] = useState<string[]>([])\n\n  // Calculate the range within the current context\n  const counts = answers.map((answer) => answer.count)\n  const maxCount = Math.max(...counts)\n\n  // Initialize with first 12 items\n  useEffect(() => {\n    const initialItems = answers.slice(0, 12)\n    setCurrentItems(initialItems)\n    setScramblingTexts(initialItems.map((item) => item.text))\n  }, [answers])\n\n  // Start rotation after 3 seconds\n  useEffect(() => {\n    if (answers.length <= 12) return // No need to rotate if we have 12 or fewer items\n\n    const timer = setTimeout(() => {\n      setIsRotating(true)\n    }, TIMER_DURATION)\n\n    return () => clearTimeout(timer)",
+    "end_line": 35,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/SurveyResults/DecorativeProgressBar.tsx",
+    "apps/www/components/SurveyResults/StateOfStartupsHeader.tsx",
+    "apps/www/components/SurveyResults/SurveyChapter.tsx",
+    "apps/www/components/SurveyResults/SurveyChapterSection.tsx",
+    "apps/www/components/SurveyResults/SurveyChart.tsx",
+    "apps/www/components/SurveyResults/SurveyPullQuote.tsx",
+    "apps/www/components/SurveyResults/SurveyRankedAnswersPair.tsx",
+    "apps/www/components/SurveyResults/SurveySectionBreak.tsx",
+    "apps/www/components/SurveyResults/SurveyStatCard.tsx",
+    "apps/www/components/SurveyResults/SurveySummarizedAnswer.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/SurveyResults/SurveyWordCloud.tsx",
+    "apps/www/components/SurveyResults/DecorativeProgressBar.tsx",
+    "apps/www/components/SurveyResults/StateOfStartupsHeader.tsx",
+    "apps/www/components/SurveyResults/SurveyChapter.tsx",
+    "apps/www/components/SurveyResults/SurveyChapterSection.tsx",
+    "apps/www/components/SurveyResults/SurveyChart.tsx",
+    "apps/www/components/SurveyResults/SurveyPullQuote.tsx",
+    "apps/www/components/SurveyResults/SurveyRankedAnswersPair.tsx"
+  ],
+  "smell_id": "heuristic_props_4862",
+  "symbol_name": "SurveyWordCloud",
+  "target_file": "apps/www/components/SurveyResults/SurveyWordCloud.tsx",
+  "task_id": "task_639ec725c1"
+}

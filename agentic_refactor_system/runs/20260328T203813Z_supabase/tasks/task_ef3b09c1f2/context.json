@@ -1,0 +1,41 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import NoDataPlaceholder from 'components/ui/Charts/NoDataPlaceholder'\nimport Link from 'next/link'\nimport { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, cn, Loading } from 'ui'\nimport { LogsBarChart } from 'ui-patterns/LogsBarChart'\n\nimport type { LogsBarChartDatum } from '../ProjectHome/ProjectUsage.metrics'\nimport { getHealthStatus, type ServiceKey } from './ObservabilityOverview.utils'\n\nconst colorClassMap: Record<string, string> = {\n  muted: 'bg-muted',\n  destructive: 'bg-destructive',\n  warning: 'bg-warning',\n  brand: 'bg-brand',\n}\n\nexport type ServiceHealthCardProps = {\n  serviceName: string\n  serviceKey: ServiceKey\n  total: number\n  errorRate: number\n  errorCount: number\n  warningCount: number\n  chartData: LogsBarChartDatum[]\n  reportUrl?: string // undefined if feature flag disabled or no report available\n  logsUrl: string\n  isLoading: boolean\n  onBarClick: (datum: any) => void\n  datetimeFormat: string\n}\n\nexport const ServiceHealthCard = ({\n  serviceName,\n  serviceKey,\n  total,\n  errorRate,\n  errorCount,\n  warningCount,\n  chartData,\n  reportUrl,\n  logsUrl,\n  isLoading,\n  onBarClick,\n  datetimeFormat,\n}: ServiceHealthCardProps) => {\n  const { status, color } = getHealthStatus(errorRate, total)\n\n  return (\n    <Card className=\"mb-0 md:mb-0 h-full flex flex-col\">\n      <CardHeader className=\"flex flex-row items-start justify-between gap-2 space-y-0 pb-0 border-b-0\">\n        <div className=\"flex flex-col\">\n          <CardTitle className=\"text-foreground-light flex items-center gap-2 text-xs font-medium\">\n            <div className={cn('w-1.5 h-1.5 rounded-full', colorClassMap[color] || 'bg-muted')} />\n            {serviceName}\n          </CardTitle>\n          <div className=\"flex items-start gap-6 mt-2\">\n            <div className=\"flex flex-col\">\n              <span className=\"text-foreground text-xl\">{total.toLocaleString()}</span>\n              <span className=\"text-foreground-light text-xs\">requests</span>\n            </div>\n            <div className=\"flex flex-col\">\n              <span className=\"text-foreground text-xl\">{errorRate.toFixed(1)}%</span>",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.tsx",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.tsx",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverviewFooter.tsx",
+    "apps/studio/components/interfaces/Observability/ServiceHealthTable.tsx",
+    "apps/studio/components/interfaces/Observability/usePostgrestOverviewMetrics.ts",
+    "apps/studio/components/interfaces/Observability/useServiceHealthMetrics.ts",
+    "apps/studio/components/interfaces/Observability/useServiceHealthMetrics.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/useServiceHealthMetrics.utils.ts",
+    "apps/studio/components/interfaces/Observability/useSlowQueriesCount.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Observability/ServiceHealthCard.tsx",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.tsx",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.tsx",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverviewFooter.tsx"
+  ],
+  "smell_id": "heuristic_props_1629",
+  "symbol_name": "ServiceHealthCard",
+  "target_file": "apps/studio/components/interfaces/Observability/ServiceHealthCard.tsx",
+  "task_id": "task_ef3b09c1f2"
+}

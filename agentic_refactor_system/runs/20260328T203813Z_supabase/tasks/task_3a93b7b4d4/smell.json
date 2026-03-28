@@ -1,0 +1,14 @@
+{
+  "component_name": "ChartLine",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/Chart/charts/chart-line.tsx",
+  "line_end": 254,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_6142",
+  "smell_type": "Large Component"
+}

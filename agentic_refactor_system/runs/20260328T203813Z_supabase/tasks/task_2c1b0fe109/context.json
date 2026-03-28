@@ -1,0 +1,38 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [
+    "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import {\n  cn,\n  Command_Shadcn_,\n  CommandGroup_Shadcn_,\n  CommandItem_Shadcn_,\n  CommandList_Shadcn_,\n} from 'ui'\nimport type { ResourcePickerRenderProps } from './SecondLevelNav.Layout'\n\ntype NamedResource = { name: string }\n\ntype ResourcePickerListProps = ResourcePickerRenderProps & {\n  items: NamedResource[]\n  emptyMessage: string\n}\n\nexport const ResourcePickerList = ({\n  items,\n  emptyMessage,\n  selectedResource,\n  onSelect,\n  closePopover,\n}: ResourcePickerListProps) => {\n  const handleSelect = (value: string) => {\n    onSelect(value)\n    closePopover()\n  }\n\n  return (\n    <Command_Shadcn_>\n      <CommandList_Shadcn_>\n        <CommandGroup_Shadcn_>\n          {items.length === 0 && (\n            <CommandItem_Shadcn_ disabled className=\"cursor-default px-4\">\n              <p className=\"text-foreground-light\">{emptyMessage}</p>\n            </CommandItem_Shadcn_>\n          )}\n          {items.map((item) => {\n            const isActive = item.name === selectedResource\n            return (\n              <CommandItem_Shadcn_\n                key={item.name}\n                className={cn(\n                  'cursor-pointer px-4',\n                  isActive ? 'text-foreground bg-selection' : 'text-foreground-light'\n                )}\n                onSelect={() => handleSelect(item.name)}",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/ProjectAPIDocs/ContentSnippet.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/FirstLevelNav.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/LanguageSelector.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ProjectAPIDocs.Commands.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ProjectAPIDocs.constants.ts",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ProjectAPIDocs.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ResourceContent.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.Layout.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.StoragePicker.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.ResourcePicker.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ContentSnippet.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/FirstLevelNav.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/LanguageSelector.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ProjectAPIDocs.Commands.tsx",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ProjectAPIDocs.constants.ts",
+    "apps/studio/components/interfaces/ProjectAPIDocs/ProjectAPIDocs.tsx"
+  ],
+  "smell_id": "heuristic_props_1813",
+  "symbol_name": "ResourcePickerList",
+  "target_file": "apps/studio/components/interfaces/ProjectAPIDocs/SecondLevelNav.ResourcePicker.tsx",
+  "task_id": "task_2c1b0fe109"
+}

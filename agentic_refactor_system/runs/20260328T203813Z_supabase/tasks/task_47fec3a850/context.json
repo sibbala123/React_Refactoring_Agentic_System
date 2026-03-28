@@ -1,0 +1,50 @@
+{
+  "line_end": 95,
+  "line_start": 95,
+  "local_imports": [
+    "packages/ui-patterns/src/FilterBar/hooks.ts",
+    "packages/ui-patterns/src/FilterBar/useCommandHandling.ts",
+    "packages/ui-patterns/src/FilterBar/useKeyboardNavigation.ts"
+  ],
+  "primary_snippet": {
+    "content": "\n  rootRef: React.RefObject<HTMLDivElement>\n}\n\nconst FilterBarContext = createContext<FilterBarContextValue | null>(null)\n\nexport function useFilterBar() {\n  const ctx = useContext(FilterBarContext)\n  if (!ctx) {\n    throw new Error('useFilterBar must be used within FilterBar.Root')\n  }\n  return ctx\n}\n\nexport type FilterBarRootProps = {\n  children: React.ReactNode\n  filterProperties: FilterProperty[]\n  filters: FilterGroup\n  onFilterChange: (filters: FilterGroup) => void\n  freeformText: string\n  onFreeformTextChange: (text: string) => void\n  actions?: FilterBarAction[]\n  isLoading?: boolean\n  supportsOperators?: boolean\n  variant?: FilterBarVariant\n  icon?: React.ReactNode\n}\n\nexport type FilterBarVariant = 'default' | 'pill'\n\nexport function FilterBarRoot({\n  children,\n  filterProperties,\n  filters,\n  onFilterChange,\n  freeformText,\n  onFreeformTextChange,\n  actions,\n  isLoading: externalLoading,\n  supportsOperators = false,\n  variant = 'default',\n  icon,\n}: FilterBarRootProps) {\n  const rootRef = useRef<HTMLDivElement>(null)\n\n  const {\n    isLoading,\n    error,\n    hideTimeoutRef,\n    activeInput,\n    setActiveInput,\n    newPathRef,\n    setIsCommandMenuVisible,\n    highlightedConditionPath,\n    setHighlightedConditionPath,\n  } = useFilterBarState()\n\n  const { loadingOptions, propertyOptionsCache, loadPropertyOptions, optionsError } =\n    useOptionsCache()\n\n  const handleInputChange = useCallback(",
+    "end_line": 125,
+    "start_line": 65
+  },
+  "related_files": [
+    "packages/ui-patterns/src/FilterBar/CommandListItem.tsx",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.helpers.tsx",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.test.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterCondition.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterGroup.tsx",
+    "packages/ui-patterns/src/FilterBar/OperatorSymbolBadge.tsx",
+    "packages/ui-patterns/src/FilterBar/hooks.test.ts",
+    "packages/ui-patterns/src/FilterBar/hooks.ts",
+    "packages/ui-patterns/src/FilterBar/index.ts",
+    "packages/ui-patterns/src/FilterBar/menuItems.test.ts",
+    "packages/ui-patterns/src/FilterBar/menuItems.ts",
+    "packages/ui-patterns/src/FilterBar/types.ts",
+    "packages/ui-patterns/src/FilterBar/useAIFilter.ts",
+    "packages/ui-patterns/src/FilterBar/useCommandHandling.ts",
+    "packages/ui-patterns/src/FilterBar/useCommandMenu.ts",
+    "packages/ui-patterns/src/FilterBar/useKeyboardNavigation.ts",
+    "packages/ui-patterns/src/FilterBar/utils.test.ts",
+    "packages/ui-patterns/src/FilterBar/utils.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/FilterBar/FilterBarContext.tsx",
+    "packages/ui-patterns/src/FilterBar/hooks.ts",
+    "packages/ui-patterns/src/FilterBar/useCommandHandling.ts",
+    "packages/ui-patterns/src/FilterBar/useKeyboardNavigation.ts",
+    "packages/ui-patterns/src/FilterBar/CommandListItem.tsx",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.helpers.tsx",
+    "packages/ui-patterns/src/FilterBar/DefaultCommandList.tsx",
+    "packages/ui-patterns/src/FilterBar/FilterBar.test.tsx"
+  ],
+  "smell_id": "heuristic_props_6214",
+  "symbol_name": "FilterBarRoot",
+  "target_file": "packages/ui-patterns/src/FilterBar/FilterBarContext.tsx",
+  "task_id": "task_47fec3a850"
+}

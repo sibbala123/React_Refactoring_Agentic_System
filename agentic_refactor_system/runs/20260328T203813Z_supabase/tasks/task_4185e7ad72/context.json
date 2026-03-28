@@ -1,0 +1,26 @@
+{
+  "line_end": 30,
+  "line_start": 30,
+  "local_imports": [
+    "packages/ui/src/lib/theme/defaultTheme.ts",
+    "packages/ui/src/lib/utils/index.ts"
+  ],
+  "primary_snippet": {
+    "content": "import React from 'react'\n\n// @ts-ignore\nimport defaultTheme from '../../theme/defaultTheme'\nimport { cn } from '../../utils'\n\n// @ts-ignore\n// import FormLayoutStyles from './FormLayout.module.css'\n\ntype Props = {\n  align?: 'left' | 'right'\n  children?: any\n  className?: string\n  descriptionText?: string | React.ReactNode\n  error?: string | React.ReactNode\n  id?: string\n  label?: string | React.ReactNode\n  labelOptional?: string | React.ReactNode\n  layout?: 'horizontal' | 'vertical' | 'flex'\n  style?: React.CSSProperties\n  // flex?: boolean\n  responsive?: boolean\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge'\n  beforeLabel?: string\n  afterLabel?: string | React.ReactNode\n  nonBoxInput?: boolean\n  labelLayout?: 'horizontal' | 'vertical'\n}\n\nexport function FormLayout({\n  align = 'left',\n  children,\n  className,\n  descriptionText,\n  error,\n  id,\n  label,\n  labelOptional,\n  layout = 'vertical',\n  style,\n  // flex = false,\n  labelLayout,\n  responsive = true,\n  size = 'medium',\n  beforeLabel,\n  afterLabel,\n  nonBoxInput = label ? false : true,\n}: Props) {\n  // _error is used label && to delay the error string beind removed too soon\n  // once it has animated out, the string will be removed\n  // const [_error, _setError] = useState(error)\n\n  // useEffect(() => {\n  //   if (!error) {\n  //     console.log('no error')\n  //     setTimeout(function () {\n  //       _setError(error)\n  //     }, 500)\n  //   } else {\n  //     console.log('has error')",
+    "end_line": 60,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui/src/lib/Layout/FormLayout/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/defaultTheme.ts",
+    "packages/ui/src/lib/utils/index.ts",
+    "packages/ui/src/lib/Layout/FormLayout/index.tsx"
+  ],
+  "smell_id": "heuristic_props_6107",
+  "symbol_name": "FormLayout",
+  "target_file": "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+  "task_id": "task_4185e7ad72"
+}

@@ -1,0 +1,48 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { RefreshCw, Search, X } from 'lucide-react'\nimport type { KeyboardEvent } from 'react'\n\nimport { Button } from 'ui'\nimport { Input } from 'ui-patterns/DataInputs/Input'\n\ninterface CronJobsTabHeaderProps {\n  search: string\n  isRefreshing: boolean\n  onSearchChange: (value: string) => void\n  onSearchSubmit: () => void\n  onClearSearch: () => void\n  onRefresh: () => void\n  onCreateJob: () => void\n}\n\nexport const CronJobsTabHeader = ({\n  search,\n  isRefreshing,\n  onSearchChange,\n  onSearchSubmit,\n  onClearSearch,\n  onRefresh,\n  onCreateJob,\n}: CronJobsTabHeaderProps) => {\n  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {\n    if (event.key === 'Enter' || event.code === 'NumpadEnter') {\n      onSearchSubmit()\n    }\n  }\n\n  return (\n    <div className=\"bg-surface-200 py-3 px-10 flex items-center justify-between flex-wrap gap-y-2\">\n      <Input\n        size=\"tiny\"\n        className=\"w-52\"\n        placeholder=\"Search for a job\"\n        icon={<Search />}\n        value={search}\n        onChange={(e) => onSearchChange(e.target.value)}\n        onKeyDown={handleKeyDown}\n        actions={[\n          search && (\n            <Button\n              key=\"clear-search\"\n              size=\"tiny\"\n              type=\"text\"",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobPage.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobTableCell.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobs.constants.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobs.utils.test.ts",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobs.utils.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsEmptyState.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.CleanupNotice.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.DataGrid.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.EstimateErrorNotice.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.constants.ts",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.useCleanupActions.ts",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.useCronJobsData.ts",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronSyntaxChart.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/DeleteCronJob.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/EdgeFunctionSection.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/HttpBodyFieldSection.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/HttpHeaderFieldsSection.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/HttpRequestSection.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/PreviousRunsTab.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/SqlFunctionSection.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/SqlSnippetSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.Header.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobPage.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobTableCell.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobs.constants.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobs.utils.test.ts",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobs.utils.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsEmptyState.tsx",
+    "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.CleanupNotice.tsx"
+  ],
+  "smell_id": "heuristic_props_1498",
+  "symbol_name": "CronJobsTabHeader",
+  "target_file": "apps/studio/components/interfaces/Integrations/CronJobs/CronJobsTab.Header.tsx",
+  "task_id": "task_4f97d712e5"
+}

@@ -1,0 +1,41 @@
+{
+  "line_end": 27,
+  "line_start": 27,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { ButtonTooltip } from 'components/ui/ButtonTooltip'\nimport { ArrowDownNarrowWide, ArrowDownWideNarrow } from 'lucide-react'\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuRadioGroup,\n  DropdownMenuRadioItem,\n  DropdownMenuSub,\n  DropdownMenuSubContent,\n  DropdownMenuSubTrigger,\n  DropdownMenuTrigger,\n} from 'ui'\n\ninterface SortDropdownProps {\n  specificFilterColumn: string\n  sortColumn: string\n  sortOrder: string\n  sortByValue: string\n  showSortByEmail: boolean\n  showSortByPhone: boolean\n  setSortByValue: (value: string) => void\n  improvedSearchEnabled: boolean\n}\n\n/** [Joshen] To refactor to use the SortDropdown component in components/ui */\nexport const SortDropdown = ({\n  specificFilterColumn,\n  sortColumn,\n  sortOrder,\n  sortByValue,\n  showSortByEmail,\n  showSortByPhone,\n  setSortByValue,\n  improvedSearchEnabled = false,\n}: SortDropdownProps) => {\n  if (specificFilterColumn !== 'freeform' && !improvedSearchEnabled) {\n    return (\n      <ButtonTooltip\n        disabled\n        type=\"default\"\n        icon={<ArrowDownNarrowWide />}\n        tooltip={{\n          content: {\n            side: 'bottom',\n            className: 'w-80 text-center',\n            text: (\n              <>\n                Sorting cannot be changed when searching on a specific column. If you'd like to sort\n                on other columns, change the search to{' '}\n                <span className=\"text-warning\">unified search</span> from the search dropdown.\n              </>\n            ),\n          },\n        }}\n      >\n        Sorted by user ID",
+    "end_line": 57,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Users/AddUserDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/BanUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/CreateUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/DeleteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/InviteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserHeader.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserLogs.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserOverview.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserPanel.tsx",
+    "apps/studio/components/interfaces/Auth/Users/Users.constants.ts",
+    "apps/studio/components/interfaces/Auth/Users/Users.utils.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersFooter.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersGridComponents.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersSearch.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersV2.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Users/SortDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/AddUserDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/BanUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/CreateUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/DeleteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/InviteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserHeader.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserLogs.tsx"
+  ],
+  "smell_id": "heuristic_props_1078",
+  "symbol_name": "SortDropdown",
+  "target_file": "apps/studio/components/interfaces/Auth/Users/SortDropdown.tsx",
+  "task_id": "task_266bc543d1"
+}

@@ -1,0 +1,41 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import Editor from '@monaco-editor/react'\nimport { Check, Copy } from 'lucide-react'\nimport { useMemo, useState } from 'react'\n\nimport { Button, cn, copyToClipboard } from 'ui'\n\ntype SqlMonacoBlockProps = {\n  value?: string\n  className?: string\n  wrapperClassName?: string\n  hideCopy?: boolean\n  // Fixed height in px. Defaults to 310 to match previous CodeBlock max height\n  height?: number\n  // Show line numbers. Defaults to false to match previous CodeBlock\n  lineNumbers?: 'on' | 'off'\n}\n\nexport const SqlMonacoBlock = ({\n  value,\n  className,\n  wrapperClassName,\n  height = 310,\n  lineNumbers = 'off',\n  hideCopy = false,\n}: SqlMonacoBlockProps) => {\n  const [copied, setCopied] = useState(false)\n\n  const content = useMemo(() => value ?? '', [value])\n\n  const handleCopy = (value: string) => {\n    setCopied(true)\n    copyToClipboard(value)\n    setTimeout(() => setCopied(false), 1000)\n  }\n\n  return (\n    <div\n      className={cn('group relative border rounded-md overflow-hidden w-full', wrapperClassName)}\n    >\n      <Editor\n        theme=\"supabase\"\n        language=\"pgsql\"\n        value={content}\n        height={height}\n        className={className}\n        wrapperProps={{\n          className:\n            '[&_.monaco-editor]:!bg-transparent [&_.monaco-editor-background]:!bg-transparent [&_.monaco-editor]:!outline-transparent [&_.cursor]:!hidden',",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/QueryPerformance/QueryDetail.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryIndexes.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPanel.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.ai.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.constants.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.types.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.utils.test.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.utils.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceChart.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceFilterBar.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceGrid.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceMetrics.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/useQueryPerformanceQuery.test.ts",
+    "apps/studio/components/interfaces/QueryPerformance/useQueryPerformanceQuery.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/QueryPerformance/SqlMonacoBlock.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryDetail.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryIndexes.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPanel.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.ai.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.constants.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.types.ts"
+  ],
+  "smell_id": "heuristic_props_1922",
+  "symbol_name": "SqlMonacoBlock",
+  "target_file": "apps/studio/components/interfaces/QueryPerformance/SqlMonacoBlock.tsx",
+  "task_id": "task_565c709ae1"
+}

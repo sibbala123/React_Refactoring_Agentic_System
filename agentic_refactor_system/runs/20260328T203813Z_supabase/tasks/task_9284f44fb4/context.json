@@ -1,0 +1,41 @@
+{
+  "line_end": 15,
+  "line_start": 15,
+  "local_imports": [
+    "apps/www/components/Pricing/UpgradePlan.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nimport { plans } from 'shared-data/plans'\nimport { pricing } from 'shared-data/pricing'\nimport { Button, Select, cn } from 'ui'\nimport { PricingTableRowDesktop, PricingTableRowMobile } from '~/components/Pricing/PricingTableRow'\nimport Solutions from '~/data/MainProducts'\nimport { Organization } from '~/data/organizations'\nimport { useSendTelemetryEvent } from '~/lib/telemetry'\nimport UpgradePlan from './UpgradePlan'\n\nconst MobileHeader = ({\n  description,\n  priceDescription,\n  price,\n  plan,\n  showDollarSign = true,\n  from = false,\n  organizations,\n  hasExistingOrganizations,\n}: {\n  description: string\n  priceDescription: string\n  price: string\n  plan: string\n  showDollarSign?: boolean\n  from?: boolean\n  organizations?: Organization[]\n  hasExistingOrganizations?: boolean\n}) => {\n  const sendTelemetryEvent = useSendTelemetryEvent()\n\n  const selectedPlan = plans.find((p) => p.name === plan)!\n  const isUpgradablePlan = selectedPlan.name === 'Pro' || selectedPlan.name === 'Team'\n\n  return (\n    <div className=\"mt-8 px-4 mobile-header\">\n      <h2 className=\"text-foreground text-3xl font-medium uppercase font-mono\">{plan}</h2>\n      <div className=\"flex items-baseline gap-2\">\n        {from && <span className=\"text-foreground text-base\">From</span>}\n        {showDollarSign ? (\n          <span className=\"h1 font-mono\">",
+    "end_line": 45,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/Pricing/ComputePricingCalculator.tsx",
+    "apps/www/components/Pricing/ComputePricingTable.tsx",
+    "apps/www/components/Pricing/CostControlAnimation.tsx",
+    "apps/www/components/Pricing/PricingAddOnTable.tsx",
+    "apps/www/components/Pricing/PricingAddons.tsx",
+    "apps/www/components/Pricing/PricingComputeAnimation.tsx",
+    "apps/www/components/Pricing/PricingComputeSection.tsx",
+    "apps/www/components/Pricing/PricingDiskSection.tsx",
+    "apps/www/components/Pricing/PricingFAQs.tsx",
+    "apps/www/components/Pricing/PricingIcons.tsx",
+    "apps/www/components/Pricing/PricingPlans.tsx",
+    "apps/www/components/Pricing/PricingTableRow.tsx",
+    "apps/www/components/Pricing/UpgradePlan.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Pricing/PricingComparisonTable.tsx",
+    "apps/www/components/Pricing/UpgradePlan.tsx",
+    "apps/www/components/Pricing/ComputePricingCalculator.tsx",
+    "apps/www/components/Pricing/ComputePricingTable.tsx",
+    "apps/www/components/Pricing/CostControlAnimation.tsx",
+    "apps/www/components/Pricing/PricingAddOnTable.tsx",
+    "apps/www/components/Pricing/PricingAddons.tsx",
+    "apps/www/components/Pricing/PricingComputeAnimation.tsx"
+  ],
+  "smell_id": "heuristic_props_4727",
+  "symbol_name": "MobileHeader",
+  "target_file": "apps/www/components/Pricing/PricingComparisonTable.tsx",
+  "task_id": "task_9284f44fb4"
+}

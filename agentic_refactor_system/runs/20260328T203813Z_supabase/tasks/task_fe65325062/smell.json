@@ -1,0 +1,14 @@
+{
+  "component_name": "CreateProject",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/pages/integrations/vercel/[slug]/deploy-button/new-project.tsx",
+  "line_end": 304,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_3856",
+  "smell_type": "Large Component"
+}

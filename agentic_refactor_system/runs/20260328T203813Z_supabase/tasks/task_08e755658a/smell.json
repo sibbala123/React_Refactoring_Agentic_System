@@ -1,0 +1,14 @@
+{
+  "component_name": "Layout",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/docs/layouts/guides/index.tsx",
+  "line_end": 8,
+  "line_start": 8,
+  "severity": "low",
+  "smell_id": "heuristic_props_0647",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,48 @@
+{
+  "line_end": 25,
+  "line_start": 25,
+  "local_imports": [
+    "apps/studio/components/layouts/Navigation/LayoutHeader/HomeIcon.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useParams } from 'common'\nimport { useIsFloatingMobileToolbarEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'\nimport { ConnectButton } from 'components/interfaces/ConnectButton/ConnectButton'\nimport { LocalDropdown } from 'components/interfaces/LocalDropdown'\nimport { SidebarContent } from 'components/interfaces/Sidebar'\nimport { UserDropdown } from 'components/interfaces/UserDropdown'\nimport { FloatingMobileToolbar } from 'components/layouts/Navigation/FloatingMobileToolbar/FloatingMobileToolbar'\nimport { useOrganizationsQuery } from 'data/organizations/organizations-query'\nimport { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'\nimport { IS_PLATFORM } from 'lib/constants'\nimport { ChevronLeft, Menu, Search } from 'lucide-react'\nimport Link from 'next/link'\nimport { useState } from 'react'\nimport { Button, cn } from 'ui'\nimport { CommandMenuTrigger, MobileSheetNav } from 'ui-patterns'\n\nimport { HomeIcon } from '../LayoutHeader/HomeIcon'\nimport { useMobileSheet } from './MobileSheetContext'\nimport { OrgSelector } from './OrgSelector'\nimport { ProjectBranchSelector } from './ProjectBranchSelector'\n\nexport const ICON_SIZE = 20\nexport const ICON_STROKE_WIDTH = 1.5\n\nconst MobileNavigationBar = ({\n  hideMobileMenu,\n  backToDashboardURL,\n}: {\n  hideMobileMenu?: boolean\n  backToDashboardURL?: string\n}) => {\n  const [isSheetOpen, setIsSheetOpen] = useState(false)\n  const showFloatingMobileToolbar = useIsFloatingMobileToolbarEnabled()\n  const { ref: projectRef, slug } = useParams()\n  const { data: selectedOrganization } = useSelectedOrganizationQuery()\n  const { isPending: isLoadingOrganizations } = useOrganizationsQuery()\n  const isProjectScope = !!projectRef\n  const showOrgSelection = slug || isLoadingOrganizations || (selectedOrganization && projectRef)\n  const { openMenu } = useMobileSheet()\n\n  return (\n    <div className=\"w-full flex flex-row md:hidden\">\n      <nav\n        className={cn(\n          'group pr-3 pl-2 z-10 w-full h-12 gap-2',\n          'border-b bg-dash-sidebar border-default shadow-[0_0_30px_0_rgba(0,0,0,0.07)]',\n          'transition-width duration-200',\n          'hide-scrollbar flex flex-row items-center justify-between overflow-x-auto'\n        )}\n      >\n        <div className={cn('flex min-w-0 flex-shrink items-center gap-2', !IS_PLATFORM && 'pl-2')}>\n          {showFloatingMobileToolbar && backToDashboardURL && (\n            <div className=\"flex items-center justify-center ml-1 flex-0 md:hidden h-full aspect-square\">\n              <Link\n                href={backToDashboardURL}",
+    "end_line": 55,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconButton.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationIconLink.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.test.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.utils.ts",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorPopover.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheet.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorSheetTabTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelectorTrigger.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/StudioMobileSheetNav.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+    "apps/studio/components/layouts/Navigation/LayoutHeader/HomeIcon.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileSheetContext.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/OrgSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/ProjectBranchSelector.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/CommandOption.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/MobileViewNav.tsx",
+    "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.test.tsx"
+  ],
+  "smell_id": "heuristic_props_2502",
+  "symbol_name": "MobileNavigationBar",
+  "target_file": "apps/studio/components/layouts/Navigation/NavigationBar/MobileNavigationBar.tsx",
+  "task_id": "task_27332b5ea3"
+}

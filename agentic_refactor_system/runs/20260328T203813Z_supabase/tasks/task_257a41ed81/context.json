@@ -1,0 +1,40 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  cn,\n  Command_Shadcn_,\n  CommandGroup_Shadcn_,\n  CommandInput_Shadcn_,\n  CommandItem_Shadcn_,\n  CommandList_Shadcn_,\n  Popover_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  ScrollArea,\n  Tooltip,\n  TooltipContent,\n  TooltipTrigger,\n} from 'ui'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\n\nimport { exposedFunctionCountsQueryOptions } from '@/data/privileges/exposed-function-counts-query'\nimport { exposedFunctionsInfiniteQueryOptions } from '@/data/privileges/exposed-functions-infinite-query'\nimport { useSelectedProjectQuery } from '@/hooks/misc/useSelectedProject'\nimport { pluralize } from '@/lib/helpers'\n\ninterface ExposedFunctionSelectorProps {\n  disabled?: boolean\n  selectedSchemas: string[]\n  pendingAddFunctionNames: string[]\n  pendingRemoveFunctionNames: string[]\n  onTogglePendingAdd: (functionName: string) => void\n  onTogglePendingRemove: (functionName: string) => void\n}\n\nexport const ExposedFunctionSelector = ({\n  disabled = false,\n  selectedSchemas,\n  pendingAddFunctionNames,\n  pendingRemoveFunctionNames,\n  onTogglePendingAdd,\n  onTogglePendingRemove,\n}: ExposedFunctionSelectorProps) => {\n  const [open, setOpen] = useState(false)\n  const [search, setSearch] = useState('')\n  const debouncedSearch = useDebounce(search, 300)\n\n  const { data: project } = useSelectedProjectQuery()\n\n  const scrollRootRef = useRef<HTMLDivElement | null>(null)\n  const [sentinelRef, entry] = useIntersectionObserver({\n    root: scrollRootRef.current,\n    threshold: 0,\n    rootMargin: '0px',\n  })\n\n  const { data: countsData, isPending: isCountsPending } = useQuery({\n    ...exposedFunctionCountsQueryOptions({\n      projectRef: project?.ref,\n      connectionString: project?.connectionString,\n      selectedSchemas,\n    }),\n    placeholderData: keepPreviousData,\n  })\n  const pendingCount = pendingAddFunctionNames.length + pendingRemoveFunctionNames.length\n",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/API/DataApiDisabledAlert.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.types.ts",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.utils.ts",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitchForm.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitchStates.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiProjectUrlCard.tsx",
+    "apps/studio/components/interfaces/Settings/API/ExposedSchemaSelector.tsx",
+    "apps/studio/components/interfaces/Settings/API/ExposedTableSelector.tsx",
+    "apps/studio/components/interfaces/Settings/API/HardenAPIModal.tsx",
+    "apps/studio/components/interfaces/Settings/API/PostgrestConfig.tsx",
+    "apps/studio/components/interfaces/Settings/API/ServiceList.tsx",
+    "apps/studio/components/interfaces/Settings/API/UnsafeEntitiesConfirmModal.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/API/ExposedFunctionSelector.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiDisabledAlert.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.types.ts",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitch.utils.ts",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitchForm.tsx",
+    "apps/studio/components/interfaces/Settings/API/DataApiEnableSwitchStates.tsx"
+  ],
+  "smell_id": "heuristic_props_2003",
+  "symbol_name": "ExposedFunctionSelector",
+  "target_file": "apps/studio/components/interfaces/Settings/API/ExposedFunctionSelector.tsx",
+  "task_id": "task_257a41ed81"
+}

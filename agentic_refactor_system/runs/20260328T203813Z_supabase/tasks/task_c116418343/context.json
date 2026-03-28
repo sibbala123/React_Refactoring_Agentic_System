@@ -1,0 +1,29 @@
+{
+  "line_end": 36,
+  "line_start": 36,
+  "local_imports": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.tsx"
+  ],
+  "primary_snippet": {
+    "content": "\nconst SLOT_LAG_FIELDS: {\n  key: SlotLagMetricKey\n  label: string\n  type: 'bytes' | 'duration'\n  description: string\n}[] = [\n  {\n    key: 'confirmed_flush_lsn_bytes',\n    label: 'WAL Flush lag (size)',\n    type: 'bytes',\n    description:\n      'Bytes between the newest WAL record applied locally and the latest flushed WAL record acknowledged by ETL.',\n  },\n  {\n    key: 'flush_lag',\n    label: 'WAL Flush lag (time)',\n    type: 'duration',\n    description:\n      'Time between flushing recent WAL locally and receiving notification that ETL has written and flushed it.',\n  },\n  {\n    key: 'safe_wal_size_bytes',\n    label: 'Remaining WAL size',\n    type: 'bytes',\n    description:\n      'Bytes still available to write to WAL before this slot risks entering the \"lost\" state.',\n  },\n]\n\nexport const SlotLagMetricsInline = ({\n  tableName,\n  metrics,\n}: {\n  tableName: string\n  metrics: SlotLagMetrics\n}) => {\n  return (\n    <div className=\"flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-foreground\">\n      <span className=\"truncate font-medium\" title={tableName}>\n        {tableName}\n      </span>\n      <span className=\"text-foreground-lighter\">\u2022</span>\n      <div className=\"flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] text-foreground-light\">\n        {SLOT_LAG_FIELDS.map(({ key, label, type }) => {\n          const { display } = getFormattedLagValue(type, metrics[key])\n          return (\n            <span key={`${tableName}-${key}`} className=\"flex items-center gap-1\">\n              <span className=\"uppercase tracking-wide text-[10px] text-foreground-lighter\">\n                {label}\n              </span>\n              <span className=\"text-foreground\">{display}</span>\n            </span>\n          )\n        })}\n      </div>\n    </div>\n  )\n}\n\nexport const SlotLagMetricsList = ({",
+    "end_line": 66,
+    "start_line": 6
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.types.ts",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.utils.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/TableReplicationRow.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/SlotLagMetrics.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.types.ts",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.utils.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/TableReplicationRow.tsx"
+  ],
+  "smell_id": "heuristic_props_1329",
+  "symbol_name": "SlotLagMetricsInline",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/SlotLagMetrics.tsx",
+  "task_id": "task_c116418343"
+}

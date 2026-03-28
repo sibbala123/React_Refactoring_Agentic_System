@@ -1,0 +1,14 @@
+{
+  "component_name": "MenubarShortcut",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui/src/components/shadcn/ui/menubar.tsx",
+  "line_end": 221,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_6050",
+  "smell_type": "Large Component"
+}

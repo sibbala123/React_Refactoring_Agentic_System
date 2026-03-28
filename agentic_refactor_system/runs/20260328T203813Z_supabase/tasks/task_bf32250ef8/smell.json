@@ -1,0 +1,14 @@
+{
+  "component_name": "UsageBarChart",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=11",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Organization/Usage/UsageBarChart.tsx",
+  "line_end": 33,
+  "line_start": 33,
+  "severity": "low",
+  "smell_id": "heuristic_props_1766",
+  "smell_type": "Too Many Props"
+}

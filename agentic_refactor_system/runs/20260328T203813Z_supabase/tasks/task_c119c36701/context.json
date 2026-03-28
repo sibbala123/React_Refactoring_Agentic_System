@@ -1,0 +1,28 @@
+{
+  "line_end": 32,
+  "line_start": 32,
+  "local_imports": [
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "\nimport clsx from 'clsx'\nimport React, { useEffect, useState } from 'react'\n\nimport { FormLayout } from '../../lib/Layout/FormLayout/FormLayout'\nimport styleHandler from '../../lib/theme/styleHandler'\nimport { useFormContext } from '../Form/FormContext'\n\ninterface Props extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'size'> {\n  name?: string\n  disabled?: boolean\n  layout?: 'horizontal' | 'vertical' | 'flex'\n  error?: string\n  descriptionText?: string | React.ReactNode\n  label?: string | React.ReactNode\n  afterLabel?: string | React.ReactNode\n  beforeLabel?: string\n  labelOptional?: string\n  className?: any\n  defaultChecked?: boolean\n  checked?: boolean\n  align?: 'right' | 'left'\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge'\n  labelLayout?: 'horizontal' | 'vertical'\n  validation?: (x: any) => void\n}\n\n/**\n * @deprecated Use `import { Switch } from \"ui\"` instead\n */\nfunction Toggle({\n  disabled,\n  id = '',\n  name = '',\n  layout = 'flex',\n  error,\n  descriptionText,\n  label,\n  afterLabel,\n  beforeLabel,\n  labelOptional,\n  onChange,\n  onBlur,\n  defaultChecked,\n  checked,\n  className,\n  align = 'left',\n  size = 'medium',\n  validation,\n  labelLayout,\n  ...props\n}: Props) {\n  const __styles = styleHandler('toggle')\n\n  const { formContextOnChange, values, errors, handleBlur, touched, fieldLevelValidation } =\n    useFormContext()\n\n  if (values && !checked) checked = values[id || name]\n\n  const [intChecked, setIntChecked] = useState((defaultChecked || checked) ?? false)\n",
+    "end_line": 62,
+    "start_line": 2
+  },
+  "related_files": [
+    "packages/ui/src/components/Toggle/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Toggle/Toggle.tsx",
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/Toggle/index.tsx"
+  ],
+  "smell_id": "heuristic_props_6092",
+  "symbol_name": "Toggle",
+  "target_file": "packages/ui/src/components/Toggle/Toggle.tsx",
+  "task_id": "task_c119c36701"
+}

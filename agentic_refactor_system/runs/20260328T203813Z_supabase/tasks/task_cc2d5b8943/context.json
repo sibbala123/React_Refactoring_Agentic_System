@@ -1,0 +1,56 @@
+{
+  "line_end": 29,
+  "line_start": 29,
+  "local_imports": [
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistantChatSelector.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIOptInModal.tsx",
+    "apps/studio/components/ui/ButtonTooltip.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { Clipboard, Ellipsis, Plus, Settings, X } from 'lucide-react'\nimport { useState } from 'react'\nimport { useAiAssistantStateSnapshot } from 'state/ai-assistant-state'\nimport {\n  AiIconAnimation,\n  Button,\n  copyToClipboard,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from 'ui'\nimport { Admonition } from 'ui-patterns'\n\nimport { ButtonTooltip } from '../ButtonTooltip'\nimport { AIAssistantChatSelector } from './AIAssistantChatSelector'\nimport { AIOptInModal } from './AIOptInModal'\n\ninterface AIAssistantHeaderProps {\n  isChatLoading: boolean\n  onNewChat: () => void\n  onCloseAssistant: () => void\n  showMetadataWarning: boolean\n  updatedOptInSinceMCP: boolean\n  isHipaaProjectDisallowed: boolean\n  aiOptInLevel: 'disabled' | 'schema' | 'full' | string | undefined\n}\n\nexport const AIAssistantHeader = ({\n  isChatLoading,\n  onNewChat,\n  onCloseAssistant,\n  showMetadataWarning,\n  updatedOptInSinceMCP,\n  isHipaaProjectDisallowed,\n  aiOptInLevel,\n}: AIAssistantHeaderProps) => {\n  const snap = useAiAssistantStateSnapshot()\n  const [isOptInModalOpen, setIsOptInModalOpen] = useState(false)\n  return (\n    <div className=\"z-30 sticky top-0\">\n      <div className=\"border-b border-b-muted flex items-center bg gap-x-4 pl-4 pr-3 min-h-[var(--header-height)]\">\n        <div className=\"text-sm flex-1 flex items-center\">\n          <AiIconAnimation size={20} allowHoverEffect={false} />\n          <span className=\"text-border-stronger dark:text-border-strong ml-3\">\n            <svg\n              viewBox=\"0 0 24 24\"\n              width=\"16\"\n              height=\"16\"\n              stroke=\"currentColor\"\n              strokeWidth=\"1\"\n              strokeLinecap=\"round\"\n              strokeLinejoin=\"round\"\n              fill=\"none\"\n              shapeRendering=\"geometricPrecision\"\n            >\n              <path d=\"M16 3.549L7.12 20.600\" />\n            </svg>\n          </span>",
+    "end_line": 59,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.prompts.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.types.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.utils.test.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.utils.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistantChatSelector.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIOnboarding.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIOptInModal.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AiAssistant.constants.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AssistantChatForm.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/CollapsibleCodeBlock.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/ConfirmFooter.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/DeleteMessageConfirmModal.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/DisplayBlockRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/EdgeFunctionRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Actions.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Context.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Display.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Parts.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.utils.ts",
+    "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.test.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/ModelSelector.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/SnippetRow.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/hooks.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistantHeader.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistantChatSelector.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIOptInModal.tsx",
+    "apps/studio/components/ui/ButtonTooltip.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.prompts.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.types.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.utils.test.ts"
+  ],
+  "smell_id": "heuristic_props_2642",
+  "symbol_name": "AIAssistantHeader",
+  "target_file": "apps/studio/components/ui/AIAssistantPanel/AIAssistantHeader.tsx",
+  "task_id": "task_cc2d5b8943"
+}

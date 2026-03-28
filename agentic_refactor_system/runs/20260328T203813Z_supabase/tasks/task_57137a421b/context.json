@@ -1,0 +1,43 @@
+{
+  "line_end": 40,
+  "line_start": 40,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  Separator,\n  Sheet,\n  SheetContent,\n  SheetFooter,\n  SheetHeader,\n  SheetSection,\n  SheetTitle,\n  Tabs_Shadcn_ as Tabs,\n  TabsContent_Shadcn_ as TabsContent,\n  TabsList_Shadcn_ as TabsList,\n  TabsTrigger_Shadcn_ as TabsTrigger,\n} from 'ui'\nimport { TimestampInfo } from 'ui-patterns'\n\nimport type { WebhookDelivery } from './PlatformWebhooks.types'\nimport { formatDeliveryStatus, statusBadgeVariant } from './PlatformWebhooksView.utils'\n\ninterface PlatformWebhooksDeliveryDetailsSheetProps {\n  deliveryAttempt: number | null\n  deliveryDetailsTab: 'event' | 'response'\n  deliveryEventPayload: string\n  deliveryResponsePayload: string\n  open: boolean\n  selectedDelivery: WebhookDelivery | null\n  onCopy: (value: string, label: string) => void\n  onOpenChange: (open: boolean) => void\n  onRetryDelivery: (deliveryId: string) => void\n  onTabChange: (tab: 'event' | 'response') => void\n}\n\nexport const PlatformWebhooksDeliveryDetailsSheet = ({\n  deliveryAttempt,\n  deliveryDetailsTab,\n  deliveryEventPayload,\n  deliveryResponsePayload,\n  open,\n  selectedDelivery,\n  onCopy,\n  onOpenChange,\n  onRetryDelivery,\n  onTabChange,\n}: PlatformWebhooksDeliveryDetailsSheetProps) => {\n  const retryableDelivery =\n    selectedDelivery && selectedDelivery.status !== 'success' ? selectedDelivery : null\n\n  return (\n    <Sheet open={open} onOpenChange={onOpenChange}>\n      <SheetContent size=\"default\" className=\"flex flex-col gap-0\">\n        <SheetHeader>\n          <div className=\"flex items-center gap-2\">\n            <SheetTitle>Delivery details</SheetTitle>\n            {selectedDelivery && (\n              <Badge variant={statusBadgeVariant[selectedDelivery.status]}>\n                {formatDeliveryStatus(selectedDelivery.status)}\n              </Badge>\n            )}\n          </div>\n        </SheetHeader>\n        <Separator />\n\n        {selectedDelivery && (",
+    "end_line": 70,
+    "start_line": 10
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.mock.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.store.test.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.store.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.types.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.utils.test.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.utils.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointDetails.test.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointDetails.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointList.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointSheet.test.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointSheet.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksHeader.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksPage.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksPage.utils.test.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksPage.utils.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksView.utils.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/index.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksDeliveryDetailsSheet.tsx",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.mock.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.store.test.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.store.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.types.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.utils.test.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooks.utils.ts",
+    "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksEndpointDetails.test.tsx"
+  ],
+  "smell_id": "heuristic_props_1781",
+  "symbol_name": "PlatformWebhooksDeliveryDetailsSheet",
+  "target_file": "apps/studio/components/interfaces/Platform/Webhooks/PlatformWebhooksDeliveryDetailsSheet.tsx",
+  "task_id": "task_57137a421b"
+}

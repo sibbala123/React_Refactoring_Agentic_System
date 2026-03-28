@@ -1,0 +1,14 @@
+{
+  "component_name": "TotalUsage",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=8",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Organization/Usage/TotalUsage.tsx",
+  "line_end": 42,
+  "line_start": 42,
+  "severity": "low",
+  "smell_id": "heuristic_props_1761",
+  "smell_type": "Too Many Props"
+}

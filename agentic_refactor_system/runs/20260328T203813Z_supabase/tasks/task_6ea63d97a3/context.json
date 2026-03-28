@@ -1,0 +1,24 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [
+    "packages/ui/src/lib/utils/cn.ts"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { ChevronRight } from 'lucide-react'\nimport Link from 'next/link'\n\nimport { cn } from '../../lib/utils/cn'\n\ninterface Props {\n  label: string\n  url?: string\n  className?: string\n  counter?: number\n  hasChevron?: boolean\n  chevronAnimation?: 'translate' | 'fadeIn'\n  target?: '_blank' | '_self'\n}\n\nfunction TextLink({\n  url = '',\n  label,\n  className,\n  counter,\n  hasChevron = true,\n  chevronAnimation = 'translate',\n  target = '_self',\n  ...props\n}: Props) {\n  return (\n    <Link\n      href={url}\n      className={cn(\n        'group/text-link text-foreground-light hover:text-foreground mt-3 block cursor-pointer text-sm focus-visible:ring-2 focus-visible:outline-none focus-visible:rounded-sm focus-visible:ring-foreground-lighter focus-visible:text-foreground',\n        className\n      )}\n      target={target}\n      {...props}\n    >\n      <div className=\"group flex items-center gap-1\">\n        <span className=\"sr-only\">{`${label} about ${url}`}</span>\n        <span>{label}</span>\n        {counter && (\n          <span className=\"text-xs flex items-center justify-center text-foreground-lighter group-hover/text-link:text-foreground\">\n            ({counter})\n          </span>\n        )}\n        {hasChevron && (\n          <div\n            className={cn(",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui/src/components/TextLink/index.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/TextLink/TextLink.tsx",
+    "packages/ui/src/lib/utils/cn.ts",
+    "packages/ui/src/components/TextLink/index.ts"
+  ],
+  "smell_id": "heuristic_props_6086",
+  "symbol_name": "TextLink",
+  "target_file": "packages/ui/src/components/TextLink/TextLink.tsx",
+  "task_id": "task_6ea63d97a3"
+}

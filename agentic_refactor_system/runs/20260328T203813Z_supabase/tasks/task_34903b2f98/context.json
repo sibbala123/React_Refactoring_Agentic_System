@@ -1,0 +1,39 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useParams } from 'common'\nimport { useInfraMonitoringAttributesQuery } from 'data/analytics/infra-monitoring-query'\nimport { useMaxConnectionsQuery } from 'data/database/max-connections-query'\nimport dayjs from 'dayjs'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport Link from 'next/link'\nimport { useMemo } from 'react'\nimport { cn } from 'ui'\nimport {\n  MetricCard,\n  MetricCardContent,\n  MetricCardHeader,\n  MetricCardLabel,\n  MetricCardValue,\n} from 'ui-patterns/MetricCard'\n\nimport {\n  parseConnectionsData,\n  parseInfrastructureMetrics,\n} from './DatabaseInfrastructureSection.utils'\n\ntype DatabaseInfrastructureSectionProps = {\n  interval: '1hr' | '1day' | '7day'\n  refreshKey: number\n  dbErrorRate: number\n  isLoading: boolean\n  slowQueriesCount?: number\n  slowQueriesLoading?: boolean\n}\n\nexport const DatabaseInfrastructureSection = ({\n  interval,\n  refreshKey,\n  dbErrorRate,\n  isLoading: dbLoading,\n  slowQueriesCount = 0,\n  slowQueriesLoading = false,\n}: DatabaseInfrastructureSectionProps) => {\n  const { ref: projectRef } = useParams()\n  const { data: project } = useSelectedProjectQuery()\n\n  // refreshKey forces date recalculation when user clicks refresh button\n  // eslint-disable-next-line react-hooks/exhaustive-deps\n  const { startDate, endDate, infraInterval } = useMemo(() => {\n    const now = dayjs()\n    const end = now.toISOString()\n    let start: string\n    let infraInterval: '1h' | '1d'\n\n    switch (interval) {\n      case '1hr':\n        start = now.subtract(1, 'hour').toISOString()\n        infraInterval = '1h'\n        break\n      case '1day':\n        start = now.subtract(1, 'day').toISOString()\n        infraInterval = '1h'\n        break\n      case '7day':\n        start = now.subtract(7, 'day').toISOString()\n        infraInterval = '1d'",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.tsx",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverviewFooter.tsx",
+    "apps/studio/components/interfaces/Observability/ServiceHealthCard.tsx",
+    "apps/studio/components/interfaces/Observability/ServiceHealthTable.tsx",
+    "apps/studio/components/interfaces/Observability/usePostgrestOverviewMetrics.ts",
+    "apps/studio/components/interfaces/Observability/useServiceHealthMetrics.ts",
+    "apps/studio/components/interfaces/Observability/useServiceHealthMetrics.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/useServiceHealthMetrics.utils.ts",
+    "apps/studio/components/interfaces/Observability/useSlowQueriesCount.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.tsx",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.tsx",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.test.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverview.utils.ts",
+    "apps/studio/components/interfaces/Observability/ObservabilityOverviewFooter.tsx",
+    "apps/studio/components/interfaces/Observability/ServiceHealthCard.tsx"
+  ],
+  "smell_id": "heuristic_props_1622",
+  "symbol_name": "DatabaseInfrastructureSection",
+  "target_file": "apps/studio/components/interfaces/Observability/DatabaseInfrastructureSection.tsx",
+  "task_id": "task_34903b2f98"
+}

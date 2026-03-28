@@ -1,0 +1,33 @@
+{
+  "line_end": 19,
+  "line_start": 19,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useHotKey } from 'hooks/ui/useHotKey'\nimport { getModKeyLabel } from 'lib/helpers'\nimport { noop } from 'lodash'\nimport { PropsWithChildren, useCallback, useMemo, useState } from 'react'\nimport { Button } from 'ui'\n\ninterface ActionBarProps {\n  loading?: boolean\n  disableApply?: boolean\n  hideApply?: boolean\n  applyButtonLabel?: string\n  backButtonLabel?: string\n  applyFunction?: (resolve: any) => void\n  closePanel: () => void\n  formId?: string\n  visible?: boolean\n}\n\nexport const ActionBar = ({\n  loading = false,\n  disableApply = false,\n  hideApply = false,\n  children = undefined,\n  applyButtonLabel = 'Apply',\n  backButtonLabel = 'Back',\n  applyFunction = undefined,\n  closePanel = noop,\n  formId,\n  visible = true,\n}: PropsWithChildren<ActionBarProps>) => {\n  const [isRunning, setIsRunning] = useState(false)\n  const modKeyLabel = useMemo(() => getModKeyLabel(), [])\n\n  const onSelectApply = useCallback(async () => {\n    const applyCallback = () => new Promise((resolve) => applyFunction?.(resolve))\n    setIsRunning(true)\n    await applyCallback()\n    setIsRunning(false)\n  }, [applyFunction])\n\n  const handleSave = useCallback(\n    (event: KeyboardEvent) => {\n      // Don't trigger if already running/loading, or if apply is disabled/hidden\n      if (isRunning || loading || disableApply || hideApply) return\n\n      // Don't trigger if the user is in a textarea (allow multi-line entry)\n      // unless they explicitly press CMD+Enter\n      const activeElement = document.activeElement\n      const isTextarea = activeElement?.tagName === 'TEXTAREA'",
+    "end_line": 49,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SchemaEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.createTable.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SchemaEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.createTable.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.tsx"
+  ],
+  "smell_id": "heuristic_props_2299",
+  "symbol_name": "ActionBar",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+  "task_id": "task_4eb6eb792f"
+}

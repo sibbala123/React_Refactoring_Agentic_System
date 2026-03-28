@@ -1,0 +1,14 @@
+{
+  "component_name": "CountdownComponent",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=7",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/Banners/Countdown.tsx",
+  "line_end": 5,
+  "line_start": 5,
+  "severity": "low",
+  "smell_id": "heuristic_props_6138",
+  "smell_type": "Too Many Props"
+}

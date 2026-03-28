@@ -1,0 +1,14 @@
+{
+  "component_name": "MessageMarkdown",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.tsx",
+  "line_end": 296,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_2661",
+  "smell_type": "Large Component"
+}

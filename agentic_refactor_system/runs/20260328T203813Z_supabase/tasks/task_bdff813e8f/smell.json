@@ -1,0 +1,14 @@
+{
+  "component_name": "One",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/docs/features/directives/CodeSample.test.ts",
+  "line_end": 783,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0531",
+  "smell_type": "Large Component"
+}

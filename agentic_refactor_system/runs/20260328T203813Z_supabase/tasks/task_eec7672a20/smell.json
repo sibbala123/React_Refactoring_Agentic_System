@@ -1,0 +1,14 @@
+{
+  "component_name": "BranchesPageWrapper",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/pages/project/[ref]/branches/index.tsx",
+  "line_end": 261,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_3905",
+  "smell_type": "Large Component"
+}

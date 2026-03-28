@@ -1,0 +1,33 @@
+{
+  "line_end": 41,
+  "line_start": 41,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageBarChart.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { ResponseError } from 'types'\nimport { Button, cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\nimport { SectionContent } from '../SectionContent'\nimport { CategoryAttribute } from '../Usage.constants'\nimport {\n  ChartTooltipValueFormatter,\n  ChartYFormatterCompactNumber,\n  useGetUpgradeUrl,\n} from '../Usage.utils'\nimport UsageBarChart from '../UsageBarChart'\nimport { ChartMeta } from './UsageSection'\n\nexport interface AttributeUsageProps {\n  slug: string\n  projectRef?: string | null\n  attribute: CategoryAttribute\n  usage?: OrgUsageResponse\n  usageMeta?: OrgMetricsUsage\n  chartMeta: ChartMeta\n  subscription?: OrgSubscription\n\n  error: ResponseError | null\n  isLoading: boolean\n  isError: boolean\n  isSuccess: boolean\n\n  currentBillingCycleSelected: boolean\n}\n\nconst AttributeUsage = ({\n  slug,\n  projectRef,\n  attribute,\n  usage,\n  usageMeta,\n  chartMeta,\n  subscription,\n\n  error,\n  isLoading,\n  isError,\n  isSuccess,\n  currentBillingCycleSelected,\n}: AttributeUsageProps) => {\n  const upgradeUrl = useGetUpgradeUrl(slug ?? '', subscription, attribute.key)\n  const usageRatio = (usageMeta?.usage ?? 0) / (usageMeta?.pricing_free_units ?? 0)\n  const usageExcess = (usageMeta?.usage ?? 0) - (usageMeta?.pricing_free_units ?? 0)\n  const usageBasedBilling = subscription?.usage_billing_enabled\n  const exceededLimitStyle = !usageBasedBilling ? 'text-red-900' : 'text-amber-900'\n\n  const chartData = useMemo(() => chartMeta[attribute.key]?.data ?? [], [attribute.key, chartMeta])\n\n  const showUsageWarning =\n    projectRef === undefined &&\n    currentBillingCycleSelected &&\n    usageBasedBilling === false &&\n    usageRatio >= USAGE_APPROACHING_THRESHOLD\n\n  const notAllValuesZero = useMemo(() => {\n    return (",
+    "end_line": 71,
+    "start_line": 11
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageBarChart.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx"
+  ],
+  "smell_id": "heuristic_props_1768",
+  "symbol_name": "AttributeUsage",
+  "target_file": "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+  "task_id": "task_cbd600b65f"
+}

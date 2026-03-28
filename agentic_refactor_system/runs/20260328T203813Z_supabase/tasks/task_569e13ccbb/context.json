@@ -1,0 +1,36 @@
+{
+  "line_end": 67,
+  "line_start": 67,
+  "local_imports": [
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  TableApiAccessData,\n  TableApiAccessMap,\n} from '@/data/privileges/table-api-access-query'\nimport { useTableRowsCountQuery } from '@/data/table-rows/table-rows-count-query'\nimport { useQuerySchemaState } from '@/hooks/misc/useSchemaQueryState'\nimport { useSelectedProjectQuery } from '@/hooks/misc/useSelectedProject'\nimport { formatSql } from '@/lib/formatSql'\nimport {\n  useRoleImpersonationStateSnapshot,\n  type RoleImpersonationState,\n} from '@/state/role-impersonation-state'\nimport { useTableEditorStateSnapshot } from '@/state/table-editor'\nimport { createTabId, useTabsStateSnapshot } from '@/state/tabs'\n\nexport interface EntityListItemProps {\n  id: number | string\n  projectRef: string\n  item: Entity\n  isLocked: boolean\n  isActive?: boolean\n  style?: CSSProperties\n  onExportCLI: () => void\n  apiAccessMap?: TableApiAccessMap\n}\n\n// [jordi] Used to determine the entity is a table and not a view or other unsupported entity type\nfunction isTableLikeEntityListItem(entity: { type?: string }) {\n  return entity?.type === ENTITY_TYPE.TABLE || entity?.type === ENTITY_TYPE.PARTITIONED_TABLE\n}\n\nexport const EntityListItem = ({\n  id,\n  projectRef,\n  item: entity,\n  isLocked,\n  isActive: _isActive,\n  style,\n  onExportCLI,\n  apiAccessMap,\n}: EntityListItemProps) => {\n  const { data: project } = useSelectedProjectQuery()\n  const snap = useTableEditorStateSnapshot()\n  const { selectedSchema } = useQuerySchemaState()\n\n  const tabId = createTabId(entity.type, { id: entity.id })\n  const tabs = useTabsStateSnapshot()\n  const isPreview = tabs.previewTabId === tabId\n\n  const isActive = Number(id) === entity.id\n  const canEdit = isActive && !isLocked\n\n  const { filters } = useTableFilter()\n  const roleImpersonationState = useRoleImpersonationStateSnapshot()\n  const { data: countData } = useTableRowsCountQuery(\n    {\n      projectRef,\n      tableId: entity.id,\n      filters,\n      enforceExactCount: false,\n      roleImpersonationState: roleImpersonationState as RoleImpersonationState,\n    },",
+    "end_line": 97,
+    "start_line": 37
+  },
+  "related_files": [
+    "apps/studio/components/layouts/TableEditorLayout/EditorMenuListSkeleton.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.errors.ts",
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.progress.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableEditor.Commands.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableEditorLayout.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableEditorMenu.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableMenuEmptyState.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/TableEditorLayout/EntityListItem.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/EditorMenuListSkeleton.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.errors.ts",
+    "apps/studio/components/layouts/TableEditorLayout/ExportAllRows.progress.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableEditor.Commands.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableEditorLayout.tsx",
+    "apps/studio/components/layouts/TableEditorLayout/TableEditorMenu.tsx"
+  ],
+  "smell_id": "heuristic_props_2599",
+  "symbol_name": "EntityListItem",
+  "target_file": "apps/studio/components/layouts/TableEditorLayout/EntityListItem.tsx",
+  "task_id": "task_569e13ccbb"
+}

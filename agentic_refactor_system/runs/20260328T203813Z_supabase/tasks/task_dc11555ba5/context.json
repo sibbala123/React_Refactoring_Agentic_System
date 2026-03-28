@@ -1,0 +1,39 @@
+{
+  "line_end": 23,
+  "line_start": 23,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeyRow.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useParams } from 'common'\nimport { useForeignKeyConstraintsQuery } from 'data/database/foreign-key-constraints-query'\nimport { useTableEditorQuery } from 'data/table-editor/table-editor-query'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { useState } from 'react'\nimport { Button } from 'ui'\n\nimport { ForeignKeySelector } from '../ForeignKeySelector/ForeignKeySelector'\nimport type { ForeignKey } from '../ForeignKeySelector/ForeignKeySelector.types'\nimport type { ColumnField } from '../SidePanelEditor.types'\nimport { ForeignKeyRow } from '../TableEditor/ForeignKeysManagement/ForeignKeyRow'\nimport { checkIfRelationChanged } from '../TableEditor/ForeignKeysManagement/ForeignKeysManagement.utils'\n\ninterface ColumnForeignKeyProps {\n  tableId?: number\n  column: ColumnField\n  relations: ForeignKey[]\n  closePanel: () => void\n  onUpdateColumnType: (type: string) => void\n  onUpdateFkRelations: (fks: ForeignKey[]) => void\n}\n\nconst ColumnForeignKey = ({\n  tableId,\n  column,\n  relations,\n  closePanel,\n  onUpdateColumnType,\n  onUpdateFkRelations,\n}: ColumnForeignKeyProps) => {\n  const { id: _id } = useParams()\n  const [open, setOpen] = useState(false)\n  const [selectedFk, setSelectedFk] = useState<ForeignKey>()\n  const { data: project } = useSelectedProjectQuery()\n  const { data } = useForeignKeyConstraintsQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    schema: column.schema,\n  })\n\n  const id = _id ? Number(_id) : undefined\n  const { data: table } = useTableEditorQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    id: tableId ?? id,\n  })\n  const formattedColumnsForFkSelector = (table?.columns ?? []).map((c) => {\n    return {\n      id: c.id,\n      name: c.name,\n      format: c.format || column.format,\n      isNewColumn: false,\n    }",
+    "end_line": 53,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnDefaultValue.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.utils.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnType.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/InputWithSuggestions.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnForeignKey.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeyRow.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnDefaultValue.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.tsx"
+  ],
+  "smell_id": "heuristic_props_2305",
+  "symbol_name": "ColumnForeignKey",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnForeignKey.tsx",
+  "task_id": "task_dc11555ba5"
+}

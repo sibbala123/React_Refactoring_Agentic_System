@@ -1,0 +1,14 @@
+{
+  "component_name": "ScopeDropdownCheckboxItem",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Organization/OAuthApps/PublishAppSidePanel/Scopes.tsx",
+  "line_end": 16,
+  "line_start": 16,
+  "severity": "low",
+  "smell_id": "heuristic_props_1709",
+  "smell_type": "Too Many Props"
+}

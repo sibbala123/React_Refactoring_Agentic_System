@@ -1,0 +1,14 @@
+{
+  "component_name": "b2b-saas",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/data/solutions/b2b-saas.tsx",
+  "line_end": 306,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4933",
+  "smell_type": "Large Component"
+}

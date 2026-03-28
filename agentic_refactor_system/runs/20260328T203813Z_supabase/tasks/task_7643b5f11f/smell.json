@@ -1,0 +1,14 @@
+{
+  "component_name": "LintCTA",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Linter/Linter.utils.tsx",
+  "line_end": 325,
+  "line_start": 325,
+  "severity": "low",
+  "smell_id": "heuristic_props_1606",
+  "smell_type": "Too Many Props"
+}

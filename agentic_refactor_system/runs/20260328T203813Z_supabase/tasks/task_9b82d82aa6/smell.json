@@ -1,0 +1,14 @@
+{
+  "component_name": "ComponentPreview",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=14",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/design-system/components/component-preview.tsx",
+  "line_end": 29,
+  "line_start": 29,
+  "severity": "low",
+  "smell_id": "heuristic_props_0023",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "AiAssistantDropdown",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=17",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/ui/AiAssistantDropdown.tsx",
+  "line_end": 64,
+  "line_start": 64,
+  "severity": "low",
+  "smell_id": "heuristic_props_2634",
+  "smell_type": "Too Many Props"
+}

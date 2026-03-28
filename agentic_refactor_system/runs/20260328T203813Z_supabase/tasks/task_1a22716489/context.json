@@ -1,0 +1,29 @@
+{
+  "line_end": 15,
+  "line_start": 15,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "type PageParmas = {\n  id: string\n  title: string\n  slug: string\n  specFileName: string\n  description?: string\n  parameters?: string\n  examples?: string[]\n  spotlight?: string\n  notes?: string\n  result?: string\n  errors?: string\n}\n\nconst Page = ({\n  id,\n  title,\n  slug,\n  specFileName,\n  description = '',\n  parameters = '',\n  examples = [],\n  spotlight = '',\n  notes = '',\n  result = '',\n  errors = '',\n}: PageParmas) =>\n  `\n---\nid: ${id}\ntitle: \"${title}\"\nslug: ${slug}\ncustom_edit_url: ${specFileName}\n---\n\n${description}\n\n${spotlight}\n\n${parameters ? `## Parameters` : ''}\n\n${parameters}\n\n${notes ? '## Notes' : ''}\n",
+    "end_line": 45,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/docs/generator/legacy/components/Example.ts",
+    "apps/docs/generator/legacy/components/Sidebar.ts",
+    "apps/docs/generator/legacy/components/SidebarCategory.ts",
+    "apps/docs/generator/legacy/components/Tab.ts",
+    "apps/docs/generator/legacy/components/Tabs.ts"
+  ],
+  "relevant_context_files": [
+    "apps/docs/generator/legacy/components/Page.ts",
+    "apps/docs/generator/legacy/components/Example.ts",
+    "apps/docs/generator/legacy/components/Sidebar.ts",
+    "apps/docs/generator/legacy/components/SidebarCategory.ts",
+    "apps/docs/generator/legacy/components/Tab.ts",
+    "apps/docs/generator/legacy/components/Tabs.ts"
+  ],
+  "smell_id": "heuristic_props_0612",
+  "symbol_name": "Page",
+  "target_file": "apps/docs/generator/legacy/components/Page.ts",
+  "task_id": "task_1a22716489"
+}

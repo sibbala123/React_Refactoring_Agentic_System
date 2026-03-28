@@ -1,0 +1,33 @@
+{
+  "line_end": 30,
+  "line_start": 30,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import dayjs from 'dayjs'\nimport { AlertTriangle, CheckCircle2, ChevronRight, Loader2 } from 'lucide-react'\nimport Link from 'next/link'\nimport { useEffect, useState } from 'react'\n\nimport { useParams } from 'common'\nimport { InlineLink } from 'components/ui/InlineLink'\nimport { useBranchesQuery } from 'data/branches/branches-query'\nimport { useEdgeFunctionServiceStatusQuery } from 'data/service-status/edge-functions-status-query'\nimport {\n  ProjectServiceStatus as APIProjectServiceStatus,\n  ServiceHealthResponse,\n  useProjectServiceStatusQuery,\n} from 'data/service-status/service-status-query'\nimport { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { DOCS_URL } from 'lib/constants'\nimport {\n  Button,\n  InfoIcon,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  Popover_Shadcn_,\n} from 'ui'\n\nconst SERVICE_STATUS_THRESHOLD = 5 // minutes\n\nexport type ProjectServiceStatus = APIProjectServiceStatus | 'DISABLED'\n\nexport const StatusMessage = ({\n  status,\n  isLoading,\n  isProjectNew,\n}: {\n  isLoading: boolean\n  isProjectNew: boolean\n  status?: ProjectServiceStatus\n}) => {\n  if (isLoading) return 'Checking status'\n  if (status === 'DISABLED') return 'Disabled'\n  if (status === 'UNHEALTHY') return 'Unhealthy'\n  if (status === 'COMING_UP') return 'Coming up...'\n  if (status === 'ACTIVE_HEALTHY') return 'Healthy'\n  // isProjectNew has to be after all other statuses\n  if (isProjectNew) return 'Coming up...'\n  if (status) return status\n  return 'Unable to connect'\n}\n\nconst iconProps = {\n  size: 18,\n  strokeWidth: 1.5,\n}\nconst LoaderIcon = () => <Loader2 {...iconProps} className=\"animate-spin\" />\nconst AlertIcon = () => <AlertTriangle {...iconProps} />\nconst CheckIcon = () => <CheckCircle2 {...iconProps} className=\"text-brand\" />\n\nexport const StatusIcon = ({\n  isLoading,\n  isProjectNew,",
+    "end_line": 60,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Home/AdvisorWidget.tsx",
+    "apps/studio/components/interfaces/Home/ClientLibrary.tsx",
+    "apps/studio/components/interfaces/Home/ExampleProject.tsx",
+    "apps/studio/components/interfaces/Home/Home.constants.ts",
+    "apps/studio/components/interfaces/Home/Home.tsx",
+    "apps/studio/components/interfaces/Home/ProjectUsage.tsx",
+    "apps/studio/components/interfaces/Home/ProjectUsageSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Home/ServiceStatus.tsx",
+    "apps/studio/components/interfaces/Home/AdvisorWidget.tsx",
+    "apps/studio/components/interfaces/Home/ClientLibrary.tsx",
+    "apps/studio/components/interfaces/Home/ExampleProject.tsx",
+    "apps/studio/components/interfaces/Home/Home.constants.ts",
+    "apps/studio/components/interfaces/Home/Home.tsx",
+    "apps/studio/components/interfaces/Home/ProjectUsage.tsx",
+    "apps/studio/components/interfaces/Home/ProjectUsageSection.tsx"
+  ],
+  "smell_id": "heuristic_props_1483",
+  "symbol_name": "StatusMessage",
+  "target_file": "apps/studio/components/interfaces/Home/ServiceStatus.tsx",
+  "task_id": "task_7b2e54bdc3"
+}

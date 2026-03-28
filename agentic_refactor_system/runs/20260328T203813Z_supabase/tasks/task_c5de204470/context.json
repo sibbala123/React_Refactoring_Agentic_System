@@ -1,0 +1,32 @@
+{
+  "line_end": 38,
+  "line_start": 38,
+  "local_imports": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/Reports.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { usePrimaryDatabase } from 'data/read-replicas/replicas-query'\nimport { executeSql } from 'data/sql/execute-sql-query'\nimport { sqlKeys } from 'data/sql/keys'\nimport { X } from 'lucide-react'\nimport { useEffect, useState } from 'react'\nimport { toast } from 'sonner'\nimport { useDatabaseSelectorStateSnapshot } from 'state/database-selector'\nimport type { Dashboards, SqlSnippets } from 'types'\n\nimport { DEPRECATED_REPORTS } from '../Reports.constants'\nimport { ChartBlock } from './ChartBlock'\nimport { DeprecatedChartBlock } from './DeprecatedChartBlock'\n\ninterface ReportBlockProps {\n  item: Dashboards.Chart\n  startDate: string\n  endDate: string\n  interval: AnalyticsInterval\n  disableUpdate: boolean\n  isRefreshing: boolean\n  onRemoveChart: ({ metric }: { metric: { key: string } }) => void\n  onUpdateChart: ({\n    chart,\n    chartConfig,\n  }: {\n    chart?: Partial<Dashboards.Chart>\n    chartConfig?: Partial<ChartConfig>\n  }) => void\n}\n\nexport const ReportBlock = ({\n  item,\n  startDate,\n  endDate,\n  interval,\n  disableUpdate,\n  isRefreshing,\n  onRemoveChart,\n  onUpdateChart,\n}: ReportBlockProps) => {\n  const { ref: projectRef } = useParams()\n  const state = useDatabaseSelectorStateSnapshot()\n\n  const [isWriteQuery, setIsWriteQuery] = useState(false)\n\n  const isSnippet = item.attribute.startsWith('snippet_')\n\n  const {\n    data,\n    error: contentError,\n    isPending: isLoadingContent,\n  } = useContentIdQuery(\n    { projectRef, id: item.id },\n    {\n      enabled: isSnippet && !!item.id,\n      refetchOnWindowFocus: false,\n      refetchOnMount: false,\n      refetchIntervalInBackground: false,\n      retry: (failureCount: number, error) => {\n        if (error.code === 404 || failureCount >= 2) return false\n        return true",
+    "end_line": 68,
+    "start_line": 8
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.constants.ts",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/Reports.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.constants.ts",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx"
+  ],
+  "smell_id": "heuristic_props_1958",
+  "symbol_name": "ReportBlock",
+  "target_file": "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+  "task_id": "task_c5de204470"
+}

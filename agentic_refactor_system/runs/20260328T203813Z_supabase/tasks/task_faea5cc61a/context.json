@@ -1,0 +1,32 @@
+{
+  "line_end": 45,
+  "line_start": 45,
+  "local_imports": [
+    "apps/studio/components/interfaces/JwtSecrets/algorithm-hover-card.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { JWTSigningKey } from 'data/jwt-signing-keys/jwt-signing-keys-query'\nimport dayjs from 'dayjs'\nimport {\n  Badge,\n  Button,\n  cn,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n  TableCell,\n  TableRow,\n} from 'ui'\nimport { TimestampInfo } from 'ui-patterns'\nimport { AlgorithmHoverCard } from '../algorithm-hover-card'\nimport { statusColors, statusLabels } from '../jwt.constants'\n\ninterface SigningKeyRowProps {\n  signingKey: components['schemas']['SigningKeyResponse']\n  setSelectedKey: (key?: JWTSigningKey) => void\n  setShownDialog: (dialog?: 'key-details' | 'revoke' | 'delete') => void\n  handlePreviouslyUsedKey: (keyId: string) => void\n  handleStandbyKey: (keyId: string) => void\n  legacyKey?: JWTSigningKey | null\n  standbyKey?: JWTSigningKey | null\n  isLoading?: boolean\n}\n\nconst MotionTableRow = motion.create(TableRow)\n\nexport const SigningKeyRow = ({\n  signingKey,\n  setSelectedKey,\n  setShownDialog,\n  handlePreviouslyUsedKey,\n  handleStandbyKey,\n  legacyKey,\n  standbyKey,\n  isLoading = false,\n}: SigningKeyRowProps) => (\n  <MotionTableRow\n    key={signingKey.id}\n    layout\n    initial={{ opacity: 0, height: 0 }}\n    animate={{\n      opacity: 1,\n      height: 'auto',\n      transition: { duration: 0.2 },\n    }}\n    exit={{ opacity: 0, height: 0 }}\n    className={cn(\n      signingKey.status !== 'in_use' ? 'border-b border-dashed border-border' : 'border-b'\n    )}\n  >\n    <TableCell className=\"w-[150px] pr-0 py-2\">\n      <div className=\"flex -space-x-px items-center\">\n        <Badge\n          className={cn(\n            statusColors[signingKey.status],\n            'rounded-r-none',\n            'gap-2 w-full h-6',",
+    "end_line": 75,
+    "start_line": 15
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/action-panel.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/index.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/key-details-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/rotate-key-dialog.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/signing-key-row.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/algorithm-hover-card.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/action-panel.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/index.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/key-details-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/rotate-key-dialog.tsx"
+  ],
+  "smell_id": "heuristic_props_1600",
+  "symbol_name": "SigningKeyRow",
+  "target_file": "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/signing-key-row.tsx",
+  "task_id": "task_faea5cc61a"
+}

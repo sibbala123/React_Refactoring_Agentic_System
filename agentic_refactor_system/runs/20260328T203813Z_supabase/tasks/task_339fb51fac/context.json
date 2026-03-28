@@ -1,0 +1,33 @@
+{
+  "line_end": 16,
+  "line_start": 16,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { initial, last } from 'lodash'\nimport { Dispatch, SetStateAction } from 'react'\n\nimport styles from '@ui/layout/ai-icon-animation/ai-icon-animation-style.module.css'\nimport { QueryResponseError } from 'data/sql/execute-sql-mutation'\nimport {\n  AlertTitle_Shadcn_,\n  Alert_Shadcn_,\n  Button,\n  CollapsibleContent_Shadcn_,\n  CollapsibleTrigger_Shadcn_,\n  Collapsible_Shadcn_,\n  cn,\n} from 'ui'\n\nexport const QueryError = ({\n  error,\n  open,\n  setOpen,\n}: {\n  error: QueryResponseError\n  open: boolean\n  setOpen: Dispatch<SetStateAction<boolean>>\n}) => {\n  const formattedError =\n    (error?.message?.split('\\n') ?? [])?.filter((x: string) => x.length > 0) ?? []\n\n  return (\n    <div className=\"flex flex-col gap-y-3 px-5\">\n      <Alert_Shadcn_ variant=\"destructive\">\n        <svg\n          xmlns=\"http://www.w3.org/2000/svg\"\n          viewBox=\"0 0 20 20\"\n          fill=\"currentColor\"\n          className=\"w-5 h-5\"\n        >\n          <path\n            fillRule=\"evenodd\"\n            clipRule=\"evenodd\"\n            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n          />\n        </svg>\n        <div className=\"flex flex-col gap-3\">\n          <AlertTitle_Shadcn_ className=\"m-0\">Error running SQL query</AlertTitle_Shadcn_>\n\n          <Collapsible_Shadcn_",
+    "end_line": 46,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/LockedQuerySection.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyDetailsV2.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyEditorPanel.utils.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyEditorPanelHeader.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyTemplates.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/RLSCodeEditor.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/QueryError.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/LockedQuerySection.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyDetailsV2.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyEditorPanel.utils.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyEditorPanelHeader.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/PolicyTemplates.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/RLSCodeEditor.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/index.tsx"
+  ],
+  "smell_id": "heuristic_props_1039",
+  "symbol_name": "QueryError",
+  "target_file": "apps/studio/components/interfaces/Auth/Policies/PolicyEditorPanel/QueryError.tsx",
+  "task_id": "task_339fb51fac"
+}

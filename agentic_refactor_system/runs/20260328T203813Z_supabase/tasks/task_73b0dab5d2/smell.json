@@ -1,0 +1,14 @@
+{
+  "component_name": "InputNumber",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=19",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui/src/components/InputNumber/InputNumber.tsx",
+  "line_end": 32,
+  "line_start": 32,
+  "severity": "low",
+  "smell_id": "heuristic_props_5985",
+  "smell_type": "Too Many Props"
+}

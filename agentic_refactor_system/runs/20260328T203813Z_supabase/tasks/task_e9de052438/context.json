@@ -1,0 +1,35 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsHealth/QueryInsightsHealth.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { Loader2 } from 'lucide-react'\nimport { AiIconAnimation, Button, cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\nimport type { ClassifiedQuery } from '../QueryInsightsHealth/QueryInsightsHealth.types'\nimport { ISSUE_DOT_COLORS, ISSUE_ICONS } from './QueryInsightsTable.constants'\nimport { formatDuration, getTableName, getColumnName } from './QueryInsightsTable.utils'\n\ninterface QueryInsightsTableRowProps {\n  item: ClassifiedQuery\n  onRowClick?: () => void\n  onGoToLogs?: () => void\n  onCreateIndex?: () => void\n  onExplain?: () => void\n  onAiSuggestedFix?: () => void\n  isExplainLoading?: boolean\n}\n\nexport const QueryInsightsTableRow = ({\n  item,\n  onRowClick,\n  onGoToLogs,\n  onCreateIndex,\n  onExplain,\n  onAiSuggestedFix,\n  isExplainLoading,\n}: QueryInsightsTableRowProps) => {\n  const IssueIcon = item.issueType ? ISSUE_ICONS[item.issueType] : null\n\n  return (\n    <div\n      className=\"flex items-center gap-4 px-6 py-4 border-b hover:bg-surface-100 cursor-pointer group\"\n      onClick={onRowClick}\n    >\n      {item.issueType && IssueIcon && (\n        <div\n          className={cn(\n            'h-6 w-6 rounded-full flex-shrink-0 border flex items-center justify-center',\n            ISSUE_DOT_COLORS[item.issueType]?.border,\n            ISSUE_DOT_COLORS[item.issueType]?.background\n          )}\n        >\n          <IssueIcon size={14} className={ISSUE_DOT_COLORS[item.issueType].color} />\n        </div>\n      )}\n\n      <div className=\"flex-1 min-w-0\">\n        <p className=\"text-xs font-mono text-foreground line-clamp-1\">\n          <span className=\"text-foreground\">{item.queryType ?? '\u2013'}</span>",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsDetailSheet.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.constants.ts",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.types.ts",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.utils.test.ts",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTableRow.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsHealth/QueryInsightsHealth.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsDetailSheet.tsx",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.constants.ts",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.types.ts",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.utils.test.ts",
+    "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTable.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1887",
+  "symbol_name": "QueryInsightsTableRow",
+  "target_file": "apps/studio/components/interfaces/QueryInsights/QueryInsightsTable/QueryInsightsTableRow.tsx",
+  "task_id": "task_e9de052438"
+}

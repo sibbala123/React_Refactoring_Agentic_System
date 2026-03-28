@@ -1,0 +1,42 @@
+{
+  "line_end": 33,
+  "line_start": 33,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { GitBranchIcon } from 'lucide-react'\nimport { useState } from 'react'\nimport {\n  AlertDialog,\n  AlertDialogAction,\n  AlertDialogCancel,\n  AlertDialogContent,\n  AlertDialogDescription,\n  AlertDialogFooter,\n  AlertDialogHeader,\n  AlertDialogTitle,\n  AlertDialogTrigger,\n  Button,\n} from 'ui'\nimport { Admonition } from 'ui-patterns'\n\ninterface OutOfDateNoticeProps {\n  isBranchOutOfDateMigrations: boolean\n  missingMigrationsCount: number\n  hasMissingFunctions: boolean\n  missingFunctionsCount: number\n  hasOutOfDateFunctions: boolean\n  outOfDateFunctionsCount: number\n  hasEdgeFunctionModifications: boolean\n  modifiedFunctionsCount: number\n  isPushing: boolean\n  onPush: () => void\n}\n\nexport const OutOfDateNotice = ({\n  isBranchOutOfDateMigrations,\n  missingMigrationsCount,\n  hasMissingFunctions,\n  missingFunctionsCount,\n  hasOutOfDateFunctions,\n  outOfDateFunctionsCount,\n  hasEdgeFunctionModifications,\n  modifiedFunctionsCount,\n  isPushing,\n  onPush,\n}: OutOfDateNoticeProps) => {\n  const [isDialogOpen, setIsDialogOpen] = useState(false)\n  const hasOutdatedMigrations = isBranchOutOfDateMigrations && missingMigrationsCount > 0\n  const { data: selectedOrg } = useSelectedOrganizationQuery()\n  const { data: project } = useSelectedProjectQuery()\n  const { mutate: sendEvent } = useSendEventMutation()\n\n  const isBranch = project?.parent_project_ref !== undefined\n  const parentProjectRef = isBranch ? project?.parent_project_ref : project?.ref\n\n  const getTitle = () => {\n    if (hasOutdatedMigrations && (hasMissingFunctions || hasOutOfDateFunctions)) {\n      return 'Your database schema and edge functions are out of date'\n    } else if (hasOutdatedMigrations) {\n      return 'Your database schema is out of date'\n    } else if (hasMissingFunctions || hasOutOfDateFunctions) {\n      return 'Your functions are out of date'\n    }\n    return 'Branch is out of date'\n  }",
+    "end_line": 63,
+    "start_line": 3
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EdgeFunctionsDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewRow.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogs.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx"
+  ],
+  "smell_id": "heuristic_props_1119",
+  "symbol_name": "OutOfDateNotice",
+  "target_file": "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+  "task_id": "task_81911a4503"
+}

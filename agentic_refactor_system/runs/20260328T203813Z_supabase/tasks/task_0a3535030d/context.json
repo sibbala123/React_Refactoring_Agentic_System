@@ -1,0 +1,38 @@
+{
+  "line_end": 16,
+  "line_start": 16,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { AnimatePresence, motion } from 'framer-motion'\nimport { ChevronRight } from 'lucide-react'\n\nimport { formatCurrency } from 'lib/helpers'\nimport { Badge, cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\n\ninterface BillingChangeBadgeProps {\n  beforePrice?: number\n  afterPrice?: number\n  show: boolean | undefined\n  tooltip?: string\n  className?: string\n  free?: boolean\n}\n\nexport const BillingChangeBadge = ({\n  beforePrice,\n  afterPrice,\n  show,\n  tooltip,\n  className,\n  free,\n}: BillingChangeBadgeProps) => {\n  return (\n    <AnimatePresence>\n      {beforePrice !== undefined && afterPrice !== undefined && show && (\n        <motion.div\n          initial={{ opacity: 0, x: -4, height: 0 }}\n          animate={{ opacity: 1, x: 0, height: 'auto' }}\n          exit={{ opacity: 0, x: -4, height: 0 }}\n          transition={{ type: 'spring', stiffness: 800, damping: 40, duration: 0.3 }}\n        >\n          <Badge\n            variant=\"default\"\n            className={cn(\n              !free ? `bg-alternative` : `bg-violet-200 border-violet-900 text-violet-1100`,\n              `bg-opacity-100 text-warning`,\n              className\n            )}\n          >\n            <Tooltip>\n              <TooltipTrigger asChild>\n                <div className=\"flex items-center gap-1\">\n                  <span className=\"text-xs font-mono text-foreground-muted\" translate=\"no\">\n                    {formatCurrency(beforePrice)}\n                  </span>",
+    "end_line": 46,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/DiskManagement/ui/ComputeSizeRecommendationSection.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskCountdownRadial.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskManagement.constants.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskManagementCoolDownSection.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskManagementReadReplicas.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskSpaceBar.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskTypeRecommendationSection.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/FormMessage.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/InputPostTab.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/InputResetButton.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/NoticeBar.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/SpendCapDisabledSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/DiskManagement/ui/BillingChangeBadge.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/ComputeSizeRecommendationSection.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskCountdownRadial.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskManagement.constants.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskManagementCoolDownSection.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskManagementReadReplicas.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskSpaceBar.tsx",
+    "apps/studio/components/interfaces/DiskManagement/ui/DiskTypeRecommendationSection.tsx"
+  ],
+  "smell_id": "heuristic_props_1387",
+  "symbol_name": "BillingChangeBadge",
+  "target_file": "apps/studio/components/interfaces/DiskManagement/ui/BillingChangeBadge.tsx",
+  "task_id": "task_0a3535030d"
+}

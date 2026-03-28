@@ -1,0 +1,35 @@
+{
+  "line_end": 133,
+  "line_start": 133,
+  "local_imports": [
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/MessageDetailsPanel.tsx"
+  ],
+  "primary_snippet": {
+    "content": "]\n\nconst columns = messagesCols.map((col) => {\n  const result: Column<PostgresQueueMessage> = {\n    key: col.id,\n    name: col.name,\n    resizable: true,\n    minWidth: col.minWidth ?? 120,\n    width: col.width,\n    headerCellClass: undefined,\n    renderHeaderCell: () => {\n      return (\n        <div\n          className={cn(\n            'flex items-center justify-between font-normal text-xs w-full',\n            col.id === 'id' && 'ml-8'\n          )}\n        >\n          <p className=\"!text-foreground\">{col.name}</p>\n        </div>\n      )\n    },\n    renderCell: (props) => {\n      const value = col.value(props.row)\n      return value\n    },\n  }\n  return result\n})\n\nexport const QueueMessagesDataGrid = ({\n  error,\n  isLoading,\n  messages,\n  showMessageModal,\n  fetchNextPage,\n}: QueueDataGridProps) => {\n  const gridRef = useRef<DataGridHandle>(null)\n  const router = useRouter()\n\n  const [selectedMessageId, setSelectedMessageId] = useQueryState('messageId', parseAsInteger)\n\n  const handleScroll = (event: UIEvent<HTMLDivElement>) => {\n    if (isLoading || !isAtBottom(event)) return\n    fetchNextPage()\n  }\n\n  const selectedMessage = useMemo(\n    () => messages.find((m) => m.msg_id === selectedMessageId),\n    [messages, selectedMessageId]\n  )\n\n  return (\n    <div className=\"relative h-full\">\n      <DataGrid\n        ref={gridRef}\n        className=\"h-full\"\n        rowHeight={44}\n        headerRowHeight={36}\n        columns={columns}\n        onScroll={handleScroll}",
+    "end_line": 163,
+    "start_line": 103
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/DeleteQueue.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/MessageDetailsPanel.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/PurgeQueue.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/Queue.utils.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/QueueFilters.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/QueueSettings.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/SendMessageModal.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/QueueDataGrid.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/MessageDetailsPanel.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/DeleteQueue.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/PurgeQueue.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/Queue.utils.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/QueueFilters.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/QueueSettings.tsx",
+    "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/SendMessageModal.tsx"
+  ],
+  "smell_id": "heuristic_props_1550",
+  "symbol_name": "QueueMessagesDataGrid",
+  "target_file": "apps/studio/components/interfaces/Integrations/Queues/SingleQueue/QueueDataGrid.tsx",
+  "task_id": "task_90b83793c8"
+}

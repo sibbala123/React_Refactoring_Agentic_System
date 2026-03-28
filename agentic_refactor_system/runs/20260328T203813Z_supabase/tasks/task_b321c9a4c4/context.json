@@ -1,0 +1,41 @@
+{
+  "line_end": 13,
+  "line_start": 13,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { ChevronDown, SortAsc, SortDesc } from 'lucide-react'\nimport { useEffect, useRef, useState } from 'react'\nimport { useHeaderRowSelection } from 'react-data-grid'\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from 'ui'\n\n// [Joshen] Currently not being used, refer to Users.utils -> formatUserColumns for more info\nexport const SelectHeaderCell = ({\n  selectedUsers,\n  allRowsSelected,\n}: {\n  selectedUsers: Set<any>\n  allRowsSelected: boolean\n}) => {\n  const inputRef = useRef<HTMLInputElement>(null)\n  const { isRowSelected, onRowSelectionChange } = useHeaderRowSelection()\n\n  const isIndeterminate = selectedUsers.size > 0 && !allRowsSelected\n\n  useEffect(() => {\n    if (inputRef.current) inputRef.current.indeterminate = isIndeterminate\n  }, [isIndeterminate])\n\n  return (\n    <div className=\"px-4 flex items-center sb-grid\">\n      <div className=\"sb-grid-select-cell__header\">\n        <input\n          ref={inputRef}\n          type=\"checkbox\"\n          aria-label=\"Select-all\"\n          className=\"sb-grid-select-cell__header__input\"\n          disabled={false}\n          checked={isRowSelected}\n          onChange={(e) => onRowSelectionChange({ checked: e.target.checked })}\n        />\n      </div>\n    </div>\n  )",
+    "end_line": 43,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Users/AddUserDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/BanUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/CreateUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/DeleteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/InviteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/SortDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserHeader.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserLogs.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserOverview.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserPanel.tsx",
+    "apps/studio/components/interfaces/Auth/Users/Users.constants.ts",
+    "apps/studio/components/interfaces/Auth/Users/Users.utils.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersFooter.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersSearch.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UsersV2.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Users/UsersGridComponents.tsx",
+    "apps/studio/components/interfaces/Auth/Users/AddUserDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/BanUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/CreateUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/DeleteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/InviteUserModal.tsx",
+    "apps/studio/components/interfaces/Auth/Users/SortDropdown.tsx",
+    "apps/studio/components/interfaces/Auth/Users/UserHeader.tsx"
+  ],
+  "smell_id": "heuristic_props_1086",
+  "symbol_name": "SelectHeaderCell",
+  "target_file": "apps/studio/components/interfaces/Auth/Users/UsersGridComponents.tsx",
+  "task_id": "task_b321c9a4c4"
+}

@@ -1,0 +1,25 @@
+{
+  "line_end": 43,
+  "line_start": 43,
+  "local_imports": [
+    "apps/studio/components/ui/AIEditor/ResizableAIWidget.tsx",
+    "apps/studio/components/ui/DiffEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import ResizableAIWidget from './ResizableAIWidget'\n\ninterface AIEditorProps {\n  id?: string\n  language?: string\n  value?: string\n  defaultValue?: string\n  aiEndpoint?: string\n  aiMetadata?: {\n    projectRef?: string\n    connectionString?: string | null\n    orgSlug?: string\n  }\n  initialPrompt?: string\n  readOnly?: boolean\n  autoFocus?: boolean\n  className?: string\n  options?: monacoEditor.IStandaloneEditorConstructionOptions\n  onChange?: (value: string) => void\n  onClose?: () => void\n  closeShortcutEnabled?: boolean\n  openAIAssistantShortcutEnabled?: boolean\n  executeQuery?: () => void\n  onMount?: (editor: monacoEditor.IStandaloneCodeEditor, monaco: Monaco) => void\n}\n\n// [Joshen] This has overlap with components/interfaces/SQLEditor/MonacoEditor\n// Can we try to de-dupe accordingly? Perhaps the SQL Editor could use this AIEditor\n// We have a tendency to create multiple versions of the monaco editor like RLSCodeEditor\n// so hoping to prevent that from snowballing\nexport const AIEditor = ({\n  language = 'javascript',\n  value,\n  defaultValue = '',\n  aiEndpoint,\n  aiMetadata,\n  initialPrompt,\n  readOnly = false,\n  autoFocus = false,\n  className = '',\n  options = {},\n  onChange,\n  onClose,\n  closeShortcutEnabled = true,\n  openAIAssistantShortcutEnabled = true,\n  executeQuery,\n  onMount,\n}: AIEditorProps) => {\n  const os = detectOS()\n  const { toggleSidebar } = useSidebarManagerSnapshot()\n  const editorRef = useRef<monacoEditor.IStandaloneCodeEditor | null>(null)\n  const diffEditorRef = useRef<monacoEditor.IStandaloneDiffEditor | null>(null)\n  const monacoRef = useRef<Monaco | null>(null)\n  const closeActionDisposableRef = useRef<{ dispose: () => void } | null>(null)\n\n  const executeQueryRef = useRef(executeQuery)\n  executeQueryRef.current = executeQuery\n\n  const [currentValue, setCurrentValue] = useState(value || defaultValue)\n  const [isDiffMode, setIsDiffMode] = useState(false)\n  const [isDiffEditorMounted, setIsDiffEditorMounted] = useState(false)",
+    "end_line": 73,
+    "start_line": 13
+  },
+  "related_files": [
+    "apps/studio/components/ui/AIEditor/ResizableAIWidget.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/AIEditor/index.tsx",
+    "apps/studio/components/ui/AIEditor/ResizableAIWidget.tsx",
+    "apps/studio/components/ui/DiffEditor.tsx"
+  ],
+  "smell_id": "heuristic_props_2664",
+  "symbol_name": "AIEditor",
+  "target_file": "apps/studio/components/ui/AIEditor/index.tsx",
+  "task_id": "task_3cf36c748b"
+}

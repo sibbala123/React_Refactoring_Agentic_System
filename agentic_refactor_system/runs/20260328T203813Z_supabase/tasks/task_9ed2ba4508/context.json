@@ -1,0 +1,25 @@
+{
+  "line_end": 6,
+  "line_start": 6,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useStripe } from '@stripe/react-stripe-js'\nimport { PaymentIntentResult } from '@stripe/stripe-js'\nimport { useEffect } from 'react'\nimport { LoadingLine } from 'ui'\n\nexport const PaymentConfirmation = ({\n  paymentIntentSecret,\n  onPaymentIntentConfirm,\n  onLoadingChange,\n  onError,\n}: {\n  paymentIntentSecret: string\n  onPaymentIntentConfirm: (response: PaymentIntentResult) => void\n  onLoadingChange: (loading: boolean) => void\n  onError?: (error: Error) => void\n}) => {\n  const stripe = useStripe()\n\n  useEffect(() => {\n    if (stripe && paymentIntentSecret) {\n      onLoadingChange(true)\n      stripe!\n        .confirmCardPayment(paymentIntentSecret)\n        .then((res) => {\n          onPaymentIntentConfirm(res)\n          onLoadingChange(false)\n        })\n        .catch((err) => {\n          console.error(err)\n          onError?.(err)\n          onLoadingChange(false)\n        })\n    }\n  }, [paymentIntentSecret, stripe])\n\n  return <LoadingLine loading={true} />",
+    "end_line": 36,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Billing/Payment/AddNewPaymentMethodModal.tsx",
+    "apps/studio/components/interfaces/Billing/Payment/AddPaymentMethodForm.tsx",
+    "apps/studio/components/interfaces/Billing/Payment/Payment.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Billing/Payment/PaymentConfirmation.tsx",
+    "apps/studio/components/interfaces/Billing/Payment/AddNewPaymentMethodModal.tsx",
+    "apps/studio/components/interfaces/Billing/Payment/AddPaymentMethodForm.tsx",
+    "apps/studio/components/interfaces/Billing/Payment/Payment.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1096",
+  "symbol_name": "PaymentConfirmation",
+  "target_file": "apps/studio/components/interfaces/Billing/Payment/PaymentConfirmation.tsx",
+  "task_id": "task_9ed2ba4508"
+}

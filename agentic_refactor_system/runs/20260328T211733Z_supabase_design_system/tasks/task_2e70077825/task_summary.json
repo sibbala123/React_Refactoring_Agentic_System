@@ -1,0 +1,39 @@
+{
+  "accepted_attempt": null,
+  "agent_execution": {
+    "critique": {
+      "acceptable": null,
+      "adapter": "mock",
+      "issues": [
+        "Dry-run enabled; critique agent execution skipped."
+      ],
+      "recommendations": [],
+      "score": null,
+      "status": "skipped"
+    },
+    "refactor": {
+      "adapter": "direct_editor",
+      "applied_changes": false,
+      "notes": [
+        "Dry-run enabled; refactor agent execution skipped."
+      ],
+      "status": "skipped"
+    }
+  },
+  "artifacts": {
+    "agent_workspace": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\agent_workspace",
+    "attempt_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\refactor_attempt1.log",
+    "attempt_text": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\refactor_attempt1.txt",
+    "critique_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\critique_attempt1.log",
+    "critique_prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\critique_prompt.txt",
+    "critique_text": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\critique_attempt1.txt",
+    "post_snapshot": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\post_snapshot.json",
+    "pre_snapshot": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\pre_snapshot.json",
+    "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\prompt.txt"
+  },
+  "attempts": [],
+  "changed_files": [],
+  "smell_type": "Large Component",
+  "target_file": "registry/default/example/sheet-confirm-on-close-demo.tsx",
+  "task_id": "task_2e70077825"
+}

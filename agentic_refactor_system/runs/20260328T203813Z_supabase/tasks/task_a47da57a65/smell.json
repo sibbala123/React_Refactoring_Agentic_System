@@ -1,0 +1,14 @@
+{
+  "component_name": "column-privileges",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/pages/project/[ref]/database/column-privileges.tsx",
+  "line_end": 371,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_3910",
+  "smell_type": "Large Component"
+}

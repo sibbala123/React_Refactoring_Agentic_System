@@ -1,0 +1,30 @@
+{
+  "line_end": 26,
+  "line_start": 26,
+  "local_imports": [
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts",
+    "packages/ui-patterns/src/info-tooltip.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { cn, Switch } from 'ui'\nimport { Label } from 'ui/src/components/shadcn/ui/label'\n\nimport { InfoTooltip } from '../../info-tooltip'\nimport {\n  MultiSelector,\n  MultiSelectorContent,\n  MultiSelectorItem,\n  MultiSelectorList,\n  MultiSelectorTrigger,\n} from '../../multi-select'\nimport type { McpFeatureGroup } from '../types'\n\ninterface McpConfigurationOptionsProps {\n  isPlatform: boolean\n  readonly: boolean\n  onReadonlyChange: (readonly: boolean) => void\n  selectedFeatures: string[]\n  onFeaturesChange: (features: string[]) => void\n  featureGroups: McpFeatureGroup[]\n  className?: string\n}\n\nexport function McpConfigurationOptions({\n  isPlatform,\n  readonly,\n  onReadonlyChange,\n  selectedFeatures,\n  onFeaturesChange,\n  featureGroups,\n  className,\n}: McpConfigurationOptionsProps) {\n  return (\n    <div className={cn('flex flex-col gap-4 lg:flex-row lg:gap-12 lg:items-baseline', className)}>\n      {/* Readonly Mode */}\n      <div className=\"space-y-3 lg:flex-shrink-0\">\n        <div className=\"flex items-center gap-2\">\n          <Label htmlFor=\"readonly\" className=\"text-sm\">\n            Read-only\n          </Label>\n          <InfoTooltip>Only allow read operations on your database</InfoTooltip>\n        </div>\n        <div className=\"flex items-center space-x-2\">\n          <Switch id=\"readonly\" checked={readonly} onCheckedChange={onReadonlyChange} />\n        </div>\n      </div>\n\n      {/* Feature Groups */}\n      <div className=\"space-y-3 lg:flex-1\">\n        <div className=\"flex items-center gap-2\">\n          <Label className=\"text-sm\">Feature Groups</Label>\n          <InfoTooltip>\n            Only enable a subset of features. Helps keep the number of tools within MCP client\n            limits",
+    "end_line": 56,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui-patterns/src/McpUrlBuilder/components/ClientSelectDropdown.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ConnectionIcon.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationDisplay.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/types.ts",
+    "packages/ui-patterns/src/info-tooltip.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ClientSelectDropdown.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/ConnectionIcon.tsx",
+    "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationDisplay.tsx"
+  ],
+  "smell_id": "heuristic_props_6245",
+  "symbol_name": "McpConfigurationOptions",
+  "target_file": "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx",
+  "task_id": "task_14ceba17b0"
+}

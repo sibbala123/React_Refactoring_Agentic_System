@@ -1,0 +1,37 @@
+{
+  "line_end": 14,
+  "line_start": 14,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Command, CornerDownLeft, Loader2 } from 'lucide-react'\n\nimport { detectOS } from 'lib/helpers'\nimport { Button } from 'ui'\n\ninterface SqlRunButtonProps {\n  isDisabled?: boolean\n  isExecuting?: boolean\n  hasSelection?: boolean\n  className?: string\n  onClick: () => void\n}\n\nexport const SqlRunButton = ({\n  isDisabled = false,\n  isExecuting = false,\n  hasSelection = false,\n  className,\n  onClick,\n}: SqlRunButtonProps) => {\n  const os = detectOS()\n\n  function handleOnClick() {\n    onClick()\n  }\n\n  return (\n    <Button\n      onClick={handleOnClick}\n      disabled={isDisabled}\n      type=\"primary\"\n      size=\"tiny\"\n      data-testid=\"sql-run-button\"\n      iconRight={\n        isExecuting ? (\n          <Loader2 className=\"animate-spin\" size={10} strokeWidth={1.5} />\n        ) : (\n          <div className=\"flex items-center space-x-1\">\n            {os === 'macos' ? (\n              <Command size={10} strokeWidth={1.5} />\n            ) : (\n              <p className=\"text-xs text-foreground-light\">CTRL</p>\n            )}\n            <CornerDownLeft size={10} strokeWidth={1.5} />",
+    "end_line": 44,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/CellDetailPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ChartConfig.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ReadOnlyBadge.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.test.ts",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.ts",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/SavingIndicator.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityActions.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityTabExplain.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityTabResults.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/RunButton.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/CellDetailPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ChartConfig.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ReadOnlyBadge.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.test.ts",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.ts",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/SavingIndicator.tsx"
+  ],
+  "smell_id": "heuristic_props_2152",
+  "symbol_name": "SqlRunButton",
+  "target_file": "apps/studio/components/interfaces/SQLEditor/UtilityPanel/RunButton.tsx",
+  "task_id": "task_cb877c7e15"
+}

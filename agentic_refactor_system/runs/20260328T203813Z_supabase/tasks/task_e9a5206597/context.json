@@ -1,0 +1,42 @@
+{
+  "line_end": 33,
+  "line_start": 33,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Badge, StatusIcon, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\n\nexport interface ActionStatusBadgeProps {\n  name: ActionName\n  status: ActionStatus\n}\n\nconst UNHEALTHY_STATUES: ActionStatus[] = ['DEAD', 'REMOVING']\nconst WAITING_STATUSES: ActionStatus[] = ['CREATED', 'RESTARTING', 'RUNNING']\n\nexport const STATUS_TO_LABEL: Record<ActionStatus, string> = {\n  CREATED: 'pending',\n  DEAD: 'failed',\n  EXITED: 'succeeded',\n  PAUSED: 'skipped',\n  REMOVING: 'failed',\n  RESTARTING: 'restarting',\n  RUNNING: 'running',\n}\n\nconst NAME_TO_LABEL: Record<ActionName, string> = {\n  clone: 'Cloning repo',\n  pull: 'Pulling data',\n  health: 'Health check',\n  configure: 'Configurations',\n  migrate: 'Migrations',\n  seed: 'Data seeding',\n  deploy: 'Functions deployment',\n}\n\nexport const ActionStatusBadgeCondensed = ({\n  children,\n  status,\n  details,\n}: PropsWithChildren<{\n  status: ActionStatus\n  details: Array<ActionRunStep>\n}>) => {\n  if (status === 'EXITED') {\n    return null\n  }\n\n  const isUnhealthy = UNHEALTHY_STATUES.includes(status)\n\n  return (\n    <Tooltip>\n      <TooltipTrigger asChild>\n        <Badge variant={isUnhealthy ? 'destructive' : 'default'} className=\"gap-1.5\">\n          {isUnhealthy && <StatusIcon variant=\"destructive\" hideBackground />}\n          {children}\n        </Badge>\n      </TooltipTrigger>\n      <TooltipContent>\n        Additional {STATUS_TO_LABEL[status]} steps:\n        <ul>\n          {details.map((step) => (\n            <li key={step.name} className=\"before:content-['-'] before:mr-0.5\">\n              {NAME_TO_LABEL[step.name]}\n            </li>\n          ))}\n        </ul>",
+    "end_line": 63,
+    "start_line": 3
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EdgeFunctionsDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewRow.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogs.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx"
+  ],
+  "smell_id": "heuristic_props_1108",
+  "symbol_name": "ActionStatusBadgeCondensed",
+  "target_file": "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+  "task_id": "task_e9a5206597"
+}

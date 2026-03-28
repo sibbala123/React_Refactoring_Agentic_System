@@ -1,0 +1,32 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [
+    "apps/studio/components/interfaces/Auth/Policies/PoliciesDataContext.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyRow.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRowHeader.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  CardContent,\n  CardHeader,\n  cn,\n  Table,\n  TableBody,\n  TableHead,\n  TableHeader,\n  TableRow,\n} from 'ui'\nimport { Admonition } from 'ui-patterns'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\n\nimport { usePoliciesData } from '../PoliciesDataContext'\nimport { PolicyRow } from './PolicyRow'\nimport type { PolicyTable } from './PolicyTableRow.types'\nimport { PolicyTableRowHeader } from './PolicyTableRowHeader'\nimport AlertError from '@/components/ui/AlertError'\nimport { InlineLink } from '@/components/ui/InlineLink'\nimport { useTablesRolesAccessQuery } from '@/data/tables/tables-roles-access-query'\nimport { useSelectedProjectQuery } from '@/hooks/misc/useSelectedProject'\n\nexport interface PolicyTableRowProps {\n  table: PolicyTable\n  isLocked: boolean\n  onSelectToggleRLS: (table: PolicyTable) => void\n  onSelectCreatePolicy: (table: PolicyTable) => void\n  onSelectEditPolicy: (policy: PostgresPolicy) => void\n  onSelectDeletePolicy: (policy: PostgresPolicy) => void\n}\n\nconst PolicyTableRowComponent = ({\n  table,\n  isLocked,\n  onSelectToggleRLS = noop,\n  onSelectCreatePolicy = noop,\n  onSelectEditPolicy = noop,\n  onSelectDeletePolicy = noop,\n}: PolicyTableRowProps) => {\n  const { ref } = useParams()\n  const { data: project } = useSelectedProjectQuery()\n  const { getPoliciesForTable, isPoliciesLoading, isPoliciesError, policiesError, exposedSchemas } =\n    usePoliciesData()\n\n  const policies = useMemo(\n    () => getPoliciesForTable(table.schema, table.name),\n    [getPoliciesForTable, table.schema, table.name]\n  )\n\n  // [Joshen] Changes here are so that warnings are more accurate and granular instead of purely relying if RLS is disabled or enabled\n  // The following scenarios are technically okay if the table has RLS disabled, in which it won't be publicly readable / writable\n  // - If the schema is not exposed through the API via Postgrest\n  // - If the anon and authenticated roles do not have access to the table\n  // Ideally we should just rely on the security lints as the source of truth, but the security lints currently have limitations\n  // - They only consider the public schema\n  // - They do not consider roles\n  // Eventually if the security lints are able to cover those, we can look to using them as the source of truth instead then\n  const isRLSEnabled = table.rls_enabled\n  const isTableExposedThroughAPI = useMemo(\n    () => exposedSchemas.has(table.schema),\n    [exposedSchemas, table.schema]\n  )",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyRow.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRow.types.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRow.utils.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRowHeader.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/index.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PoliciesDataContext.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyRow.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRowHeader.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRow.types.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/PolicyTableRow.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1043",
+  "symbol_name": "PolicyTableRowComponent",
+  "target_file": "apps/studio/components/interfaces/Auth/Policies/PolicyTableRow/index.tsx",
+  "task_id": "task_55e6a88a5f"
+}

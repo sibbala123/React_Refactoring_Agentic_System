@@ -1,0 +1,42 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [
+    "apps/studio/components/grid/MsSqlValidation.tsx",
+    "apps/studio/components/grid/components/common/Shortcuts.tsx",
+    "apps/studio/components/grid/components/footer/Footer.tsx",
+    "apps/studio/components/grid/components/grid/Grid.tsx",
+    "apps/studio/components/grid/components/header/Header.tsx",
+    "apps/studio/components/grid/components/header/HeaderNew.tsx",
+    "apps/studio/components/grid/components/menu/RowContextMenu.tsx",
+    "apps/studio/components/grid/hooks/useTableFilter.ts",
+    "apps/studio/components/grid/hooks/useTableSort.ts",
+    "apps/studio/components/grid/types/index.ts",
+    "apps/studio/components/grid/utils/queueOperationUtils.ts",
+    "apps/studio/components/interfaces/App/FeaturePreview/FeaturePreviewContext.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { keepPreviousData } from '@tanstack/react-query'\nimport { useParams } from 'common'\nimport { isMsSqlForeignTable } from 'data/table-editor/table-editor-types'\nimport { useTableRowsQuery } from 'data/table-rows/table-rows-query'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { RoleImpersonationState } from 'lib/role-impersonation'\nimport { EMPTY_ARR } from 'lib/void'\nimport { PropsWithChildren, useEffect, useRef, useState } from 'react'\nimport { DataGridHandle } from 'react-data-grid'\nimport { DndProvider } from 'react-dnd'\nimport { HTML5Backend } from 'react-dnd-html5-backend'\nimport { createPortal } from 'react-dom'\nimport { useRoleImpersonationStateSnapshot } from 'state/role-impersonation-state'\nimport { useTableEditorStateSnapshot } from 'state/table-editor'\nimport { QueuedOperation } from 'state/table-editor-operation-queue.types'\nimport { useTableEditorTableStateSnapshot } from 'state/table-editor-table'\n\nimport { useIsTableFilterBarEnabled } from '../interfaces/App/FeaturePreview/FeaturePreviewContext'\nimport { Shortcuts } from './components/common/Shortcuts'\nimport { Footer } from './components/footer/Footer'\nimport { Grid } from './components/grid/Grid'\nimport { Header, HeaderProps } from './components/header/Header'\nimport { HeaderNew } from './components/header/HeaderNew'\nimport { RowContextMenu } from './components/menu/RowContextMenu'\nimport { useTableFilter } from './hooks/useTableFilter'\nimport { useTableSort } from './hooks/useTableSort'\nimport { validateMsSqlSorting } from './MsSqlValidation'\nimport { GridProps } from './types'\nimport { formatGridDataWithOperationValues } from './utils/queueOperationUtils'\n\nexport const SupabaseGrid = ({\n  customHeader,\n  gridProps,\n  children,\n}: PropsWithChildren<\n  Pick<HeaderProps, 'customHeader'> & {\n    gridProps?: GridProps\n  }\n>) => {\n  const { id: _id } = useParams()\n  const tableId = _id ? Number(_id) : undefined\n\n  const { data: project } = useSelectedProjectQuery()\n  const tableEditorSnap = useTableEditorStateSnapshot()\n  const snap = useTableEditorTableStateSnapshot()\n  const preflightCheck = !tableEditorSnap.tablesToIgnorePreflightCheck.includes(tableId ?? -1)\n\n  const gridRef = useRef<DataGridHandle>(null)\n  const [mounted, setMounted] = useState(false)\n\n  const newFilterBarEnabled = useIsTableFilterBarEnabled()\n\n  const { filters } = useTableFilter()\n  const { sorts, onApplySorts } = useTableSort()\n\n  const roleImpersonationState = useRoleImpersonationStateSnapshot()\n\n  const msSqlWarning = isMsSqlForeignTable(snap.originalTable)\n    ? validateMsSqlSorting({ filters, sorts, table: snap.originalTable })\n    : { warning: null }\n  const tableQueriesEnabled = msSqlWarning.warning === null",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/grid/MsSqlValidation.tsx",
+    "apps/studio/components/grid/SupabaseGrid.utils.ts",
+    "apps/studio/components/grid/constants.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/grid/SupabaseGrid.tsx",
+    "apps/studio/components/grid/MsSqlValidation.tsx",
+    "apps/studio/components/grid/components/common/Shortcuts.tsx",
+    "apps/studio/components/grid/components/footer/Footer.tsx",
+    "apps/studio/components/grid/components/grid/Grid.tsx",
+    "apps/studio/components/grid/components/header/Header.tsx",
+    "apps/studio/components/grid/components/header/HeaderNew.tsx",
+    "apps/studio/components/grid/components/menu/RowContextMenu.tsx"
+  ],
+  "smell_id": "heuristic_props_0863",
+  "symbol_name": "SupabaseGrid",
+  "target_file": "apps/studio/components/grid/SupabaseGrid.tsx",
+  "task_id": "task_96edd139da"
+}

@@ -1,0 +1,21 @@
+{
+  "line_end": 59,
+  "line_start": 59,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  confirm_email_address: 'Confirm your email address',\n  h1: (username: string) => `Hi ${username}! Confirm your email address`,\n  your_confirmation_code:\n    'Thank you for signing up for Story. Please complete the email confirmation for full access.',\n  click_here: 'Click here to confirm your email address',\n  copy_and_paste: 'Or, copy and paste this temporary login code:',\n  if_you_did_not_request:\n    'If you did not request this email, there is nothing to worry about, you can safely ignore it.',\n  blog: 'Our blog',\n  policies: 'Policies',\n  help_center: 'Help center',\n  community: 'Community',\n}\n\n/** Translations of the text for Japanese */\nconst translationsJa = {\n  confirm_email_address: '\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306e\u78ba\u8a8d',\n  h1: (username: string) => `${username}\u69d8\u3088\u3046\u3053\u305d\uff01\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306e\u78ba\u8a8d\u3092\u304a\u9858\u3044\u3057\u307e\u3059`,\n  your_confirmation_code:\n    'Story\u3078\u306e\u767b\u9332\u3042\u308a\u304c\u3068\u3046\u3054\u3056\u3044\u307e\u3059\u3002\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306e\u78ba\u8a8d\u3092\u5b8c\u4e86\u3057\u3066\u304f\u3060\u3055\u3044\u3002',\n  click_here: '\u3053\u3061\u3089\u3092\u30af\u30ea\u30c3\u30af\u3057\u3066\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306e\u78ba\u8a8d\u3092\u5b8c\u4e86\u3055\u305b\u3066\u304f\u3060\u3055\u3044',\n  copy_and_paste: '\u305d\u308c\u304b\u3053\u3061\u3089\u306e\u30ed\u30b0\u30a4\u30f3\u30b3\u30fc\u30c9\u3092\u4f7f\u3063\u3066Web\u30b5\u30a4\u30c8\u3067\u8a8d\u8a3c\u3092\u5b8c\u4e86\u3055\u305b\u3066\u304f\u3060\u3055\u3044\u3002',\n  if_you_did_not_request:\n    '\u3082\u3057\u30e1\u30fc\u30eb\u306e\u30ea\u30af\u30a8\u30b9\u30c8\u3092\u3057\u3066\u3044\u306a\u3044\u5834\u5408\u306f\u3001\u7121\u8996\u3057\u3066\u3044\u305f\u3060\u3044\u3066\u69cb\u3044\u307e\u305b\u3093\u3002',\n  blog: '\u30d6\u30ed\u30b0',\n  policies: '\u30dd\u30ea\u30b7\u30fc',\n  help_center: '\u30d8\u30eb\u30d7\u30bb\u30f3\u30bf\u30fc',\n  community: '\u30b3\u30df\u30e5\u30cb\u30c6\u30a3',\n}\n\nexport const SignUpEmail = ({\n  username,\n  lang,\n  token,\n  supabase_url,\n  email_action_type,\n  redirect_to,\n  token_hash,\n}: SignUpEmailProps) => {\n  const translations = lang.includes('ja') ? translationsJa : translationsEn\n\n  return (\n    <Html>\n      <Head />\n      <Preview>{translations.confirm_email_address}</Preview>\n      <Body style={main}>\n        <Container style={container}>\n          <Section style={logoContainer}>\n            <Img src=\"https://welcome-five-ebon.vercel.app/logo.png\" width=\"120\" alt=\"Story\" />\n          </Section>\n          <Heading style={h1}>{translations.h1(username)}</Heading>\n          <Text style={heroText}>{translations.your_confirmation_code}</Text>\n\n          <Link\n            href={`${supabase_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to}`}\n            target=\"_blank\"\n            style={{\n              ...link,\n              display: 'block',\n              marginBottom: '16px',\n            }}",
+    "end_line": 89,
+    "start_line": 29
+  },
+  "related_files": [
+    "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/magic-link.tsx"
+  ],
+  "relevant_context_files": [
+    "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/sign-up.tsx",
+    "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/magic-link.tsx"
+  ],
+  "smell_id": "heuristic_props_5347",
+  "symbol_name": "SignUpEmail",
+  "target_file": "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/sign-up.tsx",
+  "task_id": "task_c034f7f1db"
+}

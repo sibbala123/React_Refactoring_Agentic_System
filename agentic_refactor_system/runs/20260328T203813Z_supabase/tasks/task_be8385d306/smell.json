@@ -1,0 +1,14 @@
+{
+  "component_name": "ComposedChart",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=43",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/ui/Charts/ComposedChart.tsx",
+  "line_end": 99,
+  "line_start": 99,
+  "severity": "low",
+  "smell_id": "heuristic_props_2687",
+  "smell_type": "Too Many Props"
+}

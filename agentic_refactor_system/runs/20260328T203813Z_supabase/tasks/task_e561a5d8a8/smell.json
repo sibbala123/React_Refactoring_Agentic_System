@@ -1,0 +1,14 @@
+{
+  "component_name": "Feedback",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/docs/components/Feedback/Feedback.tsx",
+  "line_end": 238,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0466",
+  "smell_type": "Large Component"
+}

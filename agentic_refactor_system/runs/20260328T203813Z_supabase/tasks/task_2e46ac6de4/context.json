@@ -1,0 +1,25 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [
+    "packages/ui-patterns/src/MobileSheetNav/MobileSheetNav.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { act, render, screen, waitFor } from '@testing-library/react'\nimport { useEffect, useState } from 'react'\nimport { beforeEach, describe, expect, it, vi } from 'vitest'\n\nimport { MobileSheetNav } from './MobileSheetNav'\n\nconst mockRouter = vi.hoisted(() => ({ asPath: '/initial' }))\nconst mockWindowSize = vi.hoisted(() => ({ width: 400 }))\n\nvi.mock('next/router', () => ({\n  useRouter: () => mockRouter,\n}))\n\nvi.mock('react-use', () => ({\n  useWindowSize: () => mockWindowSize,\n}))\n\nfunction MobileSheetNavWithState({\n  shouldCloseOnRouteChange = true,\n  shouldCloseOnViewportResize = true,\n}: {\n  shouldCloseOnRouteChange?: boolean\n  shouldCloseOnViewportResize?: boolean\n}) {\n  const [open, setOpen] = useState(false)\n  useEffect(() => {\n    setOpen(true)\n  }, [])\n  return (\n    <>\n      <span data-testid=\"sheet-open\">{String(open)}</span>\n      <MobileSheetNav\n        open={open}\n        onOpenChange={setOpen}\n        shouldCloseOnRouteChange={shouldCloseOnRouteChange}\n        shouldCloseOnViewportResize={shouldCloseOnViewportResize}\n      >\n        <div>Nav content</div>\n      </MobileSheetNav>\n    </>\n  )\n}\n\ndescribe('MobileSheetNav', () => {\n  const defaultProps = {\n    onOpenChange: vi.fn(),\n    children: <div>Nav content</div>,\n  }",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui-patterns/src/MobileSheetNav/MobileSheetNav.tsx",
+    "packages/ui-patterns/src/MobileSheetNav/index.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/MobileSheetNav/MobileSheetNav.test.tsx",
+    "packages/ui-patterns/src/MobileSheetNav/MobileSheetNav.tsx",
+    "packages/ui-patterns/src/MobileSheetNav/index.ts"
+  ],
+  "smell_id": "heuristic_props_6258",
+  "symbol_name": "MobileSheetNavWithState",
+  "target_file": "packages/ui-patterns/src/MobileSheetNav/MobileSheetNav.test.tsx",
+  "task_id": "task_2e46ac6de4"
+}

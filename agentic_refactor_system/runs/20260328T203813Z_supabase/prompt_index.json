@@ -1,0 +1,13 @@
+{
+  "count": 2,
+  "generated_prompts": [
+    {
+      "prompt_file": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T203813Z_supabase\\tasks\\task_4d47f05622\\prompt.txt",
+      "task_id": "task_4d47f05622"
+    },
+    {
+      "prompt_file": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T203813Z_supabase\\tasks\\task_5d7a62e296\\prompt.txt",
+      "task_id": "task_5d7a62e296"
+    }
+  ]
+}

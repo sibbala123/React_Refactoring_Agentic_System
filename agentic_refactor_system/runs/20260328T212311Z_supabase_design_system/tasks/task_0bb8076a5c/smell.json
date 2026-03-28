@@ -1,0 +1,14 @@
+{
+  "component_name": "CopyButton",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=7",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "components/copy-button.tsx",
+  "line_end": 34,
+  "line_start": 34,
+  "severity": "low",
+  "smell_id": "heuristic_props_0026",
+  "smell_type": "Too Many Props"
+}

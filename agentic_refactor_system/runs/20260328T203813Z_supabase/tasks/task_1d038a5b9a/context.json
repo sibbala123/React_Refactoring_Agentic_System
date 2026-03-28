@@ -1,0 +1,34 @@
+{
+  "line_end": 279,
+  "line_start": 279,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  const clearAllPrivileges = useStaticEffectEvent(() => {\n    if (!innerResult.isSuccess) return\n    if (!innerResult.data.schemaExposed) return\n    innerResult.data?.setPrivileges(EMPTY_DATA_API_PRIVILEGES)\n  })\n\n  const restorePreviousPrivileges = useStaticEffectEvent(() => {\n    if (!innerResult.isSuccess) return\n    if (!innerResult.data.schemaExposed) return\n    innerResult.data?.setPrivileges(previous ?? DEFAULT_DATA_API_PRIVILEGES)\n  })\n\n  if (!innerResult.isSuccess) {\n    return innerResult\n  }\n\n  return {\n    ...innerResult,\n    data: { ...innerResult.data, clearAllPrivileges, restorePreviousPrivileges },\n  }\n}\n\ntype ApiAccessToggleComponentProps = {\n  projectRef?: string\n  schemaName?: string\n  tableName?: string\n  isNewRecord: boolean\n  handler: TableApiAccessHandlerWithHistoryReturn\n}\n\nexport const ApiAccessToggle = ({\n  projectRef,\n  schemaName,\n  tableName,\n  isNewRecord,\n  handler,\n}: ApiAccessToggleComponentProps): ReactNode => {\n  const track = useTrack()\n  const isPending = handler.isPending\n  const isError = handler.isError\n  const isSchemaExposed = handler.data?.schemaExposed\n  const isDisabled = isPending || isError || !isSchemaExposed\n\n  const privileges =\n    handler.isSuccess && handler.data.schemaExposed ? handler.data.privileges : undefined\n  const hasNonEmptyPrivileges = checkDataApiPrivilegesNonEmpty(privileges)\n\n  const handleMasterToggle = (checked: boolean) => {\n    if (!handler.isSuccess) return\n    if (!isSchemaExposed) return\n\n    if (isNewRecord) {\n      track('table_api_access_toggle_clicked', {\n        newState: checked ? 'enabled' : 'disabled',\n        schemaName: schemaName ?? 'unknown',\n      })\n    }\n\n    if (checked) {\n      handler.data?.restorePreviousPrivileges()\n    } else {",
+    "end_line": 309,
+    "start_line": 249
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/Column.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ColumnManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/RLSDisableModal.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ApiAccessToggle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/Column.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ColumnManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/RLSDisableModal.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.types.ts"
+  ],
+  "smell_id": "heuristic_props_2353",
+  "symbol_name": "ApiAccessToggle",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ApiAccessToggle.tsx",
+  "task_id": "task_1d038a5b9a"
+}

@@ -1,0 +1,41 @@
+{
+  "line_end": 24,
+  "line_start": 24,
+  "local_imports": [
+    "apps/studio/components/interfaces/Docs/DocSection.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useParams } from 'common'\n\nimport { DocSection } from './DocSection'\nimport CodeSnippet from '@/components/interfaces/Docs/CodeSnippet'\nimport Description from '@/components/interfaces/Docs/Description'\nimport Param from '@/components/interfaces/Docs/Param'\nimport Snippets from '@/components/interfaces/Docs/Snippets'\nimport { useProjectSettingsV2Query } from '@/data/config/project-settings-v2-query'\nimport { ProjectJsonSchemaPaths } from '@/data/docs/project-json-schema-query'\n\n/**\n * TODO: need to support rpc with the same name and different params type\n */\n\ninterface RpcContentProps {\n  rpcId: string\n  rpcs: { [key: string]: any }\n  paths?: ProjectJsonSchemaPaths\n  selectedLang: 'bash' | 'js'\n  showApiKey: string\n  refreshDocs: () => void\n}\n\nexport const RpcContent = ({\n  rpcId,\n  rpcs,\n  paths,\n  selectedLang,\n  showApiKey,\n  refreshDocs,\n}: RpcContentProps) => {\n  const { ref: projectRef } = useParams()\n  const { data: settings } = useProjectSettingsV2Query({ projectRef })\n  const protocol = settings?.app_config?.protocol ?? 'https'\n  const hostEndpoint = settings?.app_config?.endpoint ?? ''\n  const endpoint = `${protocol}://${hostEndpoint ?? ''}`\n\n  const meta = rpcs[rpcId]\n  const pathKey = `/rpc/${rpcId}`\n  const path = paths && pathKey in paths ? paths[pathKey] : undefined\n  const keyToShow = !!showApiKey ? showApiKey : 'SUPABASE_KEY'\n\n  const { parameters, summary } = path?.post || {}\n  const rpcParamsObject =\n    parameters && parameters[0] && parameters[0].schema && (parameters[0].schema as any).properties\n      ? (parameters[0].schema as any).properties\n      : {}\n  const rpcParams = Object.entries(rpcParamsObject)\n    .map(([k, v]: any) => ({ name: k, ...v }))\n    .filter((x) => !!x.name)\n\n  if (!path) return null\n\n  return (",
+    "end_line": 54,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Docs/Authentication.tsx",
+    "apps/studio/components/interfaces/Docs/CodeSnippet.tsx",
+    "apps/studio/components/interfaces/Docs/Description.tsx",
+    "apps/studio/components/interfaces/Docs/DocSection.tsx",
+    "apps/studio/components/interfaces/Docs/Docs.types.ts",
+    "apps/studio/components/interfaces/Docs/GeneralContent.tsx",
+    "apps/studio/components/interfaces/Docs/GeneratingTypes.tsx",
+    "apps/studio/components/interfaces/Docs/Introduction.tsx",
+    "apps/studio/components/interfaces/Docs/LangSelector.tsx",
+    "apps/studio/components/interfaces/Docs/Param.tsx",
+    "apps/studio/components/interfaces/Docs/PublicSchemaNotEnabledAlert.tsx",
+    "apps/studio/components/interfaces/Docs/ResourceContent.tsx",
+    "apps/studio/components/interfaces/Docs/Snippets.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Docs/RpcContent.tsx",
+    "apps/studio/components/interfaces/Docs/DocSection.tsx",
+    "apps/studio/components/interfaces/Docs/Authentication.tsx",
+    "apps/studio/components/interfaces/Docs/CodeSnippet.tsx",
+    "apps/studio/components/interfaces/Docs/Description.tsx",
+    "apps/studio/components/interfaces/Docs/Docs.types.ts",
+    "apps/studio/components/interfaces/Docs/GeneralContent.tsx",
+    "apps/studio/components/interfaces/Docs/GeneratingTypes.tsx"
+  ],
+  "smell_id": "heuristic_props_1415",
+  "symbol_name": "RpcContent",
+  "target_file": "apps/studio/components/interfaces/Docs/RpcContent.tsx",
+  "task_id": "task_7e7d43c60a"
+}

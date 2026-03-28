@@ -1,0 +1,32 @@
+{
+  "line_end": 8,
+  "line_start": 8,
+  "local_imports": [
+    "packages/ui-patterns/src/CommandMenu/api/hooks/queryHooks.ts"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { useEffect, useState, type PropsWithChildren, type RefObject } from 'react'\nimport { cn } from 'ui'\n\nimport { useQuery } from '../api/hooks/queryHooks'\n\nconst CommandEmpty = ({\n  children,\n  className,\n  listRef,\n  ...props\n}: PropsWithChildren<{\n  className?: string\n  /**\n   * Reference to the div that contains the command item list in the DOM.\n   *\n   * Hacking around a bug in cmdk where the empty state will show even when\n   * there are force-mounted items.\n   */\n  listRef: RefObject<HTMLDivElement | undefined>\n}>) => {\n  const query = useQuery()\n\n  const [render, setRender] = useState(false)\n  useEffect(() => {\n    if (!query) return setRender(false)\n    setRender(!listRef?.current?.querySelector('[cmdk-item]'))\n  }, [query])\n\n  return (\n    render && (\n      <div className={cn('py-6 text-center text-sm text-foreground-muted', className)} {...props}>\n        {children}\n      </div>\n    )\n  )\n}",
+    "end_line": 38,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui-patterns/src/CommandMenu/internal/Command.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/CommandGroup.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/CommandSection.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/Context.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/types.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui-patterns/src/CommandMenu/internal/CommandEmpty.tsx",
+    "packages/ui-patterns/src/CommandMenu/api/hooks/queryHooks.ts",
+    "packages/ui-patterns/src/CommandMenu/internal/Command.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/CommandGroup.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/CommandSection.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/Context.tsx",
+    "packages/ui-patterns/src/CommandMenu/internal/types.ts"
+  ],
+  "smell_id": "heuristic_props_6166",
+  "symbol_name": "CommandEmpty",
+  "target_file": "packages/ui-patterns/src/CommandMenu/internal/CommandEmpty.tsx",
+  "task_id": "task_352b7f0908"
+}

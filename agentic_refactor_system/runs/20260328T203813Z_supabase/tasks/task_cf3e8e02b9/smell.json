@@ -1,0 +1,14 @@
+{
+  "component_name": "EditorTablePageLink",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/data/prefetchers/project.$ref.editor.$id.tsx",
+  "line_end": 109,
+  "line_start": 109,
+  "severity": "low",
+  "smell_id": "heuristic_props_3309",
+  "smell_type": "Too Many Props"
+}

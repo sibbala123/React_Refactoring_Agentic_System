@@ -1,0 +1,14 @@
+{
+  "component_name": "SparklineTooltip",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/MetricCard/index.tsx",
+  "line_end": 284,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_6256",
+  "smell_type": "Large Component"
+}

@@ -1,0 +1,46 @@
+{
+  "line_end": 57,
+  "line_start": 57,
+  "local_imports": [
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { branchKeys } from 'data/branches/keys'\nimport { useCheckEntitlements } from 'hooks/misc/useCheckEntitlements'\nimport { useAsyncCheckPermissions } from 'hooks/misc/useCheckPermissions'\nimport { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'\nimport { IS_PLATFORM } from 'lib/constants'\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n} from 'ui'\nimport { ConfirmationModal } from 'ui-patterns/Dialogs/ConfirmationModal'\nimport { BranchLoader, BranchManagementSection, BranchRow, BranchRowLoader } from './BranchPanels'\nimport { EditBranchModal } from './EditBranchModal'\nimport { PreviewBranchesEmptyState } from './EmptyStates'\n\ninterface OverviewProps {\n  isGithubConnected: boolean\n  isLoading: boolean\n  isSuccess: boolean\n  repo: string\n  mainBranch: Branch\n  previewBranches: Branch[]\n  onSelectCreateBranch: () => void\n  onSelectDeleteBranch: (branch: Branch) => void\n  generateCreatePullRequestURL: (branchName?: string) => string\n}\n\nexport const Overview = ({\n  isGithubConnected,\n  isLoading,\n  isSuccess,\n  repo,\n  mainBranch,\n  previewBranches,\n  onSelectCreateBranch,\n  onSelectDeleteBranch,\n  generateCreatePullRequestURL,\n}: OverviewProps) => {\n  const [scheduledForDeletionBranches, aliveBranches] = partition(\n    previewBranches,\n    (branch) => branch.deletion_scheduled_at !== undefined\n  )\n  const [persistentBranches, ephemeralBranches] = partition(\n    aliveBranches,\n    (branch) => branch.persistent\n  )\n  const { ref: projectRef } = useParams()\n  const { data: selectedOrg } = useSelectedOrganizationQuery()\n\n  const { hasAccess: hasAccessToPersistentBranching, isLoading: isLoadingEntitlement } =\n    useCheckEntitlements('branching_persistent')\n\n  return (\n    <>\n      <BranchManagementSection header=\"Production branch\">\n        {isLoading && <BranchRowLoader />}\n        {isSuccess && mainBranch !== undefined && (\n          <BranchRow",
+    "end_line": 87,
+    "start_line": 27
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EdgeFunctionsDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewRow.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogs.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx"
+  ],
+  "smell_id": "heuristic_props_1120",
+  "symbol_name": "Overview",
+  "target_file": "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+  "task_id": "task_0e2e954a53"
+}

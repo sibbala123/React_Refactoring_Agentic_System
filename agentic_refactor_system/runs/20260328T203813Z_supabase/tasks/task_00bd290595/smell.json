@@ -1,0 +1,14 @@
+{
+  "component_name": "GlassPanel",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=13",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/GlassPanel/index.tsx",
+  "line_end": 22,
+  "line_start": 22,
+  "severity": "low",
+  "smell_id": "heuristic_props_6237",
+  "smell_type": "Too Many Props"
+}

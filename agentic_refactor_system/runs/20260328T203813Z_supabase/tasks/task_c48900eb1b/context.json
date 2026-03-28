@@ -1,0 +1,35 @@
+{
+  "line_end": 11,
+  "line_start": 11,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useRouter } from 'next/router'\nimport { toast } from 'sonner'\n\nimport { useParams } from 'common'\nimport { useContentDeleteMutation } from 'data/content/content-delete-mutation'\nimport { Snippet } from 'data/content/sql-folders-query'\nimport { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'\nimport { createTabId, useTabsStateSnapshot } from 'state/tabs'\nimport ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'\n\nexport const DeleteSnippetsModal = ({\n  snippets,\n  visible,\n  onClose,\n}: {\n  visible: boolean\n  snippets: Snippet[]\n  onClose: () => void\n}) => {\n  const router = useRouter()\n  const { ref: projectRef, id } = useParams()\n  const tabs = useTabsStateSnapshot()\n  const snapV2 = useSqlEditorV2StateSnapshot()\n\n  const postDeleteCleanup = (ids: string[]) => {\n    if (!!id && ids.includes(id)) {\n      const openedSQLTabs = tabs.openTabs.filter((x) => x.startsWith('sql-') && !x.includes(id))\n      if (openedSQLTabs.length > 0) {\n        // [Joshen] For simplicity, just opening the first tab for now\n        const firstTabId = openedSQLTabs[0].split('sql-')[1]\n        router.push(`/project/${projectRef}/sql/${firstTabId}`)\n      } else {\n        router.push(`/project/${projectRef}/sql/new`)\n      }\n    }\n\n    if (ids.length > 0) ids.forEach((id) => snapV2.removeSnippet(id))\n  }\n\n  const { mutate: deleteContent, isPending: isDeleting } = useContentDeleteMutation({\n    onSuccess: (data) => {",
+    "end_line": 41,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/CommunitySnippetsSection.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorLoadingSnippets.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.constants.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.utils.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorTreeViewItem.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SearchList.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/ShareSnippetModal.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/UnshareSnippetModal.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/DeleteSnippetsModal.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/CommunitySnippetsSection.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorLoadingSnippets.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.constants.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.utils.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorTreeViewItem.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SearchList.tsx"
+  ],
+  "smell_id": "heuristic_props_2587",
+  "symbol_name": "DeleteSnippetsModal",
+  "target_file": "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/DeleteSnippetsModal.tsx",
+  "task_id": "task_c48900eb1b"
+}

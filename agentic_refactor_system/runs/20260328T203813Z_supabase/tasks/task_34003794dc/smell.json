@@ -1,0 +1,14 @@
+{
+  "component_name": "StatCard",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=19",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Auth/Overview/OverviewMetrics.tsx",
+  "line_end": 50,
+  "line_start": 50,
+  "severity": "low",
+  "smell_id": "heuristic_props_1012",
+  "smell_type": "Too Many Props"
+}

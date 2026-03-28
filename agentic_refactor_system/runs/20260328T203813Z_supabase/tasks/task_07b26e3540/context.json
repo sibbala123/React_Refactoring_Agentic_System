@@ -1,0 +1,33 @@
+{
+  "line_end": 46,
+  "line_start": 46,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  DialogDescription,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogSectionSeparator,\n  DialogTitle,\n  DialogTrigger,\n  Form_Shadcn_,\n  FormField_Shadcn_,\n  Input_Shadcn_,\n  Separator,\n} from 'ui'\nimport { Admonition, ShimmeringLoader, TimestampInfo } from 'ui-patterns'\nimport { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'\nimport { z } from 'zod'\n\nimport { UpgradePlanButton } from '@/components/ui/UpgradePlanButton'\nimport { useOrganizationCreditCodeRedemptionMutation } from '@/data/organizations/organization-credit-code-redemption-mutation'\nimport { useOrganizationCustomerProfileQuery } from '@/data/organizations/organization-customer-profile-query'\nimport { useOrganizationQuery } from '@/data/organizations/organization-query'\nimport { useLatest } from '@/hooks/misc/useLatest'\n\nconst FORM_ID = 'credit-code-redemption'\n\nconst FormSchema = z.object({\n  code: z.string().min(1, 'Code is required'),\n})\n\ntype CreditCodeRedemptionForm = z.infer<typeof FormSchema>\n\nexport const CreditCodeRedemption = ({\n  slug,\n  modalVisible = false,\n  onClose,\n}: {\n  slug?: string\n  modalVisible?: boolean\n  onClose?: () => void\n}) => {\n  const router = useRouter()\n  const redeemCodeEnabled = useFlag('redeemCodeEnabled')\n  const [codeRedemptionModalVisible, setCodeRedemptionModalVisible] = useState(\n    modalVisible || false\n  )\n\n  const { data: org, isLoading: isOrgLoading } = useOrganizationQuery({ slug })\n  const { data: customerProfile, isLoading: isCustomerProfileLoading } =\n    useOrganizationCustomerProfileQuery({ slug })\n\n  const { can: canRedeemCode, isSuccess: isPermissionsLoaded } = useAsyncCheckPermissions(\n    PermissionAction.BILLING_WRITE,\n    'stripe.subscriptions',\n    undefined,\n    { organizationSlug: slug }\n  )\n\n  const captchaRef = useRef<HCaptcha>(null)\n  const captchaTokenRef = useRef<string | null>(null)\n  const codeRedemptionDisabled =\n    !canRedeemCode || !isPermissionsLoaded || isOrgLoading || isCustomerProfileLoading\n",
+    "end_line": 76,
+    "start_line": 16
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingEmail.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingSettings.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/CreditBalance.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/CreditTopUp.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/ProjectUpdateDisabledTooltip.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/Restriction.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/helpers.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/BillingSettings/CreditCodeRedemption.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingEmail.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingSettings.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/CreditBalance.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/CreditTopUp.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/ProjectUpdateDisabledTooltip.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/Restriction.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/helpers.ts"
+  ],
+  "smell_id": "heuristic_props_1654",
+  "symbol_name": "CreditCodeRedemption",
+  "target_file": "apps/studio/components/interfaces/Organization/BillingSettings/CreditCodeRedemption.tsx",
+  "task_id": "task_07b26e3540"
+}

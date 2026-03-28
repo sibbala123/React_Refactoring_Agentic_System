@@ -1,0 +1,36 @@
+{
+  "line_end": 44,
+  "line_start": 44,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n  Input,\n} from 'ui'\n\nimport type { Suggestion } from './ColumnEditor.types'\n\nconst MAX_SUGGESTIONS = 3\n\ninterface InputWithSuggestionsProps {\n  label?: string\n  description?: string\n  placeholder?: string\n  size?: 'small' | 'tiny' | 'medium' | 'large'\n  layout?: 'horizontal' | 'vertical'\n  disabled?: boolean\n  className?: string\n  value: string\n  suggestions: Suggestion[]\n  suggestionsTooltip?: string\n  suggestionsHeader?: string\n  onChange: (event: any) => void\n  onSelectSuggestion: (suggestion: Suggestion) => void\n  'data-testid'?: string\n  'aria-label'?: string\n}\n\nconst InputWithSuggestions = ({\n  label,\n  description,\n  placeholder,\n  size,\n  layout,\n  disabled = false,\n  className = '',\n  value = '',\n  suggestions = [],\n  suggestionsTooltip,\n  suggestionsHeader,\n  onChange = noop,\n  onSelectSuggestion = noop,\n  'data-testid': dataTestId,\n  'aria-label': ariaLabel,\n}: InputWithSuggestionsProps) => {\n  const ref = useRef(null)\n  const [filteredSuggestions, setFilteredSuggestions] = useState<Suggestion[]>(suggestions)\n  const showSuggestions = filteredSuggestions.length > 0\n\n  useEffect(() => {\n    setFilteredSuggestions(suggestions.slice(0, MAX_SUGGESTIONS))\n  }, [suggestions])\n\n  const onInputChange = (event: any) => {\n    onChange(event)\n\n    const inputText = event.target.value\n\n    if (suggestions.length > MAX_SUGGESTIONS) {",
+    "end_line": 74,
+    "start_line": 14
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnDefaultValue.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.utils.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnForeignKey.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnType.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/HeaderTitle.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/InputWithSuggestions.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnDefaultValue.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnEditor.utils.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnForeignKey.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/ColumnType.tsx"
+  ],
+  "smell_id": "heuristic_props_2308",
+  "symbol_name": "InputWithSuggestions",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ColumnEditor/InputWithSuggestions.tsx",
+  "task_id": "task_36d9625d0e"
+}

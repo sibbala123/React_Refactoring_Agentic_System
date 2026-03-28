@@ -1,0 +1,37 @@
+{
+  "line_end": 29,
+  "line_start": 29,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetPreviewGrid.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { AlertCircle, ArrowRight, ChevronDown, ChevronRight } from 'lucide-react'\nimport { useEffect, useState } from 'react'\n\nimport {\n  Alert_Shadcn_,\n  AlertDescription_Shadcn_,\n  AlertTitle_Shadcn_,\n  Badge,\n  Button,\n  cn,\n  Collapsible,\n  SidePanel,\n  WarningIcon,\n} from 'ui'\nimport type { SpreadsheetData } from './SpreadsheetImport.types'\nimport SpreadsheetPreviewGrid from './SpreadsheetPreviewGrid'\n\nconst MAX_ROWS = 20\nconst MAX_HEADERS = 20\n\ninterface SpreadsheetImportPreviewProps {\n  selectedTable?: { name: string }\n  spreadsheetData: SpreadsheetData\n  errors?: any[]\n  selectedHeaders: string[]\n  incompatibleHeaders: string[]\n}\n\nexport const SpreadsheetImportPreview = ({\n  selectedTable,\n  spreadsheetData,\n  errors = [],\n  selectedHeaders,\n  incompatibleHeaders,\n}: SpreadsheetImportPreviewProps) => {\n  const [expandPreview, setExpandPreview] = useState(false)\n  const [expandedErrors, setExpandedErrors] = useState<string[]>([])\n\n  const { headers, rows } = spreadsheetData\n  const previewHeaders = headers\n    .filter((header) => selectedHeaders.includes(header))\n    .slice(0, MAX_HEADERS)\n  const previewRows = rows.slice(0, MAX_ROWS)\n\n  const isCompatible = selectedTable !== undefined ? incompatibleHeaders.length === 0 : true\n\n  useEffect(() => {\n    setExpandPreview(true)\n  }, [spreadsheetData])\n\n  const onSelectExpandError = (key: string) => {\n    if (expandedErrors.includes(key)) {\n      setExpandedErrors(expandedErrors.filter((error) => error !== key))\n    } else {\n      setExpandedErrors(expandedErrors.concat([key]))\n    }\n  }\n\n  /**",
+    "end_line": 59,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetFileUpload.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetImportConfiguration.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetTextInput.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.utils.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetPreviewGrid.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImportPreview.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetPreviewGrid.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetFileUpload.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetImportConfiguration.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadSheetTextInput.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.types.ts"
+  ],
+  "smell_id": "heuristic_props_2350",
+  "symbol_name": "SpreadsheetImportPreview",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImportPreview.tsx",
+  "task_id": "task_5ecd9173e0"
+}

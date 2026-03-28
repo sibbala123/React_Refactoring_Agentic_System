@@ -1,0 +1,29 @@
+{
+  "line_end": 22,
+  "line_start": 22,
+  "local_imports": [
+    "apps/docs/features/ui/CodeBlock/CodeBlock.tsx",
+    "apps/docs/features/ui/CodeBlock/supabase-2.json",
+    "apps/docs/features/ui/CodeBlock/types/lib.deno.d.ts.include"
+  ],
+  "primary_snippet": {
+    "content": "import { Fragment, type PropsWithChildren } from 'react'\nimport { bundledLanguages, createHighlighter, type BundledLanguage, type ThemedToken } from 'shiki'\nimport { createTwoslasher, type ExtraFiles, type NodeHover } from 'twoslash'\nimport { cn } from 'ui'\n\nimport { AnnotatedSpan, CodeBlockControls } from './CodeBlock.client'\nimport { getFontStyle } from './CodeBlock.utils'\nimport theme from './supabase-2.json' with { type: 'json' }\nimport denoTypes from './types/lib.deno.d.ts.include'\n\nconst extraFiles: ExtraFiles = { 'deno.d.ts': denoTypes }\n\nconst twoslasher = createTwoslasher({ extraFiles })\nconst TWOSLASHABLE_LANGS: ReadonlyArray<string> = ['js', 'ts', 'javascript', 'typescript']\n\nconst BUNDLED_LANGUAGES = Object.keys(bundledLanguages)\nconst highlighter = await createHighlighter({\n  themes: [theme],\n  langs: BUNDLED_LANGUAGES,\n})\n\nexport async function CodeBlock({\n  className,\n  lang: langSetting,\n  lineNumbers = true,\n  contents,\n  children,\n  skipTypeGeneration,\n}: PropsWithChildren<{\n  className?: string\n  lang?: string\n  lineNumbers?: boolean\n  contents?: string\n  skipTypeGeneration?: boolean\n}>) {\n  let code = (contents || extractCode(children)).trim()\n  const lang = tryToBundledLanguage(langSetting || '') || extractLang(children)\n\n  let twoslashed = null as null | Map<number, Map<number, Array<NodeHover>>>\n  if (!skipTypeGeneration && lang && TWOSLASHABLE_LANGS.includes(lang)) {\n    try {\n      const { code: editedCode, nodes } = twoslasher(code)\n      const hoverNodes: Array<NodeHover> = nodes.filter((node) => node.type === 'hover')\n      twoslashed = annotationsByLine(hoverNodes)\n      code = editedCode\n    } catch (_err) {\n      // Silently ignore, if imports aren't defined type compilation fails\n      // Uncomment lines below to debug in dev\n      // console.log('\\n==========CODE==========\\n')\n      // console.log(code)\n      // console.error(_err.recommendation)\n    }",
+    "end_line": 52,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/docs/features/ui/CodeBlock/CodeBlock.client.tsx",
+    "apps/docs/features/ui/CodeBlock/CodeBlock.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/docs/features/ui/CodeBlock/CodeBlock.tsx",
+    "apps/docs/features/ui/CodeBlock/supabase-2.json",
+    "apps/docs/features/ui/CodeBlock/types/lib.deno.d.ts.include",
+    "apps/docs/features/ui/CodeBlock/CodeBlock.client.tsx",
+    "apps/docs/features/ui/CodeBlock/CodeBlock.utils.ts"
+  ],
+  "smell_id": "heuristic_props_0586",
+  "symbol_name": "CodeBlock",
+  "target_file": "apps/docs/features/ui/CodeBlock/CodeBlock.tsx",
+  "task_id": "task_28d0e08b34"
+}

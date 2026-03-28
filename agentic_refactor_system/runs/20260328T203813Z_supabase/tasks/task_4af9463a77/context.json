@@ -1,0 +1,58 @@
+{
+  "line_end": 260,
+  "line_start": 1,
+  "local_imports": [
+    "apps/studio/components/ui/AIAssistantPanel/DisplayBlockRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/EdgeFunctionRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/elements/Tool.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { UIMessage as VercelMessage } from '@ai-sdk/react'\nimport { type DynamicToolUIPart, type ReasoningUIPart, type TextUIPart, type ToolUIPart } from 'ai'\nimport { BrainIcon, CheckIcon, Loader2 } from 'lucide-react'\n\nimport { cn } from 'ui'\nimport { DisplayBlockRenderer } from './DisplayBlockRenderer'\nimport { EdgeFunctionRenderer } from './EdgeFunctionRenderer'\nimport { Tool } from './elements/Tool'\nimport { useMessageActionsContext, useMessageInfoContext } from './Message.Context'\nimport {\n  deployEdgeFunctionInputSchema,\n  deployEdgeFunctionOutputSchema,\n  parseExecuteSqlChartResult,\n} from './Message.utils'\nimport { MessageMarkdown } from './MessageMarkdown'\n\nfunction MessagePartText({ textPart }: { textPart: TextUIPart }) {\n  const { id, isLoading, readOnly, isUserMessage, state } = useMessageInfoContext()\n\n  return (\n    <MessageMarkdown\n      id={id}\n      isLoading={isLoading}\n      readOnly={readOnly}\n      className={cn(\n        'max-w-none space-y-4 prose prose-sm prose-li:mt-1 [&>div]:my-4 prose-h1:text-xl prose-h1:mt-6 prose-h2:text-lg prose-h2:font-medium prose-h3:no-underline prose-h3:text-base prose-h3:mb-4 prose-strong:font-medium prose-strong:text-foreground prose-ol:space-y-3 prose-ul:space-y-3 prose-li:my-0 break-words [&>p:not(:last-child)]:!mb-2 [&>*>p:first-child]:!mt-0 [&>*>p:last-child]:!mb-0 [&>*>*>p:first-child]:!mt-0 [&>*>*>p:last-child]:!mb-0 [&>ol>li]:!pl-4',\n        isUserMessage && 'text-foreground [&>p]:font-medium',\n        state === 'editing' && 'animate-pulse'\n      )}\n    >\n      {textPart.text}\n    </MessageMarkdown>\n  )\n}\n\nfunction MessagePartDynamicTool({ toolPart }: { toolPart: DynamicToolUIPart }) {\n  return (\n    <Tool\n      icon={\n        toolPart.state === 'input-streaming' ? (\n          <Loader2 strokeWidth={1.5} size={12} className=\"animate-spin\" />\n        ) : (\n          <CheckIcon strokeWidth={1.5} size={12} className=\"text-foreground-muted\" />\n        )\n      }\n      label={\n        <div>\n          {toolPart.state === 'input-streaming' ? 'Running ' : 'Ran '}\n          <span className=\"text-foreground-lighter\">{`${toolPart.toolName}`}</span>\n        </div>\n      }\n    />\n  )\n}\n\nfunction MessagePartTool({ toolPart }: { toolPart: ToolUIPart }) {\n  return (\n    <Tool\n      icon={\n        toolPart.state === 'input-streaming' ? (\n          <Loader2 strokeWidth={1.5} size={12} className=\"animate-spin\" />\n        ) : (\n          <CheckIcon strokeWidth={1.5} size={12} className=\"text-foreground-muted\" />\n        )\n      }\n      label={\n        <div>\n          {toolPart.state === 'input-streaming' ? 'Running ' : 'Ran '}\n          <span className=\"text-foreground-lighter\">{`${toolPart.type.replace('tool-', '')}`}</span>\n        </div>\n      }\n    />\n  )\n}\n\nfunction MessagePartReasoning({ reasoningPart }: { reasoningPart: ReasoningUIPart }) {\n  return (\n    <Tool\n      icon={\n        reasoningPart.state === 'streaming' ? (\n          <Loader2 strokeWidth={1.5} size={12} className=\"animate-spin\" />\n        ) : (\n          <BrainIcon strokeWidth={1.5} size={12} className=\"text-foreground-muted\" />\n        )\n      }\n      label={reasoningPart.state === 'streaming' ? 'Thinking...' : 'Reasoned'}\n    >\n      {reasoningPart.text}\n    </Tool>\n  )\n}\n\nfunction ToolDisplayExecuteSqlLoading() {\n  return (\n    <div className=\"my-4 rounded-lg border bg-surface-75 heading-meta h-9 px-3 text-foreground-light flex items-center gap-2\">\n      <Loader2 className=\"w-4 h-4 animate-spin\" />\n      Writing SQL...\n    </div>\n  )\n}\n\nfunction ToolDisplayExecuteSqlFailure() {\n  return <div className=\"text-xs text-danger\">Failed to execute SQL.</div>\n}\n\nfunction MessagePartExecuteSql({\n  toolPart,\n  isLastPart,\n}: {\n  toolPart: ToolUIPart\n  isLastPart?: boolean\n}) {\n  const { id, isLastMessage } = useMessageInfoContext()\n  const { addToolResult } = useMessageActionsContext()\n\n  const { toolCallId, state, input, output } = toolPart\n\n  if (state === 'input-streaming') {\n    return <ToolDisplayExecuteSqlLoading />\n  }\n\n  if (state === 'output-error') {\n    return <ToolDisplayExecuteSqlFailure />\n  }\n\n  const { data: chart, success } = parseExecuteSqlChartResult(input)\n  if (!success) return null\n\n  if (state === 'input-available' || state === 'output-available') {\n    return (\n      <div className=\"w-auto overflow-x-hidden my-4 space-y-2\">\n        <DisplayBlockRenderer\n          messageId={id}\n          toolCallId={toolCallId}\n          initialArgs={{\n            sql: chart.sql,\n            label: chart.label,\n            isWriteQuery: chart.isWriteQuery,\n            view: chart.view,\n            xAxis: chart.xAxis,\n            yAxis: chart.yAxis,\n          }}\n          initialResults={output}\n          toolState={state}\n          isLastPart={isLastPart}\n          isLastMessage={isLastMessage}\n          onResults={(args: { messageId: string; results: unknown }) => {\n            const results = args.results as any[]\n\n            addToolResult?.({\n              tool: 'execute_sql',\n              toolCallId: String(toolCallId),\n              output: results,\n            })\n          }}\n          onError={({ errorText }) => {\n            addToolResult?.({\n              tool: 'execute_sql',\n              toolCallId: String(toolCallId),\n              output: `Error: ${errorText}`,\n            })\n          }}\n        />\n      </div>\n    )\n  }\n\n  return null\n}\n\nconst TOOL_DEPLOY_EDGE_FUNCTION_STATES_WITH_INPUT = new Set(['input-available', 'output-available'])\n\nfunction MessagePartDeployEdgeFunction({ toolPart }: { toolPart: ToolUIPart }) {\n  const { toolCallId, state, input, output } = toolPart\n  const { addToolResult } = useMessageActionsContext()\n\n  if (state === 'input-streaming') {\n    return (\n      <div className=\"my-4 rounded-lg border bg-surface-75 heading-meta h-9 px-3 text-foreground-light flex items-center gap-2\">\n        <Loader2 className=\"w-4 h-4 animate-spin\" />\n        Writing Edge Function...\n      </div>\n    )\n  }\n\n  if (state === 'output-error') {\n    return <p className=\"text-xs text-danger\">Failed to deploy Edge Function.</p>\n  }\n\n  if (!TOOL_DEPLOY_EDGE_FUNCTION_STATES_WITH_INPUT.has(state)) return null\n\n  const parsedInput = deployEdgeFunctionInputSchema.safeParse(input)\n  if (!parsedInput.success) return null\n\n  const parsedOutput = deployEdgeFunctionOutputSchema.safeParse(output)\n  const isInitiallyDeployed =\n    state === 'output-available' && parsedOutput.success && parsedOutput.data.success === true\n\n  return (\n    <EdgeFunctionRenderer\n      label={parsedInput.data.label}\n      code={parsedInput.data.code}\n      functionName={parsedInput.data.functionName}\n      showConfirmFooter={!output}\n      initialIsDeployed={isInitiallyDeployed}\n      onDeployed={(result) => {\n        addToolResult?.({\n          tool: 'deploy_edge_function',\n          toolCallId: String(toolCallId),\n          output: result,\n        })\n      }}\n    />\n  )\n}\n\nconst MessagePart = {\n  Text: MessagePartText,\n  Dynamic: MessagePartDynamicTool,\n  Tool: MessagePartTool,\n  Reasoning: MessagePartReasoning,\n  ExecuteSql: MessagePartExecuteSql,\n  DeployEdgeFunction: MessagePartDeployEdgeFunction,\n} as const\n\nexport function MessagePartSwitcher({\n  part,\n  isLastPart,\n}: {\n  part: NonNullable<VercelMessage['parts']>[number]\n  isLastPart?: boolean\n}) {\n  switch (part.type) {\n    case 'dynamic-tool': {\n      return <MessagePart.Dynamic toolPart={part} />\n    }\n    case 'tool-list_policies':\n    case 'tool-search_docs':\n    case 'tool-get_active_incidents': {\n      return <MessagePart.Tool toolPart={part} />\n    }\n    case 'reasoning':\n      return <MessagePart.Reasoning reasoningPart={part} />\n    case 'text':\n      return <MessagePart.Text textPart={part} />\n\n    case 'tool-execute_sql': {\n      return <MessagePart.ExecuteSql toolPart={part} isLastPart={isLastPart} />\n    }\n    case 'tool-deploy_edge_function': {\n      return <MessagePart.DeployEdgeFunction toolPart={part} />\n    }\n\n    case 'source-url':\n    case 'source-document':\n    case 'file':\n    default:\n      return null\n  }\n}",
+    "end_line": 260,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.prompts.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.types.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.utils.test.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.utils.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistantChatSelector.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistantHeader.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIOnboarding.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIOptInModal.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AiAssistant.constants.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AssistantChatForm.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/CollapsibleCodeBlock.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/ConfirmFooter.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/DeleteMessageConfirmModal.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/DisplayBlockRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/EdgeFunctionRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Actions.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Context.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.Display.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.utils.ts",
+    "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.test.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/ModelSelector.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/SnippetRow.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/hooks.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/AIAssistantPanel/Message.Parts.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/DisplayBlockRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/EdgeFunctionRenderer.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/Message.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/MessageMarkdown.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/elements/Tool.tsx",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.prompts.ts",
+    "apps/studio/components/ui/AIAssistantPanel/AIAssistant.tsx"
+  ],
+  "smell_id": "heuristic_large_2657",
+  "symbol_name": "MessagePartSwitcher",
+  "target_file": "apps/studio/components/ui/AIAssistantPanel/Message.Parts.tsx",
+  "task_id": "task_4af9463a77"
+}

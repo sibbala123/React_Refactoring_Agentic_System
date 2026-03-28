@@ -1,0 +1,27 @@
+{
+  "line_end": 21,
+  "line_start": 21,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import React from 'react'\n\n// @ts-ignore\n// import TextStyles from './Text.module.css'\n\nexport interface Props {\n  className?: string\n  children: any\n  style?: React.CSSProperties\n  type?: 'default' | 'secondary' | 'success' | 'warning' | 'danger'\n  disabled?: boolean\n  mark?: boolean\n  code?: boolean\n  keyboard?: boolean\n  underline?: boolean\n  strikethrough?: boolean\n  strong?: boolean\n  small?: boolean\n}\n\nfunction Text({\n  className,\n  children,\n  style,\n  type,\n  disabled,\n  mark,\n  code,\n  keyboard,\n  underline,\n  strikethrough,\n  strong,\n  small,\n}: Props) {\n  // let classes = [TextStyles['sbui-typography-text']]\n  // if (className) {\n  //   classes.push(className)\n  // }\n\n  // if (type) {\n  //   classes.push(TextStyles[`sbui-typography-text-${type}`])\n  // }\n\n  // if (disabled) {\n  //   classes.push(TextStyles[`sbui-typography-text-disabled`])\n  // }\n\n  // if (underline) {\n  //   classes.push(TextStyles[`sbui-typography-text-underline`])\n  // }\n",
+    "end_line": 51,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui/src/components/Typography/Link.tsx",
+    "packages/ui/src/components/Typography/Title.tsx",
+    "packages/ui/src/components/Typography/Typography.tsx",
+    "packages/ui/src/components/Typography/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Typography/Text.tsx",
+    "packages/ui/src/components/Typography/Link.tsx",
+    "packages/ui/src/components/Typography/Title.tsx",
+    "packages/ui/src/components/Typography/Typography.tsx",
+    "packages/ui/src/components/Typography/index.tsx"
+  ],
+  "smell_id": "heuristic_props_6097",
+  "symbol_name": "Text",
+  "target_file": "packages/ui/src/components/Typography/Text.tsx",
+  "task_id": "task_8f902bc78e"
+}

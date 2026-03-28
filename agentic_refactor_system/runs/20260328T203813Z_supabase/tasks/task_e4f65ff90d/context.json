@@ -1,0 +1,45 @@
+{
+  "line_end": 65,
+  "line_start": 65,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ApiAccessToggle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ColumnManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/RLSDisableModal.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { RLSDisableModalContent } from './RLSDisableModal'\nimport { DEFAULT_COLUMNS } from './TableEditor.constants'\nimport type { ImportContent, TableField } from './TableEditor.types'\nimport {\n  formatImportedContentToColumnFields,\n  generateTableField,\n  generateTableFieldFromPostgresTable,\n  validateFields,\n} from './TableEditor.utils'\nimport { useDataApiGrantTogglesEnabled } from '@/hooks/misc/useDataApiGrantTogglesEnabled'\n\ntype SaveTableParamsFor<Action extends SaveTableParams['action']> = Extract<\n  SaveTableParams,\n  { action: Action }\n>\n\ntype SaveTablePayloadFor<Action extends SaveTableParams['action']> =\n  SaveTableParamsFor<Action>['payload']\n\nexport interface TableEditorProps {\n  table?: PostgresTable\n  isDuplicating: boolean\n  templateData?: Partial<TableField>\n  visible: boolean\n  closePanel: () => void\n  saveChanges: (params: SaveTableParams) => void\n  updateEditorDirty: () => void\n  apiAccessToggleHandler: TableApiAccessHandlerWithHistoryReturn\n}\n\nexport const TableEditor = ({\n  table,\n  isDuplicating,\n  templateData,\n  visible = false,\n  closePanel = noop,\n  saveChanges = noop,\n  updateEditorDirty = noop,\n  apiAccessToggleHandler,\n}: TableEditorProps) => {\n  const track = useTrack()\n  const snap = useTableEditorStateSnapshot()\n  const tableEditorApi = useContext(TableEditorStateContext)\n  const { realtimeAll: realtimeEnabled } = useIsFeatureEnabled(['realtime:all'])\n  const { docsRowLevelSecurityGuidePath } = useCustomContent(['docs:row_level_security_guide_path'])\n\n  const isApiGrantTogglesEnabled = useDataApiGrantTogglesEnabled()\n\n  const [params, setParams] = useUrlState()\n  const { data: project } = useSelectedProjectQuery()\n  const { selectedSchema } = useQuerySchemaState()\n\n  const isNewRecord = table === undefined\n  const visibleChanged = useChanged(visible)\n\n  const [errors, setErrors] = useState<PlainObject>({})\n  const [tableFields, setTableFields] = useState<TableField>()\n  const [fkRelations, setFkRelations] = useState<ForeignKey[]>([])\n\n  const [isDuplicateRows, setIsDuplicateRows] = useState<boolean>(false)\n  const [importContent, setImportContent] = useState<ImportContent>()",
+    "end_line": 95,
+    "start_line": 35
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ApiAccessToggle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/Column.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ColumnManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/RLSDisableModal.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SpreadsheetImport/SpreadsheetImport.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ApiAccessToggle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ColumnManagement.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/ForeignKeysManagement/ForeignKeysManagement.tsx"
+  ],
+  "smell_id": "heuristic_props_2362",
+  "symbol_name": "TableEditor",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/TableEditor/TableEditor.tsx",
+  "task_id": "task_e4f65ff90d"
+}

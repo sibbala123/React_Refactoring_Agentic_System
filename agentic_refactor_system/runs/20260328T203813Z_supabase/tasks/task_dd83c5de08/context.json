@@ -1,0 +1,38 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { ExternalLink, Eye, EyeOff, Loader } from 'lucide-react'\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nimport { useParams } from 'common'\nimport { useVaultSecretDecryptedValueQuery } from 'data/vault/vault-secret-decrypted-value-query'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { Button, CardContent, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\nimport { Input } from 'ui-patterns/DataInputs/Input'\nimport { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'\n\nexport const DecryptedReadOnlyInput = ({\n  value,\n  secureEntry,\n  descriptionText,\n  label,\n}: {\n  value?: string\n  secureEntry: boolean\n  descriptionText: string\n  label: string\n}) => {\n  const { ref } = useParams()\n  const { data: project } = useSelectedProjectQuery()\n  const [showHidden, setShowHidden] = useState(false)\n\n  const { data: decryptedValue, isPending: isDecryptedValueLoading } =\n    useVaultSecretDecryptedValueQuery(\n      {\n        projectRef: project?.ref,\n        connectionString: project?.connectionString,\n        id: value ?? '',\n      },\n      { enabled: secureEntry && showHidden }\n    )\n\n  const isLoading = isDecryptedValueLoading && showHidden\n  const renderedValue = secureEntry\n    ? isLoading\n      ? 'Fetching value from Vault...'\n      : showHidden\n        ? decryptedValue",
+    "end_line": 42,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.constants.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.utils.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/BucketHeader.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/ConnectTablesDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/CopyEnvButton.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/InitializeForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/SimpleConfigurationDetails.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/UpdateForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/index.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/useAnalyticsBucketAssociatedEntities.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/useAnalyticsBucketWrapperInstance.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/useIcebergWrapper.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/DecryptedReadOnlyInput.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.constants.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/AnalyticsBucketDetails.utils.ts",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/BucketHeader.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/ConnectTablesDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/CopyEnvButton.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/InitializeForeignSchemaDialog.tsx",
+    "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/SimpleConfigurationDetails.tsx"
+  ],
+  "smell_id": "heuristic_props_2173",
+  "symbol_name": "DecryptedReadOnlyInput",
+  "target_file": "apps/studio/components/interfaces/Storage/AnalyticsBuckets/AnalyticsBucketDetails/DecryptedReadOnlyInput.tsx",
+  "task_id": "task_dd83c5de08"
+}

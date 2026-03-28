@@ -1,0 +1,23 @@
+{
+  "line_end": 29,
+  "line_start": 29,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Edit, MoreVertical, Trash } from 'lucide-react'\n\nimport {\n  Badge,\n  Button,\n  CardContent,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n} from 'ui'\n\ninterface AWSPrivateLinkAccountItemProps {\n  aws_account_id: string\n  account_name?: string\n  status:\n    | 'CREATING'\n    | 'READY'\n    | 'ASSOCIATION_REQUEST_EXPIRED'\n    | 'ASSOCIATION_ACCEPTED'\n    | 'CREATION_FAILED'\n    | 'DELETING'\n  shared_at: string | null\n  onEdit: () => void\n  onDelete: () => void\n}\n\nexport const AWSPrivateLinkAccountItem = ({\n  aws_account_id,\n  account_name,\n  status,\n  onEdit,\n  onDelete,\n}: AWSPrivateLinkAccountItemProps) => {\n  const getStatusBadge = () => {\n    switch (status) {\n      case 'ASSOCIATION_ACCEPTED':\n        return <Badge variant=\"success\">Connected</Badge>\n      case 'READY':\n        return <Badge variant=\"success\">Ready</Badge>\n      case 'CREATING':\n        return <Badge variant=\"warning\">Creating</Badge>\n      case 'DELETING':\n        return <Badge variant=\"destructive\">Deleting</Badge>\n      case 'ASSOCIATION_REQUEST_EXPIRED':\n        return <Badge variant=\"destructive\">Expired</Badge>\n      case 'CREATION_FAILED':\n        return <Badge variant=\"destructive\">Failed</Badge>\n      default:\n        return <Badge>Unknown</Badge>\n    }\n  }\n\n  return (\n    <CardContent className=\"flex items-center justify-between text-sm gap-4\">\n      <div className=\"flex-1\">\n        <div>{aws_account_id}</div>\n        <div className=\"text-sm text-foreground-lighter\">{account_name || 'No description'}</div>",
+    "end_line": 59,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Integrations/AWSPrivateLink/AWSPrivateLinkForm.tsx",
+    "apps/studio/components/interfaces/Settings/Integrations/AWSPrivateLink/AWSPrivateLinkSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Integrations/AWSPrivateLink/AWSPrivateLinkAccountItem.tsx",
+    "apps/studio/components/interfaces/Settings/Integrations/AWSPrivateLink/AWSPrivateLinkForm.tsx",
+    "apps/studio/components/interfaces/Settings/Integrations/AWSPrivateLink/AWSPrivateLinkSection.tsx"
+  ],
+  "smell_id": "heuristic_props_2073",
+  "symbol_name": "AWSPrivateLinkAccountItem",
+  "target_file": "apps/studio/components/interfaces/Settings/Integrations/AWSPrivateLink/AWSPrivateLinkAccountItem.tsx",
+  "task_id": "task_857572eceb"
+}

@@ -1,0 +1,25 @@
+{
+  "line_end": 8,
+  "line_start": 8,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { UserDropdown } from 'components/interfaces/UserDropdown'\nimport { FeedbackDropdown } from 'components/layouts/Navigation/LayoutHeader/FeedbackDropdown/FeedbackDropdown'\nimport { BASE_PATH } from 'lib/constants'\nimport Image from 'next/image'\nimport { PropsWithChildren, ReactNode } from 'react'\nimport { cn, Separator } from 'ui'\n\nexport const ProjectClaimLayout = ({\n  children,\n  title,\n  className,\n}: PropsWithChildren<{\n  title: ReactNode\n  className?: string\n}>) => {\n  return (\n    <>\n      <div className=\"flex flex-row justify-between mx-auto w-full h-[52px] items-center px-4\">\n        <div className=\"flex items-center gap-2\">\n          <span className=\"sr-only\">Supabase</span>\n          <Image\n            src={`${BASE_PATH}/img/supabase-logo.svg`}\n            alt=\"Supabase Logo\"\n            height={20}\n            width={20}\n          />\n          <span className=\"truncate\">{title}</span>\n        </div>\n        <div className=\"flex items-center gap-x-2\">\n          <FeedbackDropdown className=\"hidden xs:flex\" />\n          <UserDropdown />\n        </div>\n      </div>\n      <Separator />\n      <div\n        className={cn(\n          'overflow-y-auto max-h-[calc(100vh-70px)] flex justify-center flex-grow',\n          className",
+    "end_line": 38,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/ProjectClaim/benefits.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/choose-org.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/confirm.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/ProjectClaim/layout.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/benefits.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/choose-org.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/confirm.tsx"
+  ],
+  "smell_id": "heuristic_props_1734",
+  "symbol_name": "ProjectClaimLayout",
+  "target_file": "apps/studio/components/interfaces/Organization/ProjectClaim/layout.tsx",
+  "task_id": "task_4cf87b4040"
+}

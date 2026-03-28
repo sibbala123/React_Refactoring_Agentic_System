@@ -1,0 +1,14 @@
+{
+  "component_name": "Database",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/pages/database.tsx",
+  "line_end": 385,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_5013",
+  "smell_type": "Large Component"
+}

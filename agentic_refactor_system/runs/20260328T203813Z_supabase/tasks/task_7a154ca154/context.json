@@ -1,0 +1,29 @@
+{
+  "line_end": 43,
+  "line_start": 43,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  Popover_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  PrePostTab,\n  Select_Shadcn_,\n  SelectContent_Shadcn_,\n  SelectItem_Shadcn_,\n  SelectTrigger_Shadcn_,\n  SelectValue_Shadcn_,\n  Separator,\n  SheetSection,\n  Switch,\n  Textarea,\n  useWatch_Shadcn_,\n} from 'ui'\nimport { Input as DataInput } from 'ui-patterns/DataInputs/Input'\nimport { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'\n\nimport type { Enum } from './AuthProvidersForm.types'\n\ninterface FormFieldProps {\n  projectRef: string | undefined\n  organizationSlug: string | undefined\n  name: string\n  properties: any\n  control: Control\n  hasAccess: boolean\n  disabled?: boolean\n}\n\nconst FormField = ({\n  projectRef,\n  name,\n  properties,\n  organizationSlug,\n  control,\n  hasAccess,\n  disabled: disabledProp,\n}: FormFieldProps) => {\n  const { description: originalDescription } = properties\n  let description = originalDescription\n\n  if (originalDescription && projectRef) {\n    description = originalDescription.replace(\n      /\\(\\.\\.\\/auth\\/(.*?)\\)/g,\n      `(/project/${projectRef}/auth/$1)`\n    )\n  }\n\n  const fieldValue = useWatch_Shadcn_({ control, name })\n  if (!hasAccess) {\n    const planMessage = organizationSlug\n      ? `Only available on [Pro plan](/org/${organizationSlug}/billing?panel=subscriptionPlan) and above.`\n      : ''\n    description = originalDescription ? `${originalDescription} ${planMessage}` : planMessage\n  }\n  const disabled =\n    disabledProp || (properties.type === 'boolean' ? !hasAccess && !fieldValue : !hasAccess)\n\n  const showValue = useWatch_Shadcn_({\n    control,",
+    "end_line": 73,
+    "start_line": 13
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/AuthAlert.tsx",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/AuthProvidersForm.constants.ts",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/AuthProvidersForm.types.ts",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/ProviderForm.tsx",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/FormField.tsx",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/AuthAlert.tsx",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/AuthProvidersForm.constants.ts",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/AuthProvidersForm.types.ts",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/ProviderForm.tsx",
+    "apps/studio/components/interfaces/Auth/AuthProvidersForm/index.tsx"
+  ],
+  "smell_id": "heuristic_props_0982",
+  "symbol_name": "FormField",
+  "target_file": "apps/studio/components/interfaces/Auth/AuthProvidersForm/FormField.tsx",
+  "task_id": "task_7a154ca154"
+}

@@ -1,0 +1,31 @@
+{
+  "line_end": 21,
+  "line_start": 21,
+  "local_imports": [
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { ArrowLeft } from 'lucide-react'\nimport Link from 'next/link'\nimport { PropsWithChildren, ReactNode } from 'react'\nimport { useAppStateSnapshot } from 'state/app-state'\nimport { cn, Menu } from 'ui'\n\nimport type { SidebarSection } from './AccountLayout.types'\n\ninterface WithSidebarProps {\n  title: string\n  breadcrumbs: any[]\n  sections: SidebarSection[]\n  header?: ReactNode\n  subitems?: any[]\n  subitemsParentKey?: number\n  hideSidebar?: boolean\n  customSidebarContent?: ReactNode\n  backToDashboardURL?: string\n}\n\nexport const WithSidebar = ({\n  title,\n  header,\n  breadcrumbs = [],\n  children,\n  sections,\n  subitems,\n  subitemsParentKey,\n  hideSidebar = false,\n  customSidebarContent,\n  backToDashboardURL,\n}: PropsWithChildren<WithSidebarProps>) => {\n  const noContent = !sections && !customSidebarContent\n  const { mobileMenuOpen, setMobileMenuOpen } = useAppStateSnapshot()\n\n  return (\n    <div className=\"flex flex-col md:flex-row h-full\">\n      {!hideSidebar && !noContent && (\n        <SidebarContent\n          title={title}\n          header={header}\n          sections={sections}\n          subitems={subitems}\n          subitemsParentKey={subitemsParentKey}\n          customSidebarContent={customSidebarContent}\n          backToDashboardURL={backToDashboardURL}\n          className=\"hidden md:flex\"\n        />\n      )}\n      <div className=\"flex flex-1 flex-col\">\n        <div className=\"flex-1 flex-grow overflow-y-auto\">{children}</div>",
+    "end_line": 51,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.tsx",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.types.ts",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.utils.test.ts",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.utils.ts",
+    "apps/studio/components/layouts/AccountLayout/AccountMenuContent.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/AccountLayout/WithSidebar.tsx",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.tsx",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.types.ts",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.utils.test.ts",
+    "apps/studio/components/layouts/AccountLayout/AccountLayout.utils.ts",
+    "apps/studio/components/layouts/AccountLayout/AccountMenuContent.tsx"
+  ],
+  "smell_id": "heuristic_props_2413",
+  "symbol_name": "WithSidebar",
+  "target_file": "apps/studio/components/layouts/AccountLayout/WithSidebar.tsx",
+  "task_id": "task_fa2054ba40"
+}

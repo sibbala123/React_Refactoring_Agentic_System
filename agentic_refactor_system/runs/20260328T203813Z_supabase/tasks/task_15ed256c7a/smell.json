@@ -1,0 +1,14 @@
+{
+  "component_name": "ContactSection",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/pages/contact-us.tsx",
+  "line_end": 9,
+  "line_start": 9,
+  "severity": "low",
+  "smell_id": "heuristic_props_5010",
+  "smell_type": "Too Many Props"
+}

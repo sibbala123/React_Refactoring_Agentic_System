@@ -1,0 +1,24 @@
+{
+  "line_end": 35,
+  "line_start": 35,
+  "local_imports": [
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "import { X } from 'lucide-react'\nimport * as React from 'react'\n\nimport styleHandler from '../../lib/theme/styleHandler'\n\ninterface RootProps {\n  align?: RadixPopoverTypes.PopoverContentProps['align']\n  ariaLabel?: string\n  arrow?: boolean\n  children?: React.ReactNode\n  className?: string\n  defaultOpen?: boolean\n  disabled?: boolean\n  modal?: boolean\n  onOpenChange?: RadixPopoverTypes.PopoverProps['onOpenChange']\n  open?: boolean\n  overlay?: React.ReactNode\n  showClose?: boolean\n  side?: RadixPopoverTypes.PopoverContentProps['side']\n  sideOffset?: RadixPopoverTypes.PopoverContentProps['sideOffset']\n  style?: React.CSSProperties\n  header?: React.ReactNode\n  footer?: React.ReactNode\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge' | 'content'\n  'data-testid'?: string\n}\n\n/**\n * @deprecated Use `import { Popover_shadcn_ } from \"ui\"` instead\n */\nfunction Popover({\n  align = 'center',\n  ariaLabel,\n  arrow = false,\n  children,\n  className,\n  defaultOpen = false,\n  modal,\n  onOpenChange,\n  open,\n  overlay,\n  side = 'bottom',\n  sideOffset = 6,\n  style,\n  header,\n  footer,\n  size = 'content',\n  disabled,\n  'data-testid': dataTestId,\n}: RootProps) {\n  const __styles = styleHandler('popover')\n\n  let classes = [__styles.content, __styles.size[size]]\n  if (className) {\n    classes.push(className)\n  }\n\n  return (\n    <RadixPopover.Root\n      defaultOpen={defaultOpen}\n      modal={modal}",
+    "end_line": 65,
+    "start_line": 5
+  },
+  "related_files": [
+    "packages/ui/src/components/Popover/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Popover/Popover.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/Popover/index.tsx"
+  ],
+  "smell_id": "heuristic_props_6010",
+  "symbol_name": "Popover",
+  "target_file": "packages/ui/src/components/Popover/Popover.tsx",
+  "task_id": "task_1ab763cf0c"
+}

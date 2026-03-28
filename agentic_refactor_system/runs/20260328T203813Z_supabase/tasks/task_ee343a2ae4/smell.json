@@ -1,0 +1,14 @@
+{
+  "component_name": "BackedBy",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=7",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/BackedBy.tsx",
+  "line_end": 5,
+  "line_start": 5,
+  "severity": "low",
+  "smell_id": "heuristic_props_4455",
+  "smell_type": "Too Many Props"
+}

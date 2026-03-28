@@ -1,0 +1,49 @@
+{
+  "line_end": 8,
+  "line_start": 8,
+  "local_imports": [
+    "packages/marketing/src/go/schemas.ts",
+    "packages/marketing/src/go/sections/MediaBlock.tsx"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { Button, cn } from 'ui'\n\nimport type { GoHeroSection } from '../schemas'\nimport MediaBlock from './MediaBlock'\n\nexport default function HeroSection({\n  section,\n  compact,\n}: {\n  section: GoHeroSection\n  compact?: boolean\n}) {\n  const hasMedia = !!(section.image || section.video || section.youtubeUrl)\n\n  return (\n    <header\n      className={cn(\n        'flex flex-col border-b border-muted',\n        'bg-[radial-gradient(circle_at_50%_240%,hsl(var(--brand-300)),transparent_70%)]',\n        'md:bg-[radial-gradient(circle_at_50%_280%,hsl(var(--brand-300)),transparent_70%)]',\n        compact && 'items-center justify-center min-h-[35vh] lg:min-h-[50vh]'\n      )}\n    >\n      <div\n        className={cn(\n          'max-w-[80rem] mx-auto px-8',\n          hasMedia\n            ? 'grid grid-cols-1 py-16 md:grid-cols-2 gap-10 md:gap-24 items-center md:py-32'\n            : 'flex flex-col items-center py-16 gap-4 sm:gap-8 text-center text-balance py-24'\n        )}\n      >\n        <div className={cn(hasMedia ? 'flex flex-col gap-4 sm:gap-6' : 'contents')}>\n          {section.subtitle && (\n            <p className=\"text-sm text-brand-link uppercase font-mono tracking-wider\">\n              {section.subtitle}\n            </p>",
+    "end_line": 38,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/marketing/src/go/sections/CodeBlockSection.tsx",
+    "packages/marketing/src/go/sections/CodeBlockTabs.tsx",
+    "packages/marketing/src/go/sections/Confetti.tsx",
+    "packages/marketing/src/go/sections/ContentBlocksSection.tsx",
+    "packages/marketing/src/go/sections/FaqSection.tsx",
+    "packages/marketing/src/go/sections/FeatureGridSection.tsx",
+    "packages/marketing/src/go/sections/FormSection.tsx",
+    "packages/marketing/src/go/sections/MediaBlock.tsx",
+    "packages/marketing/src/go/sections/MetricsSection.tsx",
+    "packages/marketing/src/go/sections/QuoteSection.tsx",
+    "packages/marketing/src/go/sections/SectionRenderer.tsx",
+    "packages/marketing/src/go/sections/SingleColumnSection.tsx",
+    "packages/marketing/src/go/sections/SocialProofSection.tsx",
+    "packages/marketing/src/go/sections/StepsSection.tsx",
+    "packages/marketing/src/go/sections/TableOfContents.tsx",
+    "packages/marketing/src/go/sections/TextBodySection.tsx",
+    "packages/marketing/src/go/sections/ThreeColumnSection.tsx",
+    "packages/marketing/src/go/sections/TwoColumnSection.tsx",
+    "packages/marketing/src/go/sections/codeThemes.ts",
+    "packages/marketing/src/go/sections/index.ts"
+  ],
+  "relevant_context_files": [
+    "packages/marketing/src/go/sections/HeroSection.tsx",
+    "packages/marketing/src/go/schemas.ts",
+    "packages/marketing/src/go/sections/MediaBlock.tsx",
+    "packages/marketing/src/go/sections/CodeBlockSection.tsx",
+    "packages/marketing/src/go/sections/CodeBlockTabs.tsx",
+    "packages/marketing/src/go/sections/Confetti.tsx",
+    "packages/marketing/src/go/sections/ContentBlocksSection.tsx",
+    "packages/marketing/src/go/sections/FaqSection.tsx"
+  ],
+  "smell_id": "heuristic_props_5732",
+  "symbol_name": "HeroSection",
+  "target_file": "packages/marketing/src/go/sections/HeroSection.tsx",
+  "task_id": "task_1cb522e191"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "CreateKeyDialog",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+  "line_end": 245,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_1596",
+  "smell_type": "Large Component"
+}

@@ -1,0 +1,31 @@
+{
+  "line_end": 13,
+  "line_start": 13,
+  "local_imports": [
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useIntersectionObserver } from '@uidotdev/usehooks'\nimport { VirtualizedTableCell, VirtualizedTableRow } from 'components/ui/VirtualizedTable'\nimport { useEffect, type ReactNode } from 'react'\nimport { TableCell, TableRow } from 'ui'\nimport { ShimmeringLoader } from 'ui-patterns'\nimport type { BucketsTablePaginationProps } from './BucketsTable.types'\n\ntype LoadMoreRowProps = {\n  mode: 'standard' | 'virtualized'\n  colSpan: number\n} & BucketsTablePaginationProps\n\nexport const LoadMoreRow = ({\n  mode,\n  colSpan,\n\n  hasMore = false,\n  isLoadingMore = false,\n  onLoadMore,\n}: LoadMoreRowProps): ReactNode => {\n  const [sentinelRef, entry] = useIntersectionObserver({\n    threshold: 0,\n    rootMargin: '200px 0px 200px 0px',\n  })\n\n  useEffect(() => {\n    if (entry?.isIntersecting && hasMore && !isLoadingMore) {\n      onLoadMore?.()\n    }\n  }, [entry?.isIntersecting, hasMore, isLoadingMore, onLoadMore])\n\n  if (!hasMore && !isLoadingMore) return null\n\n  const RowComponent = mode === 'standard' ? TableRow : VirtualizedTableRow\n  const CellComponent = mode === 'standard' ? TableCell : VirtualizedTableCell\n\n  return (\n    <RowComponent ref={sentinelRef}>\n      {Array.from({ length: colSpan }, (_, idx) => (\n        <CellComponent key={idx}>\n          {idx !== 0 && idx !== colSpan - 1 && <ShimmeringLoader className=\"w-3/4\" />}\n        </CellComponent>\n      ))}",
+    "end_line": 43,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketTable.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.types.ts",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/index.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/useSelectedBucket.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.LoadMoreRow.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketTable.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.types.ts",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/index.tsx",
+    "apps/studio/components/interfaces/Storage/FilesBuckets/useSelectedBucket.ts"
+  ],
+  "smell_id": "heuristic_props_2199",
+  "symbol_name": "LoadMoreRow",
+  "target_file": "apps/studio/components/interfaces/Storage/FilesBuckets/BucketsTable.LoadMoreRow.tsx",
+  "task_id": "task_8cb329ad6e"
+}

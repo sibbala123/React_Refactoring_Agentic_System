@@ -1,0 +1,24 @@
+{
+  "line_end": 44,
+  "line_start": 44,
+  "local_imports": [
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "  bordered?: boolean\n  type: Type\n  justified: Boolean\n  chevronAlign: Align\n}\n\nconst AccordionContext = createContext<ContextValue>({\n  chevronAlign: 'left',\n  justified: true,\n  type: 'default',\n})\n\nexport interface AccordionProps {\n  children?: React.ReactNode\n  className?: string\n  defaultActiveId?: (string | number)[]\n  icon?: React.ReactNode\n  iconPosition?: Align\n  onChange?: (item: string | string[]) => void\n  openBehaviour: 'single' | 'multiple'\n  type?: Type\n  size?: Size\n  defaultValue?: string | string[] | undefined\n  justified?: Boolean\n  chevronAlign?: Align\n}\n\n/**\n * @deprecated Use `import { Accordion_Shadcn_ } from \"ui\"` instead\n */\nfunction Accordion({\n  children,\n  className,\n  onChange,\n  openBehaviour = 'multiple',\n  type = 'default',\n  defaultValue = undefined,\n  justified = false,\n  chevronAlign = 'left',\n}: AccordionProps) {\n  const __styles = styleHandler('accordion')\n\n  let containerClasses = [__styles.variants[type].base]\n\n  if (className) {\n    containerClasses.push(className)\n  }\n\n  const contextValue = {\n    chevronAlign,\n    justified,\n    type,\n    defaultValue,\n  }\n\n  function handleOnChange(e: string | string[]) {\n    if (onChange) onChange(e)\n    const value = e == typeof String ? e.split(' ') : e\n    // setCurrentItems(e)\n    // console.log('about to change state')\n    // currentItems = e",
+    "end_line": 74,
+    "start_line": 14
+  },
+  "related_files": [
+    "packages/ui/src/components/Accordion/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Accordion/Accordion.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/Accordion/index.tsx"
+  ],
+  "smell_id": "heuristic_props_5904",
+  "symbol_name": "Item",
+  "target_file": "packages/ui/src/components/Accordion/Accordion.tsx",
+  "task_id": "task_6d346b1f38"
+}

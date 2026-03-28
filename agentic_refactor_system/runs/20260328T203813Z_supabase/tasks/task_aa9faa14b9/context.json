@@ -1,0 +1,33 @@
+{
+  "line_end": 13,
+  "line_start": 13,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import Editor from '@monaco-editor/react'\n\ntype MonacoEditorProps = {\n  width?: string | number | undefined\n  height?: string | number | undefined\n  value?: string | undefined\n  language?: string | undefined\n  readOnly?: boolean\n  onChange: (value: string | undefined) => void\n  onMount?: (editor: any) => void\n}\n\nexport const MonacoEditor = ({\n  width,\n  height,\n  value,\n  language,\n  readOnly = false,\n  onChange,\n  onMount,\n}: MonacoEditorProps) => {\n  function handleEditorOnMount(editor: any) {\n    // add margin above first line\n    editor.changeViewZones((accessor: any) => {\n      accessor.addZone({\n        afterLineNumber: 0,\n        heightInPx: 4,\n        domNode: document.createElement('div'),\n      })\n    })\n\n    // move cursor to the end of document\n    const model = editor.getModel()\n    const position = model.getPositionAt(value?.length)\n    editor.setPosition(position)\n\n    // auto focus on mount\n    setTimeout(() => {\n      editor?.focus()\n    }, 0)\n\n    if (onMount) onMount(editor)\n  }",
+    "end_line": 43,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/grid/components/common/BlockKeys.tsx",
+    "apps/studio/components/grid/components/common/DefaultValue.tsx",
+    "apps/studio/components/grid/components/common/DropdownControl.tsx",
+    "apps/studio/components/grid/components/common/EmptyValue.tsx",
+    "apps/studio/components/grid/components/common/Hooks.tsx",
+    "apps/studio/components/grid/components/common/NullValue.tsx",
+    "apps/studio/components/grid/components/common/Shortcuts.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/grid/components/common/MonacoEditor.tsx",
+    "apps/studio/components/grid/components/common/BlockKeys.tsx",
+    "apps/studio/components/grid/components/common/DefaultValue.tsx",
+    "apps/studio/components/grid/components/common/DropdownControl.tsx",
+    "apps/studio/components/grid/components/common/EmptyValue.tsx",
+    "apps/studio/components/grid/components/common/Hooks.tsx",
+    "apps/studio/components/grid/components/common/NullValue.tsx",
+    "apps/studio/components/grid/components/common/Shortcuts.tsx"
+  ],
+  "smell_id": "heuristic_props_0804",
+  "symbol_name": "MonacoEditor",
+  "target_file": "apps/studio/components/grid/components/common/MonacoEditor.tsx",
+  "task_id": "task_aa9faa14b9"
+}

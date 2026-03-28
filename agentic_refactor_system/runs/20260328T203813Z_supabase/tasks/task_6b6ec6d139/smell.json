@@ -1,0 +1,14 @@
+{
+  "component_name": "SingleAttributeTooltipContent",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=7",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Organization/Usage/UsageChartTooltips.tsx",
+  "line_end": 14,
+  "line_start": 14,
+  "severity": "low",
+  "smell_id": "heuristic_props_1767",
+  "smell_type": "Too Many Props"
+}

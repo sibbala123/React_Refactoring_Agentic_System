@@ -1,0 +1,14 @@
+{
+  "component_name": "DataTableDemo",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/design-system/registry/default/example/data-table-demo.tsx",
+  "line_end": 348,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0151",
+  "smell_type": "Large Component"
+}

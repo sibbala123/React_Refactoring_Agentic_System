@@ -1,0 +1,27 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import type { DatabaseEventTrigger } from 'data/database-event-triggers/database-event-triggers-query'\nimport { TextConfirmModal } from 'components/ui/TextConfirmModalWrapper'\n\ninterface DeleteEventTriggerProps {\n  trigger?: DatabaseEventTrigger\n  visible: boolean\n  onCancel: () => void\n  onDelete: () => void\n  isLoading: boolean\n}\n\nexport const DeleteEventTrigger = ({\n  trigger,\n  visible,\n  onCancel,\n  onDelete,\n  isLoading,\n}: DeleteEventTriggerProps) => {\n  const name = trigger?.name ?? ''\n\n  return (\n    <TextConfirmModal\n      variant=\"warning\"\n      visible={visible}\n      onCancel={onCancel}\n      onConfirm={onDelete}\n      title=\"Delete this event trigger\"\n      loading={isLoading}\n      confirmLabel={`Delete trigger ${name}`}\n      confirmPlaceholder=\"Type in name of trigger\"\n      confirmString={name}\n      text={\n        <>\n          This will delete your event trigger called{' '}\n          <span className=\"text-bold text-foreground\">{name}</span>.\n        </>\n      }\n      alert={{\n        title: 'You cannot recover this event trigger once deleted.',\n      }}\n    />\n  )",
+    "end_line": 42,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Triggers/ChooseFunctionForm.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/DeleteTrigger.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/TriggerSheet.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/Triggers.constants.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Triggers/DeleteEventTrigger.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/ChooseFunctionForm.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/DeleteTrigger.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/TriggerSheet.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/Triggers.constants.ts"
+  ],
+  "smell_id": "heuristic_props_1359",
+  "symbol_name": "DeleteEventTrigger",
+  "target_file": "apps/studio/components/interfaces/Database/Triggers/DeleteEventTrigger.tsx",
+  "task_id": "task_6551a479a9"
+}

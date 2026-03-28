@@ -1,0 +1,14 @@
+{
+  "component_name": "NavigationBar.utils",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/layouts/Navigation/NavigationBar/NavigationBar.utils.tsx",
+  "line_end": 222,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_2506",
+  "smell_type": "Large Component"
+}

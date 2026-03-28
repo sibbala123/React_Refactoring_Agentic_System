@@ -1,0 +1,29 @@
+{
+  "line_end": 90,
+  "line_start": 90,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/SSO/SSOConfig.tsx"
+  ],
+  "primary_snippet": {
+    "content": "        first_name: {\n          name: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',\n        },\n        last_name: {\n          name: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',\n        },\n      },\n    },\n  },\n  {\n    name: 'Okta',\n    attributeMapping: {\n      keys: {\n        email: {\n          name: 'email',\n        },\n        user_name: {\n          name: 'user_name',\n        },\n        first_name: {\n          name: 'first_name',\n        },\n        last_name: {\n          name: 'last_name',\n        },\n      },\n    },\n  },\n] as const\n\nexport const AttributeMapping = ({\n  form,\n  emailField,\n  userNameField,\n  firstNameField,\n  lastNameField,\n}: {\n  form: UseFormReturn<SSOConfigFormSchema>\n  emailField: ProviderAttribute\n  userNameField: ProviderAttribute\n  firstNameField: ProviderAttribute\n  lastNameField: ProviderAttribute\n}) => {\n  // Helper to apply a preset\n  function applyPreset(preset: ProviderPreset) {\n    const keys = preset.attributeMapping.keys\n    // Set each field if present in the preset, otherwise clear\n    form.setValue(emailField, [{ value: keys.email?.name ?? '' }], { shouldDirty: true })\n    form.setValue(userNameField, [{ value: keys.user_name?.name ?? '' }], { shouldDirty: true })\n    form.setValue(firstNameField, [{ value: keys.first_name?.name ?? '' }], { shouldDirty: true })\n    form.setValue(lastNameField, [{ value: keys.last_name?.name ?? '' }], { shouldDirty: true })\n  }\n\n  return (\n    <FormItemLayout\n      label=\"Attribute mapping\"\n      layout=\"flex-row-reverse\"\n      description={\n        <div>\n          <p>Map SSO attributes to user fields</p>\n          <div className=\"flex flex-col gap-y-2 my-2 mt-4\">",
+    "end_line": 120,
+    "start_line": 60
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/SSO/JoinOrganizationOnSignup.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/SSOConfig.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/SSODomains.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/SSOMetadata.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/SSO/AttributeMapping.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/SSOConfig.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/JoinOrganizationOnSignup.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/SSODomains.tsx",
+    "apps/studio/components/interfaces/Organization/SSO/SSOMetadata.tsx"
+  ],
+  "smell_id": "heuristic_props_1737",
+  "symbol_name": "AttributeMapping",
+  "target_file": "apps/studio/components/interfaces/Organization/SSO/AttributeMapping.tsx",
+  "task_id": "task_e2ffdd15fa"
+}

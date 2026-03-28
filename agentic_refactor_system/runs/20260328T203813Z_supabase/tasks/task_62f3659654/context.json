@@ -1,0 +1,48 @@
+{
+  "line_end": 57,
+  "line_start": 57,
+  "local_imports": [
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/EnableIndexAdvisorButton.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexAdvisorDisabledState.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexImprovementText.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPanel.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/hooks/useIndexInvalidation.ts"
+  ],
+  "primary_snippet": {
+    "content": "  CollapsibleContent_Shadcn_,\n  CollapsibleTrigger_Shadcn_,\n} from 'ui'\nimport { Admonition } from 'ui-patterns'\nimport { GenericSkeletonLoader } from 'ui-patterns/ShimmeringLoader'\n\nimport { useIndexInvalidation } from './hooks/useIndexInvalidation'\nimport { EnableIndexAdvisorButton } from './IndexAdvisor/EnableIndexAdvisorButton'\nimport {\n  calculateImprovement,\n  createIndexes,\n  hasIndexRecommendations,\n} from './IndexAdvisor/index-advisor.utils'\nimport { IndexAdvisorDisabledState } from './IndexAdvisor/IndexAdvisorDisabledState'\nimport { IndexImprovementText } from './IndexAdvisor/IndexImprovementText'\nimport { QueryPanelContainer, QueryPanelScoreSection, QueryPanelSection } from './QueryPanel'\nimport { QueryPerformanceRow } from './QueryPerformance.types'\n\ninterface QueryIndexesProps {\n  selectedRow: Pick<QueryPerformanceRow, 'query'>\n  columnName?: string\n  suggestedSelectQuery?: string\n  prefetchedIndexAdvisorResult?: GetIndexAdvisorResultResponse | null\n\n  onClose?: () => void\n}\n\n// [Joshen] There's several more UX things we can do to help ease the learning curve of indexes I think\n// e.g understanding \"costs\", what numbers of \"costs\" are actually considered insignificant\n\nexport const QueryIndexes = ({\n  selectedRow,\n  columnName,\n  suggestedSelectQuery,\n  prefetchedIndexAdvisorResult,\n  onClose,\n}: QueryIndexesProps) => {\n  // [Joshen] TODO implement this logic once the linter rules are in\n  const isLinterWarning = false\n  const { data: project } = useSelectedProjectQuery()\n  const [showStartupCosts, setShowStartupCosts] = useState(false)\n  const [isExecuting, setIsExecuting] = useState(false)\n  const track = useTrack()\n  const [hasTrackedTabView, setHasTrackedTabView] = useState(false)\n\n  const {\n    data: usedIndexes,\n    isSuccess,\n    isPending: isLoading,\n    isError,\n    error,\n  } = useGetIndexesFromSelectQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    query: selectedRow?.['query'],\n  })\n\n  const { data: extensions, isPending: isLoadingExtensions } = useDatabaseExtensionsQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n  })",
+    "end_line": 87,
+    "start_line": 27
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/QueryPerformance/QueryDetail.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPanel.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.ai.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.constants.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.types.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.utils.test.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.utils.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceChart.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceFilterBar.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceGrid.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceMetrics.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/SqlMonacoBlock.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/useQueryPerformanceQuery.test.ts",
+    "apps/studio/components/interfaces/QueryPerformance/useQueryPerformanceQuery.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/QueryPerformance/QueryIndexes.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/EnableIndexAdvisorButton.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexAdvisorDisabledState.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/IndexAdvisor/IndexImprovementText.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPanel.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/hooks/useIndexInvalidation.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryDetail.tsx"
+  ],
+  "smell_id": "heuristic_props_1910",
+  "symbol_name": "QueryIndexes",
+  "target_file": "apps/studio/components/interfaces/QueryPerformance/QueryIndexes.tsx",
+  "task_id": "task_62f3659654"
+}

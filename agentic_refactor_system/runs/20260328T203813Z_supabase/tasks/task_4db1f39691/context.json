@@ -1,0 +1,36 @@
+{
+  "line_end": 49,
+  "line_start": 49,
+  "local_imports": [
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesBucketRow.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesPlaceholder.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import {\n  PageSection,\n  PageSectionContent,\n  PageSectionDescription,\n  PageSectionMeta,\n  PageSectionSummary,\n  PageSectionTitle,\n} from 'ui-patterns/PageSection'\nimport { StoragePoliciesBucketRow } from './StoragePoliciesBucketRow'\nimport StoragePoliciesPlaceholder from './StoragePoliciesPlaceholder'\n\nexport type SelectBucketPolicyForAction = {\n  addPolicy: (bucketName?: string, table?: string) => void\n  editPolicy: (policy: PostgresPolicy, bucketName?: string, table?: string) => void\n  deletePolicy: (policy: PostgresPolicy) => void\n}\n\ntype BucketsPoliciesProps = {\n  buckets: { bucket: Bucket; policies: PostgresPolicy[] }[]\n  search?: string\n  debouncedSearch?: string\n  setSearch: (search: string) => void\n  actions: SelectBucketPolicyForAction\n  pagination: {\n    hasNextPage: boolean\n    isFetchingNextPage: boolean\n    fetchNextPage: () => void\n  }\n}\n\nexport const BucketsPolicies = ({\n  buckets,\n  search,\n  debouncedSearch,\n  setSearch,\n  actions,\n  pagination,\n}: BucketsPoliciesProps): ReactNode => {\n  const [expanded, setExpanded] = useState(true)\n\n  const showEmptyState = buckets.length === 0 && (!debouncedSearch || debouncedSearch.length === 0)\n\n  return (\n    <PageSection>\n      <Collapsible_Shadcn_ open={expanded} onOpenChange={setExpanded}>\n        <PageSectionMeta>\n          <PageSectionSummary>\n            <PageSectionTitle>Buckets</PageSectionTitle>\n            <PageSectionDescription>\n              Write policies for each bucket to control access to the bucket and its contents\n            </PageSectionDescription>\n          </PageSectionSummary>\n          <CollapsibleTrigger_Shadcn_ asChild>\n            <button>\n              <span className=\"sr-only\">Toggle bucket list</span>\n              <ChevronUp\n                size={14}\n                className={cn(\n                  !expanded && 'rotate-180',\n                  'transition',\n                  'text-foreground-light hover:text-foreground'",
+    "end_line": 79,
+    "start_line": 19
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePolicies.constants.ts",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePolicies.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesBucketRow.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesEditPolicyModal.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesEditor.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesPlaceholder.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesReview.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesBucketsSection.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesBucketRow.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesPlaceholder.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePolicies.constants.ts",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePolicies.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesEditPolicyModal.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesEditor.tsx",
+    "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesReview.tsx"
+  ],
+  "smell_id": "heuristic_props_2234",
+  "symbol_name": "BucketsPolicies",
+  "target_file": "apps/studio/components/interfaces/Storage/StoragePolicies/StoragePoliciesBucketsSection.tsx",
+  "task_id": "task_4db1f39691"
+}

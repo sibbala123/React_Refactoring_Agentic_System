@@ -1,0 +1,41 @@
+{
+  "line_end": 23,
+  "line_start": 23,
+  "local_imports": [
+    "apps/studio/components/interfaces/Docs/DocSection.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useParams } from 'common'\nimport { Table2 } from 'lucide-react'\n\nimport { DocSection } from './DocSection'\nimport CodeSnippet from '@/components/interfaces/Docs/CodeSnippet'\nimport Description from '@/components/interfaces/Docs/Description'\nimport Param from '@/components/interfaces/Docs/Param'\nimport Snippets from '@/components/interfaces/Docs/Snippets'\nimport { InlineLink } from '@/components/ui/InlineLink'\nimport { useProjectApiUrl } from '@/data/config/project-endpoint-query'\nimport { useProjectJsonSchemaQuery } from '@/data/docs/project-json-schema-query'\nimport { useIsFeatureEnabled } from '@/hooks/misc/useIsFeatureEnabled'\nimport { DOCS_URL } from '@/lib/constants'\n\ninterface ResourceContentProps {\n  resourceId: string\n  resources: { [key: string]: { id: string; displayName: string; camelCase: string } }\n  selectedLang: 'bash' | 'js'\n  showApiKey: string\n  refreshDocs: () => void\n}\n\nexport const ResourceContent = ({\n  resourceId,\n  resources,\n  selectedLang,\n  showApiKey,\n  refreshDocs,\n}: ResourceContentProps) => {\n  const { ref } = useParams()\n  const { realtimeAll: realtimeEnabled } = useIsFeatureEnabled(['realtime:all'])\n\n  const { data: jsonSchema } = useProjectJsonSchemaQuery({ projectRef: ref })\n  const { paths, definitions } = jsonSchema || {}\n\n  const { data: endpoint = '' } = useProjectApiUrl({ projectRef: ref })\n\n  const keyToShow = !!showApiKey ? showApiKey : 'SUPABASE_KEY'\n  const resourcePaths = paths?.[`/${resourceId}`]\n  const resourceDefinition = definitions?.[resourceId]\n  const resourceMeta = resources[resourceId]\n  const description = resourceDefinition?.description || ''\n\n  const methods = Object.keys(resourcePaths ?? {}).map((x) => x.toUpperCase())\n  const properties = Object.entries(resourceDefinition?.properties ?? []).map(([id, val]: any) => ({\n    ...val,\n    id,\n    required: resourceDefinition?.required?.includes(id),\n  }))\n\n  if (!paths || !definitions) return null\n\n  return (",
+    "end_line": 53,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Docs/Authentication.tsx",
+    "apps/studio/components/interfaces/Docs/CodeSnippet.tsx",
+    "apps/studio/components/interfaces/Docs/Description.tsx",
+    "apps/studio/components/interfaces/Docs/DocSection.tsx",
+    "apps/studio/components/interfaces/Docs/Docs.types.ts",
+    "apps/studio/components/interfaces/Docs/GeneralContent.tsx",
+    "apps/studio/components/interfaces/Docs/GeneratingTypes.tsx",
+    "apps/studio/components/interfaces/Docs/Introduction.tsx",
+    "apps/studio/components/interfaces/Docs/LangSelector.tsx",
+    "apps/studio/components/interfaces/Docs/Param.tsx",
+    "apps/studio/components/interfaces/Docs/PublicSchemaNotEnabledAlert.tsx",
+    "apps/studio/components/interfaces/Docs/RpcContent.tsx",
+    "apps/studio/components/interfaces/Docs/Snippets.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Docs/ResourceContent.tsx",
+    "apps/studio/components/interfaces/Docs/DocSection.tsx",
+    "apps/studio/components/interfaces/Docs/Authentication.tsx",
+    "apps/studio/components/interfaces/Docs/CodeSnippet.tsx",
+    "apps/studio/components/interfaces/Docs/Description.tsx",
+    "apps/studio/components/interfaces/Docs/Docs.types.ts",
+    "apps/studio/components/interfaces/Docs/GeneralContent.tsx",
+    "apps/studio/components/interfaces/Docs/GeneratingTypes.tsx"
+  ],
+  "smell_id": "heuristic_props_1414",
+  "symbol_name": "ResourceContent",
+  "target_file": "apps/studio/components/interfaces/Docs/ResourceContent.tsx",
+  "task_id": "task_0dc70523ed"
+}

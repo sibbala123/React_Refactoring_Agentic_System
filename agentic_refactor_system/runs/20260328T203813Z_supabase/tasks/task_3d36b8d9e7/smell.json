@@ -1,0 +1,14 @@
+{
+  "component_name": "PageLayout",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=13",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/layouts/PageLayout/PageLayout.tsx",
+  "line_end": 61,
+  "line_start": 61,
+  "severity": "low",
+  "smell_id": "heuristic_props_2531",
+  "smell_type": "Too Many Props"
+}

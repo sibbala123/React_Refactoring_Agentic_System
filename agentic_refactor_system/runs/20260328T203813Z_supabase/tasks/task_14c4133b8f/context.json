@@ -1,0 +1,44 @@
+{
+  "line_end": 35,
+  "line_start": 35,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { InlineLink } from 'components/ui/InlineLink'\nimport { DesiredInstanceSize, instanceSizeSpecs } from 'data/projects/new-project.constants'\nimport { OrgProject } from 'data/projects/org-projects-infinite-query'\nimport { useLocalStorageQuery } from 'hooks/misc/useLocalStorage'\nimport { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'\nimport { DOCS_URL } from 'lib/constants'\nimport {\n  Badge,\n  Button,\n  PopoverSeparator_Shadcn_,\n  Table,\n  TableBody,\n  TableCell,\n  TableHead,\n  TableHeader,\n  TableRow,\n} from 'ui'\nimport { InfoTooltip } from 'ui-patterns/info-tooltip'\nimport { CreateProjectForm } from './ProjectCreation.schema'\nimport { instanceLabel, monthlyInstancePrice } from './ProjectCreation.utils'\n\ninterface ProjectCreationFooterProps {\n  form: UseFormReturn<CreateProjectForm>\n  canCreateProject: boolean\n  instanceSize?: string\n  organizationProjects: OrgProject[]\n  isCreatingNewProject: boolean\n  isSuccessNewProject: boolean\n}\n\nexport const ProjectCreationFooter = ({\n  form,\n  canCreateProject,\n  instanceSize,\n  organizationProjects,\n  isCreatingNewProject,\n  isSuccessNewProject,\n}: ProjectCreationFooterProps) => {\n  const router = useRouter()\n  const { data: currentOrg } = useSelectedOrganizationQuery()\n  const isFreePlan = currentOrg?.plan?.id === 'free'\n\n  const projectCreationDisabled = useFlag('disableProjectCreationAndUpdate')\n\n  const [lastVisitedOrganization] = useLocalStorageQuery(\n    LOCAL_STORAGE_KEYS.LAST_VISITED_ORGANIZATION,\n    ''\n  )\n\n  const availableComputeCredits = organizationProjects.length === 0 ? 10 : 0\n  const additionalMonthlySpend = isFreePlan\n    ? 0\n    : instanceSizeSpecs[instanceSize as DesiredInstanceSize]!.priceMonthly - availableComputeCredits\n\n  // [kevin] This will eventually all be provided by a new API endpoint to preview and validate project creation, this is just for kaizen now\n  const monthlyComputeCosts =\n    // current project costs\n    organizationProjects.reduce((prev, acc) => {\n      const primaryDatabase = acc.databases.find((db) => db.identifier === acc.ref)\n      const cost = !!primaryDatabase ? monthlyInstancePrice(primaryDatabase.infra_compute_size) : 0\n      return prev + cost",
+    "end_line": 65,
+    "start_line": 5
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/ProjectCreation/AdvancedConfiguration.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CloudProviderSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ComputeSizeSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CustomPostgresVersionInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DatabasePasswordInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DisabledWarningDueToIncident.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/FreeProjectLimitWarning.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/HighAvailabilityInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/OrganizationSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/PostgresVersionSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.constants.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.schema.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.test.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.utils.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectNameInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/RegionSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/SecurityOptions.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/SpecialSymbolsCallout.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreationFooter.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/AdvancedConfiguration.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CloudProviderSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ComputeSizeSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CustomPostgresVersionInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DatabasePasswordInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DisabledWarningDueToIncident.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/FreeProjectLimitWarning.tsx"
+  ],
+  "smell_id": "heuristic_props_1830",
+  "symbol_name": "ProjectCreationFooter",
+  "target_file": "apps/studio/components/interfaces/ProjectCreation/ProjectCreationFooter.tsx",
+  "task_id": "task_14c4133b8f"
+}

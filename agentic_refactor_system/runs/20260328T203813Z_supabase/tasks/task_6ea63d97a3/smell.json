@@ -1,0 +1,14 @@
+{
+  "component_name": "TextLink",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=10",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui/src/components/TextLink/TextLink.tsx",
+  "line_end": 18,
+  "line_start": 18,
+  "severity": "low",
+  "smell_id": "heuristic_props_6086",
+  "smell_type": "Too Many Props"
+}

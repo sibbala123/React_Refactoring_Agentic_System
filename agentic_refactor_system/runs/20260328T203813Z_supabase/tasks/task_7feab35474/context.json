@@ -1,0 +1,27 @@
+{
+  "line_end": 46,
+  "line_start": 46,
+  "local_imports": [
+    "apps/studio/components/grid/components/common/DropdownControl.tsx",
+    "apps/studio/components/grid/components/header/sort/SortRow.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useTableEditorTableStateSnapshot } from 'state/table-editor-table'\nimport {\n  Button,\n  Popover_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverSeparator_Shadcn_,\n  PopoverTrigger_Shadcn_,\n} from 'ui'\nimport ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'\n\nimport { DropdownControl } from '../../common/DropdownControl'\nimport SortRow from './SortRow'\n\nexport interface SortPopoverPrimitiveProps {\n  buttonText?: string\n  sorts: Sort[]\n  onApplySorts: (sorts: Sort[]) => void\n  defaultOpen?: boolean\n  tableQueriesEnabled?: boolean\n}\n\n/**\n * SortPopoverPrimitive - A component for sorting table columns\n *\n * This component maintains a draft state of sorts while editing, then applies\n * them to the parent component when \"Apply\" is clicked.\n *\n * To avoid issues with drag-and-drop reconciliation, we use a special sync mechanism\n * that properly detects external vs. internal updates.\n */\nexport const SortPopoverPrimitive = ({\n  buttonText,\n  sorts,\n  onApplySorts,\n  defaultOpen = false,\n  tableQueriesEnabled = true,\n}: SortPopoverPrimitiveProps) => {\n  const { ref } = useParams()\n  const { filters } = useTableFilter()\n  const { data: project } = useSelectedProjectQuery()\n  const roleImpersonationState = useRoleImpersonationStateSnapshot()\n\n  const snap = useTableEditorTableStateSnapshot()\n  const tableName = snap.table?.name || ''\n  const tableSchema = snap.table.schema || ''\n\n  const [open, setOpen] = useState(defaultOpen)\n  const [showWarning, setShowWarning] = useState(false)\n  // Local state for draft sorts\n  const [localSorts, setLocalSorts] = useState<Sort[]>(sorts)\n\n  // Track the last props we received for comparison\n  const lastSortsRef = useRef<Sort[]>(sorts)\n  // Track if we're in the middle of applying our own changes\n  const isApplyingRef = useRef(false)\n\n  const { data: countData } = useTableRowsCountQuery(\n    {\n      projectRef: project?.ref,\n      tableId: snap.table.id,\n      filters,",
+    "end_line": 76,
+    "start_line": 16
+  },
+  "related_files": [
+    "apps/studio/components/grid/components/header/sort/SortPopover.tsx",
+    "apps/studio/components/grid/components/header/sort/SortRow.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/grid/components/header/sort/SortPopoverPrimitive.tsx",
+    "apps/studio/components/grid/components/common/DropdownControl.tsx",
+    "apps/studio/components/grid/components/header/sort/SortRow.tsx",
+    "apps/studio/components/grid/components/header/sort/SortPopover.tsx"
+  ],
+  "smell_id": "heuristic_props_0849",
+  "symbol_name": "SortPopoverPrimitive",
+  "target_file": "apps/studio/components/grid/components/header/sort/SortPopoverPrimitive.tsx",
+  "task_id": "task_7feab35474"
+}

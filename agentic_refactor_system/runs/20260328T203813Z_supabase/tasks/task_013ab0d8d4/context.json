@@ -1,0 +1,48 @@
+{
+  "line_end": 43,
+  "line_start": 43,
+  "local_imports": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+    "apps/studio/components/interfaces/Reports/Reports.tsx",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ChartConfig.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useSendEventMutation } from 'data/telemetry/send-event-mutation'\nimport { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { useProfile } from 'lib/profile'\nimport type { Dashboards } from 'types'\nimport { createSqlSnippetSkeletonV2 } from '../SQLEditor/SQLEditor.utils'\nimport { ChartConfig } from '../SQLEditor/UtilityPanel/ChartConfig'\nimport { ReportBlock } from './ReportBlock/ReportBlock'\nimport { LAYOUT_COLUMN_COUNT } from './Reports.constants'\n\nconst ReactGridLayout = WidthProvider(RGL)\n\ninterface GridResizeProps {\n  startDate: string\n  endDate: string\n  interval: AnalyticsInterval\n  editableReport: Dashboards.Content\n  disableUpdate: boolean\n  isRefreshing: boolean\n  onRemoveChart: ({ metric }: { metric: { key: string } }) => void\n  onUpdateChart: (\n    id: string,\n    {\n      chart,\n      chartConfig,\n    }: { chart?: Partial<Dashboards.Chart>; chartConfig?: Partial<ChartConfig> }\n  ) => void\n  setEditableReport: (payload: any) => void\n}\n\nexport const GridResize = ({\n  startDate,\n  endDate,\n  interval,\n  editableReport,\n  disableUpdate,\n  isRefreshing,\n  onRemoveChart,\n  onUpdateChart,\n  setEditableReport,\n}: GridResizeProps) => {\n  const { ref } = useParams()\n  const { profile } = useProfile()\n  const { data: project } = useSelectedProjectQuery()\n  const { data: selectedOrg } = useSelectedOrganizationQuery()\n\n  const { mutate: sendEvent } = useSendEventMutation()\n  const { mutate: upsertContent } = useContentUpsertMutation()\n\n  const onUpdateLayout = (layout: RGL.Layout[]) => {\n    const updatedLayout = [...editableReport.layout]\n\n    layout.forEach((chart) => {\n      const chartIdx = updatedLayout.findIndex((y) => chart.i === y.id)\n      if (chartIdx !== undefined && chartIdx >= 0) {\n        updatedLayout[chartIdx] = {\n          ...updatedLayout[chartIdx],\n          w: chart.w,\n          h: chart.h,\n          x: chart.x,\n          y: chart.y,",
+    "end_line": 73,
+    "start_line": 13
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Reports/CreateReportModal.tsx",
+    "apps/studio/components/interfaces/Reports/MetricOptions.tsx",
+    "apps/studio/components/interfaces/Reports/ReportFilterBar.tsx",
+    "apps/studio/components/interfaces/Reports/ReportFilterPopover.tsx",
+    "apps/studio/components/interfaces/Reports/ReportHeader.tsx",
+    "apps/studio/components/interfaces/Reports/ReportPadding.tsx",
+    "apps/studio/components/interfaces/Reports/ReportStickyNav.tsx",
+    "apps/studio/components/interfaces/Reports/ReportWidget.tsx",
+    "apps/studio/components/interfaces/Reports/Reports.constants.test.ts",
+    "apps/studio/components/interfaces/Reports/Reports.constants.ts",
+    "apps/studio/components/interfaces/Reports/Reports.queryPerformance.test.ts",
+    "apps/studio/components/interfaces/Reports/Reports.tsx",
+    "apps/studio/components/interfaces/Reports/Reports.types.ts",
+    "apps/studio/components/interfaces/Reports/Reports.utils.test.ts",
+    "apps/studio/components/interfaces/Reports/Reports.utils.tsx",
+    "apps/studio/components/interfaces/Reports/UpdateModal.tsx",
+    "apps/studio/components/interfaces/Reports/useReportFilters.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Reports/GridResize.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+    "apps/studio/components/interfaces/Reports/Reports.tsx",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ChartConfig.tsx",
+    "apps/studio/components/interfaces/Reports/CreateReportModal.tsx",
+    "apps/studio/components/interfaces/Reports/MetricOptions.tsx",
+    "apps/studio/components/interfaces/Reports/ReportFilterBar.tsx"
+  ],
+  "smell_id": "heuristic_props_1951",
+  "symbol_name": "GridResize",
+  "target_file": "apps/studio/components/interfaces/Reports/GridResize.tsx",
+  "task_id": "task_013ab0d8d4"
+}

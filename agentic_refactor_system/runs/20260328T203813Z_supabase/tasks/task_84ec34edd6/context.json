@@ -1,0 +1,52 @@
+{
+  "line_end": 28,
+  "line_start": 28,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { LazyMotion, domAnimation, m, useInView } from 'framer-motion'\nimport { ArrowUpRight } from 'lucide-react'\nimport Link from 'next/link'\nimport { ReactNode, useRef } from 'react'\nimport ReactMarkdown from 'react-markdown'\nimport { Button, cn } from 'ui'\nimport SectionContainer from '~/components/Layouts/SectionContainer'\nimport { INITIAL_BOTTOM, getAnimation } from '~/lib/animations'\n\ninterface Feature {\n  icon: string\n  title: string\n  text: string\n}\ninterface Props {\n  id?: string\n  title: string | ReactNode\n  paragraph: string\n  cta?: {\n    label?: string\n    link: string\n  }\n  features?: Feature[]\n  className?: string\n  hasStickyTitle?: boolean\n}\n\nconst FeaturesSection = ({\n  id,\n  title,\n  paragraph,\n  cta,\n  features,\n  className,\n  hasStickyTitle,\n}: Props) => {\n  const ref = useRef(null)\n  const isInView = useInView(ref, { margin: '-5%', once: true })\n\n  return (\n    <LazyMotion features={domAnimation}>\n      <SectionContainer id={id} className={className}>\n        <div className=\"grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8 xl:gap-10 justify-between\">\n          <div className=\"col-span-full h-full lg:col-span-4\">\n            <div\n              className={cn('gap-2 flex flex-col items-start', hasStickyTitle && 'sticky top-24')}\n            >\n              <h2 className=\"text-2xl sm:text-3xl xl:text-4xl max-w-[280px] sm:max-w-xs xl:max-w-[360px] tracking-[-1px]\">\n                {title}\n              </h2>\n              <p className=\"text-lighter mb-4\">{paragraph}</p>\n              {cta && (\n                <Button asChild type=\"default\" size=\"small\" icon={<ArrowUpRight />}>\n                  <Link href={cta.link}>{cta.label ?? 'Explore documentation'}</Link>\n                </Button>\n              )}\n            </div>\n          </div>",
+    "end_line": 58,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/Sections/APISection.tsx",
+    "apps/www/components/Sections/CenteredImage.tsx",
+    "apps/www/components/Sections/CenteredTitleImage.tsx",
+    "apps/www/components/Sections/CommunitySlider.tsx",
+    "apps/www/components/Sections/CustomerQuotesSection.tsx",
+    "apps/www/components/Sections/EnterpriseCta.tsx",
+    "apps/www/components/Sections/FeatureSection.tsx",
+    "apps/www/components/Sections/FunctionsUsecases.tsx",
+    "apps/www/components/Sections/GithubExamples.tsx",
+    "apps/www/components/Sections/HighlightCards.tsx",
+    "apps/www/components/Sections/HighlightColumns.tsx",
+    "apps/www/components/Sections/ImageParagraphSection.tsx",
+    "apps/www/components/Sections/ParagraphSection.tsx",
+    "apps/www/components/Sections/ProductHeader.tsx",
+    "apps/www/components/Sections/ProductHeader2.tsx",
+    "apps/www/components/Sections/ProductHeaderCentered.tsx",
+    "apps/www/components/Sections/ProductModulesHeader.tsx",
+    "apps/www/components/Sections/ProductsCta.tsx",
+    "apps/www/components/Sections/ProductsCta2.tsx",
+    "apps/www/components/Sections/SingleQuote.tsx",
+    "apps/www/components/Sections/TimedAccordionPanels.tsx",
+    "apps/www/components/Sections/TimedAccordionSection.tsx",
+    "apps/www/components/Sections/TimedTabsSection.tsx",
+    "apps/www/components/Sections/TwitterSocialProof.tsx",
+    "apps/www/components/Sections/TwitterSocialProofMobile.tsx",
+    "apps/www/components/Sections/UseCasesSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Sections/FeaturesSection.tsx",
+    "apps/www/components/Sections/APISection.tsx",
+    "apps/www/components/Sections/CenteredImage.tsx",
+    "apps/www/components/Sections/CenteredTitleImage.tsx",
+    "apps/www/components/Sections/CommunitySlider.tsx",
+    "apps/www/components/Sections/CustomerQuotesSection.tsx",
+    "apps/www/components/Sections/EnterpriseCta.tsx",
+    "apps/www/components/Sections/FeatureSection.tsx"
+  ],
+  "smell_id": "heuristic_props_4793",
+  "symbol_name": "FeaturesSection",
+  "target_file": "apps/www/components/Sections/FeaturesSection.tsx",
+  "task_id": "task_84ec34edd6"
+}

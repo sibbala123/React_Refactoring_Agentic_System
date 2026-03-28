@@ -1,0 +1,14 @@
+{
+  "component_name": "Avatar",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=10",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "examples/user-management/nextjs-user-management/app/account/avatar.tsx",
+  "line_end": 6,
+  "line_start": 6,
+  "severity": "low",
+  "smell_id": "heuristic_props_5538",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "SurveyChart",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=8",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/SurveyResults/SurveyChart.tsx",
+  "line_end": 177,
+  "line_start": 177,
+  "severity": "low",
+  "smell_id": "heuristic_props_4856",
+  "smell_type": "Too Many Props"
+}

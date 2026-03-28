@@ -1,0 +1,14 @@
+{
+  "component_name": "SonnerProgress",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=13",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui/src/components/shadcn/ui/sonner-progress.tsx",
+  "line_end": 16,
+  "line_start": 16,
+  "severity": "low",
+  "smell_id": "heuristic_props_6063",
+  "smell_type": "Too Many Props"
+}

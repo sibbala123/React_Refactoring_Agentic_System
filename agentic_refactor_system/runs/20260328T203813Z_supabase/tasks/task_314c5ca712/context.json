@@ -1,0 +1,25 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { SupportCategories } from '@supabase/shared-types/out/constants'\nimport { Blocks, ExternalLink } from 'lucide-react'\nimport { useRouter } from 'next/router'\n\nimport { SupportLink } from 'components/interfaces/Support/SupportLink'\nimport { detectBrowser } from 'lib/helpers'\nimport { Button } from 'ui'\n\ninterface InsertBeforeRemoveChildErrorHandlerProps {\n  message: string\n  sentryIssueId: string\n  urlMessage: string\n  isRemoveChildError: boolean\n  isInsertBeforeError?: boolean\n}\n\nexport const InsertBeforeRemoveChildErrorHandler = ({\n  message,\n  sentryIssueId,\n  urlMessage,\n  isRemoveChildError,\n  isInsertBeforeError,\n}: InsertBeforeRemoveChildErrorHandlerProps) => {\n  const router = useRouter()\n  const browser = detectBrowser()\n\n  return (\n    <>\n      <div className=\"flex flex-col gap-y-4 text-left py-2 w-full\">\n        <div className=\"flex items-center gap-x-3\">\n          <p className=\"text-lg font-bold\">Sorry! A browser extension may have caused an error.</p>\n          <Blocks className=\"text-foreground-lighter\" />\n        </div>\n\n        <div className=\"flex flex-col gap-y-2\">\n          <p className=\"text-sm text-foreground-light\">\n            Browser translation tools (like Chrome's built-in Translate) or some third-party browser\n            extensions are known to cause errors when using the Supabase Dashboard.\n          </p>\n\n          <p className=\"text-sm text-foreground-light\">\n            We highly recommend{' '}\n            <span className=\"text-foreground\">\n              {browser === 'Chrome'\n                ? 'disabling Chrome Translate or certain browser extensions'\n                : 'avoiding the use of browser translation tools or disabling certain extensions'}\n            </span>{' '}",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/ErrorBoundary/ClientSideExceptionHandler.tsx",
+    "apps/studio/components/ui/ErrorBoundary/ErrorBoundary.tsx",
+    "apps/studio/components/ui/ErrorBoundary/GlobalErrorBoundaryState.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/ErrorBoundary/InsertBeforeRemoveChildErrorHandler.tsx",
+    "apps/studio/components/ui/ErrorBoundary/ClientSideExceptionHandler.tsx",
+    "apps/studio/components/ui/ErrorBoundary/ErrorBoundary.tsx",
+    "apps/studio/components/ui/ErrorBoundary/GlobalErrorBoundaryState.tsx"
+  ],
+  "smell_id": "heuristic_props_2767",
+  "symbol_name": "InsertBeforeRemoveChildErrorHandler",
+  "target_file": "apps/studio/components/ui/ErrorBoundary/InsertBeforeRemoveChildErrorHandler.tsx",
+  "task_id": "task_314c5ca712"
+}

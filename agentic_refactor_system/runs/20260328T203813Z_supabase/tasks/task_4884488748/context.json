@@ -1,0 +1,60 @@
+{
+  "line_end": 70,
+  "line_start": 70,
+  "local_imports": [
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/AuthColumnRenderer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/DatabaseApiColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/DatabasePostgresColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/DefaultPreviewColumnRenderer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/FunctionsEdgeColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/FunctionsLogsColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsErrorRenderers/DefaultErrorRenderer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsErrorRenderers/ResourcesExceededErrorRenderer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsTableEmptyState.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/MultiSelectActionBar.tsx"
+  ],
+  "primary_snippet": {
+    "content": "interface Props {\n  data?: LogData[]\n  onHistogramToggle?: () => void\n  isHistogramShowing?: boolean\n  isLoading?: boolean\n  isSaving?: boolean\n  error?: LogQueryError | null\n  showDownload?: boolean\n  queryType?: QueryType\n  projectRef: string\n  onRun?: () => void\n  onSave?: () => void\n  hasEditorValue?: boolean\n  className?: string\n  EmptyState?: ReactNode\n  showHeader?: boolean\n  showHistogramToggle?: boolean\n  selectedLog?: LogData\n  isSelectedLogLoading?: boolean\n  selectedLogError?: LogQueryError | ResponseError\n  onSelectedLogChange?: (log: LogData | null) => void\n  sqlQuery?: string\n}\ntype LogMap = { [id: string]: LogData }\n\n/**\n * Logs table view with focus side panel\n *\n * When in custom data display mode, the side panel will not open when focusing on logs.\n */\nexport const LogTable = ({\n  data = [],\n  queryType,\n  onHistogramToggle,\n  isHistogramShowing,\n  isLoading,\n  isSaving,\n  error,\n  projectRef,\n  onRun,\n  onSave,\n  hasEditorValue,\n  className,\n  EmptyState,\n  showHeader = true,\n  showHistogramToggle = true,\n  selectedLog,\n  isSelectedLogLoading,\n  selectedLogError,\n  onSelectedLogChange,\n  sqlQuery,\n}: Props) => {\n  const { ref } = useParams()\n  const { profile } = useProfile()\n  const [selectedLogId] = useSelectedLog()\n  const { show: showContextMenu } = useContextMenu()\n\n  const [cellPosition, setCellPosition] = useState<any>()\n  const [selectedRow, setSelectedRow] = useState<LogData | null>(null)\n  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set())\n  const [anchorRowId, setAnchorRowId] = useState<string | null>(null)",
+    "end_line": 100,
+    "start_line": 40
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.constants.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.types.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.ts",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFilterPopover.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFormatters.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsPreviewer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsQueryPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsTableEmptyState.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/MultiSelectActionBar.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanelWithUniversal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/RecentQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/logsDateRange.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/AuthColumnRenderer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/DatabaseApiColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/DatabasePostgresColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/DefaultPreviewColumnRenderer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/FunctionsEdgeColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogColumnRenderers/FunctionsLogsColumnRender.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx"
+  ],
+  "smell_id": "heuristic_props_2108",
+  "symbol_name": "LogTable",
+  "target_file": "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+  "task_id": "task_4884488748"
+}

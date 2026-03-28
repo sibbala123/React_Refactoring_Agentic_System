@@ -1,0 +1,34 @@
+{
+  "line_end": 150,
+  "line_start": 150,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "  }),\n  z.object({\n    type: z.literal('last9'),\n    region: z.string().min(1, { message: 'Region is required' }),\n    username: z.string().min(1, { message: 'Username is required' }),\n    password: z.string().min(1, { message: 'Password is required' }),\n  }),\n  z.object({\n    type: z.literal('otlp'),\n    endpoint: httpEndpointUrlSchema({\n      requiredMessage: 'OTLP endpoint is required',\n      invalidMessage: 'OTLP endpoint must be a valid URL',\n      prefixMessage: 'OTLP endpoint must start with http:// or https://',\n    }),\n    protocol: z.string().optional().default('http/protobuf'),\n    gzip: z.boolean().optional().default(true),\n    headers: z.record(z.string(), z.string()).optional(),\n  }),\n  z.object({ type: z.literal('syslog') }),\n])\n\nconst formSchema = z\n  .object({\n    name: z.string().min(1, {\n      message: 'Destination name is required',\n    }),\n    description: z.string().optional(),\n  })\n  .and(formUnion)\n\nfunction LogDrainFormItem({\n  value,\n  label,\n  description,\n  formControl,\n  placeholder,\n  type,\n}: {\n  value: string\n  label: string\n  formControl: any\n  placeholder?: string\n  description?: ReactNode\n  type?: string\n}) {\n  return (\n    <FormField_Shadcn_\n      name={value}\n      control={formControl}\n      render={({ field }) => (\n        <FormItemLayout layout=\"horizontal\" label={label} description={description || ''}>\n          <FormControl_Shadcn_>\n            <Input_Shadcn_ type={type || 'text'} placeholder={placeholder} {...field} />\n          </FormControl_Shadcn_>\n        </FormItemLayout>\n      )}\n    />\n  )\n}\n\ntype DefaultValues = { type: LogDrainType } & Partial<LogDrainData>",
+    "end_line": 180,
+    "start_line": 120
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/LogDrains/AnimatedLogos.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.constants.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.utils.test.ts",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.utils.ts",
+    "apps/studio/components/interfaces/LogDrains/LogDrainsCard.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrainsEmpty.tsx",
+    "apps/studio/components/interfaces/LogDrains/VoteLink.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/LogDrains/LogDrainDestinationSheetForm.tsx",
+    "apps/studio/components/interfaces/LogDrains/AnimatedLogos.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.constants.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.utils.test.ts",
+    "apps/studio/components/interfaces/LogDrains/LogDrains.utils.ts",
+    "apps/studio/components/interfaces/LogDrains/LogDrainsCard.tsx",
+    "apps/studio/components/interfaces/LogDrains/LogDrainsEmpty.tsx"
+  ],
+  "smell_id": "heuristic_props_1613",
+  "symbol_name": "LogDrainDestinationSheetForm",
+  "target_file": "apps/studio/components/interfaces/LogDrains/LogDrainDestinationSheetForm.tsx",
+  "task_id": "task_8c08bbf08f"
+}

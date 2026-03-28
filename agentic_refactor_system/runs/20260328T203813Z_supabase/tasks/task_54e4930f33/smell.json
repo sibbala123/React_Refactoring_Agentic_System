@@ -1,0 +1,14 @@
+{
+  "component_name": "SidePanelEditor.utils",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.utils.tsx",
+  "line_end": 1154,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_2343",
+  "smell_type": "Large Component"
+}

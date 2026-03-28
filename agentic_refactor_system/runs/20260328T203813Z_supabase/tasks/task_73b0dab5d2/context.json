@@ -1,0 +1,32 @@
+{
+  "line_end": 32,
+  "line_start": 32,
+  "local_imports": [
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/Layout/InputErrorIcon.tsx",
+    "packages/ui/src/lib/Layout/InputIconContainer.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "\nimport React, { useEffect } from 'react'\n\n// import { IconChevronDown } from '../Icon/icons/IconChevronDown'\n// import { IconChevronUp } from '../Icon/icons/IconChevronUp'\nimport { FormLayout } from '../../lib/Layout/FormLayout/FormLayout'\nimport InputErrorIcon from '../../lib/Layout/InputErrorIcon'\nimport InputIconContainer from '../../lib/Layout/InputIconContainer'\nimport styleHandler from '../../lib/theme/styleHandler'\nimport { useFormContext } from '../Form/FormContext'\n\nexport interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {\n  defaultValue?: string | number\n  descriptionText?: string | React.ReactNode\n  error?: string\n  icon?: any\n  inputRef?: React.RefObject<HTMLInputElement>\n  label?: string\n  afterLabel?: string\n  beforeLabel?: string\n  labelOptional?: string | React.ReactNode\n  actions?: React.ReactNode\n  layout?: 'horizontal' | 'vertical'\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge'\n  validation?: (x: any) => void\n}\n\n/**\n * @deprecated Use `import { Input_shadcn_ } from \"ui\"` with `type=\"number\"` instead or ./ui-patterns/data-inputs/input with `type=\"number\"`\n */\nfunction InputNumber({\n  defaultValue,\n  descriptionText,\n  error,\n  icon,\n  inputRef,\n  label,\n  afterLabel,\n  beforeLabel,\n  labelOptional,\n  layout,\n  value = undefined,\n  actions,\n  size = 'medium',\n  validation,\n  id = '',\n  name = '',\n  ...props\n}: Props) {\n  const __styles = styleHandler('inputNumber')\n\n  const { formContextOnChange, values, errors, handleBlur, touched, fieldLevelValidation } =\n    useFormContext()\n\n  if (values && !value) value = values[id || name]\n\n  function handleBlurEvent(e: React.FocusEvent<HTMLInputElement>) {\n    if (handleBlur) handleBlur(e)\n    if (props.onBlur) props.onBlur(e)\n  }\n",
+    "end_line": 62,
+    "start_line": 2
+  },
+  "related_files": [
+    "packages/ui/src/components/InputNumber/index.ts"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/InputNumber/InputNumber.tsx",
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/Layout/InputErrorIcon.tsx",
+    "packages/ui/src/lib/Layout/InputIconContainer.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/InputNumber/index.ts"
+  ],
+  "smell_id": "heuristic_props_5985",
+  "symbol_name": "InputNumber",
+  "target_file": "packages/ui/src/components/InputNumber/InputNumber.tsx",
+  "task_id": "task_73b0dab5d2"
+}

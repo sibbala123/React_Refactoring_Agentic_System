@@ -1,0 +1,52 @@
+{
+  "line_end": 279,
+  "line_start": 1,
+  "local_imports": [
+    "packages/common/auth.tsx",
+    "packages/common/configcat.ts",
+    "packages/common/consent-state.ts",
+    "packages/common/fetchWrappers.tsx",
+    "packages/common/helpers.ts",
+    "packages/common/hooks/index.ts"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { components } from 'api-types'\nimport { FlagValues } from 'flags/react'\nimport { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from 'react'\n\nimport { useAuth } from './auth'\nimport { getFlags as getDefaultConfigCatFlags } from './configcat'\nimport { hasConsented } from './consent-state'\nimport { get, post } from './fetchWrappers'\nimport { ensurePlatformSuffix } from './helpers'\nimport { useParams } from './hooks'\n\ntype TrackFeatureFlagVariables = components['schemas']['TelemetryFeatureFlagBody']\nexport type CallFeatureFlagsResponse = components['schemas']['TelemetryCallFeatureFlagsResponse']\n\nexport async function getFeatureFlags(\n  API_URL: string,\n  options: { organizationSlug?: string; projectRef?: string } = {}\n) {\n  try {\n    const url = new URL(`${ensurePlatformSuffix(API_URL)}/telemetry/feature-flags`)\n\n    if (options.organizationSlug) {\n      url.searchParams.set('organization_slug', options.organizationSlug)\n    }\n\n    if (options.projectRef) {\n      url.searchParams.set('project_ref', options.projectRef)\n    }\n\n    const data = await get(url.toString())\n    return data as CallFeatureFlagsResponse\n  } catch (error: any) {\n    if (error.message.includes('Failed to fetch')) {\n      console.error('Failed to fetch PH flags: API is not available')\n    }\n    throw error\n  }\n}\n\nexport async function trackFeatureFlag(API_URL: string, body: TrackFeatureFlagVariables) {\n  const consent = hasConsented()\n\n  if (!consent) return undefined\n  await post(`${ensurePlatformSuffix(API_URL)}/telemetry/feature-flags/track`, { body })\n}\n\nexport type FeatureFlagContextType = {\n  API_URL?: string\n  configcat: { [key: string]: boolean | number | string | null }\n  posthog: CallFeatureFlagsResponse\n  hasLoaded?: boolean\n}\n\nexport const FeatureFlagContext = createContext<FeatureFlagContextType>({\n  API_URL: undefined,\n  configcat: {},\n  posthog: {},\n  hasLoaded: false,\n})\n\nfunction getCookies() {\n  const pairs = document.cookie.split(';')\n  let cookies: Record<string, string> = {}\n  for (var i = 0; i < pairs.length; i++) {\n    var [t_key, value] = pairs[i].split('=')\n    const key = t_key.trim()\n\n    cookies[key] = unescape(value)\n  }\n  return cookies\n}\n\nexport const FeatureFlagProvider = ({\n  API_URL,\n  enabled = true,\n  organizationSlug,\n  projectRef,\n  getConfigCatFlags,\n  children,\n}: PropsWithChildren<{\n  API_URL?: string\n  /** Accepts either `boolean` which controls all feature flags or `{ cc: boolean, ph: boolean }` for individual providers */\n  enabled?: boolean | { cc: boolean; ph: boolean }\n  organizationSlug?: string\n  projectRef?: string\n  /** Custom fetcher for ConfigCat flags if passing in custom attributes */\n  getConfigCatFlags?: (\n    userEmail?: string\n  ) => Promise<{ settingKey: string; settingValue: boolean | number | string | null | undefined }[]>\n}>) => {\n  const { session, isLoading } = useAuth()\n  const userEmail = session?.user?.email\n  const params = useParams()\n  const resolvedOrganizationSlug = organizationSlug ?? params.slug\n  const resolvedProjectRef = projectRef ?? params.ref\n  const lastSentGroupContextRef = useRef<string | null>(null)\n\n  const [store, setStore] = useState<FeatureFlagContextType>({\n    API_URL,\n    configcat: {},\n    posthog: {},\n    hasLoaded: false,\n  })\n\n  useEffect(() => {\n    let mounted = true\n\n    async function ensureGroupContext() {\n      if (!API_URL) return\n\n      const userId = session?.user?.id\n      if (!userId) return\n      if (!hasConsented()) return\n\n      if (!resolvedOrganizationSlug && !resolvedProjectRef) return\n\n      const contextKey = [userId, resolvedOrganizationSlug ?? '', resolvedProjectRef ?? ''].join(\n        '|'\n      )\n      if (lastSentGroupContextRef.current === contextKey) return\n\n      try {\n        await post(\n          `${ensurePlatformSuffix(API_URL)}/telemetry/identify`,\n          {\n            user_id: userId,\n            ...(resolvedOrganizationSlug && { organization_slug: resolvedOrganizationSlug }),\n            ...(resolvedProjectRef && { project_ref: resolvedProjectRef }),\n          },\n          { headers: { Version: '2' } }\n        )\n\n        lastSentGroupContextRef.current = contextKey\n      } catch {}\n    }\n\n    async function processFlags() {\n      if (!enabled || isLoading) return\n\n      const loadPHFlags =\n        (enabled === true || (typeof enabled === 'object' && enabled.ph)) && !!API_URL\n      const loadCCFlags = enabled === true || (typeof enabled === 'object' && enabled.cc)\n\n      let flagStore: FeatureFlagContextType = { configcat: {}, posthog: {} }\n\n      // Run both async operations in parallel\n      const [flags, flagValues] = await Promise.all([\n        loadPHFlags\n          ? (async () => {\n              await ensureGroupContext()\n              return getFeatureFlags(API_URL, {\n                organizationSlug: resolvedOrganizationSlug,\n                projectRef: resolvedProjectRef,\n              })\n            })()\n          : Promise.resolve({}),\n        loadCCFlags\n          ? typeof getConfigCatFlags === 'function'\n            ? getConfigCatFlags(userEmail)\n            : getDefaultConfigCatFlags(userEmail)\n          : Promise.resolve([]),\n      ])\n\n      const isLocalDev = process.env.NODE_ENV === 'development'\n\n      const safeParse = (value: string | undefined): Record<string, boolean | number | string> => {\n        if (!value) return {}\n        try {\n          return JSON.parse(value)\n        } catch {\n          return {}\n        }\n      }\n\n      // Process PostHog flags if loaded\n      if (Object.keys(flags).length > 0) {\n        // Apply local dev overrides for PostHog flags\n        if (isLocalDev) {\n          try {\n            const cookies = getCookies()\n            const phOverrides = safeParse(cookies['x-ph-flag-overrides'])\n            flagStore.posthog = { ...flags, ...phOverrides }\n          } catch {\n            flagStore.posthog = flags\n          }\n        } else {\n          flagStore.posthog = flags\n        }\n      }\n\n      // Process ConfigCat flags if loaded\n      if (flagValues.length > 0) {\n        let overridesCookieValue: Record<string, boolean | number | string> = {}\n\n        try {\n          const cookies = getCookies()\n          // Merge overrides: vercel-flag-overrides first, then x-cc-flag-overrides (local only)\n          // x-cc-flag-overrides takes precedence in local dev\n          const vercelOverrides = safeParse(cookies['vercel-flag-overrides'])\n          const ccOverrides = isLocalDev ? safeParse(cookies['x-cc-flag-overrides']) : {}\n\n          overridesCookieValue = {\n            ...vercelOverrides,\n            ...ccOverrides, // local overrides take precedence\n          }\n        } catch {}\n\n        flagValues.forEach((item) => {\n          flagStore['configcat'][item.settingKey] =\n            overridesCookieValue[item.settingKey] ??\n            (item.settingValue === null ? null : (item.settingValue ?? false))\n        })\n      }\n\n      flagStore.hasLoaded = true\n\n      if (mounted) {\n        setStore(flagStore)\n      }\n    }\n\n    // [Joshen] getFlags get triggered everytime the tab refocuses but this should be okay\n    // as per https://configcat.com/docs/sdk-reference/js/#polling-modes:\n    // The polling downloads the config.json at the set interval and are stored in the internal cache\n    // which subsequently all getValueAsync() calls are served from there\n    processFlags()\n\n    return () => {\n      mounted = false\n    }\n  }, [\n    enabled,\n    isLoading,\n    userEmail,\n    API_URL,\n    session?.user?.id,\n    resolvedOrganizationSlug,\n    resolvedProjectRef,\n    getConfigCatFlags,\n  ])\n\n  return (\n    <FeatureFlagContext.Provider value={store}>\n      {/*\n        [Joshen] Just support configcat flags in Vercel flags for now for simplicity\n        although I think it should be fairly simply to support PH too\n      */}\n      <FlagValues values={store.configcat} />\n      {children}\n    </FeatureFlagContext.Provider>\n  )\n}\n\nexport const useFeatureFlags = () => {\n  return useContext(FeatureFlagContext)\n}\n\nconst isObjectEmpty = (obj: Object) => {\n  return Object.keys(obj).length === 0\n}\n\nexport function useFlag<T = boolean>(name: string) {\n  const flagStore = useFeatureFlags()\n  const store = flagStore.configcat\n\n  // Flag store is empty means config cat is not loaded yet, return false\n  if (isObjectEmpty(store)) {\n    return false\n  }\n\n  if (store[name] === undefined) {\n    console.error(`Flag key \"${name}\" does not exist in ConfigCat flag store`)\n    return false\n  }\n\n  return store[name] as T\n}",
+    "end_line": 279,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/common/Providers.tsx",
+    "packages/common/auth.tsx",
+    "packages/common/configcat.test.ts",
+    "packages/common/configcat.ts",
+    "packages/common/consent-state.test.ts",
+    "packages/common/consent-state.ts",
+    "packages/common/database-types.ts",
+    "packages/common/fetchWrappers.tsx",
+    "packages/common/first-referrer-cookie.test.ts",
+    "packages/common/first-referrer-cookie.ts",
+    "packages/common/gotrue.ts",
+    "packages/common/helpers.ts",
+    "packages/common/index.tsx",
+    "packages/common/postcss.config.js",
+    "packages/common/posthog-client.ts",
+    "packages/common/tailwind.config.js",
+    "packages/common/telemetry-constants.ts",
+    "packages/common/telemetry-utils.ts",
+    "packages/common/telemetry.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/common/feature-flags.tsx",
+    "packages/common/auth.tsx",
+    "packages/common/configcat.ts",
+    "packages/common/consent-state.ts",
+    "packages/common/fetchWrappers.tsx",
+    "packages/common/helpers.ts",
+    "packages/common/hooks/index.ts",
+    "packages/common/Providers.tsx"
+  ],
+  "smell_id": "heuristic_large_5629",
+  "symbol_name": "FeatureFlagProvider",
+  "target_file": "packages/common/feature-flags.tsx",
+  "task_id": "task_f731c67ec8"
+}

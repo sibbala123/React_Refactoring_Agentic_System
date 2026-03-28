@@ -1,0 +1,30 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/PrivateApps/PrivateAppsContext.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'\nimport { PrivateApp } from '../PrivateAppsContext'\n\ninterface DeleteAppModalProps {\n  app: PrivateApp | null\n  visible: boolean\n  isLoading?: boolean\n  onClose: () => void\n  onConfirm: () => void\n}\n\nexport function DeleteAppModal({\n  app,\n  visible,\n  isLoading,\n  onClose,\n  onConfirm,\n}: DeleteAppModalProps) {\n  return (\n    <ConfirmationModal\n      variant=\"destructive\"\n      visible={visible}\n      title={`Delete \"${app?.name}\"`}\n      confirmLabel=\"Delete app\"\n      confirmLabelLoading=\"Deleting...\"\n      loading={isLoading}\n      onCancel={onClose}\n      onConfirm={onConfirm}\n      alert={{\n        title: 'This action cannot be undone',\n        description:\n          'Deleting this app will invalidate any tokens generated using its private key. All installations will also be removed.',\n      }}\n    >\n      <p className=\"text-sm text-foreground-light\">\n        Are you sure you want to delete <strong>{app?.name}</strong>? This will also remove all\n        installations associated with this app.\n      </p>\n    </ConfirmationModal>\n  )\n}",
+    "end_line": 41,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.constants.ts",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.types.ts",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.utils.test.ts",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/DeleteAppModal.tsx",
+    "apps/studio/components/interfaces/Organization/PrivateApps/PrivateAppsContext.tsx",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.constants.ts",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.types.ts",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.utils.test.ts",
+    "apps/studio/components/interfaces/Organization/PrivateApps/Apps/Apps.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1723",
+  "symbol_name": "DeleteAppModal",
+  "target_file": "apps/studio/components/interfaces/Organization/PrivateApps/Apps/DeleteAppModal.tsx",
+  "task_id": "task_22ec9eca09"
+}

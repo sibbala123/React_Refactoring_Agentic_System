@@ -1,0 +1,27 @@
+{
+  "line_end": 8,
+  "line_start": 8,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/ProjectClaim/layout.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { CheckCircle2 } from 'lucide-react'\n\nimport { ApiAuthorizationResponse } from 'data/api-authorization/api-authorization-query'\nimport { OrganizationProjectClaimResponse } from 'data/organizations/organization-project-claim-query'\nimport { Button } from 'ui'\nimport { ProjectClaimLayout } from './layout'\n\nexport const ProjectClaimBenefits = ({\n  projectClaim,\n  requester,\n  onContinue,\n}: {\n  projectClaim: OrganizationProjectClaimResponse\n  requester: ApiAuthorizationResponse\n  onContinue: () => void\n}) => {\n  return (\n    <ProjectClaimLayout\n      title={\n        <>\n          Claim a project <span className=\"text-brand\">{projectClaim?.project?.name}</span> from{' '}\n          <span className=\"text-brand\">{requester?.name}</span>\n        </>\n      }\n    >\n      <div className=\"space-y-8 text-sm flex flex-col items-center\">\n        <div className=\"space-y-4 mt-6\">\n          <h3 className=\"\">Why manage your database project on Supabase?</h3>\n          <ul className=\"space-y-3\">\n            <li className=\"flex space-x-2\">\n              <CheckCircle2 className=\"text-brand w-5 h-5\" />\n              <span>\n                <span className=\"text-foreground-light\">Excellent Technical Support</span>\n                <span className=\"block text-foreground-lighter\">\n                  Get expert help when you need it, with support ready to assist your development\n                  process.\n                </span>\n              </span>",
+    "end_line": 38,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/ProjectClaim/choose-org.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/confirm.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/layout.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/ProjectClaim/benefits.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/layout.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/choose-org.tsx",
+    "apps/studio/components/interfaces/Organization/ProjectClaim/confirm.tsx"
+  ],
+  "smell_id": "heuristic_props_1731",
+  "symbol_name": "ProjectClaimBenefits",
+  "target_file": "apps/studio/components/interfaces/Organization/ProjectClaim/benefits.tsx",
+  "task_id": "task_2f8c5c7566"
+}

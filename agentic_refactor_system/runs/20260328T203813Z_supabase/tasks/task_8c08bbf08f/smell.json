@@ -1,0 +1,14 @@
+{
+  "component_name": "LogDrainDestinationSheetForm",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=15",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/LogDrains/LogDrainDestinationSheetForm.tsx",
+  "line_end": 150,
+  "line_start": 150,
+  "severity": "low",
+  "smell_id": "heuristic_props_1613",
+  "smell_type": "Too Many Props"
+}

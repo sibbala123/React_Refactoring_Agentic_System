@@ -1,0 +1,14 @@
+{
+  "component_name": "FROM_BASE64URL",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/lib/base64url.ts",
+  "line_end": 265,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_3674",
+  "smell_type": "Large Component"
+}

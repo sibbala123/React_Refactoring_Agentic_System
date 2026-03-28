@@ -1,0 +1,14 @@
+{
+  "component_name": "DeleteProjectModal",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=8",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Settings/General/DeleteProjectPanel/DeleteProjectModal.tsx",
+  "line_end": 17,
+  "line_start": 17,
+  "severity": "low",
+  "smell_id": "heuristic_props_2048",
+  "smell_type": "Too Many Props"
+}

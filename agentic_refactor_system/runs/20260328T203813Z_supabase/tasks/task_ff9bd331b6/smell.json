@@ -1,0 +1,14 @@
+{
+  "component_name": "FilterTable",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Realtime/Inspector/RealtimeFilterPopover/FilterTable.tsx",
+  "line_end": 3,
+  "line_start": 3,
+  "severity": "low",
+  "smell_id": "heuristic_props_1940",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,21 @@
+{
+  "line_end": 7,
+  "line_start": 7,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import {\n  DiscardChangesConfirmationDialog,\n  type DiscardChangesConfirmationDialogProps,\n} from './DiscardChangesConfirmationDialog'\nimport { usePreventNavigationOnUnsavedChanges } from '@/hooks/ui/usePreventNavigationOnUnsavedChanges'\n\nexport const PreventNavigationOnUnsavedChanges = ({\n  hasChanges,\n  ...props\n}: { hasChanges: boolean } & Omit<\n  DiscardChangesConfirmationDialogProps,\n  'visible' | 'onClose' | 'onCancel'\n>) => {\n  const { handleCancel, handleConfirm, shouldConfirm } = usePreventNavigationOnUnsavedChanges({\n    hasChanges,\n  })\n\n  return (\n    <DiscardChangesConfirmationDialog\n      visible={shouldConfirm}\n      onCancel={handleCancel}\n      onClose={handleConfirm}\n      {...props}\n    />\n  )\n}",
+    "end_line": 26,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui-patterns/Dialogs/DiscardChangesConfirmationDialog.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui-patterns/Dialogs/PreventNavigationOnUnsavedChanges.tsx",
+    "apps/studio/components/ui-patterns/Dialogs/DiscardChangesConfirmationDialog.tsx"
+  ],
+  "smell_id": "heuristic_props_2855",
+  "symbol_name": "PreventNavigationOnUnsavedChanges",
+  "target_file": "apps/studio/components/ui-patterns/Dialogs/PreventNavigationOnUnsavedChanges.tsx",
+  "task_id": "task_5320a43d21"
+}

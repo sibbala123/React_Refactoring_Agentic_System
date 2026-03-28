@@ -1,0 +1,14 @@
+{
+  "component_name": "no-code",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/data/solutions/no-code.tsx",
+  "line_end": 448,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4942",
+  "smell_type": "Large Component"
+}

@@ -1,0 +1,45 @@
+{
+  "line_end": 42,
+  "line_start": 42,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingMetric.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/ComputeMetric.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'\nimport { DOCS_URL } from 'lib/constants'\nimport { cn } from 'ui'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\nimport { BILLING_BREAKDOWN_METRICS } from '../BillingSettings/BillingBreakdown/BillingBreakdown.constants'\nimport { BillingMetric } from '../BillingSettings/BillingBreakdown/BillingMetric'\nimport { ComputeMetric } from '../BillingSettings/BillingBreakdown/ComputeMetric'\nimport { SectionContent } from './SectionContent'\n\nexport interface ComputeProps {\n  orgSlug: string\n  projectRef?: string | null\n  startDate: string | undefined\n  endDate: string | undefined\n  subscription: OrgSubscription | undefined\n  currentBillingCycleSelected: boolean\n}\n\nconst METRICS_TO_HIDE_WITH_NO_USAGE: PricingMetric[] = [\n  PricingMetric.DISK_IOPS_IO2,\n  PricingMetric.DISK_IOPS_GP3,\n  PricingMetric.DISK_SIZE_GB_HOURS_GP3,\n  PricingMetric.DISK_SIZE_GB_HOURS_IO2,\n  PricingMetric.DISK_THROUGHPUT_GP3,\n  PricingMetric.LOG_INGESTION,\n  PricingMetric.LOG_STORAGE,\n  PricingMetric.LOG_QUERYING,\n  PricingMetric.ACTIVE_COMPUTE_HOURS,\n]\n\nexport const TotalUsage = ({\n  orgSlug,\n  projectRef,\n  subscription,\n  startDate,\n  endDate,\n  currentBillingCycleSelected,\n}: ComputeProps) => {\n  const isMobile = useBreakpoint('md')\n  const isUsageBillingEnabled = subscription?.usage_billing_enabled\n  const { billingAll } = useIsFeatureEnabled(['billing:all'])\n\n  const {\n    data: usage,\n    error: usageError,\n    isPending: isLoadingUsage,\n    isError: isErrorUsage,\n    isSuccess: isSuccessUsage,\n  } = useOrgUsageQuery({\n    orgSlug,\n    projectRef,\n    start: !currentBillingCycleSelected && startDate ? new Date(startDate) : undefined,\n    end: !currentBillingCycleSelected && endDate ? new Date(endDate) : undefined,\n  })\n\n  // When the user filters by project ref or selects a custom timeframe, we only display usage+project breakdown, but no costs/limits\n  const showRelationToSubscription = currentBillingCycleSelected && !projectRef\n\n  const isOnHigherPlan = ['team', 'enterprise', 'platform'].includes(subscription?.plan.id ?? '')\n\n  const hasExceededAnyLimits =",
+    "end_line": 72,
+    "start_line": 12
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/Usage/ActiveCompute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Activity.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Compute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Egress.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/OrgLogUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionHeader.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SizeAndCounts.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.constants.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.utils.test.ts",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.utils.ts",
+    "apps/studio/components/interfaces/Organization/Usage/UsageBarChart.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageChartTooltips.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/Usage/TotalUsage.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingBreakdown.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/BillingMetric.tsx",
+    "apps/studio/components/interfaces/Organization/BillingSettings/BillingBreakdown/ComputeMetric.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/ActiveCompute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Activity.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Compute.tsx"
+  ],
+  "smell_id": "heuristic_props_1761",
+  "symbol_name": "TotalUsage",
+  "target_file": "apps/studio/components/interfaces/Organization/Usage/TotalUsage.tsx",
+  "task_id": "task_11637f866e"
+}

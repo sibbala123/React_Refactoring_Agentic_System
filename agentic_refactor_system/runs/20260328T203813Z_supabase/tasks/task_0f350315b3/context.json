@@ -1,0 +1,32 @@
+{
+  "line_end": 26,
+  "line_start": 26,
+  "local_imports": [
+    "apps/studio/components/interfaces/JwtSecrets/algorithm-details.ts"
+  ],
+  "primary_snippet": {
+    "content": "import { ButtonTooltip } from 'components/ui/ButtonTooltip'\nimport { useEdgeFunctionsQuery } from 'data/edge-functions/edge-functions-query'\nimport { useJWTSigningKeyUpdateMutation } from 'data/jwt-signing-keys/jwt-signing-key-update-mutation'\nimport { JWTSigningKey } from 'data/jwt-signing-keys/jwt-signing-keys-query'\nimport { ArrowRight, ExternalLink, Info, Key, Timer } from 'lucide-react'\nimport { useState } from 'react'\nimport { toast } from 'sonner'\nimport {\n  Badge,\n  Button,\n  Checkbox_Shadcn_,\n  cn,\n  DialogDescription,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogSectionSeparator,\n  DialogTitle,\n  Label_Shadcn_,\n  Skeleton,\n} from 'ui'\n\nimport { algorithmLabels } from '../algorithm-details'\nimport { statusColors } from '../jwt.constants'\n\nexport function RotateKeyDialog({\n  projectRef,\n  standbyKey,\n  inUseKey,\n  onClose,\n}: {\n  projectRef: string\n  standbyKey: JWTSigningKey\n  inUseKey: JWTSigningKey\n  onClose: () => void\n}) {\n  const [isStandbyUnderstood, setStandbyUnderstood] = useState(false)\n  const [isPreviouslyUsedUnderstood, setPreviouslyUsedUnderstood] = useState(false)\n  const [isEdgeFunctionsVerifyJWTUnderstood, setEdgeFunctionsVerifyJWTUnderstood] = useState(false)\n\n  const { data: edgeFunctions, isPending: isLoadingEdgeFunctions } = useEdgeFunctionsQuery({\n    projectRef,\n  })\n\n  const { mutate, isPending: isPendingMutation } = useJWTSigningKeyUpdateMutation({\n    onSuccess: () => {\n      toast.success('Signing key rotated successfully')\n      onClose()\n    },\n    onError: (error) => {\n      toast.error(`Failed to rotate signing key: ${error.message}`)\n    },\n  })\n\n  const verifyJWTEdgeFunctions = edgeFunctions?.filter(({ verify_jwt }) => verify_jwt) ?? []\n",
+    "end_line": 56,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/action-panel.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/index.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/key-details-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/signing-key-row.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/rotate-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/algorithm-details.ts",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/action-panel.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/index.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/key-details-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/signing-key-row.tsx"
+  ],
+  "smell_id": "heuristic_props_1599",
+  "symbol_name": "RotateKeyDialog",
+  "target_file": "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/rotate-key-dialog.tsx",
+  "task_id": "task_0f350315b3"
+}

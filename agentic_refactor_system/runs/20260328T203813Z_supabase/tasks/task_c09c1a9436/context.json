@@ -1,0 +1,29 @@
+{
+  "line_end": 13,
+  "line_start": 13,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import Link from 'next/link'\nimport { Badge, Button, Menu } from 'ui'\nimport { ProductMenuGroupItem } from './ProductMenu.types'\n\ninterface ProductMenuItemProps {\n  item: ProductMenuGroupItem\n  isActive: boolean\n  target?: '_blank' | '_self'\n  hoverText?: string\n  onClick?: () => void\n}\n\nexport const ProductMenuItem = ({\n  item,\n  isActive,\n  target = '_self',\n  hoverText = '',\n  onClick,\n}: ProductMenuItemProps) => {\n  const { name = '', url = '', icon, rightIcon, isExternal, label, disabled } = item\n\n  const menuItem = (\n    <Menu.Item icon={icon} active={isActive} onClick={onClick}>\n      <div className=\"flex w-full items-center justify-between gap-1\">\n        <div\n          className=\"flex items-center gap-1 min-w-0 flex-1\"\n          title={hoverText ? hoverText : typeof name === 'string' ? name : ''}\n        >\n          <span className=\"truncate flex-1 min-w-0\">{name}</span>\n          {label !== undefined && (\n            <Badge\n              className=\"flex-shrink-0\"\n              variant={label.toLowerCase() === 'new' ? 'success' : 'warning'}\n            >\n              {label}\n            </Badge>\n          )}\n        </div>\n        {rightIcon && <div>{rightIcon}</div>}\n      </div>\n    </Menu.Item>\n  )\n",
+    "end_line": 43,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/ProductMenu/ProductMenu.types.ts",
+    "apps/studio/components/ui/ProductMenu/SubMenu.tsx",
+    "apps/studio/components/ui/ProductMenu/SubMenu.utils.test.ts",
+    "apps/studio/components/ui/ProductMenu/SubMenu.utils.ts",
+    "apps/studio/components/ui/ProductMenu/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/ProductMenu/ProductMenuItem.tsx",
+    "apps/studio/components/ui/ProductMenu/ProductMenu.types.ts",
+    "apps/studio/components/ui/ProductMenu/SubMenu.tsx",
+    "apps/studio/components/ui/ProductMenu/SubMenu.utils.test.ts",
+    "apps/studio/components/ui/ProductMenu/SubMenu.utils.ts",
+    "apps/studio/components/ui/ProductMenu/index.tsx"
+  ],
+  "smell_id": "heuristic_props_2816",
+  "symbol_name": "ProductMenuItem",
+  "target_file": "apps/studio/components/ui/ProductMenu/ProductMenuItem.tsx",
+  "task_id": "task_c09c1a9436"
+}

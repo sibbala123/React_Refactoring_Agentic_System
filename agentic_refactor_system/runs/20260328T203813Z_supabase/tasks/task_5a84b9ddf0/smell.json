@@ -1,0 +1,14 @@
+{
+  "component_name": "PricingTableRowDesktop",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Pricing/PricingTableRow.tsx",
+  "line_end": 311,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4734",
+  "smell_type": "Large Component"
+}

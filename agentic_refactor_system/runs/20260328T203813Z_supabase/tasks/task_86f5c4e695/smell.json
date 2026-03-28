@@ -1,0 +1,14 @@
+{
+  "component_name": "page",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/data/products/functions/page.tsx",
+  "line_end": 366,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4921",
+  "smell_type": "Large Component"
+}

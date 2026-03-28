@@ -1,0 +1,26 @@
+{
+  "line_end": 19,
+  "line_start": 19,
+  "local_imports": [
+    "apps/studio/components/interfaces/Auth/Policies/Policies.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { noop } from 'lodash'\nimport { ChevronLeft, FlaskConical } from 'lucide-react'\n\nimport { DocsButton } from 'components/ui/DocsButton'\nimport { DOCS_URL } from 'lib/constants'\nimport { Button } from 'ui'\nimport { POLICY_MODAL_VIEWS } from '../Policies.constants'\n\ninterface PolicyEditorModalTitleProps {\n  view: string\n  schema: string\n  table: string\n  isNewPolicy: boolean\n  showAssistantPreview: boolean\n  onSelectBackFromTemplates: () => void\n  onToggleFeaturePreviewModal: () => void\n}\n\nconst PolicyEditorModalTitle = ({\n  view,\n  schema,\n  table,\n  isNewPolicy,\n  showAssistantPreview,\n  onSelectBackFromTemplates = noop,\n  onToggleFeaturePreviewModal,\n}: PolicyEditorModalTitleProps) => {\n  const getTitle = () => {\n    if (view === POLICY_MODAL_VIEWS.EDITOR || view === POLICY_MODAL_VIEWS.SELECTION) {\n      return `${isNewPolicy ? 'Adding new policy to' : 'Editing policy from'} ${schema}.${table}`\n    }\n    if (view === POLICY_MODAL_VIEWS.REVIEW) {\n      return `Reviewing policy to be ${isNewPolicy ? 'created' : 'updated'} on ${schema}.${table}`\n    }\n  }\n\n  if (view === POLICY_MODAL_VIEWS.TEMPLATES) {\n    return (\n      <div>\n        <div className=\"flex items-center space-x-3\">\n          <span\n            onClick={onSelectBackFromTemplates}\n            className=\"cursor-pointer text-foreground-lighter transition-colors hover:text-foreground\"\n          >\n            <ChevronLeft strokeWidth={2} size={14} />\n          </span>\n          <h4>Select a template to use for your new policy</h4>\n        </div>\n      </div>",
+    "end_line": 49,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorModal/PolicyEditorModal.constants.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorModal/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorModal/PolicyEditorModalTitle.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorModal/PolicyEditorModal.constants.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyEditorModal/index.tsx"
+  ],
+  "smell_id": "heuristic_props_1032",
+  "symbol_name": "PolicyEditorModalTitle",
+  "target_file": "apps/studio/components/interfaces/Auth/Policies/PolicyEditorModal/PolicyEditorModalTitle.tsx",
+  "task_id": "task_b1117c0c7d"
+}

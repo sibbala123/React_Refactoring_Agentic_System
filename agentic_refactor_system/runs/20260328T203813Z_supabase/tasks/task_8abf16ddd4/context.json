@@ -1,0 +1,42 @@
+{
+  "line_end": 21,
+  "line_start": 21,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { ButtonTooltip } from 'components/ui/ButtonTooltip'\nimport { Branch } from 'data/branches/branches-query'\nimport { useProjectDetailQuery } from 'data/projects/project-detail-query'\nimport { useTablesQuery } from 'data/tables/tables-query'\nimport { useSendEventMutation } from 'data/telemetry/send-event-mutation'\nimport { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'\nimport { tablesToSQL } from 'lib/helpers'\nimport { useAiAssistantStateSnapshot } from 'state/ai-assistant-state'\nimport { SIDEBAR_KEYS } from 'components/layouts/ProjectLayout/LayoutSidebar/LayoutSidebarProvider'\nimport { useSidebarManagerSnapshot } from 'state/sidebar-manager-state'\nimport { AiIconAnimation } from 'ui'\n\ninterface ReviewWithAIProps {\n  currentBranch?: Branch\n  mainBranch?: Branch\n  parentProjectRef?: string\n  diffContent?: string\n  disabled?: boolean\n}\n\nexport const ReviewWithAI = ({\n  currentBranch,\n  mainBranch,\n  parentProjectRef,\n  diffContent,\n  disabled = false,\n}: ReviewWithAIProps) => {\n  const aiSnap = useAiAssistantStateSnapshot()\n  const { openSidebar } = useSidebarManagerSnapshot()\n  const { data: selectedOrg } = useSelectedOrganizationQuery()\n  const { mutate: sendEvent } = useSendEventMutation()\n\n  // Get parent project for production schema\n  const { data: parentProject } = useProjectDetailQuery({ ref: parentProjectRef })\n\n  // Fetch production schema tables\n  const { data: productionTables } = useTablesQuery(\n    {\n      projectRef: parentProjectRef,\n      connectionString: (parentProject as any)?.connectionString,\n      schema: 'public',\n      includeColumns: true,\n    },\n    { enabled: !!parentProjectRef && !!parentProject }\n  )\n\n  const handleReviewWithAssistant = () => {\n    if (!currentBranch || !mainBranch) return\n\n    // Track review with assistant button pressed\n    sendEvent({",
+    "end_line": 51,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EdgeFunctionsDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewRow.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogs.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx"
+  ],
+  "smell_id": "heuristic_props_1122",
+  "symbol_name": "ReviewWithAI",
+  "target_file": "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+  "task_id": "task_8abf16ddd4"
+}

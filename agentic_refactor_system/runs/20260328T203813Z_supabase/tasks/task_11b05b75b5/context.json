@@ -1,0 +1,37 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCardStatus.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { IntegrationProjectConnection } from 'data/integrations/integrations.types'\nimport { getComputeSize, OrgProject } from 'data/projects/org-projects-infinite-query'\nimport type { ResourceWarning } from 'data/usage/resource-warnings-query'\nimport { BASE_PATH } from 'lib/constants'\nimport { createNavigationHandler } from 'lib/navigation'\nimport type { Organization } from 'types'\nimport {\n  DropdownMenuTrigger,\n  DropdownMenuItem,\n  DropdownMenuContent,\n  DropdownMenu,\n  TableCell,\n  TableRow,\n  Button,\n} from 'ui'\nimport { TimestampInfo } from 'ui-patterns'\nimport { inferProjectStatus } from './ProjectCard.utils'\nimport { ProjectCardStatus } from './ProjectCardStatus'\nimport { toast } from 'sonner'\nimport { copyToClipboard } from 'ui'\n\nexport interface ProjectTableRowProps {\n  project: OrgProject\n  organization?: Organization\n  rewriteHref?: string\n  githubIntegration?: IntegrationProjectConnection\n  vercelIntegration?: IntegrationProjectConnection\n  resourceWarnings?: ResourceWarning\n}\n\nexport const ProjectTableRow = ({\n  project,\n  organization,\n  rewriteHref,\n  githubIntegration,\n  vercelIntegration,\n  resourceWarnings,\n}: ProjectTableRowProps) => {\n  const router = useRouter()\n  const { name, ref: projectRef } = project\n  const projectStatus = inferProjectStatus(project.status)\n  const [isCopied, setIsCopied] = useState(false)\n\n  const url = rewriteHref ?? `/project/${project.ref}`\n  const isGithubIntegrated = githubIntegration !== undefined\n  const isVercelIntegrated = vercelIntegration !== undefined\n  const githubRepository = githubIntegration?.metadata.name ?? undefined\n  const handleNavigation = createNavigationHandler(url, router)\n\n  const handleCopyProjectRef = (e: React.SyntheticEvent) => {\n    e.stopPropagation()\n    copyToClipboard(projectRef)\n    setIsCopied(true)\n    toast.success('Copied project ID to clipboard')\n    setTimeout(() => setIsCopied(false), 2000)\n  }\n\n  return (\n    <>\n      <TableRow\n        className=\"cursor-pointer hover:bg-surface-200 inset-focus\"",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Home/ProjectList/EmptyStates.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/LoadMoreRow.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCardStatus.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectList.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectListSort.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ShimmeringCard.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectTableRow.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCardStatus.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/EmptyStates.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/LoadMoreRow.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectCard.utils.ts",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectList.tsx",
+    "apps/studio/components/interfaces/Home/ProjectList/ProjectListSort.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1479",
+  "symbol_name": "ProjectTableRow",
+  "target_file": "apps/studio/components/interfaces/Home/ProjectList/ProjectTableRow.tsx",
+  "task_id": "task_11b05b75b5"
+}

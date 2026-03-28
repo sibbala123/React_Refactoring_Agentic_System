@@ -1,0 +1,44 @@
+{
+  "line_end": 56,
+  "line_start": 56,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "interface PostgresVersionSelectorProps {\n  cloudProvider: CloudProvider\n  dbRegion: string\n  organizationSlug?: string\n  field: ControllerRenderProps<any, 'postgresVersionSelection'>\n  form: UseFormReturn<any>\n  type?: 'create' | 'unpause'\n  layout?: 'vertical' | 'horizontal'\n  label?: string\n}\n\nconst formatValue = ({\n  postgres_engine,\n  release_channel,\n}: {\n  postgres_engine: string\n  release_channel: string\n}) => {\n  return `${postgres_engine}|${release_channel}`\n}\n\nexport const extractPostgresVersionDetails = (value: string): PostgresVersionDetails => {\n  if (!value) {\n    return { postgresEngine: undefined, releaseChannel: undefined }\n  }\n\n  const [postgresEngine, releaseChannel] = value.split('|')\n  return { postgresEngine, releaseChannel } as PostgresVersionDetails\n}\n\nexport const PostgresVersionSelector = ({\n  cloudProvider,\n  dbRegion,\n  organizationSlug,\n  field,\n  form,\n  type = 'create',\n  layout = 'horizontal',\n  label = 'Postgres version',\n}: PostgresVersionSelectorProps) => {\n  const { data: project } = useSelectedProjectQuery()\n\n  const dbRegionExact = smartRegionToExactRegion(dbRegion)\n\n  const {\n    data: createVersions,\n    isPending: isLoadingProjectCreateVersions,\n    isSuccess,\n  } = useProjectCreationPostgresVersionsQuery(\n    {\n      cloudProvider,\n      dbRegion: dbRegionExact,\n      organizationSlug,\n    },\n    { enabled: type === 'create' }\n  )\n\n  const { data: unpauseVersions, isPending: isLoadingProjectUnpauseVersions } =\n    useProjectUnpausePostgresVersionsQuery(\n      { projectRef: project?.ref },\n      { enabled: type === 'unpause' }",
+    "end_line": 86,
+    "start_line": 26
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/ProjectCreation/AdvancedConfiguration.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CloudProviderSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ComputeSizeSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CustomPostgresVersionInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DatabasePasswordInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DisabledWarningDueToIncident.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/FreeProjectLimitWarning.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/HighAvailabilityInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/OrganizationSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.constants.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.schema.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.test.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreation.utils.ts",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectCreationFooter.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ProjectNameInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/RegionSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/SecurityOptions.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/SpecialSymbolsCallout.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/ProjectCreation/PostgresVersionSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/AdvancedConfiguration.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CloudProviderSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/ComputeSizeSelector.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/CustomPostgresVersionInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DatabasePasswordInput.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/DisabledWarningDueToIncident.tsx",
+    "apps/studio/components/interfaces/ProjectCreation/FreeProjectLimitWarning.tsx"
+  ],
+  "smell_id": "heuristic_props_1825",
+  "symbol_name": "PostgresVersionSelector",
+  "target_file": "apps/studio/components/interfaces/ProjectCreation/PostgresVersionSelector.tsx",
+  "task_id": "task_f422a5a128"
+}

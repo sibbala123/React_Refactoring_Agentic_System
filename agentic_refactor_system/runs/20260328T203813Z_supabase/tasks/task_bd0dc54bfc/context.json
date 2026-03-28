@@ -1,0 +1,33 @@
+{
+  "line_end": 32,
+  "line_start": 32,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { isEmpty } from 'lodash'\nimport Link from 'next/link'\nimport { useCallback, useState } from 'react'\nimport { toast } from 'sonner'\n\nimport { useParams } from 'common'\nimport {\n  PolicyTableRow,\n  PolicyTableRowProps,\n} from 'components/interfaces/Auth/Policies/PolicyTableRow'\nimport { ProtectedSchemaWarning } from 'components/interfaces/Database/ProtectedSchemaWarning'\nimport { NoSearchResults } from 'components/ui/NoSearchResults'\nimport { useDatabasePolicyDeleteMutation } from 'data/database-policies/database-policy-delete-mutation'\nimport { useTableUpdateMutation } from 'data/tables/table-update-mutation'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { Button, Card, CardContent } from 'ui'\nimport ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'\n\ninterface PoliciesProps {\n  search?: string\n  schema: string\n  tables: PolicyTableRowProps['table'][]\n  hasTables: boolean\n  isLocked: boolean\n  visibleTableIds: Set<number>\n  onSelectCreatePolicy: (table: string) => void\n  onSelectEditPolicy: (policy: PostgresPolicy) => void\n  onResetSearch?: () => void\n}\n\nexport const Policies = ({\n  search,\n  schema,\n  tables,\n  hasTables,\n  isLocked,\n  visibleTableIds,\n  onSelectCreatePolicy,\n  onSelectEditPolicy: onSelectEditPolicyAI,\n  onResetSearch,\n}: PoliciesProps) => {\n  const { ref } = useParams()\n  const { data: project } = useSelectedProjectQuery()\n\n  const [selectedTableToToggleRLS, setSelectedTableToToggleRLS] = useState<{\n    id: number\n    schema: string\n    name: string\n    rls_enabled: boolean\n  }>()\n  const [selectedPolicyToDelete, setSelectedPolicyToDelete] = useState<any>({})\n\n  const { mutate: updateTable, isPending: isUpdatingTable } = useTableUpdateMutation({\n    onError: (error) => {\n      toast.error(`Failed to toggle RLS: ${error.message}`)\n    },\n    onSettled: () => {\n      closeConfirmModal()\n    },\n  })\n",
+    "end_line": 62,
+    "start_line": 2
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Policies/Policies.constants.ts",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.types.ts",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.utils.test.ts",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.utils.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PoliciesDataContext.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyReview.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicySelection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Policies/Policies.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.constants.ts",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.types.ts",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.utils.test.ts",
+    "apps/studio/components/interfaces/Auth/Policies/Policies.utils.ts",
+    "apps/studio/components/interfaces/Auth/Policies/PoliciesDataContext.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicyReview.tsx",
+    "apps/studio/components/interfaces/Auth/Policies/PolicySelection.tsx"
+  ],
+  "smell_id": "heuristic_props_1019",
+  "symbol_name": "Policies",
+  "target_file": "apps/studio/components/interfaces/Auth/Policies/Policies.tsx",
+  "task_id": "task_bd0dc54bfc"
+}

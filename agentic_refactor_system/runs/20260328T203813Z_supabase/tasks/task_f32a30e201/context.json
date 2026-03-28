@@ -1,0 +1,34 @@
+{
+  "line_end": 29,
+  "line_start": 29,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { ButtonTooltip } from 'components/ui/ButtonTooltip'\nimport { FilterPopover } from 'components/ui/FilterPopover'\nimport { X } from 'lucide-react'\nimport { AdvisorSeverity, AdvisorTab } from 'state/advisor-state'\nimport { Tabs_Shadcn_, TabsList_Shadcn_, TabsTrigger_Shadcn_ } from 'ui'\n\nconst severityOptions = [\n  { label: 'Critical', value: 'critical' },\n  { label: 'Warning', value: 'warning' },\n  { label: 'Info', value: 'info' },\n]\n\nconst statusOptions = [\n  { label: 'Unread', value: 'unread' },\n  { label: 'Archived', value: 'archived' },\n]\n\ninterface AdvisorFiltersProps {\n  activeTab: AdvisorTab\n  onTabChange: (tab: string) => void\n  severityFilters: AdvisorSeverity[]\n  onSeverityFiltersChange: (filters: AdvisorSeverity[]) => void\n  statusFilters: string[]\n  onStatusFiltersChange: (filters: string[]) => void\n  onClose: () => void\n  isPlatform?: boolean\n}\n\nexport const AdvisorFilters = ({\n  activeTab,\n  onTabChange,\n  severityFilters,\n  onSeverityFiltersChange,\n  statusFilters,\n  onStatusFiltersChange,\n  onClose,\n  isPlatform = false,\n}: AdvisorFiltersProps) => {\n  return (\n    <div className=\"border-b overflow-x-auto\">\n      <div className=\"flex items-center justify-between gap-x-4 h-[calc(var(--header-height)-1px)]\">\n        <Tabs_Shadcn_ value={activeTab} onValueChange={onTabChange} className=\"h-full pl-4\">\n          <TabsList_Shadcn_ className=\"border-b-0 gap-4 h-full\">\n            <TabsTrigger_Shadcn_ value=\"all\" className=\"h-full text-xs\">\n              All\n            </TabsTrigger_Shadcn_>\n            <TabsTrigger_Shadcn_ value=\"security\" className=\"h-full text-xs\">\n              Security\n            </TabsTrigger_Shadcn_>\n            <TabsTrigger_Shadcn_ value=\"performance\" className=\"h-full text-xs\">\n              Performance\n            </TabsTrigger_Shadcn_>\n            {isPlatform && (\n              <TabsTrigger_Shadcn_\n                value=\"messages\"\n                className=\"h-full text-xs flex items-center gap-2\"\n              >\n                Messages\n              </TabsTrigger_Shadcn_>",
+    "end_line": 59,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/AdvisorPanel/AdvisorDetail.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanel.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanel.types.ts",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanel.utils.ts",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanelBody.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanelHeader.tsx",
+    "apps/studio/components/ui/AdvisorPanel/EmptyAdvisor.tsx",
+    "apps/studio/components/ui/AdvisorPanel/NotificationDetail.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/AdvisorPanel/AdvisorFilters.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorDetail.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanel.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanel.types.ts",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanel.utils.ts",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanelBody.tsx",
+    "apps/studio/components/ui/AdvisorPanel/AdvisorPanelHeader.tsx",
+    "apps/studio/components/ui/AdvisorPanel/EmptyAdvisor.tsx"
+  ],
+  "smell_id": "heuristic_props_2626",
+  "symbol_name": "AdvisorFilters",
+  "target_file": "apps/studio/components/ui/AdvisorPanel/AdvisorFilters.tsx",
+  "task_id": "task_f32a30e201"
+}

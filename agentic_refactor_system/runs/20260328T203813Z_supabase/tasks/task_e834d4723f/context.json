@@ -1,0 +1,23 @@
+{
+  "line_end": 19,
+  "line_start": 19,
+  "local_imports": [
+    "apps/studio/components/ui/OrganizationProjectSelector/ProjectCommandItem.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { OrgProject } from 'data/projects/org-projects-infinite-query'\nimport type { ReactNode } from 'react'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\n\nimport { ProjectCommandItem } from './ProjectCommandItem'\n\nexport interface EmbeddedProjectListProps {\n  projects: OrgProject[]\n  selectedRef: string | undefined\n  onSelect?: (project: OrgProject) => void\n  onClose: () => void\n  renderRow?: (project: OrgProject) => ReactNode\n  checkPosition?: 'right' | 'left'\n  isOptionDisabled?: (project: OrgProject) => boolean\n  sentinelRef: (node: Element | null) => void\n  hasNextPage: boolean\n}\n\nexport function EmbeddedProjectList({\n  projects,\n  selectedRef,\n  onSelect,\n  onClose,\n  renderRow,\n  checkPosition,\n  isOptionDisabled,\n  sentinelRef,\n  hasNextPage,\n}: EmbeddedProjectListProps) {\n  return (\n    <div className=\"min-h-0 p-1\">\n      {projects.map((project) => (\n        <ProjectCommandItem\n          key={project.ref}\n          project={project}\n          selectedRef={selectedRef}\n          onSelect={onSelect}\n          onClose={onClose}\n          renderRow={renderRow}\n          checkPosition={checkPosition}\n          isOptionDisabled={isOptionDisabled}\n        />\n      ))}\n      <div ref={sentinelRef} className=\"h-1 -mt-1\" />\n      {hasNextPage && (\n        <div className=\"px-2 py-1\">\n          <ShimmeringLoader className=\"py-2\" />\n        </div>\n      )}",
+    "end_line": 49,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/OrganizationProjectSelector/ProjectCommandItem.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/OrganizationProjectSelector/EmbeddedProjectList.tsx",
+    "apps/studio/components/ui/OrganizationProjectSelector/ProjectCommandItem.tsx"
+  ],
+  "smell_id": "heuristic_props_2806",
+  "symbol_name": "EmbeddedProjectList",
+  "target_file": "apps/studio/components/ui/OrganizationProjectSelector/EmbeddedProjectList.tsx",
+  "task_id": "task_e834d4723f"
+}

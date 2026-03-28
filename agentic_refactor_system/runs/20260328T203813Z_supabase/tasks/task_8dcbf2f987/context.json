@@ -1,0 +1,29 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { FileKey } from 'lucide-react'\nimport { useMemo } from 'react'\n\nimport { JWTSigningKey } from 'data/jwt-signing-keys/jwt-signing-keys-query'\nimport {\n  Button,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogSectionSeparator,\n  DialogTitle,\n  Input,\n  Label_Shadcn_,\n  Textarea,\n} from 'ui'\n\nexport function KeyDetailsDialog({\n  selectedKey,\n  restURL,\n  onClose,\n}: {\n  selectedKey: JWTSigningKey\n  restURL: string\n  onClose: () => void\n}) {\n  const jwksURL = useMemo(() => new URL('/auth/v1/.well-known/jwks.json', restURL), [restURL])\n  const jwk = useMemo(() => JSON.stringify(selectedKey.public_jwk, null, 2), [selectedKey])\n\n  return (\n    <>\n      <DialogHeader>\n        <DialogTitle>Key Details</DialogTitle>\n      </DialogHeader>\n      <DialogSectionSeparator />\n      <DialogSection className=\"flex flex-col gap-6\">\n        <div className=\"flex flex-col gap-2\">\n          <Label_Shadcn_ htmlFor=\"key-id\">Key ID</Label_Shadcn_>\n          <Input id=\"key-id\" value={selectedKey.id} readOnly />\n        </div>\n        <div className=\"flex flex-col gap-2\">\n          <Label_Shadcn_ htmlFor=\"discovery-url\">Discovery URL</Label_Shadcn_>\n          <Input id=\"discovery-url\" value={jwksURL.href} readOnly />\n        </div>\n        <div className=\"flex flex-col gap-2\">\n          <Label_Shadcn_ htmlFor=\"jwk\" className=\"flex flex-row gap-2 items-center\">\n            <FileKey className=\"size-4 text-foreground-light\" />\n            Public Key (JSON Web Key format)",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/action-panel.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/index.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/rotate-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/signing-key-row.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/key-details-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/action-panel.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/create-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/index.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/rotate-key-dialog.tsx",
+    "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/signing-key-row.tsx"
+  ],
+  "smell_id": "heuristic_props_1598",
+  "symbol_name": "KeyDetailsDialog",
+  "target_file": "apps/studio/components/interfaces/JwtSecrets/jwt-secret-keys-table/key-details-dialog.tsx",
+  "task_id": "task_8dcbf2f987"
+}

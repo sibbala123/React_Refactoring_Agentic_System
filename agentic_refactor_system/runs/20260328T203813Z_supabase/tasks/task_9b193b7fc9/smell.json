@@ -1,0 +1,14 @@
+{
+  "component_name": "FormPatternsSidePanel",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/design-system/registry/default/example/form-patterns-sidepanel.tsx",
+  "line_end": 805,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0196",
+  "smell_type": "Large Component"
+}

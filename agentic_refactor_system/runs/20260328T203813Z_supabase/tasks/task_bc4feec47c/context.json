@@ -1,0 +1,50 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [
+    "apps/studio/components/interfaces/QueryPerformance/components/FilterInput.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/FilterPill.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/IndexAdvisorFilter.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/RolesFilterDropdown.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/SortIndicator.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/SourceFilterDropdown.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/hooks/useIsIndexAdvisorStatus.ts",
+    "apps/studio/components/interfaces/QueryPerformance/hooks/useQueryPerformanceSort.ts"
+  ],
+  "primary_snippet": {
+    "content": "import {\n  NumericFilter,\n  ReportsNumericFilter,\n} from 'components/interfaces/Reports/v2/ReportsNumericFilter'\nimport { useDebouncedValue } from 'hooks/misc/useDebouncedValue'\nimport { parseAsArrayOf, parseAsJson, parseAsString, useQueryStates } from 'nuqs'\nimport { ReactNode, useEffect, useState } from 'react'\n\nimport { FilterInput } from './components/FilterInput'\nimport { FilterPill } from './components/FilterPill'\nimport { IndexAdvisorFilter } from './components/IndexAdvisorFilter'\nimport { RolesFilterDropdown } from './components/RolesFilterDropdown'\nimport { SortIndicator } from './components/SortIndicator'\nimport { SourceFilterDropdown } from './components/SourceFilterDropdown'\nimport { useIndexAdvisorStatus } from './hooks/useIsIndexAdvisorStatus'\nimport { useQueryPerformanceSort } from './hooks/useQueryPerformanceSort'\n\nexport const QueryPerformanceFilterBar = ({\n  actions,\n  showRolesFilter = false,\n  showSourceFilter = false,\n}: {\n  actions?: ReactNode\n  showRolesFilter?: boolean\n  showSourceFilter?: boolean\n}) => {\n  const { sort, clearSort } = useQueryPerformanceSort()\n  const { isIndexAdvisorEnabled } = useIndexAdvisorStatus()\n\n  const [\n    {\n      search: searchQuery,\n      roles: defaultFilterRoles,\n      sources: defaultFilterSources,\n      callsFilter: callsFilterRaw,\n      totalTimeFilter: totalTimeFilterRaw,\n      indexAdvisor,\n    },\n    setSearchParams,\n  ] = useQueryStates({\n    search: parseAsString.withDefault(''),\n    roles: parseAsArrayOf(parseAsString).withDefault([]),\n    sources: parseAsArrayOf(parseAsString).withDefault([]),\n    callsFilter: parseAsJson<NumericFilter | null>((value) =>\n      value === null || value === undefined ? null : (value as NumericFilter)\n    ),\n    totalTimeFilter: parseAsJson<NumericFilter | null>((value) =>\n      value === null || value === undefined ? null : (value as NumericFilter)",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/QueryPerformance/QueryDetail.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryIndexes.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPanel.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.ai.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.constants.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.types.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.utils.test.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformance.utils.ts",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceChart.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceGrid.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceMetrics.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/SqlMonacoBlock.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/useQueryPerformanceQuery.test.ts",
+    "apps/studio/components/interfaces/QueryPerformance/useQueryPerformanceQuery.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceFilterBar.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/FilterInput.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/FilterPill.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/IndexAdvisorFilter.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/RolesFilterDropdown.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/SortIndicator.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/components/SourceFilterDropdown.tsx",
+    "apps/studio/components/interfaces/QueryPerformance/hooks/useIsIndexAdvisorStatus.ts"
+  ],
+  "smell_id": "heuristic_props_1919",
+  "symbol_name": "QueryPerformanceFilterBar",
+  "target_file": "apps/studio/components/interfaces/QueryPerformance/QueryPerformanceFilterBar.tsx",
+  "task_id": "task_bc4feec47c"
+}

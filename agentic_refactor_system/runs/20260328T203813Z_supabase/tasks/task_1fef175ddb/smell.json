@@ -1,0 +1,14 @@
+{
+  "component_name": "AiAssistantStateContextProvider",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/state/ai-assistant-state.tsx",
+  "line_end": 659,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4043",
+  "smell_type": "Large Component"
+}

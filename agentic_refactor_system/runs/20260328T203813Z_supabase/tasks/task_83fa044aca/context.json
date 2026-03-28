@@ -1,0 +1,41 @@
+{
+  "line_end": 16,
+  "line_start": 16,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useRef } from 'react'\n\nimport { Button, ExpandingTextArea } from 'ui'\n\ninterface AskAIWidgetProps {\n  value: string\n  onChange: (value: string) => void\n  onSubmit: (prompt: string) => void\n  onAccept?: () => void\n  onReject?: () => void\n  onCancel?: () => void\n  isDiffVisible: boolean\n  isLoading?: boolean\n}\n\nexport const AskAIWidget = ({\n  value,\n  onChange,\n  onSubmit,\n  onAccept,\n  onReject,\n  onCancel,\n  isDiffVisible,\n  isLoading = false,\n}: AskAIWidgetProps) => {\n  const textAreaRef = useRef<HTMLTextAreaElement>(null)\n\n  useEffect(() => {\n    setTimeout(() => {\n      textAreaRef.current?.focus()\n      textAreaRef.current?.setSelectionRange(value.length, value.length)\n    }, 100)\n  }, [])\n\n  const handleSubmit = useCallback(() => {\n    if (value.trim() && !isLoading) {\n      onSubmit(value)\n    }\n  }, [value, isLoading, onSubmit])\n\n  const handleChange = useCallback(\n    (e: ChangeEvent<HTMLTextAreaElement>) => {\n      onChange(e.target.value)\n    },\n    [onChange]\n  )",
+    "end_line": 46,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/SQLEditor/DownloadSnippetModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/InlineWidget.tsx",
+    "apps/studio/components/interfaces/SQLEditor/MonacoEditor.tsx",
+    "apps/studio/components/interfaces/SQLEditor/MoveQueryModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/OngoingQueriesPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/RenameQueryModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/RunQueryWarningModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.constants.ts",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.queries.ts",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.tsx",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.types.ts",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.utils.test.ts",
+    "apps/studio/components/interfaces/SQLEditor/SQLEditor.utils.ts",
+    "apps/studio/components/interfaces/SQLEditor/hooks.ts",
+    "apps/studio/components/interfaces/SQLEditor/useAddDefinitions.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/SQLEditor/AskAIWidget.tsx",
+    "apps/studio/components/interfaces/SQLEditor/DownloadSnippetModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/InlineWidget.tsx",
+    "apps/studio/components/interfaces/SQLEditor/MonacoEditor.tsx",
+    "apps/studio/components/interfaces/SQLEditor/MoveQueryModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/OngoingQueriesPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/RenameQueryModal.tsx",
+    "apps/studio/components/interfaces/SQLEditor/RunQueryWarningModal.tsx"
+  ],
+  "smell_id": "heuristic_props_2128",
+  "symbol_name": "AskAIWidget",
+  "target_file": "apps/studio/components/interfaces/SQLEditor/AskAIWidget.tsx",
+  "task_id": "task_83fa044aca"
+}

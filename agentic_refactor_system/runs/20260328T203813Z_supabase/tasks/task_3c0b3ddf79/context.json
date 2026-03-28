@@ -1,0 +1,35 @@
+{
+  "line_end": 16,
+  "line_start": 16,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { PermissionAction } from '@supabase/shared-types/out/constants'\nimport { differenceInDays } from 'date-fns'\nimport { useAsyncCheckPermissions } from 'hooks/misc/useCheckPermissions'\nimport { MoreVertical, TrashIcon } from 'lucide-react'\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n  TableCell,\n  TableRow,\n} from 'ui'\nimport { Input } from 'ui-patterns/DataInputs/Input'\n\nexport const StorageCredItem = ({\n  description,\n  id,\n  created_at,\n  access_key,\n  onDeleteClick,\n}: {\n  description: string\n  id: string\n  created_at: string\n  access_key: string\n  onDeleteClick: (id: string) => void\n}) => {\n  const { can: canRemoveAccessKey } = useAsyncCheckPermissions(\n    PermissionAction.STORAGE_ADMIN_WRITE,\n    '*'\n  )\n\n  function daysSince(date: string) {\n    const now = new Date()\n    const created = new Date(date)\n    const diffInDays = differenceInDays(now, created)\n\n    if (diffInDays === 0) {\n      return 'Today'\n    } else if (diffInDays === 1) {\n      return `${diffInDays} day ago`\n    } else {\n      return `${diffInDays} days ago`\n    }\n  }",
+    "end_line": 46,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/StorageSettings/CreateCredentialModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/RevokeCredentialModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/S3Connection.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageFileSizeLimitErrorMessage.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageListV2MigrationCallout.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageSettings.ValidateSizeLimit.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageSettings.constants.ts",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageSettings.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageSettings.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageCredItem.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/CreateCredentialModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/RevokeCredentialModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/S3Connection.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageFileSizeLimitErrorMessage.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageListV2MigrationCallout.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageSettings.ValidateSizeLimit.tsx",
+    "apps/studio/components/interfaces/Storage/StorageSettings/StorageSettings.constants.ts"
+  ],
+  "smell_id": "heuristic_props_2242",
+  "symbol_name": "StorageCredItem",
+  "target_file": "apps/studio/components/interfaces/Storage/StorageSettings/StorageCredItem.tsx",
+  "task_id": "task_3c0b3ddf79"
+}

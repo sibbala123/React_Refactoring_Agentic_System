@@ -1,0 +1,28 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [
+    "apps/studio/components/layouts/Scaffold.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import Link from 'next/link'\nimport { PropsWithChildren, ReactNode, forwardRef } from 'react'\nimport { LoadingLine, cn } from 'ui'\n\nimport { withAuth } from 'hooks/misc/withAuth'\nimport { BASE_PATH } from 'lib/constants'\nimport { Book, LifeBuoy, X } from 'lucide-react'\nimport { ScaffoldContainer } from '../Scaffold'\n\nexport type IntegrationWindowLayoutProps = {\n  title: string\n  integrationIcon: ReactNode\n  loading?: boolean\n  docsHref?: string\n}\n\nconst IntegrationWindowLayout = ({\n  title,\n  integrationIcon,\n  children,\n  loading = false,\n  docsHref,\n}: PropsWithChildren<IntegrationWindowLayoutProps>) => {\n  return (\n    <div className=\"flex w-full flex-col\">\n      <Header title={title} integrationIcon={integrationIcon} />\n      <LoadingLine loading={loading} />\n      <main className=\"overflow-auto flex flex-col h-full bg\">{children}</main>\n      <ScaffoldContainer className=\"bg-studio flex flex-row gap-6 py-6 border-t\">\n        {docsHref && (\n          <Link\n            href={docsHref}\n            target=\"_blank\"\n            rel=\"noopener noreferrer\"\n            className=\"flex items-center gap-2 text-xs text-foreground-light hover:text\"\n          >\n            <Book size={16} />\n            Docs\n          </Link>\n        )}\n        <Link\n          href={'https://supabase.com/support'}\n          target=\"_blank\"\n          rel=\"noopener noreferrer\"\n          className=\"flex items-center gap-2 text-xs text-light hover:text\"\n        >\n          <LifeBuoy size={16} />",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/IntegrationsLayout/Integrations.Commands.tsx",
+    "apps/studio/components/layouts/IntegrationsLayout/Integrations.utils.ts",
+    "apps/studio/components/layouts/IntegrationsLayout/VercelIntegrationWindowLayout.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/IntegrationsLayout/IntegrationWindowLayout.tsx",
+    "apps/studio/components/layouts/Scaffold.tsx",
+    "apps/studio/components/layouts/IntegrationsLayout/Integrations.Commands.tsx",
+    "apps/studio/components/layouts/IntegrationsLayout/Integrations.utils.ts",
+    "apps/studio/components/layouts/IntegrationsLayout/VercelIntegrationWindowLayout.tsx"
+  ],
+  "smell_id": "heuristic_props_2476",
+  "symbol_name": "IntegrationWindowLayout",
+  "target_file": "apps/studio/components/layouts/IntegrationsLayout/IntegrationWindowLayout.tsx",
+  "task_id": "task_fb60d87b9f"
+}

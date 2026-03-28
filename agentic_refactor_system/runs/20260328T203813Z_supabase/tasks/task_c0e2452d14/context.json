@@ -1,0 +1,34 @@
+{
+  "line_end": 62,
+  "line_start": 62,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "    },\n    defaultVariants: {\n      variant: 'primary',\n    },\n  }\n)\n\nconst textVariants = cva(\n  'justify-center text-foreground text-xs leading-[20px] font-normal min-w-[108.25px] [@media(pointer:coarse)]:pl-2 text-nowrap',\n  {\n    variants: {\n      variant: {\n        primary: 'dark:[text-shadow:_0px_0px_10px_rgb(255_255_255_/_1.00)]',\n        secondary: 'dark:[text-shadow:_0px_0px_4px_rgb(255_255_255_/_0.44)]',\n      },\n    },\n    defaultVariants: {\n      variant: 'primary',\n    },\n  }\n)\n\nexport interface ActionButtonProps extends VariantProps<typeof actionButtonVariants> {\n  variant: 'primary' | 'secondary' | null | undefined\n  icon: string\n  children: ReactNode\n  onClick?: () => void\n  className?: string\n}\n\nexport const ActionButton = ({\n  variant,\n  icon,\n  children,\n  className,\n  onClick,\n}: ActionButtonProps) => {\n  const buttonRef = useRef<HTMLDivElement>(null)\n\n  const handleKeyPress = (e: KeyboardEvent) => {\n    if (e.key === 'Enter' || e.key === ' ') {\n      onClick?.()\n    }\n  }\n\n  const isCommandMenuOpen = useCommandMenuOpen()\n  useKey(icon.toLowerCase(), () => !isCommandMenuOpen && onClick?.(), { event: 'keydown' }, [\n    isCommandMenuOpen,\n    onClick,\n  ])\n\n  return (\n    <div\n      className={cn(actionButtonVariants({ variant }), className)}\n      onClick={onClick}\n      onKeyDown={handleKeyPress}\n      tabIndex={0}\n      role=\"button\"\n      aria-label={typeof children === 'string' ? children : undefined}\n      ref={buttonRef}\n    >",
+    "end_line": 92,
+    "start_line": 32
+  },
+  "related_files": [
+    "apps/www/components/LaunchWeek/15/LW15BuildStage.tsx",
+    "apps/www/components/LaunchWeek/15/LW15Hackathon.tsx",
+    "apps/www/components/LaunchWeek/15/LW15Heading.tsx",
+    "apps/www/components/LaunchWeek/15/LW15MainStage.tsx",
+    "apps/www/components/LaunchWeek/15/LW15Meetups.tsx",
+    "apps/www/components/LaunchWeek/15/LWSummary.tsx",
+    "apps/www/components/LaunchWeek/15/lw15.components.tsx",
+    "apps/www/components/LaunchWeek/15/supabase.ts"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/LaunchWeek/15/ActionButton.tsx",
+    "apps/www/components/LaunchWeek/15/LW15BuildStage.tsx",
+    "apps/www/components/LaunchWeek/15/LW15Hackathon.tsx",
+    "apps/www/components/LaunchWeek/15/LW15Heading.tsx",
+    "apps/www/components/LaunchWeek/15/LW15MainStage.tsx",
+    "apps/www/components/LaunchWeek/15/LW15Meetups.tsx",
+    "apps/www/components/LaunchWeek/15/LWSummary.tsx",
+    "apps/www/components/LaunchWeek/15/lw15.components.tsx"
+  ],
+  "smell_id": "heuristic_props_4615",
+  "symbol_name": "ActionButton",
+  "target_file": "apps/www/components/LaunchWeek/15/ActionButton.tsx",
+  "task_id": "task_c0e2452d14"
+}

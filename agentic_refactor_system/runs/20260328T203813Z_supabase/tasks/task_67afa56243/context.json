@@ -1,0 +1,35 @@
+{
+  "line_end": 12,
+  "line_start": 12,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Eye, Unlock } from 'lucide-react'\nimport { toast } from 'sonner'\n\nimport { useParams } from 'common'\nimport { getContentById } from 'data/content/content-id-query'\nimport { useContentUpsertMutation } from 'data/content/content-upsert-mutation'\nimport { Snippet } from 'data/content/sql-folders-query'\nimport { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'\nimport type { SqlSnippets } from 'types'\nimport ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'\n\nexport const ShareSnippetModal = ({\n  snippet,\n  onClose,\n  onSuccess,\n}: {\n  snippet?: Snippet\n  onClose: () => void\n  onSuccess?: () => void\n}) => {\n  const { ref: projectRef } = useParams()\n  const snapV2 = useSqlEditorV2StateSnapshot()\n\n  const { mutate: upsertContent, isPending: isUpserting } = useContentUpsertMutation({\n    onError: (error) => {\n      toast.error(`Failed to update query: ${error.message}`)\n    },\n  })\n\n  const onShareSnippet = async () => {\n    if (!projectRef) return console.error('Project ref is required')\n    if (!snippet) return console.error('Snippet ID is required')\n\n    const storeSnippet = snapV2.snippets[snippet.id]\n    let snippetContent = storeSnippet?.snippet?.content\n\n    if (snippetContent === undefined) {\n      const { content } = await getContentById({ projectRef, id: snippet.id })\n      snippetContent = content as unknown as SqlSnippets.Content\n    }\n\n    // [Joshen] Just as a final check - to ensure that the content is minimally there (empty string is fine)",
+    "end_line": 42,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/CommunitySnippetsSection.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/DeleteSnippetsModal.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorLoadingSnippets.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.constants.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.utils.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorTreeViewItem.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SearchList.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/UnshareSnippetModal.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/ShareSnippetModal.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/CommunitySnippetsSection.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/DeleteSnippetsModal.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorLoadingSnippets.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.constants.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.tsx",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorNav.utils.ts",
+    "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/SQLEditorTreeViewItem.tsx"
+  ],
+  "smell_id": "heuristic_props_2589",
+  "symbol_name": "ShareSnippetModal",
+  "target_file": "apps/studio/components/layouts/SQLEditorLayout/SQLEditorNavV2/ShareSnippetModal.tsx",
+  "task_id": "task_67afa56243"
+}

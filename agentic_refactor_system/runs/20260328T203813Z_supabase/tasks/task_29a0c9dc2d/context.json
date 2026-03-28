@@ -1,0 +1,21 @@
+{
+  "line_end": 21,
+  "line_start": 21,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import {\n  Body,\n  Container,\n  Head,\n  Heading,\n  Html,\n  Link,\n  Preview,\n  Text,\n} from 'npm:@react-email/components@0.0.22'\nimport * as React from 'npm:react@18.3.1'\n\ninterface MagicLinkEmailProps {\n  supabase_url: string\n  email_action_type: string\n  redirect_to: string\n  token_hash: string\n  token: string\n}\n\nexport const MagicLinkEmail = ({\n  token,\n  supabase_url,\n  email_action_type,\n  redirect_to,\n  token_hash,\n}: MagicLinkEmailProps) => (\n  <Html>\n    <Head />\n    <Preview>Log in with this magic link</Preview>\n    <Body style={main}>\n      <Container style={container}>\n        <Heading style={h1}>Login</Heading>\n        <Link\n          href={`${supabase_url}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${redirect_to}`}\n          target=\"_blank\"\n          style={{\n            ...link,\n            display: 'block',\n            marginBottom: '16px',\n          }}\n        >\n          Click here to log in with this magic link\n        </Link>\n        <Text style={{ ...text, marginBottom: '14px' }}>\n          Or, copy and paste this temporary login code:\n        </Text>\n        <code style={code}>{token}</code>\n        <Text\n          style={{\n            ...text,",
+    "end_line": 51,
+    "start_line": 1
+  },
+  "related_files": [
+    "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/sign-up.tsx"
+  ],
+  "relevant_context_files": [
+    "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/magic-link.tsx",
+    "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/sign-up.tsx"
+  ],
+  "smell_id": "heuristic_props_5346",
+  "symbol_name": "MagicLinkEmail",
+  "target_file": "examples/edge-functions/supabase/functions/auth-hook-react-email-resend/_templates/magic-link.tsx",
+  "task_id": "task_29a0c9dc2d"
+}

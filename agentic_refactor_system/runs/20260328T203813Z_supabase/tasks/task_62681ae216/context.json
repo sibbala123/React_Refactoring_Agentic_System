@@ -1,0 +1,35 @@
+{
+  "line_end": 28,
+  "line_start": 28,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { Editor } from '@monaco-editor/react'\nimport { MAX_CHARACTERS } from '@supabase/pg-meta/src/query/table-row-query'\nimport { Loader } from 'lucide-react'\nimport { useCallback, useEffect, useState } from 'react'\nimport remarkGfm from 'remark-gfm'\nimport { toast } from 'sonner'\n\nimport { useParams } from 'common'\nimport { Markdown } from 'components/interfaces/Markdown'\nimport TwoOptionToggle from 'components/ui/TwoOptionToggle'\nimport { useTableEditorQuery } from 'data/table-editor/table-editor-query'\nimport { isTableLike } from 'data/table-editor/table-editor-types'\nimport { useGetCellValueMutation } from 'data/table-rows/get-cell-value-mutation'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { Button, SidePanel, cn } from 'ui'\nimport { ActionBar } from '../ActionBar'\nimport { isValueTruncated } from './RowEditor.utils'\n\ninterface TextEditorProps {\n  visible: boolean\n  readOnly?: boolean\n  row?: { [key: string]: any }\n  column: string\n  closePanel: () => void\n  onSaveField: (value: string, resolve: () => void) => void\n}\n\nexport const TextEditor = ({\n  visible,\n  readOnly = false,\n  row,\n  column,\n  closePanel,\n  onSaveField,\n}: TextEditorProps) => {\n  const { id: _id } = useParams()\n  const id = _id ? Number(_id) : undefined\n  const { data: project } = useSelectedProjectQuery()\n\n  const { data: selectedTable } = useTableEditorQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    id,\n  })\n\n  const [strValue, setStrValue] = useState('')\n  const [view, setView] = useState<'edit' | 'view'>('edit')\n  const value = row?.[column as keyof typeof row] as unknown as string\n  const isTruncated = isValueTruncated(value)\n\n  const { mutate: getCellValue, isPending, isSuccess, reset } = useGetCellValueMutation()\n\n  const loadFullValue = () => {\n    if (\n      selectedTable === undefined ||\n      project === undefined ||\n      row === undefined ||\n      !isTableLike(selectedTable)",
+    "end_line": 58,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/InputField.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/TextEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/InputField.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2336",
+  "symbol_name": "TextEditor",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/TextEditor.tsx",
+  "task_id": "task_62681ae216"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "SectionSwitch",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/docs/features/docs/Reference.sections.tsx",
+  "line_end": 576,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0560",
+  "smell_type": "Large Component"
+}

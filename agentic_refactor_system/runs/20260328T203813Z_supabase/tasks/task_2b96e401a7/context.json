@@ -1,0 +1,35 @@
+{
+  "line_end": 41,
+  "line_start": 41,
+  "local_imports": [
+    "packages/ui/src/components/Checkbox/Checkbox.module.css",
+    "packages/ui/src/components/Checkbox/CheckboxContext.tsx",
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {\n  afterLabel?: string\n  beforeLabel?: string\n  description?: string\n  label?: string\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge'\n}\n\ninterface GroupProps {\n  id?: string\n  layout?: 'horizontal' | 'vertical'\n  error?: any\n  descriptionText?: any\n  label?: any\n  afterLabel?: string\n  beforeLabel?: string\n  labelOptional?: any\n  name?: any\n  value?: any\n  className?: string\n  children?: React.ReactNode\n  options?: Array<InputProps>\n  defaultValue?: string\n  onChange?(x: React.ChangeEvent<HTMLInputElement>): void\n  size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge'\n}\n\n/**\n * @deprecated Use `import { Checkbox_shadcn_ } from \"ui\"` instead\n */\nfunction Group({\n  id,\n  layout = 'vertical',\n  error,\n  descriptionText,\n  label,\n  afterLabel,\n  beforeLabel,\n  labelOptional,\n  children,\n  className,\n  options,\n  onChange,\n  size = 'medium',\n}: GroupProps) {\n  const parentCallback = (e: React.ChangeEvent<HTMLInputElement>) => {\n    if (onChange) onChange(e)\n  }\n\n  const __styles = styleHandler('checkbox')\n\n  return (\n    <FormLayout\n      label={label}\n      afterLabel={afterLabel}\n      beforeLabel={beforeLabel}\n      labelOptional={labelOptional}\n      layout={layout}\n      id={id}\n      error={error}\n      descriptionText={descriptionText}",
+    "end_line": 71,
+    "start_line": 11
+  },
+  "related_files": [
+    "packages/ui/src/components/Checkbox/Checkbox.test.jsx",
+    "packages/ui/src/components/Checkbox/CheckboxContext.tsx",
+    "packages/ui/src/components/Checkbox/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Checkbox/Checkbox.tsx",
+    "packages/ui/src/components/Checkbox/Checkbox.module.css",
+    "packages/ui/src/components/Checkbox/CheckboxContext.tsx",
+    "packages/ui/src/components/Form/FormContext.tsx",
+    "packages/ui/src/lib/Layout/FormLayout/FormLayout.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/Checkbox/Checkbox.test.jsx",
+    "packages/ui/src/components/Checkbox/index.tsx"
+  ],
+  "smell_id": "heuristic_props_5922",
+  "symbol_name": "Checkbox",
+  "target_file": "packages/ui/src/components/Checkbox/Checkbox.tsx",
+  "task_id": "task_2b96e401a7"
+}

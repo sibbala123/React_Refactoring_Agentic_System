@@ -1,0 +1,160 @@
+You are a senior React refactoring agent.
+
+Task ID: task_0fd508880b
+Repository: supabase_design_system
+Target root: D:\Agentic\React\supabase\apps\design-system
+
+Refactor objective:
+- Smell type: Too Many Props
+- Target file: components/component-preview.tsx
+- Symbol: ComponentPreview
+- Line range: 29-29
+
+Relevant context files:
+- components/component-preview.tsx
+- components/callout.tsx
+- components/class-label.tsx
+- components/click-counter.tsx
+- components/code-block-wrapper.tsx
+- components/code-fragment.tsx
+- components/colors.tsx
+- components/command-menu.tsx
+
+Allowed edit scope:
+{
+  "allowed_files": [
+    "components/component-preview.tsx"
+  ],
+  "mode": "bounded_file_and_local_imports"
+}
+
+Constraints:
+- Preserve behavior.
+- Minimize changes.
+- Keep public APIs intact unless explicitly justified.
+- Avoid edits outside the allowed scope.
+- If scope expansion is necessary, explain why before proposing it.
+- Prefer small, local refactors over architectural rewrites.
+- Keep imports, exports, and types valid.
+
+Context summary:
+Primary file: components/component-preview.tsx
+Component or symbol: ComponentPreview
+Line focus: 29-29
+Nearby summary:
+'use client'
+
+import { ChevronRight, Expand } from 'lucide-react'
+import * as React from 'react'
+import {
+  Button,
+  cn,
+  Collapsible_Shadcn_,
+  CollapsibleContent_Shadcn_,
+  CollapsibleTrigger_Shadcn_,
+} from 'ui'
+
+import { Index } from '@/__registry__'
+import { useConfig } from '@/hooks/use-config'
+import { styles } from '@/registry/styles'
+
+interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
+  name: string
+  extractClassname?: boolean
+  extractedClassNames?: string
+  align?: 'center' | 'start' | 'end'
+  peekCode?: boolean
+  showGrid?: boolean
+  showDottedGrid?: boolean
+  wide?: boolean
+  hideCode?: boolean
+}
+
+export function ComponentPreview({
+  name,
+  children,
+  className,
+  extractClassname,
+  extractedClassNames,
+  align = 'center',
+  peekCode = false,
+  showGrid = false,
+  showDottedGrid = true,
+  wide = false,
+  hideCode = false,
+  ...props
+}: ComponentPreviewProps) {
+  const [config] = useConfig()
+  const index = styles.findIndex((style) => style.name === config.style)
+
+  const Codes = React.Children.toArray(children) as React.ReactElement[]
+  const Code = Codes[index]
+
+  const [expand, setExpandState] = React.useState(false)
+
+  const Preview = React.useMemo(() => {
+    const Component = Index[config.style][name]?.component
+
+    if (!Component) {
+      return (
+        <p className="text-sm text-muted-foreground">
+          Component{' '}
+          <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
+            {name}
+
+Imported local dependencies:
+- none
+
+Nearby tests and sibling files:
+- components/callout.tsx
+- components/class-label.tsx
+- components/click-counter.tsx
+- components/code-block-wrapper.tsx
+- components/code-fragment.tsx
+- components/colors.tsx
+- components/command-menu.tsx
+- components/component-example.tsx
+- components/component-props.tsx
+- components/component-source.tsx
+- components/copy-button.tsx
+- components/example-label.tsx
+- components/grid.tsx
+- components/homepage-svg-handler.tsx
+- components/icons.tsx
+- components/mdx-components.tsx
+- components/mobile-sidebar-sheet.tsx
+- components/pager.tsx
+- components/side-navigation-item.tsx
+- components/side-navigation.tsx
+- components/site-footer.tsx
+- components/sonner-expand-config.tsx
+- components/sonner-expand-position.tsx
+- components/source-panel.tsx
+- components/style-wrapper.tsx
+- components/theme-settings.tsx
+- components/theme-switcher-dropdown.tsx
+- components/toc.tsx
+- components/top-navigation-search.tsx
+- components/top-navigation.tsx
+
+
+Task metadata:
+{
+  "confidence": 0.4,
+  "context_file_count": 8,
+  "detector_metadata": {
+    "reason": "destructured parameter count=14",
+    "source": "heuristic_fallback"
+  },
+  "severity": "low"
+}
+
+Output format:
+- Provide either a unified patch or full-file replacement blocks.
+- If emitting file blocks, use:
+  BEGIN_FILE: relative/path
+  ```language
+  ...full file content...
+  ```
+  END_FILE
+- If no safe refactor is possible, say so explicitly and explain the blocker.

@@ -1,0 +1,43 @@
+{
+  "line_end": 22,
+  "line_start": 22,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { DataPoint } from 'data/analytics/constants'\nimport {\n  PricingMetric,\n  useOrgDailyStatsQuery,\n  type OrgDailyUsageResponse,\n} from 'data/analytics/org-daily-stats-query'\nimport type { OrgSubscription } from 'data/subscriptions/types'\nimport UsageSection from './UsageSection/UsageSection'\nimport { dailyUsageToDataPoints } from './Usage.utils'\n\nexport interface SizeAndCountsProps {\n  orgSlug: string\n  projectRef?: string | null\n  subscription: OrgSubscription | undefined\n  currentBillingCycleSelected: boolean\n  orgDailyStats: OrgDailyUsageResponse | undefined\n  isLoadingOrgDailyStats: boolean\n  startDate: string | undefined\n  endDate: string | undefined\n}\n\nconst SizeAndCounts = ({\n  orgSlug,\n  projectRef,\n  subscription,\n  currentBillingCycleSelected,\n  orgDailyStats,\n  isLoadingOrgDailyStats,\n  startDate,\n  endDate,\n}: SizeAndCountsProps) => {\n  const chartMeta: {\n    [key: string]: { data: DataPoint[]; margin: number; isLoading: boolean }\n  } = {\n    [PricingMetric.STORAGE_SIZE]: {\n      isLoading: isLoadingOrgDailyStats,\n      margin: 14,\n      data: dailyUsageToDataPoints(\n        orgDailyStats,\n        (metric) => metric === PricingMetric.STORAGE_SIZE\n      ),\n    },\n    [PricingMetric.DATABASE_SIZE]: {\n      isLoading: isLoadingOrgDailyStats,\n      margin: 14,\n      data: dailyUsageToDataPoints(\n        orgDailyStats,\n        (metric) => metric === PricingMetric.DATABASE_SIZE\n      ),\n    },\n  }\n",
+    "end_line": 52,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/Usage/ActiveCompute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Activity.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Compute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Egress.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/OrgLogUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionHeader.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/TotalUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.constants.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.utils.test.ts",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.utils.ts",
+    "apps/studio/components/interfaces/Organization/Usage/UsageBarChart.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageChartTooltips.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/Usage/SizeAndCounts.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/ActiveCompute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Activity.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Compute.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Egress.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/OrgLogUsage.tsx"
+  ],
+  "smell_id": "heuristic_props_1760",
+  "symbol_name": "SizeAndCounts",
+  "target_file": "apps/studio/components/interfaces/Organization/Usage/SizeAndCounts.tsx",
+  "task_id": "task_c70b07ae24"
+}

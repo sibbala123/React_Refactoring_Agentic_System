@@ -1,0 +1,24 @@
+{
+  "line_end": 16,
+  "line_start": 16,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { OAuthScope } from '@supabase/shared-types/out/constants'\nimport { ChevronDown } from 'lucide-react'\nimport { Dispatch, PropsWithChildren, SetStateAction } from 'react'\n\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuCheckboxItem,\n  DropdownMenuContent,\n  DropdownMenuLabel,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n} from 'ui'\nimport { PERMISSIONS_DESCRIPTIONS } from '../OAuthApps.constants'\n\nconst ScopeDropdownCheckboxItem = ({\n  children,\n  scopeName,\n  scopes,\n  onChange,\n}: PropsWithChildren<{\n  scopeName: OAuthScope\n  scopes: OAuthScope[]\n  onChange: (v: OAuthScope[]) => void\n}>) => {\n  return (\n    <DropdownMenuCheckboxItem\n      checked={scopes.includes(scopeName)}\n      onCheckedChange={(checked) => {\n        if (checked) {\n          onChange([...scopes, scopeName])\n        } else {\n          onChange([...scopes.filter((s) => s !== scopeName)])\n        }\n      }}\n    >\n      {children}\n    </DropdownMenuCheckboxItem>\n  )\n}\n\nconst Scope = ({\n  title,\n  description,\n  readScopeName,\n  writeScopeName,",
+    "end_line": 46,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/OAuthApps/PublishAppSidePanel/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/OAuthApps/PublishAppSidePanel/Scopes.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/PublishAppSidePanel/index.tsx"
+  ],
+  "smell_id": "heuristic_props_1709",
+  "symbol_name": "ScopeDropdownCheckboxItem",
+  "target_file": "apps/studio/components/interfaces/Organization/OAuthApps/PublishAppSidePanel/Scopes.tsx",
+  "task_id": "task_5dfc816055"
+}

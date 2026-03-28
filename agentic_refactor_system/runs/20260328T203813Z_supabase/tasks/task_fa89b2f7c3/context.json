@@ -1,0 +1,21 @@
+{
+  "line_end": 20,
+  "line_start": 20,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import React, { PropsWithChildren, useEffect, useRef } from 'react'\nimport { motion } from 'framer-motion'\nimport { cn } from 'ui'\nimport { detectBrowser, isBrowser } from 'common'\n\ninterface Props {\n  outerClassName?: string\n  innerClassName?: string\n  hasActiveOnHover?: boolean\n  activeColor?: 'default' | 'brand'\n  hasShimmer?: boolean\n  hasInnerShimmer?: boolean\n  shimmerFromColor?: string\n  shimmerToColor?: string\n  style?: React.CSSProperties\n  innerStyle?: React.CSSProperties\n  hasMotion?: boolean\n}\n\nconst Panel = ({\n  outerClassName,\n  innerClassName,\n  hasActiveOnHover = false,\n  activeColor = 'default',\n  hasShimmer = false,\n  hasInnerShimmer = false,\n  shimmerFromColor,\n  shimmerToColor,\n  hasMotion = false,\n  children,\n  style,\n  innerStyle,\n}: PropsWithChildren<Props>) => {\n  const outerRef = useRef(null)\n  const innerRef = useRef(null)\n  const Component = hasMotion ? motion.div : 'div'\n  const isSafari = isBrowser && detectBrowser() === 'Safari'\n  const trackCursor = hasShimmer || hasInnerShimmer\n\n  const handleGlow = (event: any) => {\n    if (!outerRef.current || !innerRef.current) return\n\n    const outerElement = outerRef.current as HTMLDivElement\n    const innerElement = innerRef.current as HTMLDivElement\n    const { x: elX, y: elY, width, height } = outerElement.getBoundingClientRect()\n    const x = event.clientX - elX\n    const y = event.clientY - elY\n    const isActive = x > -0 && x < width + 0 && y > -0 && y < height + 0\n\n    if (hasShimmer) {",
+    "end_line": 50,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/Panel/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Panel/Panel.tsx",
+    "apps/www/components/Panel/index.tsx"
+  ],
+  "smell_id": "heuristic_props_4717",
+  "symbol_name": "Panel",
+  "target_file": "apps/www/components/Panel/Panel.tsx",
+  "task_id": "task_fa89b2f7c3"
+}

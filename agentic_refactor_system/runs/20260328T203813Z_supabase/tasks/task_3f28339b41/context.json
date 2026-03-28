@@ -1,0 +1,42 @@
+{
+  "line_end": 20,
+  "line_start": 20,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { motion } from 'framer-motion'\nimport { CircleDotDashed, GitMerge, X } from 'lucide-react'\nimport { useEffect, useRef } from 'react'\n\nimport { ActionRun } from '@/data/actions/action-detail-query'\nimport { Button, Card, CardContent, CardHeader, CardTitle } from 'ui'\n\ninterface WorkflowLogsCardProps {\n  workflowRun: ActionRun | null | undefined\n  logs: string | undefined\n  isLoading?: boolean\n  onClose?: () => void\n  // Override props for failed workflows\n  overrideTitle?: string\n  overrideDescription?: string\n  overrideIcon?: React.ReactNode\n  overrideAction?: React.ReactNode\n}\n\nexport const WorkflowLogsCard = ({\n  workflowRun,\n  logs,\n  isLoading = false,\n  onClose,\n  overrideTitle,\n  overrideDescription,\n  overrideIcon,\n  overrideAction,\n}: WorkflowLogsCardProps) => {\n  const scrollRef = useRef<HTMLDivElement>(null)\n\n  // Auto-scroll to bottom when logs change\n  useEffect(() => {\n    if (scrollRef.current && logs) {\n      scrollRef.current.scrollTop = scrollRef.current.scrollHeight\n    }\n  }, [logs])\n\n  const workflowRunStatus = workflowRun?.status\n  const isSuccess = workflowRunStatus === 'SUCCESS'\n  const isFailed = workflowRunStatus === 'FAILED'\n  const isPolling = workflowRunStatus === 'RUNNING'\n\n  const displayTitle =\n    overrideTitle ||\n    (isPolling\n      ? 'Processing...'\n      : isSuccess\n        ? 'Workflow completed successfully'\n        : isFailed",
+    "end_line": 50,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/DatabaseDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EdgeFunctionsDiffPanel.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EditBranchModal.tsx",
+    "apps/studio/components/interfaces/BranchManagement/EmptyStates.tsx",
+    "apps/studio/components/interfaces/BranchManagement/OutOfDateNotice.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Overview.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewRow.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ReviewWithAI.tsx",
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogs.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx",
+    "apps/studio/components/interfaces/BranchManagement/ActionStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/Branch.Commands.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchManagement.utils.ts",
+    "apps/studio/components/interfaces/BranchManagement/BranchPanels.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchSelector.tsx",
+    "apps/studio/components/interfaces/BranchManagement/BranchStatusBadge.tsx",
+    "apps/studio/components/interfaces/BranchManagement/CreateBranchModal.tsx"
+  ],
+  "smell_id": "heuristic_props_1124",
+  "symbol_name": "WorkflowLogsCard",
+  "target_file": "apps/studio/components/interfaces/BranchManagement/WorkflowLogsCard.tsx",
+  "task_id": "task_3f28339b41"
+}

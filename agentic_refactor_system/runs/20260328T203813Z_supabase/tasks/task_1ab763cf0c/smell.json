@@ -1,0 +1,14 @@
+{
+  "component_name": "Popover",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=20",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui/src/components/Popover/Popover.tsx",
+  "line_end": 35,
+  "line_start": 35,
+  "severity": "low",
+  "smell_id": "heuristic_props_6010",
+  "smell_type": "Too Many Props"
+}

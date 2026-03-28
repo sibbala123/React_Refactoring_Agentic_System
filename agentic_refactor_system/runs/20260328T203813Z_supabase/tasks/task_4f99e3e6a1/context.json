@@ -1,0 +1,23 @@
+{
+  "line_end": 15,
+  "line_start": 15,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import Link from 'next/link'\nimport { Button } from 'ui'\nimport { Admonition } from 'ui-patterns'\n\n// [Joshen] In the future, conditionals should be from resource exhaustion endpoint as single source of truth\ninterface DiskIOBandwidthWarningsProps {\n  hasAccessToComputeSizes: boolean\n  hasLatest: boolean\n  upgradeUrl: string\n  currentBillingCycleSelected: boolean\n  latestIoBudgetConsumption: number\n  highestIoBudgetConsumption: number\n}\n\nexport const DiskIOBandwidthWarnings = ({\n  hasAccessToComputeSizes,\n  hasLatest,\n  currentBillingCycleSelected,\n  upgradeUrl,\n  latestIoBudgetConsumption,\n  highestIoBudgetConsumption,\n}: DiskIOBandwidthWarningsProps) => {\n  if (hasLatest && latestIoBudgetConsumption >= 100) {\n    return (\n      <Admonition\n        type=\"destructive\"\n        title=\"Your Disk IO Budget has been used up\"\n        description={\n          <>\n            <p className=\"mb-4\">\n              Your workload has used up all your Disk IO Budget and is now running at the baseline\n              performance. If you need consistent disk performance, consider upgrading to a larger\n              compute add-on.\n            </p>\n            <Button asChild type=\"danger\">\n              <Link href={upgradeUrl}>\n                {hasAccessToComputeSizes ? 'Change compute add-on' : 'Upgrade project'}\n              </Link>\n            </Button>\n          </>\n        }\n      />\n    )\n  }\n",
+    "end_line": 45,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Billing/Usage/UsageWarningAlerts/CPUWarnings.tsx",
+    "apps/studio/components/interfaces/Billing/Usage/UsageWarningAlerts/RAMWarnings.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Billing/Usage/UsageWarningAlerts/DiskIOBandwidthWarnings.tsx",
+    "apps/studio/components/interfaces/Billing/Usage/UsageWarningAlerts/CPUWarnings.tsx",
+    "apps/studio/components/interfaces/Billing/Usage/UsageWarningAlerts/RAMWarnings.tsx"
+  ],
+  "smell_id": "heuristic_props_1106",
+  "symbol_name": "DiskIOBandwidthWarnings",
+  "target_file": "apps/studio/components/interfaces/Billing/Usage/UsageWarningAlerts/DiskIOBandwidthWarnings.tsx",
+  "task_id": "task_4f99e3e6a1"
+}

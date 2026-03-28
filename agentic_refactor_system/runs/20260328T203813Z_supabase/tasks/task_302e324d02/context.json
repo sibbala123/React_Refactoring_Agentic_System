@@ -1,0 +1,27 @@
+{
+  "line_end": 4,
+  "line_start": 4,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Children } from 'react'\nimport { cn } from 'ui'\n\nexport const FormSection = ({\n  children,\n  id,\n  header,\n  disabled,\n  className,\n}: {\n  children: React.ReactNode\n  id?: string\n  header?: React.ReactNode\n  disabled?: boolean\n  visible?: boolean\n  className?: string\n}) => {\n  const classes = [\n    'grid grid-cols-12 gap-6 px-card py-4 md:py-8',\n    `${disabled ? ' opacity-30' : ' opacity-100'}`,\n    `${className}`,\n  ]\n\n  return (\n    <div id={id} className={classes.join(' ')}>\n      {header}\n      {children}\n    </div>\n  )\n}\n\nexport const FormSectionLabel = ({\n  children,\n  className = '',",
+    "end_line": 34,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/Forms/Form.constants.ts",
+    "apps/studio/components/ui/Forms/FormActions.tsx",
+    "apps/studio/components/ui/Forms/FormHeader.tsx",
+    "apps/studio/components/ui/Forms/FormPanel.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/Forms/FormSection.tsx",
+    "apps/studio/components/ui/Forms/Form.constants.ts",
+    "apps/studio/components/ui/Forms/FormActions.tsx",
+    "apps/studio/components/ui/Forms/FormHeader.tsx",
+    "apps/studio/components/ui/Forms/FormPanel.tsx"
+  ],
+  "smell_id": "heuristic_props_2783",
+  "symbol_name": "FormSection",
+  "target_file": "apps/studio/components/ui/Forms/FormSection.tsx",
+  "task_id": "task_302e324d02"
+}

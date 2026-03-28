@@ -1,0 +1,48 @@
+{
+  "line_end": 65,
+  "line_start": 65,
+  "local_imports": [
+    "apps/studio/components/interfaces/App/CommandMenu/CommandMenu.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ContextSearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ordering.ts"
+  ],
+  "primary_snippet": {
+    "content": "  {\n    value: 'database-tables',\n    label: 'Database Tables',\n    pageName: 'Search Database Tables',\n    placeholder: 'Search database tables...',\n    icon: Database,\n  },\n  {\n    value: 'auth-policies',\n    label: 'RLS Policies',\n    pageName: 'Search RLS Policies',\n    placeholder: 'Search rls policies...',\n    icon: Auth,\n  },\n  {\n    value: 'edge-functions',\n    label: 'Edge Functions',\n    pageName: 'Search Edge Functions',\n    placeholder: 'Search edge functions...',\n    icon: EdgeFunctions,\n  },\n  {\n    value: 'storage',\n    label: 'Storage',\n    pageName: 'Search Storage',\n    placeholder: 'Search buckets...',\n    icon: Storage,\n  },\n]\n\nfunction ContextSearchPage({\n  context,\n  placeholder,\n}: {\n  context: SearchContextValue\n  placeholder: string\n}) {\n  const query = useQuery()\n\n  return (\n    <CommandWrapper>\n      <CommandHeader>\n        <CommandInput placeholder={placeholder} />\n      </CommandHeader>\n      <ContextSearchResults context={context} query={query} />\n    </CommandWrapper>\n  )\n}\n\nexport function useContextSearchCommands() {\n  const { data: project } = useSelectedProjectQuery()\n  const setPage = useSetPage()\n\n  const {\n    projectAuthAll: authEnabled,\n    projectEdgeFunctionAll: edgeFunctionsEnabled,\n    projectStorageAll: storageEnabled,\n  } = useIsFeatureEnabled(['project_auth:all', 'project_edge_function:all', 'project_storage:all'])\n\n  const pageDefinitions = [\n    { title: 'Search Database Tables', context: 'database-tables' as const },",
+    "end_line": 95,
+    "start_line": 35
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/App/CommandMenu/ApiKeys.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ApiUrl.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/CommandMenu.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/CommandMenu.utils.ts",
+    "apps/studio/components/interfaces/App/CommandMenu/ContextSearchResults.shared.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ContextSearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/CreateCommands.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/CreateCommands.utils.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/EdgeFunctionSearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/OrgProjectSwitcher.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/PolicySearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/SearchContext.types.ts",
+    "apps/studio/components/interfaces/App/CommandMenu/StorageSearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/StudioCommandProvider.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/Support.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/TableSearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/index.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ordering.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/App/CommandMenu/ContextSearchCommands.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/CommandMenu.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ContextSearchResults.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ordering.ts",
+    "apps/studio/components/interfaces/App/CommandMenu/ApiKeys.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/ApiUrl.tsx",
+    "apps/studio/components/interfaces/App/CommandMenu/CommandMenu.utils.ts",
+    "apps/studio/components/interfaces/App/CommandMenu/ContextSearchResults.shared.tsx"
+  ],
+  "smell_id": "heuristic_props_0944",
+  "symbol_name": "ContextSearchPage",
+  "target_file": "apps/studio/components/interfaces/App/CommandMenu/ContextSearchCommands.tsx",
+  "task_id": "task_9bc27e978f"
+}

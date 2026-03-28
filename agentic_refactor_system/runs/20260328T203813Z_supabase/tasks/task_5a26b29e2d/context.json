@@ -1,0 +1,30 @@
+{
+  "line_end": 49,
+  "line_start": 49,
+  "local_imports": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'\nimport { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'\nimport { useDatabaseSelectorStateSnapshot } from 'state/database-selector'\nimport type { Dashboards } from 'types'\nimport { ChartContainer, ChartTooltip, ChartTooltipContent, WarningIcon } from 'ui'\n\nimport { METRIC_THRESHOLDS } from './ReportBlock.constants'\nimport { ReportBlockContainer } from './ReportBlockContainer'\n\ninterface ChartBlockProps {\n  label: string\n  attribute: string\n  provider: 'infra-monitoring' | 'daily-stats'\n  startDate: string\n  endDate: string\n  interval?: AnalyticsInterval\n  defaultChartStyle?: 'bar' | 'line'\n  defaultLogScale?: boolean\n  isLoading?: boolean\n  actions?: ReactNode\n  maxHeight?: number\n  onUpdateChartConfig?: ({\n    chart,\n    chartConfig,\n  }: {\n    chart?: Partial<Dashboards.Chart>\n    chartConfig?: Partial<ChartConfig>\n  }) => void\n}\n\nexport const ChartBlock = ({\n  label,\n  attribute,\n  provider,\n  startDate,\n  endDate,\n  interval = '1d',\n  defaultChartStyle = 'bar',\n  defaultLogScale = false,\n  isLoading = false,\n  actions,\n  maxHeight,\n  onUpdateChartConfig,\n}: ChartBlockProps) => {\n  const router = useRouter()\n  const { ref } = router.query\n\n  const state = useDatabaseSelectorStateSnapshot()\n  const [chartStyle, setChartStyle] = useState<string>(defaultChartStyle)\n  const logScale = useMemo(() => defaultLogScale, [defaultLogScale])\n  const [latestValue, setLatestValue] = useState<string | undefined>()\n\n  const databaseIdentifier = state.selectedDatabaseId\n\n  const {\n    data: dailyStatsData,\n    isFetching: isFetchingDailyStats,\n    isPending: isLoadingDailyStats,\n  } = useProjectDailyStatsQuery(\n    {\n      projectRef: ref as string,",
+    "end_line": 79,
+    "start_line": 19
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.constants.ts",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.constants.ts"
+  ],
+  "smell_id": "heuristic_props_1955",
+  "symbol_name": "ChartBlock",
+  "target_file": "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+  "task_id": "task_5a26b29e2d"
+}

@@ -1,0 +1,29 @@
+{
+  "line_end": 42,
+  "line_start": 42,
+  "local_imports": [
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/AdditionalMonthlySpend.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { generateStrongPassword } from 'lib/project'\nimport {\n  Button,\n  Dialog,\n  DialogContent,\n  DialogDescription,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogTitle,\n  Form_Shadcn_,\n  FormControl_Shadcn_,\n  FormField_Shadcn_,\n  Input,\n  Input_Shadcn_,\n} from 'ui'\nimport { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'\nimport { AdditionalMonthlySpend } from './AdditionalMonthlySpend'\nimport { NewProjectPrice } from './RestoreToNewProject.utils'\n\ninterface CreateNewProjectDialogProps {\n  open: boolean\n  selectedBackupId: number | null\n  recoveryTimeTarget: number | null\n  onOpenChange: (value: boolean) => void\n  onCloneSuccess: () => void\n  additionalMonthlySpend: NewProjectPrice\n  hasAccess?: boolean\n}\n\nexport const CreateNewProjectDialog = ({\n  open,\n  selectedBackupId,\n  recoveryTimeTarget,\n  onOpenChange,\n  onCloneSuccess,\n  additionalMonthlySpend,\n  hasAccess,\n}: CreateNewProjectDialogProps) => {\n  const { data: project } = useSelectedProjectQuery()\n  const [passwordStrengthScore, setPasswordStrengthScore] = useState(0)\n  const [passwordStrengthMessage, setPasswordStrengthMessage] = useState('')\n\n  const FormSchema = z.object({\n    name: z.string().min(1),\n    password: z.string().min(1),\n  })\n\n  const form = useForm<z.infer<typeof FormSchema>>({\n    resolver: zodResolver(FormSchema),\n    defaultValues: {\n      name: '',\n      password: '',\n    },\n  })\n\n  const { data: cloneBackups } = useCloneBackupsQuery(\n    { projectRef: project?.ref },\n    { enabled: hasAccess }\n  )\n  const hasPITREnabled = cloneBackups?.pitr_enabled",
+    "end_line": 72,
+    "start_line": 12
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/AdditionalMonthlySpend.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/BackupsList.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/ConfirmRestoreDialog.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/RestoreToNewProject.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/CreateNewProjectDialog.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/AdditionalMonthlySpend.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/BackupsList.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/ConfirmRestoreDialog.tsx",
+    "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/RestoreToNewProject.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1240",
+  "symbol_name": "CreateNewProjectDialog",
+  "target_file": "apps/studio/components/interfaces/Database/Backups/RestoreToNewProject/CreateNewProjectDialog.tsx",
+  "task_id": "task_4ede80b54c"
+}

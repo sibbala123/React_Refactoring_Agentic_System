@@ -1,0 +1,48 @@
+{
+  "line_end": 31,
+  "line_start": 31,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { zodResolver } from '@hookform/resolvers/zod'\nimport { useEffect } from 'react'\nimport { SubmitHandler, useForm } from 'react-hook-form'\nimport {\n  Button,\n  Form_Shadcn_,\n  FormControl_Shadcn_,\n  FormField_Shadcn_,\n  Input_Shadcn_,\n  Modal,\n  Textarea,\n} from 'ui'\nimport { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'\nimport * as z from 'zod'\n\nconst formSchema = z.object({\n  name: z.string().min(1, 'Required'),\n  description: z.string().optional(),\n})\n\ntype SavedQuery = z.infer<typeof formSchema>\n\nexport interface UpdateSavedQueryProps {\n  header: string\n  visible: boolean\n  onCancel: () => void\n  onSubmit: SubmitHandler<SavedQuery>\n  initialValues: SavedQuery\n}\n\nexport const UpdateSavedQueryModal = ({\n  header,\n  visible,\n  onCancel,\n  onSubmit,\n  initialValues,\n}: UpdateSavedQueryProps) => {\n  const form = useForm<SavedQuery>({\n    resolver: zodResolver(formSchema),\n    defaultValues: { ...initialValues, description: initialValues.description ?? '' },\n  })\n  const { reset, formState } = form\n  const { isDirty, isSubmitting } = formState\n\n  useEffect(() => {\n    if (isDirty) return\n    reset({ ...initialValues, description: initialValues.description ?? '' })\n  }, [isDirty, initialValues, reset])\n\n  const handleCancel = () => {\n    form.reset()\n    onCancel()\n  }\n\n  return (\n    <Modal visible={visible} onCancel={handleCancel} hideFooter header={header} size=\"medium\">\n      <Form_Shadcn_ {...form}>\n        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>\n          <Modal.Content>\n            <FormField_Shadcn_\n              control={form.control}",
+    "end_line": 61,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.constants.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.types.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.ts",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFilterPopover.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFormatters.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsPreviewer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsQueryPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsTableEmptyState.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/MultiSelectActionBar.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanelWithUniversal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/RecentQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/logsDateRange.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx"
+  ],
+  "smell_id": "heuristic_props_2095",
+  "symbol_name": "UpdateSavedQueryModal",
+  "target_file": "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx",
+  "task_id": "task_3603917665"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "enterprise",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/data/enterprise.tsx",
+  "line_end": 292,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4897",
+  "smell_type": "Large Component"
+}

@@ -1,0 +1,25 @@
+{
+  "line_end": 19,
+  "line_start": 19,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath, type EdgeProps } from '@xyflow/react'\nimport { useParams } from 'common'\nimport { useReplicationLagQuery } from 'data/read-replicas/replica-lag-query'\nimport { formatDatabaseID } from 'data/read-replicas/replicas.utils'\nimport { Loader2, X } from 'lucide-react'\nimport { cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\n\nimport { useSelectedProjectQuery } from '@/hooks/misc/useSelectedProject'\n\ntype EdgeData = {\n  type: string\n  identifier: string\n  isComingUp: boolean\n  isReplicating: boolean\n  isFailed: boolean\n  shiftEdgeEnd: boolean\n}\n\nexport const SmoothstepEdge = ({\n  sourceX,\n  sourceY,\n  targetX,\n  targetY,\n  sourcePosition,\n  targetPosition,\n  style = {},\n  markerEnd,\n  data,\n}: EdgeProps) => {\n  const { ref } = useParams()\n  const { data: project } = useSelectedProjectQuery()\n\n  const { type, identifier, isComingUp, isReplicating, isFailed, shiftEdgeEnd } = (data ||\n    {}) as EdgeData\n  const formattedId = type === 'replica' ? formatDatabaseID(identifier ?? '') : identifier\n\n  const [edgePath, labelX, labelY] = getSmoothStepPath({\n    sourceX,\n    sourceY,\n    sourcePosition,\n    targetX,\n    targetY,\n    targetPosition,\n  })\n\n  const {\n    data: lagDuration,\n    isPending: isLoading,\n    isError,",
+    "end_line": 49,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/Nodes.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/ReplicationDiagram.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/Edges.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/Nodes.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/ReplicationDiagram.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/index.tsx"
+  ],
+  "smell_id": "heuristic_props_1322",
+  "symbol_name": "SmoothstepEdge",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/ReplicationDiagram/Edges.tsx",
+  "task_id": "task_1178e7f63c"
+}

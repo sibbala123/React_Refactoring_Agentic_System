@@ -1,0 +1,14 @@
+{
+  "component_name": "ProjectCommandItem",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/ui/OrganizationProjectSelector/ProjectCommandItem.tsx",
+  "line_end": 16,
+  "line_start": 16,
+  "severity": "low",
+  "smell_id": "heuristic_props_2807",
+  "smell_type": "Too Many Props"
+}

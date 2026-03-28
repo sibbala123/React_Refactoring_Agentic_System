@@ -1,0 +1,51 @@
+{
+  "line_end": 22,
+  "line_start": 22,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { ChevronRight } from 'lucide-react'\nimport * as React from 'react'\nimport { cn, Collapsible_Shadcn_, CollapsibleContent_Shadcn_, CollapsibleTrigger_Shadcn_ } from 'ui'\n\nimport { Index } from '@/__registry__'\nimport { useConfig } from '@/hooks/use-config'\nimport { styles } from '@/registry/styles'\n\ninterface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {\n  name: keyof (typeof Index)['default']\n  extractClassname?: boolean\n  extractedClassNames?: string\n  align?: 'center' | 'start' | 'end'\n  showGrid?: boolean\n  showDottedGrid?: boolean\n  showCode?: boolean\n  wide?: boolean\n}\n\nexport function ComponentPreview({\n  name,\n  children,\n  className,\n  extractClassname,\n  extractedClassNames,\n  align = 'center',\n  showGrid = false,\n  showDottedGrid = true,\n  showCode = true,\n  wide = false,\n  ...props\n}: ComponentPreviewProps) {\n  const [config] = useConfig()\n  const index = styles.findIndex((style) => style.name === config.style)\n\n  const Preview = React.useMemo(() => {\n    const Component = Index['default'][name]?.component\n\n    if (!Component) {\n      return (\n        <p className=\"text-sm text-muted-foreground\">\n          Component{' '}\n          <code className=\"relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm\">\n            {name}\n          </code>{' '}\n          not found in registry.\n        </p>\n      )\n    }\n",
+    "end_line": 52,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/ui-library/components/block-item-code.tsx",
+    "apps/ui-library/components/block-item.tsx",
+    "apps/ui-library/components/block-preview.tsx",
+    "apps/ui-library/components/callout.tsx",
+    "apps/ui-library/components/command-copy-button.tsx",
+    "apps/ui-library/components/command-menu.tsx",
+    "apps/ui-library/components/command.tsx",
+    "apps/ui-library/components/copy-button.tsx",
+    "apps/ui-library/components/dual-realtime-chat.tsx",
+    "apps/ui-library/components/dual-realtime-monaco.tsx",
+    "apps/ui-library/components/framework-selector.tsx",
+    "apps/ui-library/components/mdx-components.tsx",
+    "apps/ui-library/components/mobile-menu-sheet.tsx",
+    "apps/ui-library/components/open-in-v0-button.tsx",
+    "apps/ui-library/components/registry-block.tsx",
+    "apps/ui-library/components/side-navigation-item.tsx",
+    "apps/ui-library/components/side-navigation.tsx",
+    "apps/ui-library/components/sidebar.tsx",
+    "apps/ui-library/components/site-footer.tsx",
+    "apps/ui-library/components/source-panel.tsx",
+    "apps/ui-library/components/style-wrapper.tsx",
+    "apps/ui-library/components/tanstack-beta.tsx",
+    "apps/ui-library/components/theme-switcher-dropdown.tsx",
+    "apps/ui-library/components/toc.tsx",
+    "apps/ui-library/components/use-local-storage.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/ui-library/components/component-preview.tsx",
+    "apps/ui-library/components/block-item-code.tsx",
+    "apps/ui-library/components/block-item.tsx",
+    "apps/ui-library/components/block-preview.tsx",
+    "apps/ui-library/components/callout.tsx",
+    "apps/ui-library/components/command-copy-button.tsx",
+    "apps/ui-library/components/command-menu.tsx",
+    "apps/ui-library/components/command.tsx"
+  ],
+  "smell_id": "heuristic_props_4158",
+  "symbol_name": "ComponentPreview",
+  "target_file": "apps/ui-library/components/component-preview.tsx",
+  "task_id": "task_0886a376d0"
+}

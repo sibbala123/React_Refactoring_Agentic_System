@@ -1,0 +1,14 @@
+{
+  "component_name": "agents",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/data/solutions/agents.tsx",
+  "line_end": 358,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4931",
+  "smell_type": "Large Component"
+}

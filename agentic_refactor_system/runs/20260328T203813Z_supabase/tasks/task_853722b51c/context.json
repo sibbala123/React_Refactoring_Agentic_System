@@ -1,0 +1,45 @@
+{
+  "line_end": 10,
+  "line_start": 10,
+  "local_imports": [
+    "apps/www/components/Contribute/UnansweredThreadsTable.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { Admonition } from 'ui-patterns'\nimport {\n  getAllProductAreas,\n  getAllStacks,\n  getChannelCounts,\n  getUnansweredThreads,\n} from '~/data/contribute'\nimport { UnansweredThreadsTable } from './UnansweredThreadsTable'\n\nexport async function UnansweredThreads({\n  product_area,\n  channel,\n  stack,\n  search,\n}: {\n  product_area?: string | string[]\n  channel?: string\n  stack?: string | string[]\n  search?: string\n}) {\n  try {\n    const [threads, channelCounts, allProductAreas, allStacks] = await Promise.all([\n      getUnansweredThreads(product_area, channel, stack, search),\n      getChannelCounts(product_area, stack, search),\n      getAllProductAreas(),\n      getAllStacks(),\n    ])\n\n    return (\n      <UnansweredThreadsTable\n        threads={threads}\n        channelCounts={channelCounts}\n        allProductAreas={allProductAreas}\n        allStacks={allStacks}\n      />\n    )\n  } catch (error) {\n    const errorMessage = error instanceof Error ? error.message : 'Unknown error'\n    return (\n      <Admonition",
+    "end_line": 40,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/Contribute/BackToThreadsLink.tsx",
+    "apps/www/components/Contribute/ContributePageLayout.tsx",
+    "apps/www/components/Contribute/ContributorBenefits.tsx",
+    "apps/www/components/Contribute/Conversation.tsx",
+    "apps/www/components/Contribute/FilterPopover.tsx",
+    "apps/www/components/Contribute/GithubAvatar.tsx",
+    "apps/www/components/Contribute/HelpOnPlatformButton.tsx",
+    "apps/www/components/Contribute/Hero.tsx",
+    "apps/www/components/Contribute/Icons.tsx",
+    "apps/www/components/Contribute/Leaderboard.tsx",
+    "apps/www/components/Contribute/LeaderboardContent.tsx",
+    "apps/www/components/Contribute/PlatformTabs.tsx",
+    "apps/www/components/Contribute/RepliesList.tsx",
+    "apps/www/components/Contribute/SimilarSolvedThreads.tsx",
+    "apps/www/components/Contribute/UnansweredThreadsTable.tsx",
+    "apps/www/components/Contribute/UserProfile.tsx",
+    "apps/www/components/Contribute/markdownComponents.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Contribute/UnansweredThreads.tsx",
+    "apps/www/components/Contribute/UnansweredThreadsTable.tsx",
+    "apps/www/components/Contribute/BackToThreadsLink.tsx",
+    "apps/www/components/Contribute/ContributePageLayout.tsx",
+    "apps/www/components/Contribute/ContributorBenefits.tsx",
+    "apps/www/components/Contribute/Conversation.tsx",
+    "apps/www/components/Contribute/FilterPopover.tsx",
+    "apps/www/components/Contribute/GithubAvatar.tsx"
+  ],
+  "smell_id": "heuristic_props_4500",
+  "symbol_name": "UnansweredThreads",
+  "target_file": "apps/www/components/Contribute/UnansweredThreads.tsx",
+  "task_id": "task_853722b51c"
+}

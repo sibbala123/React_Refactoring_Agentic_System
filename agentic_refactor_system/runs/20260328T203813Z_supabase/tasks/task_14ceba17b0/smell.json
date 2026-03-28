@@ -1,0 +1,14 @@
+{
+  "component_name": "McpConfigurationOptions",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=9",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/McpUrlBuilder/components/McpConfigurationOptions.tsx",
+  "line_end": 26,
+  "line_start": 26,
+  "severity": "low",
+  "smell_id": "heuristic_props_6245",
+  "smell_type": "Too Many Props"
+}

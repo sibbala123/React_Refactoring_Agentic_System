@@ -1,0 +1,23 @@
+{
+  "line_end": 5,
+  "line_start": 5,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import Image from 'next/image'\nimport Link from 'next/link'\nimport type { Partner } from '~/types/partners'\n\nexport default function TileGrid({\n  partners,\n  hideCategories = false,\n}: {\n  partners: Partner[]\n  hideCategories?: boolean\n}) {\n  const partnersByCategory: { [category: string]: Partner[] } = {}\n  partners.forEach(\n    (p) => (partnersByCategory[p.category] = [...(partnersByCategory[p.category] ?? []), p])\n  )\n\n  const featuredPartners = partners.filter((p) => p.featured)\n\n  return (\n    <>\n      {featuredPartners.length > 0 ? (\n        <div\n          key=\"featured\"\n          id=\"featured\"\n          className={`space-y-8 ${hideCategories ? `pb-8 border-b mb-8` : ''}`}\n        >\n          <h2 className=\"h2\">Featured</h2>\n          <div className=\"grid grid-cols-1 gap-5 lg:max-w-none lg:grid-cols-2 xl:grid-cols-3\">\n            {featuredPartners?.map((p) => (\n              <Link key={p.slug} href={`/partners/${p.slug}`}>\n                <div\n                  className=\"\n                bg-surface-100\n                hover:bg-surface-200\n                group flex h-full w-full flex-col rounded-xl border px-6",
+    "end_line": 35,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/www/components/Partners/BecomeAPartner.tsx",
+    "apps/www/components/Partners/PartnerLinkBox.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/www/components/Partners/TileGrid.tsx",
+    "apps/www/components/Partners/BecomeAPartner.tsx",
+    "apps/www/components/Partners/PartnerLinkBox.tsx"
+  ],
+  "smell_id": "heuristic_props_4720",
+  "symbol_name": "TileGrid",
+  "target_file": "apps/www/components/Partners/TileGrid.tsx",
+  "task_id": "task_cacdb1ac9d"
+}

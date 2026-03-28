@@ -1,0 +1,48 @@
+{
+  "line_end": 100,
+  "line_start": 100,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "export const generateHelpersFromInput = (input: string): DatetimeHelper[] | null => {\n  const parsed = parseCustomInput(input)\n\n  switch (parsed.type) {\n    case 'number':\n      return generateDynamicHelpers(parsed.value)\n    case 'unit':\n      return [generateDynamicHelper(parsed.value, parsed.unit)]\n    case 'invalid':\n      return null\n  }\n}\n\nexport type DatePickerValue = {\n  to: string\n  from: string\n  isHelper?: boolean\n  text?: string\n}\n\ninterface LogsDatePickerProps {\n  value: DatePickerValue\n  helpers: DatetimeHelper[]\n  onSubmit: (value: DatePickerValue) => void\n  buttonTriggerProps?: ButtonProps\n  popoverContentProps?: typeof PopoverContent_Shadcn_\n  hideWarnings?: boolean\n  align?: 'start' | 'end' | 'center'\n}\n\nexport const LogsDatePicker = ({\n  onSubmit,\n  helpers,\n  value,\n  buttonTriggerProps,\n  popoverContentProps,\n  hideWarnings,\n  align = 'end',\n}: PropsWithChildren<LogsDatePickerProps>) => {\n  const [open, setOpen] = useState(false)\n  const [customValue, setCustomValue] = useState('')\n\n  const displayedHelpers = useMemo(() => {\n    if (!customValue.trim()) return helpers\n    const generated = generateHelpersFromInput(customValue)\n    return generated ?? []\n  }, [customValue, helpers])\n\n  // Reset the state when the popover closes\n  useEffect(() => {\n    if (!open) {\n      setCustomValue('')\n      setStartDate(value.from ? new Date(value.from) : null)\n      const defaultEndDate = value.to ? new Date(value.to) : new Date()\n      setEndDate(defaultEndDate)\n      setCurrentMonth(new Date(defaultEndDate))\n\n      const fromDate = value.from ? new Date(value.from) : null\n      const toDate = value.to ? new Date(value.to) : null\n\n      setStartTime({",
+    "end_line": 130,
+    "start_line": 70
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.constants.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.types.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.ts",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFilterPopover.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFormatters.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsPreviewer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsQueryPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsTableEmptyState.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/MultiSelectActionBar.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanelWithUniversal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/RecentQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/logsDateRange.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx"
+  ],
+  "smell_id": "heuristic_props_2090",
+  "symbol_name": "LogsDatePicker",
+  "target_file": "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+  "task_id": "task_1bfffafd8c"
+}

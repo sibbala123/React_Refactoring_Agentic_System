@@ -1,0 +1,31 @@
+{
+  "line_end": 100,
+  "line_start": 100,
+  "local_imports": [
+    "packages/ui/src/components/Button/Button.tsx",
+    "packages/ui/src/components/CodeBlock/CodeBlock.tsx",
+    "packages/ui/src/lib/utils/cn.ts",
+    "packages/ui/src/lib/utils/index.ts"
+  ],
+  "primary_snippet": {
+    "content": "  className?: string\n  wrapperClassName?: string\n  value?: string\n  theme?: any\n  children?: string\n  wrapLines?: boolean\n  focusable?: boolean\n  renderer?: SyntaxHighlighterProps['renderer']\n  handleCopy?: (value?: string) => void\n  onCopyCallback?: () => void\n}\n\n/**\n * CodeBlock component for displaying syntax-highlighted code.\n * @param {ReactNode} [props.title] - Optional title for the code block.\n * @param {string} [props.language] - The programming language of the code.\n * @param {number[]} [props.linesToHighlight=[]] - Array of line numbers to highlight.\n * @param {boolean} [props.highlightBorder] - Whether to show a border on highlighted lines.\n * @param {Object} [props.styleConfig] - Custom style configurations.\n * @param {string} [props.className] - Additional CSS classes for the code block.\n * @param {string} [props.wrapperClassName] - CSS classes for the wrapper div.\n * @param {string} [props.value] - The code content as a string.\n * @param {any} [props.theme] - Custom theme for syntax highlighting.\n * @param {string} [props.children] - The code content as children.\n * @param {boolean} [props.hideCopy=false] - Whether to hide the copy button.\n * @param {boolean} [props.hideLineNumbers=false] - Whether to hide line numbers.\n * @param {SyntaxHighlighterProps['renderer']} [props.renderer] - Custom renderer for syntax highlighting.\n * @param {boolean} [props.focusable=true] - Whether the code block is focusable. When true, users can focus the code block to select text or use \u2318A (Cmd+A) to select all. This is so we don't need to load Monaco Editor.\n * @param {function} [props.handleCopy] - Optional override behaviour for copying value. For e.g if the code block contains obfuscated values, but the copy behaviour should reveal those values instead.\n */\nexport const CodeBlock = ({\n  title,\n  language,\n  linesToHighlight = [],\n  highlightBorder,\n  styleConfig,\n  className,\n  wrapperClassName,\n  value,\n  theme,\n  children,\n  hideCopy = false,\n  hideLineNumbers = false,\n  wrapLines = true,\n  renderer,\n  focusable = true,\n  onCopyCallback = noop,\n  handleCopy,\n}: CodeBlockProps) => {\n  const { resolvedTheme } = useTheme()\n  const isDarkTheme = resolvedTheme?.includes('dark')!\n  const monokaiTheme = theme ?? monokaiCustomTheme(isDarkTheme)\n\n  const [copied, setCopied] = useState(false)\n\n  const onSelectCopy = (value?: string) => {\n    if (value) {\n      if (!!handleCopy) {\n        handleCopy(value)\n      } else {\n        copyToClipboard(value)",
+    "end_line": 130,
+    "start_line": 70
+  },
+  "related_files": [
+    "packages/ui/src/components/CodeBlock/CodeBlock.utils.ts",
+    "packages/ui/src/components/CodeBlock/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/CodeBlock/CodeBlock.tsx",
+    "packages/ui/src/components/Button/Button.tsx",
+    "packages/ui/src/lib/utils/cn.ts",
+    "packages/ui/src/lib/utils/index.ts",
+    "packages/ui/src/components/CodeBlock/CodeBlock.utils.ts",
+    "packages/ui/src/components/CodeBlock/index.tsx"
+  ],
+  "smell_id": "heuristic_props_5925",
+  "symbol_name": "CodeBlock",
+  "target_file": "packages/ui/src/components/CodeBlock/CodeBlock.tsx",
+  "task_id": "task_784790384d"
+}

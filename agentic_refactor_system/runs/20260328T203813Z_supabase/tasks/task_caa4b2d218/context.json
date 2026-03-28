@@ -1,0 +1,28 @@
+{
+  "line_end": 30,
+  "line_start": 30,
+  "local_imports": [
+    "apps/studio/components/ui/ButtonTooltip.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { ChartConfig } from 'components/interfaces/SQLEditor/UtilityPanel/ChartConfig'\nimport { BarChart2, Settings2, Table } from 'lucide-react'\nimport {\n  Checkbox_Shadcn_,\n  Label_Shadcn_,\n  Popover_Shadcn_,\n  PopoverContent_Shadcn_,\n  PopoverTrigger_Shadcn_,\n  Select_Shadcn_,\n  SelectContent_Shadcn_,\n  SelectGroup_Shadcn_,\n  SelectItem_Shadcn_,\n  SelectTrigger_Shadcn_,\n  ToggleGroup,\n  ToggleGroupItem,\n} from 'ui'\n\nimport { ButtonTooltip } from '../ButtonTooltip'\n\ninterface BlockViewConfigurationProps {\n  columns: string[]\n  view: 'chart' | 'table'\n  isChart: boolean\n  lockColumns?: boolean\n  chartConfig?: ChartConfig\n  changeView: (value: 'chart' | 'table') => void\n  updateChartConfig: (config: ChartConfig) => void\n}\n\nexport const BlockViewConfiguration = ({\n  columns,\n  view,\n  isChart,\n  lockColumns = false,\n  chartConfig,\n  changeView,\n  updateChartConfig,\n}: BlockViewConfigurationProps) => {\n  return (\n    <Popover_Shadcn_ modal={false}>\n      <PopoverTrigger_Shadcn_ asChild>\n        <ButtonTooltip\n          id=\"help-popover-button\"\n          type=\"text\"\n          className=\"px-1\"\n          icon={<Settings2 size={14} strokeWidth={1.5} />}\n          tooltip={{ content: { side: 'bottom', text: 'View data' } }}\n        />\n      </PopoverTrigger_Shadcn_>\n      <PopoverContent_Shadcn_ side=\"bottom\" align=\"center\" className=\"w-[240px] p-3\">\n        <form className=\"grid gap-2\">\n          <ToggleGroup\n            type=\"single\"\n            value={view}\n            className=\"w-full\"\n            onValueChange={(view: 'chart' | 'table') => {\n              if (view) changeView(view)\n            }}\n          >\n            <ToggleGroupItem className=\"w-full\" value=\"table\" aria-label=\"Show as table\">",
+    "end_line": 60,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/QueryBlock/EditQueryButton.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/QueryBlock/BlockViewConfiguration.tsx",
+    "apps/studio/components/ui/ButtonTooltip.tsx",
+    "apps/studio/components/ui/QueryBlock/EditQueryButton.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2826",
+  "symbol_name": "BlockViewConfiguration",
+  "target_file": "apps/studio/components/ui/QueryBlock/BlockViewConfiguration.tsx",
+  "task_id": "task_caa4b2d218"
+}

@@ -1,0 +1,21 @@
+{
+  "line_end": 21,
+  "line_start": 21,
+  "local_imports": [
+    "apps/ui-library/registry/default/blocks/realtime-monaco/hooks/use-connect-on-mount.ts"
+  ],
+  "primary_snippet": {
+    "content": "'use client'\n\nimport { Editor } from '@monaco-editor/react'\nimport { SupabasePersistenceOptions } from '@supabase-labs/y-supabase'\nimport { Awareness } from 'y-protocols/awareness.js'\n\nimport { useConnectOnMount } from '../hooks/use-connect-on-mount'\n\ntype RealtimeMonacoProps = {\n  channel: string\n  language?: string\n  height?: string | number\n  className?: string\n  awareness?: boolean | Awareness\n  persistence?: boolean | SupabasePersistenceOptions\n  theme?: 'light' | 'dark'\n}\n\nconst DEFAULT_HEIGHT = 550\n\nconst RealtimeMonaco = ({\n  channel,\n  language = 'javascript',\n  height = DEFAULT_HEIGHT,\n  awareness = true,\n  persistence,\n  theme,\n  ...rest\n}: RealtimeMonacoProps) => {\n  const { connectOnMount } = useConnectOnMount({ channel, persistence, awareness })\n\n  return (\n    <Editor\n      height={height}\n      language={language}\n      theme={theme === 'dark' ? 'vs-dark' : 'light'}\n      onMount={connectOnMount}\n      {...rest}\n    />\n  )\n}\n\nexport { RealtimeMonaco }",
+    "end_line": 43,
+    "start_line": 1
+  },
+  "related_files": [],
+  "relevant_context_files": [
+    "apps/ui-library/registry/default/blocks/realtime-monaco/components/realtime-monaco.tsx",
+    "apps/ui-library/registry/default/blocks/realtime-monaco/hooks/use-connect-on-mount.ts"
+  ],
+  "smell_id": "heuristic_props_4262",
+  "symbol_name": "RealtimeMonaco",
+  "target_file": "apps/ui-library/registry/default/blocks/realtime-monaco/components/realtime-monaco.tsx",
+  "task_id": "task_97d2b7eeff"
+}

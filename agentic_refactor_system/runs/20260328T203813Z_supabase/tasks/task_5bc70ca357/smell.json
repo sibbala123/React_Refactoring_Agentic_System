@@ -1,0 +1,14 @@
+{
+  "component_name": "FloatingBoxes",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Wrapped/Pages/Intro.tsx",
+  "line_end": 230,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4879",
+  "smell_type": "Large Component"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "MultiSelectDemo",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/design-system/registry/default/example/toc-demo.tsx",
+  "line_end": 226,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_0314",
+  "smell_type": "Large Component"
+}

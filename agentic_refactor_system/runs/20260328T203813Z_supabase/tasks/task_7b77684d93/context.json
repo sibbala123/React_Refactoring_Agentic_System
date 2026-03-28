@@ -1,0 +1,27 @@
+{
+  "line_end": 35,
+  "line_start": 35,
+  "local_imports": [
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditorRow.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { useCallback, useEffect, useState } from 'react'\nimport { toast } from 'sonner'\nimport { Button, cn, flattenTree, INodeRendererProps, TreeView } from 'ui'\n\nimport { FileAction, TreeChildData, type FileData } from './FileExplorerAndEditor.types'\nimport {\n  extractZipFile,\n  getFileAction,\n  getLanguageFromFileName,\n  isBinaryFile,\n  isZipFile,\n} from './FileExplorerAndEditor.utils'\nimport { FileExplorerAndEditorRow } from './FileExplorerAndEditorRow'\n\ninterface FileExplorerAndEditorProps {\n  files: FileData[]\n  onFilesChange: (files: FileData[]) => void\n  aiEndpoint?: string\n  aiMetadata?: {\n    projectRef?: string\n    connectionString?: string | null\n    orgSlug?: string\n  }\n\n  selectedFileId?: number\n  setSelectedFileId?: (id: number) => void\n}\n\nconst denoJsonDefaultContent = JSON.stringify({ imports: {} }, null, '\\t')\n\nexport const FileExplorerAndEditor = ({\n  files,\n  onFilesChange,\n  aiEndpoint,\n  aiMetadata,\n  selectedFileId: extSelectedFileId,\n  setSelectedFileId: extSetSelectedFileId,\n}: FileExplorerAndEditorProps) => {\n  const [isDragOver, setIsDragOver] = useState(false)\n  const [_selectedFileId, _setSelectedFileId] = useState<number>(files[0]?.id)\n  const [extractionProgress, setExtractionProgress] = useState<{\n    current: number\n    total: number\n  } | null>(null)\n\n  const selectedFileId = extSelectedFileId ?? _selectedFileId\n  const setSelectedFileId = extSetSelectedFileId ?? _setSelectedFileId\n\n  const selectedFile = files.find((f) => f.id === selectedFileId)\n  const isExtractingZip = extractionProgress !== null\n\n  const [treeData, setTreeData] = useState<{ name: string; children: TreeChildData[] }>({\n    name: '',\n    children: files.map((file) => ({\n      id: file.id.toString(),\n      name: file.name,\n      metadata: {\n        isEditing: false,\n        originalId: file.id,\n        state: file.state,\n      },",
+    "end_line": 65,
+    "start_line": 5
+  },
+  "related_files": [
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditor.types.ts",
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditor.utils.ts",
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditorRow.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/FileExplorerAndEditor/index.tsx",
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditorRow.tsx",
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditor.types.ts",
+    "apps/studio/components/ui/FileExplorerAndEditor/FileExplorerAndEditor.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2776",
+  "symbol_name": "FileExplorerAndEditor",
+  "target_file": "apps/studio/components/ui/FileExplorerAndEditor/index.tsx",
+  "task_id": "task_7b77684d93"
+}

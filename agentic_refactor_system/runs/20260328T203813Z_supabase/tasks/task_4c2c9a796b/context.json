@@ -1,0 +1,41 @@
+{
+  "line_end": 23,
+  "line_start": 23,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import {\n  Button,\n  cn,\n  CodeBlock,\n  Dialog,\n  DialogClose,\n  DialogContent,\n  DialogFooter,\n  DialogHeader,\n  DialogSection,\n  DialogSectionSeparator,\n  DialogTitle,\n} from 'ui'\n\ninterface ErrorDetailsDialogProps {\n  open: boolean\n  onOpenChange: (open: boolean) => void\n  tableName: string\n  reason: string\n  solution?: string\n}\n\nexport const ErrorDetailsDialog = ({\n  open,\n  onOpenChange,\n  tableName,\n  reason,\n  solution,\n}: ErrorDetailsDialogProps) => {\n  return (\n    <Dialog open={open} onOpenChange={onOpenChange}>\n      <DialogContent size=\"xlarge\" aria-describedby={undefined}>\n        <DialogHeader>\n          <DialogTitle>\n            Replication error on <code className=\"text-code-inline\">{tableName}</code>\n          </DialogTitle>\n        </DialogHeader>\n        <DialogSectionSeparator />\n        <DialogSection className=\"!p-0\">\n          <div className=\"px-4 py-3\">\n            <p className=\"text-sm text-foreground-light\">\n              The following error occurred during replication:\n            </p>\n          </div>\n          <CodeBlock\n            hideLineNumbers\n            wrapLines={false}\n            wrapperClassName={cn(\n              '[&_pre]:px-4 [&_pre]:py-3 [&>pre]:border-x-0 [&>pre]:rounded-none'\n            )}\n            language=\"bash\"\n            value={reason}\n            className=\"[&_code]:text-xs [&_code]:text-foreground [&_span]:!text-foreground\"",
+    "end_line": 53,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/BatchRestartDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DeleteDestination.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Destinations.tsx",
+    "apps/studio/components/interfaces/Database/Replication/EnableReplicationCallout.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Pipeline.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/PipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Replication.constants.ts",
+    "apps/studio/components/interfaces/Database/Replication/RestartTableDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/RetryCountdown.tsx",
+    "apps/studio/components/interfaces/Database/Replication/RowMenu.tsx",
+    "apps/studio/components/interfaces/Database/Replication/UpdateVersionModal.tsx",
+    "apps/studio/components/interfaces/Database/Replication/useDestinationInformation.ts",
+    "apps/studio/components/interfaces/Database/Replication/useIsETLPrivateAlpha.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/ErrorDetailsDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/BatchRestartDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DeleteDestination.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Destinations.tsx",
+    "apps/studio/components/interfaces/Database/Replication/EnableReplicationCallout.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Pipeline.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1314",
+  "symbol_name": "ErrorDetailsDialog",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/ErrorDetailsDialog.tsx",
+  "task_id": "task_4c2c9a796b"
+}

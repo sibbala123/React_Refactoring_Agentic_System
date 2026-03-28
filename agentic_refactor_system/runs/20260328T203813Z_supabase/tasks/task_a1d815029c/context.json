@@ -1,0 +1,45 @@
+{
+  "line_end": 34,
+  "line_start": 34,
+  "local_imports": [
+    "apps/studio/components/ui/Charts/useChartHighlight.tsx"
+  ],
+  "primary_snippet": {
+    "content": "\nimport {\n  cn,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n} from 'ui'\nimport { ChartHighlight } from './useChartHighlight'\n\nexport type UpdateDateRange = (from: string, to: string) => void\n\nexport type ChartHighlightActionContext = {\n  start: string\n  end: string\n  clear: () => void\n  chartId?: string\n}\n\nexport type ChartHighlightAction = {\n  id: string\n  label: string | ((ctx: ChartHighlightActionContext) => string)\n  icon?: ReactNode\n  isDisabled?: (ctx: ChartHighlightActionContext) => boolean\n  rightSlot?: ReactNode | ((ctx: ChartHighlightActionContext) => ReactNode)\n  onSelect: (ctx: ChartHighlightActionContext) => void\n}\n\nexport const ChartHighlightActions = ({\n  chartHighlight,\n  updateDateRange,\n  actions,\n  chartId,\n}: {\n  chartHighlight?: ChartHighlight\n  updateDateRange?: UpdateDateRange\n  actions?: ChartHighlightAction[]\n  chartId?: string\n}) => {\n  const { left: selectedRangeStart, right: selectedRangeEnd, clearHighlight } = chartHighlight ?? {}\n  const [isOpen, setIsOpen] = useState(!!chartHighlight?.popoverPosition)\n\n  useEffect(() => {\n    setIsOpen(!!chartHighlight?.popoverPosition && selectedRangeStart !== selectedRangeEnd)\n  }, [chartHighlight?.popoverPosition])\n\n  const ctx: ChartHighlightActionContext | undefined =\n    selectedRangeStart && selectedRangeEnd && clearHighlight\n      ? { start: selectedRangeStart, end: selectedRangeEnd, clear: clearHighlight, chartId }\n      : undefined\n\n  const defaultActions: ChartHighlightAction[] = useMemo(() => {\n    if (!updateDateRange || !ctx) return []\n    const isDisabled = dayjs(ctx.end).diff(dayjs(ctx.start), 'minutes') < 10\n    return [\n      {\n        id: 'zoom-in',\n        label: 'Zoom in',\n        icon: <SearchIcon className=\"text-foreground-lighter\" size={12} />,",
+    "end_line": 64,
+    "start_line": 4
+  },
+  "related_files": [
+    "apps/studio/components/ui/Charts/AreaChart.tsx",
+    "apps/studio/components/ui/Charts/BarChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHandler.tsx",
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/Charts.constants.ts",
+    "apps/studio/components/ui/Charts/Charts.types.tsx",
+    "apps/studio/components/ui/Charts/Charts.utils.test.ts",
+    "apps/studio/components/ui/Charts/Charts.utils.tsx",
+    "apps/studio/components/ui/Charts/ComposedChart.tsx",
+    "apps/studio/components/ui/Charts/ComposedChart.utils.tsx",
+    "apps/studio/components/ui/Charts/ComposedChartHandler.tsx",
+    "apps/studio/components/ui/Charts/NoDataPlaceholder.tsx",
+    "apps/studio/components/ui/Charts/ReportSettings.tsx",
+    "apps/studio/components/ui/Charts/StackedBarChart.tsx",
+    "apps/studio/components/ui/Charts/useChartHighlight.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.test.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/Charts/ChartHighlightActions.tsx",
+    "apps/studio/components/ui/Charts/useChartHighlight.tsx",
+    "apps/studio/components/ui/Charts/AreaChart.tsx",
+    "apps/studio/components/ui/Charts/BarChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHandler.tsx",
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/Charts.constants.ts",
+    "apps/studio/components/ui/Charts/Charts.types.tsx"
+  ],
+  "smell_id": "heuristic_props_2682",
+  "symbol_name": "ChartHighlightActions",
+  "target_file": "apps/studio/components/ui/Charts/ChartHighlightActions.tsx",
+  "task_id": "task_a1d815029c"
+}

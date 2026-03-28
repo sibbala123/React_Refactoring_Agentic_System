@@ -1,0 +1,41 @@
+{
+  "line_end": 240,
+  "line_start": 1,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useFlag, useParams } from 'common'\nimport { useIsPlatformWebhooksEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'\nimport type { SidebarSection } from 'components/layouts/AccountLayout/AccountLayout.types'\nimport { WithSidebar } from 'components/layouts/AccountLayout/WithSidebar'\nimport { useCurrentPath } from 'hooks/misc/useCurrentPath'\nimport { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'\nimport { PropsWithChildren } from 'react'\n\ninterface OrganizationSettingsMenuItemsProps {\n  slug?: string\n  showSecuritySettings?: boolean\n  showSsoSettings?: boolean\n  showLegalDocuments?: boolean\n  showPlatformWebhooks?: boolean\n  showPrivateApps?: boolean\n}\n\ninterface OrganizationSettingsSectionsProps extends OrganizationSettingsMenuItemsProps {\n  currentPath: string\n}\n\nexport const normalizeOrganizationSettingsPath = (path: string) => path.split('#')[0]\n\nexport const generateOrganizationSettingsMenuItems = ({\n  slug,\n  showSecuritySettings = true,\n  showSsoSettings = true,\n  showLegalDocuments = true,\n  showPlatformWebhooks = true,\n  showPrivateApps = false,\n}: OrganizationSettingsMenuItemsProps) => [\n  {\n    key: 'general',\n    label: 'General',\n    href: `/org/${slug}/general`,\n  },\n  ...(showSecuritySettings\n    ? [\n        {\n          key: 'security',\n          label: 'Security',\n          href: `/org/${slug}/security`,\n        },\n      ]\n    : []),\n  {\n    key: 'apps',\n    label: 'OAuth Apps',\n    href: `/org/${slug}/apps`,\n  },\n  ...(showSsoSettings\n    ? [\n        {\n          key: 'sso',\n          label: 'SSO',\n          href: `/org/${slug}/sso`,\n        },\n      ]\n    : []),\n  ...(showPlatformWebhooks\n    ? [\n        {\n          key: 'webhooks',\n          label: 'Webhooks',\n          href: `/org/${slug}/webhooks`,\n        },\n      ]\n    : []),\n  {\n    key: 'audit',\n    label: 'Audit Logs',\n    href: `/org/${slug}/audit`,\n  },\n  ...(showLegalDocuments\n    ? [\n        {\n          key: 'documents',\n          label: 'Legal Documents',\n          href: `/org/${slug}/documents`,\n        },\n      ]\n    : []),\n]\n\nexport const generateOrganizationSettingsSections = ({\n  currentPath,\n  slug,\n  showSecuritySettings = true,\n  showSsoSettings = true,\n  showLegalDocuments = true,\n  showPlatformWebhooks = true,\n  showPrivateApps = false,\n}: OrganizationSettingsSectionsProps): SidebarSection[] => {\n  const isLinkActive = (key: string, href: string) =>\n    key === 'webhooks'\n      ? currentPath === href || currentPath.startsWith(`${href}/`)\n      : currentPath === href\n\n  const configurationLinks = [\n    {\n      key: 'general',\n      label: 'General',\n      href: `/org/${slug}/general`,\n    },\n    ...(showSecuritySettings\n      ? [\n          {\n            key: 'security',\n            label: 'Security',\n            href: `/org/${slug}/security`,\n          },\n        ]\n      : []),\n    ...(showSsoSettings\n      ? [\n          {\n            key: 'sso',\n            label: 'SSO',\n            href: `/org/${slug}/sso`,\n          },\n        ]\n      : []),\n  ]\n\n  const connectionsLinks = [\n    {\n      key: 'apps',\n      label: 'OAuth Apps',\n      href: `/org/${slug}/apps`,\n    },\n    ...(showPrivateApps\n      ? [\n          {\n            key: 'private-apps',\n            label: 'Private Apps',\n            href: `/org/${slug}/private-apps`,\n          },\n        ]\n      : []),\n    ...(showPlatformWebhooks\n      ? [\n          {\n            key: 'webhooks',\n            label: 'Webhooks',\n            href: `/org/${slug}/webhooks`,\n          },\n        ]\n      : []),\n  ]\n\n  const complianceLinks = [\n    {\n      key: 'audit',\n      label: 'Audit Logs',\n      href: `/org/${slug}/audit`,\n    },\n    ...(showLegalDocuments\n      ? [\n          {\n            key: 'documents',\n            label: 'Legal Documents',\n            href: `/org/${slug}/documents`,\n          },\n        ]\n      : []),\n  ]\n\n  return [\n    {\n      key: 'configuration',\n      heading: 'Configuration',\n      links: configurationLinks.map((item) => ({\n        ...item,\n        isActive: isLinkActive(item.key, item.href),\n      })),\n    },\n    {\n      key: 'connections',\n      heading: 'Connections',\n      links: connectionsLinks.map((item) => ({\n        ...item,\n        isActive: isLinkActive(item.key, item.href),\n      })),\n    },\n    {\n      key: 'compliance',\n      heading: 'Compliance',\n      links: complianceLinks.map((item) => ({\n        ...item,\n        isActive: isLinkActive(item.key, item.href),\n      })),\n    },\n  ]\n}\n\nexport function OrganizationSettingsLayout({ children }: PropsWithChildren) {\n  const { slug } = useParams()\n  const showPlatformWebhooks = useIsPlatformWebhooksEnabled()\n  const showPrivateApps = useFlag('privateApps')\n  const fullCurrentPath = useCurrentPath()\n  const currentPath = normalizeOrganizationSettingsPath(fullCurrentPath)\n\n  const {\n    organizationShowSsoSettings: showSsoSettings,\n    organizationShowSecuritySettings: showSecuritySettings,\n    organizationShowLegalDocuments: showLegalDocuments,\n  } = useIsFeatureEnabled([\n    'organization:show_sso_settings',\n    'organization:show_security_settings',\n    'organization:show_legal_documents',\n  ])\n\n  const sections = generateOrganizationSettingsSections({\n    currentPath,\n    slug,\n    showSecuritySettings,\n    showSsoSettings,\n    showLegalDocuments,\n    showPlatformWebhooks,\n    showPrivateApps,\n  })\n\n  // Browser titles for org settings routes are set by OrganizationLayout.\n  return (\n    <WithSidebar\n      title=\"Organization Settings\"\n      breadcrumbs={[]}\n      sections={sections}\n      header={\n        <div className=\"border-default flex min-h-[var(--header-height)] items-center border-b px-6\">\n          <h4 className=\"text-lg\">Settings</h4>\n        </div>\n      }\n    >\n      {children}\n    </WithSidebar>\n  )\n}\n\nexport default OrganizationSettingsLayout",
+    "end_line": 240,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/ProjectLayout/BuildingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/ConnectingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/LoadingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/OrganizationSettingsLayout.test.ts",
+    "apps/studio/components/layouts/ProjectLayout/OrganizationSettingsMenu.tsx",
+    "apps/studio/components/layouts/ProjectLayout/PauseFailedState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/PausingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/ProjectContext.tsx",
+    "apps/studio/components/layouts/ProjectLayout/ResizingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/RestartingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/RestoreFailedState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/RestorePaidPlanProjectNotice.tsx",
+    "apps/studio/components/layouts/ProjectLayout/RestoringState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/index.test.tsx",
+    "apps/studio/components/layouts/ProjectLayout/index.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/ProjectLayout/OrganizationSettingsLayout.tsx",
+    "apps/studio/components/layouts/ProjectLayout/BuildingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/ConnectingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/LoadingState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/OrganizationSettingsLayout.test.ts",
+    "apps/studio/components/layouts/ProjectLayout/OrganizationSettingsMenu.tsx",
+    "apps/studio/components/layouts/ProjectLayout/PauseFailedState.tsx",
+    "apps/studio/components/layouts/ProjectLayout/PausingState.tsx"
+  ],
+  "smell_id": "heuristic_large_2555",
+  "symbol_name": "OrganizationSettingsLayout",
+  "target_file": "apps/studio/components/layouts/ProjectLayout/OrganizationSettingsLayout.tsx",
+  "task_id": "task_6e3c41be12"
+}

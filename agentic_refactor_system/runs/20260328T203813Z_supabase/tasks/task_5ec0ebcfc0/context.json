@@ -1,0 +1,23 @@
+{
+  "line_end": 46,
+  "line_start": 46,
+  "local_imports": [
+    "apps/studio/components/ui/CodeEditor/CodeEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  explainCode: { enabled: false, callback: noop },\n  formatDocument: { enabled: true, callback: noop },\n  placeholderFill: { enabled: true },\n  closeAssistant: { enabled: false, callback: noop },\n}\n\ninterface CodeEditorProps {\n  id: string\n  language: 'pgsql' | 'json' | 'html' | 'typescript' | undefined\n  autofocus?: boolean\n  defaultValue?: string\n  isReadOnly?: boolean\n  hideLineNumbers?: boolean\n  className?: string\n  loading?: boolean\n  options?: EditorProps['options']\n  value?: string\n  placeholder?: string\n  /* Determines what actions to add for code editor context menu */\n  actions?: Partial<{\n    runQuery: CodeEditorActions\n    formatDocument: CodeEditorActions\n    placeholderFill: Omit<CodeEditorActions, 'callback'>\n    explainCode: CodeEditorActions\n    closeAssistant: CodeEditorActions\n  }>\n  editorRef?: MutableRefObject<editor.IStandaloneCodeEditor | undefined>\n  onInputChange?: (value?: string) => void\n}\n\nconst CodeEditor = ({\n  id,\n  language,\n  defaultValue,\n  autofocus = true,\n  isReadOnly = false,\n  hideLineNumbers = false,\n  className,\n  loading,\n  options,\n  value,\n  placeholder,\n  actions = DEFAULT_ACTIONS,\n  editorRef: editorRefProps,\n  onInputChange = noop,\n}: CodeEditorProps) => {\n  const monaco = useMonaco()\n  const { data: project } = useSelectedProjectQuery()\n\n  const hasValue = useRef<any>()\n  const ref = useRef<editor.IStandaloneCodeEditor>()\n  const editorRef = editorRefProps || ref\n  const monacoRef = useRef<Monaco>()\n\n  const { runQuery, placeholderFill, formatDocument, explainCode, closeAssistant } = {\n    ...DEFAULT_ACTIONS,\n    ...actions,\n  }\n\n  const runQueryCallbackRef = useRef(runQuery.callback)\n  useEffect(() => {",
+    "end_line": 76,
+    "start_line": 16
+  },
+  "related_files": [
+    "apps/studio/components/ui/CodeEditor/CodeEditor.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/CodeEditor/CodeEditor.tsx",
+    "apps/studio/components/ui/CodeEditor/CodeEditor.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2696",
+  "symbol_name": "CodeEditor",
+  "target_file": "apps/studio/components/ui/CodeEditor/CodeEditor.tsx",
+  "task_id": "task_5ec0ebcfc0"
+}

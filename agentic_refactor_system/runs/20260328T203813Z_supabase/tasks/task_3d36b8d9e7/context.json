@@ -1,0 +1,25 @@
+{
+  "line_end": 61,
+  "line_start": 61,
+  "local_imports": [
+    "apps/studio/components/layouts/PageLayout/PageHeader.tsx",
+    "apps/studio/components/layouts/Scaffold.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  secondaryActions?: ReactNode\n  navigationItems?: NavigationItem[]\n  className?: string\n  size?: 'default' | 'full' | 'large' | 'small'\n  isCompact?: boolean\n}\n\n/**\n * For rendering a general single column based UI (which covers most of the dashboard's use case)\n *\n * Pages that would use this would for example be: Auth Sign In / Up, Project settings, Advisors, etc\n *\n * Pages that would deviate from this are those with dedicated UI, for example: Table Editor, SQL Editor, etc\n *\n * Handles rendering the following UI behaviors:\n * - Page padding depending on the size property\n * - Top level breadcrumbs (If applicable)\n * - Top level page header (If applicable)\n * - Top level tab navigations (If applicable)\n * @param title - Title rendered in page header\n * @param subtitle - Subtitle rendered in page header, below title\n * @param icon - Icon rendered in Page header, to the left of title and subtitle\n * @param breadcrumbs - Breadcrumbs rendered in page header, above title. Can be string labels with hrefs or custom elements\n * @param primaryActions - TBD\n * @param secondaryActions - TBD\n * @param navigationItems - Tab navigation rendered below the page header\n * @param className - Optional additional class names to be applied\n * @param size - Controls padding of the page header only, padding for the content to be controlled by PageContainer (Default: 'default')\n * @param isCompact - TBD (Default: false)\n */\nexport const PageLayout = ({\n  children,\n  title,\n  subtitle,\n  icon,\n  breadcrumbs = [],\n  primaryActions,\n  secondaryActions,\n  navigationItems = [],\n  className,\n  size = 'default',\n  isCompact = false,\n}: PageLayoutProps) => {\n  const { ref } = useParams()\n  const router = useRouter()\n\n  return (\n    <div className={cn('w-full min-h-full flex flex-col items-stretch', className)}>\n      <ScaffoldContainer\n        size={size}\n        className={cn(\n          'w-full mx-auto',\n          size === 'full' &&\n            (isCompact ? 'max-w-none !px-6 border-b pt-4' : 'max-w-none pt-6 !px-10 border-b'),\n          size !== 'full' && (isCompact ? 'pt-4' : 'pt-12'),\n          navigationItems.length === 0 && size === 'full' && (isCompact ? 'pb-4' : 'pb-8')\n        )}\n      >\n        {/* Header section */}\n        {(title || subtitle || primaryActions || secondaryActions || breadcrumbs.length > 0) && (\n          <PageHeader",
+    "end_line": 91,
+    "start_line": 31
+  },
+  "related_files": [
+    "apps/studio/components/layouts/PageLayout/PageHeader.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/PageLayout/PageLayout.tsx",
+    "apps/studio/components/layouts/PageLayout/PageHeader.tsx",
+    "apps/studio/components/layouts/Scaffold.tsx"
+  ],
+  "smell_id": "heuristic_props_2531",
+  "symbol_name": "PageLayout",
+  "target_file": "apps/studio/components/layouts/PageLayout/PageLayout.tsx",
+  "task_id": "task_3d36b8d9e7"
+}

@@ -1,0 +1,25 @@
+{
+  "line_end": 5,
+  "line_start": 5,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { cn } from 'ui'\nimport { Box } from 'lucide-react'\nimport { Check } from 'lucide-react'\n\nexport const ResourceOption = ({\n  value,\n  label,\n  isSelected,\n  onChange,\n}: {\n  value: string\n  label: string\n  isSelected: boolean\n  onChange: () => void\n}) => (\n  <label\n    className={cn(\n      'border border-default rounded-md bg-surface-200 hover:bg-overlay-hover hover:border-control px-4 py-3 cursor-pointer transition-colors flex-1 flex flex-col',\n      isSelected && 'border-foreground-muted hover:border-foreground-muted bg-surface-300'\n    )}\n  >\n    <div className=\"flex justify-between items-start mb-3\">\n      <Box size={16} className=\"text-foreground-light\" />\n      {isSelected && (\n        <div className=\"flex items-center justify-center p-0.5 bg-foreground text-background rounded-full\">\n          <Check size={12} strokeWidth=\"4\" className=\"text-background\" />\n        </div>\n      )}\n    </div>\n    <span className={cn('text-sm', isSelected ? 'text-foreground' : 'text-foreground-light')}>\n      {label}\n    </span>\n    <input\n      type=\"radio\"\n      name=\"resourceAccess\"",
+    "end_line": 35,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceAccess.tsx",
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceAccess.types.ts",
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceMultiSelector.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceOption.tsx",
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceAccess.tsx",
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceAccess.types.ts",
+    "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceMultiSelector.tsx"
+  ],
+  "smell_id": "heuristic_props_0904",
+  "symbol_name": "ResourceOption",
+  "target_file": "apps/studio/components/interfaces/Account/AccessTokens/Scoped/Form/ResourceAccess/ResourceOption.tsx",
+  "task_id": "task_89d6b27eab"
+}

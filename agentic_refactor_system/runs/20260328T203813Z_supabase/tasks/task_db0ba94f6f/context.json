@@ -1,0 +1,48 @@
+{
+  "line_end": 24,
+  "line_start": 24,
+  "local_imports": [
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ColumnContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerColumn.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FolderContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ItemContextMenu.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { noop } from 'lodash'\nimport { useEffect, useRef } from 'react'\nimport { useStorageExplorerStateSnapshot } from 'state/storage-explorer'\nimport { cn } from 'ui'\n\nimport { CONTEXT_MENU_KEYS, STORAGE_ROW_STATUS, STORAGE_VIEWS } from '../Storage.constants'\nimport type { StorageColumn, StorageItemWithColumn } from '../Storage.types'\nimport { ColumnContextMenu } from './ColumnContextMenu'\nimport { FileExplorerColumn } from './FileExplorerColumn'\nimport { FolderContextMenu } from './FolderContextMenu'\nimport { ItemContextMenu } from './ItemContextMenu'\n\nexport interface FileExplorerProps {\n  columns: StorageColumn[]\n  selectedItems: StorageItemWithColumn[]\n  itemSearchString: string\n  isLoading?: boolean\n  onFilesUpload: (event: any, index: number) => void\n  onSelectAllItemsInColumn: (index: number) => void\n  onSelectColumnEmptySpace: (index: number) => void\n  onColumnLoadMore: (index: number, column: StorageColumn) => void\n}\n\nexport const FileExplorer = ({\n  columns = [],\n  selectedItems = [],\n  itemSearchString,\n  isLoading = false,\n  onFilesUpload = noop,\n  onSelectAllItemsInColumn = noop,\n  onSelectColumnEmptySpace = noop,\n  onColumnLoadMore = noop,\n}: FileExplorerProps) => {\n  const fileExplorerRef = useRef<any>(null)\n  const snap = useStorageExplorerStateSnapshot()\n\n  useEffect(() => {\n    if (fileExplorerRef) {\n      const { scrollWidth, clientWidth } = fileExplorerRef.current\n      if (scrollWidth > clientWidth) {\n        fileExplorerRef.current.scrollLeft += scrollWidth - clientWidth\n      }\n    }\n  }, [columns])\n\n  return (\n    <div\n      ref={fileExplorerRef}\n      className={cn(\n        'file-explorer flex flex-grow overflow-x-auto justify-between h-full w-full relative',\n        snap.view === STORAGE_VIEWS.LIST && 'flex-col'\n      )}\n    >\n      <ColumnContextMenu id={CONTEXT_MENU_KEYS.STORAGE_COLUMN} />",
+    "end_line": 54,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ColumnContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ConfirmDeleteModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/CustomExpiryModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerColumn.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerHeader.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerHeaderSelection.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerRow.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerRowEditing.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FolderContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ItemContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/MoveItemsModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/PreviewPane.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/StorageExplorer.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/StorageExplorer.utils.test.ts",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/StorageExplorer.utils.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/useCopyUrl.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/useFetchFileUrlQuery.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorer.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ColumnContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerColumn.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FolderContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ItemContextMenu.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/ConfirmDeleteModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/CustomExpiryModal.tsx",
+    "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerHeader.tsx"
+  ],
+  "smell_id": "heuristic_props_2215",
+  "symbol_name": "FileExplorer",
+  "target_file": "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorer.tsx",
+  "task_id": "task_db0ba94f6f"
+}

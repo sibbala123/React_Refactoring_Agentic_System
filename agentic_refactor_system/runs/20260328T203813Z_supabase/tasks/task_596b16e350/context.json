@@ -1,0 +1,39 @@
+{
+  "line_end": 35,
+  "line_start": 35,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "\nfunction getColumnType(type: string, format: string) {\n  // json and jsonb both have type=undefined, so check format instead\n  if (type === undefined && (format === 'jsonb' || format === 'json')) return 'json'\n\n  switch (type) {\n    case 'string':\n      return 'string'\n    case 'integer':\n      return 'number'\n    case 'json':\n      return 'json'\n    case 'number':\n      return 'number'\n    case 'boolean':\n      return 'boolean'\n    default:\n      return ''\n  }\n}\n\ninterface ParamProps {\n  name: string\n  type: string\n  format: string\n  required: boolean\n  description: boolean\n  metadata?: any\n  onDesciptionUpdated?: () => void\n}\nconst Param = ({\n  name,\n  type,\n  format,\n  required,\n  description,\n  metadata = {},\n  onDesciptionUpdated = noop,\n}: ParamProps) => {\n  return (\n    <div className=\"not-prose\">\n      <div className=\"mb-4 flex items-center gap-4\">\n        <h3 className=\"heading-default text-foreground mb-0 mt-0\">{name}</h3>\n\n        <Badge variant={required ? 'warning' : 'default'}>\n          {required ? 'Required' : 'Optional'}\n        </Badge>\n      </div>\n      {format && (\n        <div className=\"grid grid-cols-[auto_1fr] gap-y-2 gap-x-10 text-sm\">\n          <label className=\"text-foreground-lighter\">Type</label>\n          <div className=\"text-foreground\">{getColumnType(type, format)}</div>\n          <label className=\"text-foreground-lighter\">Format</label>\n          <div className=\"text-foreground\">{format}</div>\n          {description !== false && (\n            <>\n              <label className=\"text-foreground-lighter\">Description</label>\n              <div className=\"text-foreground pt-1\">\n                <Description\n                  content={description?.toString()}\n                  metadata={metadata}",
+    "end_line": 65,
+    "start_line": 5
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Docs/Authentication.tsx",
+    "apps/studio/components/interfaces/Docs/CodeSnippet.tsx",
+    "apps/studio/components/interfaces/Docs/Description.tsx",
+    "apps/studio/components/interfaces/Docs/DocSection.tsx",
+    "apps/studio/components/interfaces/Docs/Docs.types.ts",
+    "apps/studio/components/interfaces/Docs/GeneralContent.tsx",
+    "apps/studio/components/interfaces/Docs/GeneratingTypes.tsx",
+    "apps/studio/components/interfaces/Docs/Introduction.tsx",
+    "apps/studio/components/interfaces/Docs/LangSelector.tsx",
+    "apps/studio/components/interfaces/Docs/PublicSchemaNotEnabledAlert.tsx",
+    "apps/studio/components/interfaces/Docs/ResourceContent.tsx",
+    "apps/studio/components/interfaces/Docs/RpcContent.tsx",
+    "apps/studio/components/interfaces/Docs/Snippets.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Docs/Param.tsx",
+    "apps/studio/components/interfaces/Docs/Authentication.tsx",
+    "apps/studio/components/interfaces/Docs/CodeSnippet.tsx",
+    "apps/studio/components/interfaces/Docs/Description.tsx",
+    "apps/studio/components/interfaces/Docs/DocSection.tsx",
+    "apps/studio/components/interfaces/Docs/Docs.types.ts",
+    "apps/studio/components/interfaces/Docs/GeneralContent.tsx",
+    "apps/studio/components/interfaces/Docs/GeneratingTypes.tsx"
+  ],
+  "smell_id": "heuristic_props_1412",
+  "symbol_name": "Param",
+  "target_file": "apps/studio/components/interfaces/Docs/Param.tsx",
+  "task_id": "task_596b16e350"
+}

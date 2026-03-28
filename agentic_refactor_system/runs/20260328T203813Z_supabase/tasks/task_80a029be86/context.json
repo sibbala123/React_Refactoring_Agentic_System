@@ -1,0 +1,41 @@
+{
+  "line_end": 38,
+  "line_start": 38,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/ForeignRowSelector/ForeignRowSelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/InputField.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/index.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/TextEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "\nimport { ActionBar } from '../ActionBar'\nimport { formatForeignKeys } from '../ForeignKeySelector/ForeignKeySelector.utils'\nimport { ForeignRowSelector } from './ForeignRowSelector/ForeignRowSelector'\nimport { HeaderTitle } from './HeaderTitle'\nimport { InputField } from './InputField'\nimport { JsonEditor } from './JsonEditor'\nimport type { EditValue, RowField } from './RowEditor.types'\nimport {\n  convertByteaToHex,\n  generateRowFields,\n  generateRowObjectFromFields,\n  generateUpdateRowPayload,\n  validateFields,\n} from './RowEditor.utils'\nimport { TextEditor } from './TextEditor'\nimport { useIsQueueOperationsEnabled } from '@/components/interfaces/App/FeaturePreview/FeaturePreviewContext'\n\nexport interface RowEditorProps {\n  row?: Dictionary<any>\n  selectedTable: PostgresTable\n  visible: boolean\n  editable?: boolean\n  closePanel: () => void\n  saveChanges: (payload: any, isNewRecord: boolean, configuration: any, resolve: () => void) => void\n  updateEditorDirty: () => void\n}\n\nconst formId = 'row-editor-panel'\n\nexport const RowEditor = ({\n  row,\n  selectedTable,\n  visible = false,\n  editable = true,\n  closePanel = noop,\n  saveChanges = noop,\n  updateEditorDirty = noop,\n}: RowEditorProps) => {\n  const { data: project } = useSelectedProjectQuery()\n  const isQueueOperationsEnabled = useIsQueueOperationsEnabled()\n  const applyChangesLabel = isQueueOperationsEnabled ? 'Queue changes' : 'Save'\n\n  const [errors, setErrors] = useState<Dictionary<any>>({})\n  const [rowFields, setRowFields] = useState<RowField[]>([])\n\n  const [selectedValueForTextEdit, setSelectedValueForTextEdit] = useState<EditValue>()\n  const [selectedValueForJsonEdit, setSelectedValueForJsonEdit] = useState<EditValue>()\n\n  const [isSelectingForeignKey, setIsSelectingForeignKey] = useState<boolean>(false)\n  const [referenceRow, setReferenceRow] = useState<RowField>()\n\n  const isNewRecord = row === undefined\n  const isEditingText = selectedValueForTextEdit !== undefined\n  const isEditingJson = selectedValueForJsonEdit !== undefined\n\n  const [loading, setLoading] = useState(false)\n  const [createMore, setCreateMore] = useState(false)\n\n  const [requiredFields, optionalFields] = partition(\n    rowFields,",
+    "end_line": 68,
+    "start_line": 8
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/InputField.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.utils.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/TextEditor.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/ForeignRowSelector/ForeignRowSelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/HeaderTitle.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/InputField.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/index.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/TextEditor.tsx"
+  ],
+  "smell_id": "heuristic_props_2332",
+  "symbol_name": "RowEditor",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/RowEditor.tsx",
+  "task_id": "task_80a029be86"
+}

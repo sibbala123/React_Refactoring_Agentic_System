@@ -1,0 +1,26 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [
+    "packages/ui/src/components/Typography/index.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts"
+  ],
+  "primary_snippet": {
+    "content": "import React from 'react'\n\nimport styleHandler from '../../lib/theme/styleHandler'\nimport Typography from '../Typography'\n\ninterface CardProps {\n  children?: React.ReactNode\n  className?: string\n  cover?: React.ReactNode\n  description?: string\n  hoverable?: boolean\n  style?: React.CSSProperties\n  title?: string\n  titleExtra?: React.ReactNode\n}\n\nfunction Card({ children, className, cover, hoverable, style, title, titleExtra }: CardProps) {\n  let __styles = styleHandler('card')\n\n  let classes = [__styles.base]\n  if (hoverable) classes.push(__styles.hoverable)\n  if (className) classes.push(className)\n\n  return (\n    <div className={classes.join(' ')} style={style}>\n      {title && (\n        <div className={__styles.head}>\n          <Typography.Text style={{ margin: 0 }}>{title}</Typography.Text>\n          <Typography.Link style={{ margin: 0 }}>{titleExtra}</Typography.Link>\n        </div>\n      )}\n      {cover}\n      <div className={__styles.content}>{children}</div>\n    </div>\n  )\n}\n\ninterface MetaProps {\n  title?: string\n  description?: string\n  style?: React.CSSProperties\n  className?: string\n}\n\nfunction Meta({ title, description, style, className }: MetaProps) {\n  return (\n    <div style={style} className={className}>",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "packages/ui/src/components/Card/index.tsx"
+  ],
+  "relevant_context_files": [
+    "packages/ui/src/components/Card/Card.tsx",
+    "packages/ui/src/components/Typography/index.tsx",
+    "packages/ui/src/lib/theme/styleHandler.ts",
+    "packages/ui/src/components/Card/index.tsx"
+  ],
+  "smell_id": "heuristic_props_5919",
+  "symbol_name": "Card",
+  "target_file": "packages/ui/src/components/Card/Card.tsx",
+  "task_id": "task_d6bf700a2e"
+}

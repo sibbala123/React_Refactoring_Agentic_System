@@ -1,0 +1,33 @@
+{
+  "line_end": 50,
+  "line_start": 50,
+  "local_imports": [
+    "apps/studio/components/interfaces/Auth/Overview/OverviewTable.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  ChartEmptyState,\n  ChartHeader,\n  ChartLoadingState,\n  ChartMetric,\n  ChartTitle,\n} from 'ui-patterns/Chart'\nimport {\n  PageSection,\n  PageSectionContent,\n  PageSectionMeta,\n  PageSectionSummary,\n  PageSectionTitle,\n} from 'ui-patterns/PageSection'\n\nimport { ErrorCodeTooltip } from 'components/ui/ErrorCodeTooltip/ErrorCodeTooltip'\nimport {\n  AuthErrorCodeRow,\n  fetchTopAuthErrorCodes,\n  fetchTopResponseErrors,\n  ResponseErrorRow,\n} from './OverviewErrors.constants'\nimport { OverviewTable } from './OverviewTable'\nimport {\n  AuthMetricsResponse,\n  calculatePercentageChange,\n  getApiSuccessRates,\n  getAuthSuccessRates,\n  getMetricValues,\n} from './OverviewUsage.constants'\n\nconst StatCard = ({\n  title,\n  current,\n  previous,\n  loading,\n  suffix = '',\n  invert = false,\n  href,\n  tooltip,\n}: {\n  title: string\n  current: number\n  previous: number\n  loading: boolean\n  suffix?: string\n  invert?: boolean\n  href?: string\n  tooltip?: string\n}) => {\n  const router = useRouter()\n  const formattedCurrent =\n    suffix === 'ms'\n      ? current.toFixed(2)\n      : suffix === '%'\n        ? current.toFixed(1)\n        : Math.round(current).toLocaleString()\n  // const signChar = previous > 0 ? '+' : previous < 0 ? '-' : ''\n\n  const actions = [\n    {\n      label: 'Go to Auth Report',",
+    "end_line": 80,
+    "start_line": 20
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Auth/Overview/OverviewErrors.constants.ts",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewLearnMore.tsx",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewTable.tsx",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewUsage.constants.ts",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewUsage.schema.ts",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewUsage.test.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Auth/Overview/OverviewMetrics.tsx",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewTable.tsx",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewErrors.constants.ts",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewLearnMore.tsx",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewUsage.constants.ts",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewUsage.schema.ts",
+    "apps/studio/components/interfaces/Auth/Overview/OverviewUsage.test.ts"
+  ],
+  "smell_id": "heuristic_props_1012",
+  "symbol_name": "StatCard",
+  "target_file": "apps/studio/components/interfaces/Auth/Overview/OverviewMetrics.tsx",
+  "task_id": "task_34003794dc"
+}

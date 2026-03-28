@@ -1,0 +1,33 @@
+{
+  "line_end": 14,
+  "line_start": 14,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { OAuthScope } from '@supabase/shared-types/out/constants'\nimport { Check } from 'lucide-react'\n\nimport { PERMISSIONS_DESCRIPTIONS } from './OAuthApps.constants'\n\nexport interface AuthorizeRequesterDetailsProps {\n  icon: string | null\n  name: string\n  domain: string\n  scopes: OAuthScope[]\n  showOnlyScopes?: boolean\n}\n\nexport const ScopeSection = ({\n  description,\n  hasReadScope,\n  hasWriteScope,\n}: {\n  description: string\n  hasReadScope: boolean\n  hasWriteScope: boolean\n}) => {\n  if (hasReadScope || hasWriteScope) {\n    const perms = [hasReadScope ? 'Read' : null, hasWriteScope ? 'Write' : null]\n      .filter(Boolean)\n\n      .map((str) => (\n        <span key={str} className=\"font-semibold text-foreground\">\n          {str}\n        </span>\n      ))\n      .reduce((acc, v) => (\n        <>\n          {acc}\n          <span> and </span>\n          {v}\n        </>\n      ))\n\n    return (\n      <div className=\"first:border-t border-b flex flex-row space-x-1 text-sm text-foreground-light py-2 px-1\">\n        <div className=\"pt-0.5\">\n          <Check stroke=\"green\" height={18} width={18} strokeWidth={1.5} />\n        </div>",
+    "end_line": 44,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/OAuthApps/AuthorizedAppRow.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/DeleteAppModal.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthAppRow.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.constants.ts",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/RevokeAppModal.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/OAuthApps/AuthorizeRequesterDetails.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/AuthorizedAppRow.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/DeleteAppModal.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthAppRow.tsx",
+    "apps/studio/components/interfaces/Organization/OAuthApps/OAuthApps.constants.ts",
+    "apps/studio/components/interfaces/Organization/OAuthApps/RevokeAppModal.tsx"
+  ],
+  "smell_id": "heuristic_props_1701",
+  "symbol_name": "ScopeSection",
+  "target_file": "apps/studio/components/interfaces/Organization/OAuthApps/AuthorizeRequesterDetails.tsx",
+  "task_id": "task_1a7c1e3eee"
+}

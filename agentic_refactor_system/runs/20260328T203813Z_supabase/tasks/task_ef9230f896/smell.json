@@ -1,0 +1,14 @@
+{
+  "component_name": "aws-reinvent-2025",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/data/aws-reinvent-2025.tsx",
+  "line_end": 429,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4884",
+  "smell_type": "Large Component"
+}

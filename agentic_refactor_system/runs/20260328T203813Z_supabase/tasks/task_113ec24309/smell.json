@@ -1,0 +1,14 @@
+{
+  "component_name": "IconPanel",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=10",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui-patterns/src/IconPanel/index.tsx",
+  "line_end": 23,
+  "line_start": 23,
+  "severity": "low",
+  "smell_id": "heuristic_props_6238",
+  "smell_type": "Too Many Props"
+}

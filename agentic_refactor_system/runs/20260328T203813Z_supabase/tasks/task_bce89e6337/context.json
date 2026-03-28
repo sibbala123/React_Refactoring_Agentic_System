@@ -1,0 +1,40 @@
+{
+  "line_end": 34,
+  "line_start": 34,
+  "local_imports": [
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/RunButton.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/SavingIndicator.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { LOCAL_STORAGE_KEYS, useParams } from 'common'\nimport { RoleImpersonationPopover } from 'components/interfaces/RoleImpersonationSelector/RoleImpersonationPopover'\nimport { DatabaseSelector } from 'components/ui/DatabaseSelector'\nimport { useLocalStorageQuery } from 'hooks/misc/useLocalStorage'\nimport { IS_PLATFORM } from 'lib/constants'\nimport { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n  Tooltip,\n  TooltipContent,\n  TooltipTrigger,\n  cn,\n} from 'ui'\nimport { SqlRunButton } from './RunButton'\nimport SavingIndicator from './SavingIndicator'\n\nexport type UtilityActionsProps = {\n  id: string\n  isExecuting?: boolean\n  isDisabled?: boolean\n  hasSelection?: boolean\n  prettifyQuery: () => void\n  executeQuery: () => void\n}\n\nconst UtilityActions = ({\n  id,\n  isExecuting = false,\n  isDisabled = false,\n  hasSelection = false,\n  prettifyQuery,\n  executeQuery,\n}: UtilityActionsProps) => {\n  const { ref } = useParams()\n  const snapV2 = useSqlEditorV2StateSnapshot()\n\n  const [isAiOpen] = useLocalStorageQuery(LOCAL_STORAGE_KEYS.SQL_EDITOR_AI_OPEN, true)\n  const [intellisenseEnabled, setIntellisenseEnabled] = useLocalStorageQuery(\n    LOCAL_STORAGE_KEYS.SQL_EDITOR_INTELLISENSE,\n    true\n  )\n  const [lastSelectedDb, setLastSelectedDb] = useLocalStorageQuery(\n    LOCAL_STORAGE_KEYS.SQL_EDITOR_LAST_SELECTED_DB(ref as string),\n    ''\n  )\n\n  const snippet = snapV2.snippets[id]\n  const isFavorite = snippet !== undefined ? snippet.snippet.favorite : false\n\n  const toggleIntellisense = () => {\n    setIntellisenseEnabled(!intellisenseEnabled)\n    toast.success(\n      `Successfully ${intellisenseEnabled ? 'disabled' : 'enabled'} intellisense. ${intellisenseEnabled ? 'Please refresh your browser for changes to take place.' : ''}`\n    )\n  }\n",
+    "end_line": 64,
+    "start_line": 4
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/CellDetailPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ChartConfig.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ReadOnlyBadge.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.test.ts",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.ts",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/RunButton.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/SavingIndicator.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityTabExplain.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityTabResults.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityActions.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/RunButton.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/SavingIndicator.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/CellDetailPanel.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ChartConfig.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/ReadOnlyBadge.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.tsx",
+    "apps/studio/components/interfaces/SQLEditor/UtilityPanel/Results.utils.test.ts"
+  ],
+  "smell_id": "heuristic_props_2154",
+  "symbol_name": "UtilityActions",
+  "target_file": "apps/studio/components/interfaces/SQLEditor/UtilityPanel/UtilityActions.tsx",
+  "task_id": "task_bce89e6337"
+}

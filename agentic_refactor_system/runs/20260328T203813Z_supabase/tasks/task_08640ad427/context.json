@@ -1,0 +1,33 @@
+{
+  "line_end": 51,
+  "line_start": 51,
+  "local_imports": [
+    "apps/studio/components/ui/ButtonTooltip.tsx",
+    "apps/studio/components/ui/QueryBlock/BlockViewConfiguration.tsx",
+    "apps/studio/components/ui/QueryBlock/EditQueryButton.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.tsx",
+    "apps/studio/components/ui/SqlWarningAdmonition.tsx"
+  ],
+  "primary_snippet": {
+    "content": "  xKey: '',\n  yKey: '',\n  showLabels: false,\n  showGrid: false,\n  logScale: false,\n  view: 'table',\n}\n\nexport interface QueryBlockProps {\n  id?: string\n  label: string\n  sql?: string\n  isWriteQuery?: boolean\n  chartConfig?: ChartConfig\n  actions?: ReactNode\n  results?: any[]\n  errorText?: string\n  isExecuting?: boolean\n  initialHideSql?: boolean\n  draggable?: boolean\n  disabled?: boolean\n  blockWriteQueries?: boolean\n  onExecute?: (queryType: 'select' | 'mutation') => void\n  onRemoveChart?: () => void\n  onUpdateChartConfig?: ({ chartConfig }: { chartConfig: Partial<ChartConfig> }) => void\n  onDragStart?: (e: DragEvent<Element>) => void\n}\n\n// [Joshen ReportsV2] JFYI we may adjust this in subsequent PRs when we implement this into Reports V2\n// First iteration here is just to make this work with the AI Assistant first\nexport const QueryBlock = ({\n  id,\n  label,\n  sql,\n  chartConfig = DEFAULT_CHART_CONFIG,\n  actions,\n  results,\n  errorText,\n  isWriteQuery = false,\n  isExecuting = false,\n  initialHideSql = false,\n  draggable = false,\n  disabled = false,\n  blockWriteQueries = false,\n  onExecute,\n  onRemoveChart,\n  onUpdateChartConfig,\n  onDragStart,\n}: QueryBlockProps) => {\n  const [chartSettings, setChartSettings] = useState<ChartConfig>(chartConfig)\n  const { xKey, yKey, view = 'table', logScale = false } = chartSettings\n\n  const [showSql, setShowSql] = useState(!results && !initialHideSql)\n  const [focusDataIndex, setFocusDataIndex] = useState<number>()\n  const [showWarning, setShowWarning] = useState<'hasWriteOperation' | 'hasUnknownFunctions'>()\n\n  const prevIsWriteQuery = useRef(isWriteQuery)\n\n  useEffect(() => {\n    if (!prevIsWriteQuery.current && isWriteQuery) {\n      setShowWarning('hasWriteOperation')",
+    "end_line": 81,
+    "start_line": 21
+  },
+  "related_files": [
+    "apps/studio/components/ui/QueryBlock/BlockViewConfiguration.tsx",
+    "apps/studio/components/ui/QueryBlock/EditQueryButton.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/QueryBlock/QueryBlock.tsx",
+    "apps/studio/components/ui/ButtonTooltip.tsx",
+    "apps/studio/components/ui/QueryBlock/BlockViewConfiguration.tsx",
+    "apps/studio/components/ui/QueryBlock/EditQueryButton.tsx",
+    "apps/studio/components/ui/SqlWarningAdmonition.tsx",
+    "apps/studio/components/ui/QueryBlock/QueryBlock.utils.ts"
+  ],
+  "smell_id": "heuristic_props_2828",
+  "symbol_name": "QueryBlock",
+  "target_file": "apps/studio/components/ui/QueryBlock/QueryBlock.tsx",
+  "task_id": "task_08640ad427"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "AuthManager",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=12",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/ui-library/registry/default/platform/platform-kit-nextjs/components/supabase-manager/auth.tsx",
+  "line_end": 25,
+  "line_start": 25,
+  "severity": "low",
+  "smell_id": "heuristic_props_4338",
+  "smell_type": "Too Many Props"
+}

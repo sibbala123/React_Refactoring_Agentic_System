@@ -1,0 +1,14 @@
+{
+  "component_name": "RowIcon",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=13",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Storage/StorageExplorer/FileExplorerRow.tsx",
+  "line_end": 53,
+  "line_start": 53,
+  "severity": "low",
+  "smell_id": "heuristic_props_2219",
+  "smell_type": "Too Many Props"
+}

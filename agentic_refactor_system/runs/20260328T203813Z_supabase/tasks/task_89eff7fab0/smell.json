@@ -1,0 +1,14 @@
+{
+  "component_name": "Listbox",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=23",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/ui/src/components/Listbox/Listbox2.tsx",
+  "line_end": 43,
+  "line_start": 43,
+  "severity": "low",
+  "smell_id": "heuristic_props_5991",
+  "smell_type": "Too Many Props"
+}

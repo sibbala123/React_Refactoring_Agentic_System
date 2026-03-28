@@ -1,0 +1,31 @@
+{
+  "line_end": 22,
+  "line_start": 22,
+  "local_imports": [
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import { ExternalLink, RotateCcw } from 'lucide-react'\nimport Link from 'next/link'\n\nimport { ButtonTooltip } from '@/components/ui/ButtonTooltip'\nimport { InlineLinkClassName } from '@/components/ui/InlineLink'\nimport { ReplicationPipelineTableStatus } from '@/data/replication/pipeline-replication-status-query'\nimport { useParams } from 'common'\nimport { Badge, Button, cn, TableCell, TableRow, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\nimport { ErroredTableDetails } from '../ErroredTableDetails'\nimport { TableState } from './ReplicationPipelineStatus.types'\nimport { getDisabledStateConfig, getStatusConfig } from './ReplicationPipelineStatus.utils'\n\ninterface TableReplicationRowProps {\n  table: ReplicationPipelineTableStatus\n  config: ReturnType<typeof getDisabledStateConfig>\n  isRestarting: boolean\n  showDisabledState: boolean\n  onSelectRestart: () => void\n  onSelectShowError: () => void\n}\n\nexport const TableReplicationRow = ({\n  table,\n  config,\n  isRestarting,\n  showDisabledState,\n  onSelectRestart,\n  onSelectShowError,\n}: TableReplicationRowProps) => {\n  const { ref } = useParams()\n  const isErrorState = table.state.name === 'error'\n  const statusConfig = getStatusConfig(table.state as TableState['state'])\n\n  return (\n    <TableRow>\n      <TableCell className=\"align-top\">\n        <div className=\"flex items-center gap-x-2\">\n          <p className={cn(isRestarting && 'text-foreground-light')}>{table.table_name}</p>\n\n          <ButtonTooltip\n            asChild\n            type=\"text\"\n            className=\"px-1.5\"\n            icon={<ExternalLink />}\n            tooltip={{\n              content: { side: 'bottom', text: 'Open in Table Editor' },\n            }}\n          >\n            <Link\n              target=\"_blank\"\n              rel=\"noopener noreferrer\"\n              href={`/project/${ref}/editor/${table.table_id}`}",
+    "end_line": 52,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.types.ts",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.utils.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/SlotLagMetrics.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/TableReplicationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.types.ts",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/ReplicationPipelineStatus.utils.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/SlotLagMetrics.tsx"
+  ],
+  "smell_id": "heuristic_props_1330",
+  "symbol_name": "TableReplicationRow",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/ReplicationPipelineStatus/TableReplicationRow.tsx",
+  "task_id": "task_279682323f"
+}

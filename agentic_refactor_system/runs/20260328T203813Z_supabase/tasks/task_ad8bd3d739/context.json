@@ -1,0 +1,33 @@
+{
+  "line_end": 60,
+  "line_start": 60,
+  "local_imports": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import type { ForeignKey, SelectorErrors, SelectorTypeError } from './ForeignKeySelector.types'\nimport {\n  generateCascadeActionDescription,\n  hasForeignKeySelectorChanges,\n  normalizeForeignKeyForDirtyCheck,\n  type ForeignKeyDirtyState,\n} from './ForeignKeySelector.utils'\n\nconst EMPTY_STATE: ForeignKey = {\n  id: undefined,\n  schema: 'public',\n  table: '',\n  columns: [] as { source: string; target: string }[],\n  deletionAction: FOREIGN_KEY_CASCADE_ACTION.NO_ACTION,\n  updateAction: FOREIGN_KEY_CASCADE_ACTION.NO_ACTION,\n}\n\ninterface ForeignKeySelectorProps {\n  visible: boolean\n  table: {\n    id: number\n    name: string\n    columns: { id: string; name: string; format: string; isNewColumn: boolean }[]\n  }\n  column?: ColumnField // For ColumnEditor, to prefill when adding a new foreign key\n  foreignKey?: ForeignKey\n  onClose: () => void\n  onSaveRelation: (fk: ForeignKey) => void\n}\n\nexport const ForeignKeySelector = ({\n  visible,\n  table,\n  column,\n  foreignKey,\n  onClose,\n  onSaveRelation,\n}: ForeignKeySelectorProps) => {\n  const { data: project } = useSelectedProjectQuery()\n  const { selectedSchema } = useQuerySchemaState()\n\n  const [fk, setFk] = useState(EMPTY_STATE)\n  const [errors, setErrors] = useState<SelectorErrors>({})\n  const [initialSnapshot, setInitialSnapshot] = useState<ForeignKeyDirtyState>()\n  const hasTypeErrors = (errors.types ?? []).length > 0\n  const hasTypeNotices = (errors.typeNotice ?? []).length > 0\n\n  const { data: schemas = [] } = useSchemasQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n  })\n  const sortedSchemas = [...schemas].sort((a, b) => a.name.localeCompare(b.name))\n\n  const { data: tables } = useTablesQuery({\n    projectRef: project?.ref,\n    connectionString: project?.connectionString,\n    schema: fk.schema,\n    includeColumns: false,\n  })\n\n  const { data: selectedTable, isLoading: isLoadingSelectedTable } = useTableQuery<PostgresTable>(",
+    "end_line": 90,
+    "start_line": 30
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.utils.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ActionBar.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor.tsx",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.constants.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.types.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.utils.test.ts",
+    "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.utils.tsx"
+  ],
+  "smell_id": "heuristic_props_2310",
+  "symbol_name": "ForeignKeySelector",
+  "target_file": "apps/studio/components/interfaces/TableGridEditor/SidePanelEditor/ForeignKeySelector/ForeignKeySelector.tsx",
+  "task_id": "task_ad8bd3d739"
+}

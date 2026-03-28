@@ -1,0 +1,14 @@
+{
+  "component_name": "CustomWrapper",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=11",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/tests/lib/custom-render.tsx",
+  "line_end": 11,
+  "line_start": 11,
+  "severity": "low",
+  "smell_id": "heuristic_props_4091",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,48 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useEffect, useMemo, useState } from 'react'\n\nimport { Checkbox } from '@ui/components/shadcn/ui/checkbox'\nimport { Label } from '@ui/components/shadcn/ui/label'\nimport { Popover, PopoverContent, PopoverTrigger } from '@ui/components/shadcn/ui/popover'\nimport { Button, cn } from 'ui'\nimport type { FilterSet, Filters } from './Logs.types'\n\ninterface LogsFilterPopoverProps {\n  options: FilterSet\n  filters: Filters\n  onFiltersChange: (filters: Filters) => void\n  buttonClassName: string\n  align?: 'start' | 'end' | 'center'\n  isLoading?: boolean\n}\n\nconst LogsFilterPopover = ({\n  options,\n  filters,\n  onFiltersChange,\n  buttonClassName,\n  align = 'start',\n  isLoading = false,\n}: LogsFilterPopoverProps) => {\n  const filterKey = options.key\n  const [open, setOpen] = useState(false)\n  const [values, setValues] = useState<Filters>(filters)\n\n  const handleReset = () => {\n    const emptyFilters = { [filterKey]: {} }\n    setValues(emptyFilters)\n    onFiltersChange({\n      ...filters,\n      [filterKey]: {},\n    })\n  }\n\n  const handleToggle = () => setOpen(!open)\n  const isActive = useMemo(() => {\n    const filter = values[filterKey]\n    if (typeof filter === 'object' && Object.values(filter).some(Boolean)) {\n      return true\n    }\n    return false\n  }, [values, filterKey])\n\n  // Reset values on close without applying",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.UpdateSavedQueryModal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.constants.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.types.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.test.ts",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.utils.ts",
+    "apps/studio/components/interfaces/Settings/Logs/LogsFormatters.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsPreviewer.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsQueryPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogsTableEmptyState.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/MultiSelectActionBar.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanel.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/PreviewFilterPanelWithUniversal.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/RecentQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/UpgradePrompt.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/logsDateRange.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Settings/Logs/LogsFilterPopover.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/ErrorCodeDialog.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogSelection.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/LogTable.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.DatePickers.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.Divider.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SavedQueriesItem.tsx",
+    "apps/studio/components/interfaces/Settings/Logs/Logs.SqlSnippetCode.tsx"
+  ],
+  "smell_id": "heuristic_props_2103",
+  "symbol_name": "LogsFilterPopover",
+  "target_file": "apps/studio/components/interfaces/Settings/Logs/LogsFilterPopover.tsx",
+  "task_id": "task_0f1789f9e4"
+}

@@ -1,0 +1,33 @@
+{
+  "line_end": 17,
+  "line_start": 17,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { useClickedOutside } from 'hooks/ui/useClickedOutside'\nimport { KeyboardEvent, ReactNode, useCallback, useEffect, useRef } from 'react'\n\ninterface BlockKeysProps {\n  value: string | null\n  children: ReactNode\n  onEscape?: (value: string | null) => void\n  onEnter?: (value: string | null) => void\n  ignoreOutsideClicks?: boolean\n}\n\n/**\n * Blocks key events from propagating\n * We use this with cell editor to allow editor component to handle keys.\n * Example: press enter to add newline on textEditor\n */\nexport const BlockKeys = ({\n  value,\n  children,\n  onEscape,\n  onEnter,\n  ignoreOutsideClicks = false,\n}: BlockKeysProps) => {\n  const ref = useRef(null)\n  const isClickedOutside = useClickedOutside(ref)\n\n  const handleKeyDown = useCallback(\n    (ev: KeyboardEvent<HTMLDivElement>) => {\n      switch (ev.key) {\n        case 'Escape':\n          ev.stopPropagation()\n          if (onEscape) onEscape(value)\n          break\n        case 'Enter':\n          ev.stopPropagation()\n          if (!ev.shiftKey && onEnter) {\n            ev.preventDefault()\n            onEnter(value)\n          }\n          break\n      }\n    },\n    [value]\n  )\n\n  useEffect(() => {\n    if (ignoreOutsideClicks) return",
+    "end_line": 47,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/grid/components/common/DefaultValue.tsx",
+    "apps/studio/components/grid/components/common/DropdownControl.tsx",
+    "apps/studio/components/grid/components/common/EmptyValue.tsx",
+    "apps/studio/components/grid/components/common/Hooks.tsx",
+    "apps/studio/components/grid/components/common/MonacoEditor.tsx",
+    "apps/studio/components/grid/components/common/NullValue.tsx",
+    "apps/studio/components/grid/components/common/Shortcuts.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/grid/components/common/BlockKeys.tsx",
+    "apps/studio/components/grid/components/common/DefaultValue.tsx",
+    "apps/studio/components/grid/components/common/DropdownControl.tsx",
+    "apps/studio/components/grid/components/common/EmptyValue.tsx",
+    "apps/studio/components/grid/components/common/Hooks.tsx",
+    "apps/studio/components/grid/components/common/MonacoEditor.tsx",
+    "apps/studio/components/grid/components/common/NullValue.tsx",
+    "apps/studio/components/grid/components/common/Shortcuts.tsx"
+  ],
+  "smell_id": "heuristic_props_0799",
+  "symbol_name": "BlockKeys",
+  "target_file": "apps/studio/components/grid/components/common/BlockKeys.tsx",
+  "task_id": "task_1063820708"
+}

@@ -1,0 +1,14 @@
+{
+  "component_name": "ProductCard",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=23",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/www/components/Products/ProductCard.tsx",
+  "line_end": 7,
+  "line_start": 7,
+  "severity": "low",
+  "smell_id": "heuristic_props_4757",
+  "smell_type": "Too Many Props"
+}

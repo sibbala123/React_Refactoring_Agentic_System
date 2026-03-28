@@ -1,0 +1,14 @@
+{
+  "component_name": "StorageExplorerStateContextProvider",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/state/storage-explorer.tsx",
+  "line_end": 1948,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_4055",
+  "smell_type": "Large Component"
+}

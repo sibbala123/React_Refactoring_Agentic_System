@@ -1,0 +1,47 @@
+{
+  "line_end": 21,
+  "line_start": 21,
+  "local_imports": [
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/NoDataPlaceholder.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.tsx"
+  ],
+  "primary_snippet": {
+    "content": "import dayjs from 'dayjs'\nimport { useState } from 'react'\nimport { Area, AreaChart as RechartAreaChart, Tooltip, XAxis } from 'recharts'\nimport { useChartHoverState } from './useChartHoverState'\n\nimport { CHART_COLORS, DateTimeFormats } from 'components/ui/Charts/Charts.constants'\nimport { ChartHeader } from './ChartHeader'\nimport type { CommonChartProps, Datum } from './Charts.types'\nimport { numberFormatter, useChartSize } from './Charts.utils'\nimport NoDataPlaceholder from './NoDataPlaceholder'\n\nexport interface AreaChartProps<D = Datum> extends CommonChartProps<D> {\n  yAxisKey: string\n  xAxisKey: string\n  format?: string\n  customDateFormat?: string\n  displayDateInUtc?: boolean\n  syncId?: string\n}\n\nconst AreaChart = ({\n  data,\n  yAxisKey,\n  xAxisKey,\n  format,\n  customDateFormat = DateTimeFormats.FULL,\n  title,\n  highlightedValue,\n  highlightedLabel,\n  displayDateInUtc,\n  minimalHeader,\n  className = '',\n  valuePrecision,\n  size = 'normal',\n  syncId,\n}: AreaChartProps) => {\n  const { Container } = useChartSize(size)\n  const { hoveredIndex, syncTooltip, setHover, clearHover } = useChartHoverState(\n    syncId || 'default'\n  )\n  const [focusDataIndex, setFocusDataIndex] = useState<number | null>(null)\n\n  const day = (value: number | string) => (displayDateInUtc ? dayjs(value).utc() : dayjs(value))\n  const resolvedHighlightedLabel =\n    (focusDataIndex !== null &&\n      data &&\n      data[focusDataIndex] !== undefined &&\n      day(data[focusDataIndex][xAxisKey]).format(customDateFormat)) ||\n    highlightedLabel\n\n  const resolvedHighlightedValue =",
+    "end_line": 51,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/ui/Charts/BarChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHandler.tsx",
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/ChartHighlightActions.tsx",
+    "apps/studio/components/ui/Charts/Charts.constants.ts",
+    "apps/studio/components/ui/Charts/Charts.types.tsx",
+    "apps/studio/components/ui/Charts/Charts.utils.test.ts",
+    "apps/studio/components/ui/Charts/Charts.utils.tsx",
+    "apps/studio/components/ui/Charts/ComposedChart.tsx",
+    "apps/studio/components/ui/Charts/ComposedChart.utils.tsx",
+    "apps/studio/components/ui/Charts/ComposedChartHandler.tsx",
+    "apps/studio/components/ui/Charts/NoDataPlaceholder.tsx",
+    "apps/studio/components/ui/Charts/ReportSettings.tsx",
+    "apps/studio/components/ui/Charts/StackedBarChart.tsx",
+    "apps/studio/components/ui/Charts/useChartHighlight.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.test.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/ui/Charts/AreaChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHeader.tsx",
+    "apps/studio/components/ui/Charts/NoDataPlaceholder.tsx",
+    "apps/studio/components/ui/Charts/useChartHoverState.tsx",
+    "apps/studio/components/ui/Charts/BarChart.tsx",
+    "apps/studio/components/ui/Charts/ChartHandler.tsx",
+    "apps/studio/components/ui/Charts/ChartHighlightActions.tsx",
+    "apps/studio/components/ui/Charts/Charts.constants.ts"
+  ],
+  "smell_id": "heuristic_props_2678",
+  "symbol_name": "AreaChart",
+  "target_file": "apps/studio/components/ui/Charts/AreaChart.tsx",
+  "task_id": "task_83fa2fc385"
+}

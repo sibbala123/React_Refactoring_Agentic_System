@@ -1,0 +1,14 @@
+{
+  "component_name": "PrivilegesHead",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=15",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/Database/Privileges/PrivilegesHead.tsx",
+  "line_end": 29,
+  "line_start": 29,
+  "severity": "low",
+  "smell_id": "heuristic_props_1281",
+  "smell_type": "Too Many Props"
+}

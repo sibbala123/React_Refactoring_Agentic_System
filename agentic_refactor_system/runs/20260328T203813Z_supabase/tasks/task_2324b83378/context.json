@@ -1,0 +1,48 @@
+{
+  "line_end": 16,
+  "line_start": 16,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import PartnerIcon from 'components/ui/PartnerIcon'\nimport { Check } from 'lucide-react'\nimport Link from 'next/link'\nimport type { Organization } from 'types'\nimport { cn, CommandItem_Shadcn_ } from 'ui'\n\nexport interface OrgCommandItemProps {\n  org: Organization\n  selectedSlug: string | undefined\n  routePathname: string\n  hasRouteSlug: boolean\n  onClose: () => void\n  compactPadding?: boolean\n}\n\nexport function OrgCommandItem({\n  org,\n  selectedSlug,\n  routePathname,\n  hasRouteSlug,\n  onClose,\n  compactPadding = false,\n}: OrgCommandItemProps) {\n  const href = hasRouteSlug ? routePathname.replace('[slug]', org.slug) : `/org/${org.slug}`\n\n  return (\n    <CommandItem_Shadcn_\n      key={org.slug}\n      value={`${org.name.replaceAll('\"', '')} - ${org.slug}`}\n      className=\"cursor-pointer w-full\"\n      onSelect={() => onClose()}\n    >\n      <Link\n        href={href}\n        className={cn(\n          'w-full flex items-center justify-between text-sm md:text-xs',\n          !compactPadding && 'p-0.5'\n        )}\n      >\n        <div className=\"flex items-center gap-2\">\n          <span>{org.name}</span>\n          <PartnerIcon organization={org} />\n        </div>\n        {org.slug === selectedSlug && <Check size={16} />}\n      </Link>\n    </CommandItem_Shadcn_>",
+    "end_line": 46,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/layouts/AppLayout/AdvisorButton.tsx",
+    "apps/studio/components/layouts/AppLayout/AppLayout.tsx",
+    "apps/studio/components/layouts/AppLayout/AppLayoutDropdown.tsx",
+    "apps/studio/components/layouts/AppLayout/AssistantButton.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchBadge.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchDropdown.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchDropdownCommandContent.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchLink.tsx",
+    "apps/studio/components/layouts/AppLayout/ClockSkewBanner.tsx",
+    "apps/studio/components/layouts/AppLayout/InlineEditorButton.tsx",
+    "apps/studio/components/layouts/AppLayout/NoticeBanner.tsx",
+    "apps/studio/components/layouts/AppLayout/OrganizationDropdown.tsx",
+    "apps/studio/components/layouts/AppLayout/OrganizationDropdownCommandContent.tsx",
+    "apps/studio/components/layouts/AppLayout/ProjectDropdown.tsx",
+    "apps/studio/components/layouts/AppLayout/ProjectDropdown.utils.ts",
+    "apps/studio/components/layouts/AppLayout/ProjectRowLink.tsx",
+    "apps/studio/components/layouts/AppLayout/StatusPageBanner.tsx",
+    "apps/studio/components/layouts/AppLayout/StatusPageBanner.utils.test.ts",
+    "apps/studio/components/layouts/AppLayout/StatusPageBanner.utils.ts",
+    "apps/studio/components/layouts/AppLayout/TaxIdBanner.tsx",
+    "apps/studio/components/layouts/AppLayout/useEmbeddedCloseHandler.ts",
+    "apps/studio/components/layouts/AppLayout/useStatusPageBannerVisibility.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/layouts/AppLayout/OrgCommandItem.tsx",
+    "apps/studio/components/layouts/AppLayout/AdvisorButton.tsx",
+    "apps/studio/components/layouts/AppLayout/AppLayout.tsx",
+    "apps/studio/components/layouts/AppLayout/AppLayoutDropdown.tsx",
+    "apps/studio/components/layouts/AppLayout/AssistantButton.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchBadge.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchDropdown.tsx",
+    "apps/studio/components/layouts/AppLayout/BranchDropdownCommandContent.tsx"
+  ],
+  "smell_id": "heuristic_props_2437",
+  "symbol_name": "OrgCommandItem",
+  "target_file": "apps/studio/components/layouts/AppLayout/OrgCommandItem.tsx",
+  "task_id": "task_2324b83378"
+}

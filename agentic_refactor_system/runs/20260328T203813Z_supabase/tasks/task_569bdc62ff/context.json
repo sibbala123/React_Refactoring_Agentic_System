@@ -1,0 +1,21 @@
+{
+  "line_end": 37,
+  "line_start": 37,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { SIDEBAR_KEYS } from 'components/layouts/ProjectLayout/LayoutSidebar/LayoutSidebarProvider'\nimport { ButtonTooltip } from 'components/ui/ButtonTooltip'\nimport { useAsyncCheckPermissions } from 'hooks/misc/useCheckPermissions'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\nimport { useAiAssistantStateSnapshot } from 'state/ai-assistant-state'\nimport { useSidebarManagerSnapshot } from 'state/sidebar-manager-state'\nimport {\n  Button,\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n  TableCell,\n  TableRow,\n} from 'ui'\nimport type { DatabaseFunction } from 'data/database-functions/database-functions-query'\n\ninterface FunctionListProps {\n  schema: string\n  filterString: string\n  isLocked: boolean\n  returnTypeFilter: string[]\n  securityFilter: string[]\n  duplicateFunction: (fn: any) => void\n  editFunction: (fn: any) => void\n  deleteFunction: (fn: any) => void\n  functions: DatabaseFunction[]\n}\n\nconst FunctionList = ({\n  schema,\n  filterString,\n  isLocked,\n  returnTypeFilter,\n  securityFilter,\n  duplicateFunction = noop,\n  editFunction = noop,\n  deleteFunction = noop,\n  functions,\n}: FunctionListProps) => {\n  const router = useRouter()\n  const { data: selectedProject } = useSelectedProjectQuery()\n  const aiSnap = useAiAssistantStateSnapshot()\n  const { openSidebar } = useSidebarManagerSnapshot()\n\n  const filteredFunctions = (functions ?? []).filter((x) => {\n    const matchesName = includes(x.name.toLowerCase(), filterString.toLowerCase())\n    const matchesReturnType =\n      returnTypeFilter.length === 0 || returnTypeFilter.includes(x.return_type)\n    const matchesSecurity =\n      securityFilter.length === 0 ||\n      (securityFilter.includes('definer') && x.security_definer) ||\n      (securityFilter.includes('invoker') && !x.security_definer)\n    return matchesName && matchesReturnType && matchesSecurity\n  })\n  const _functions = sortBy(\n    filteredFunctions.filter((x) => x.schema == schema),\n    (func) => func.name.toLocaleLowerCase()\n  )\n  const projectRef = selectedProject?.ref",
+    "end_line": 67,
+    "start_line": 7
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Functions/FunctionsList/FunctionsList.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Functions/FunctionsList/FunctionList.tsx",
+    "apps/studio/components/interfaces/Database/Functions/FunctionsList/FunctionsList.tsx"
+  ],
+  "smell_id": "heuristic_props_1258",
+  "symbol_name": "FunctionList",
+  "target_file": "apps/studio/components/interfaces/Database/Functions/FunctionsList/FunctionList.tsx",
+  "task_id": "task_569bdc62ff"
+}

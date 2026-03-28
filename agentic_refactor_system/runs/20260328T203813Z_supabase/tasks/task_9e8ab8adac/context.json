@@ -1,0 +1,27 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import type { PostgresTrigger } from '@supabase/postgres-meta'\n\nimport { TextConfirmModal } from 'components/ui/TextConfirmModalWrapper'\nimport { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'\n\ninterface DeleteTriggerProps {\n  trigger?: PostgresTrigger\n  visible: boolean\n  setVisible: (value: string | null) => void\n  onDelete: (params: {\n    projectRef: string\n    connectionString?: string | null\n    trigger: PostgresTrigger\n  }) => void\n  isLoading: boolean\n}\n\nexport const DeleteTrigger = ({\n  trigger,\n  visible,\n  setVisible,\n  onDelete,\n  isLoading,\n}: DeleteTriggerProps) => {\n  const { data: project } = useSelectedProjectQuery()\n  const { name, schema } = trigger ?? {}\n\n  async function handleDelete() {\n    if (!project) return console.error('Project is required')\n    if (!trigger) return console.error('Trigger ID is required')\n\n    onDelete({\n      projectRef: project.ref,\n      connectionString: project.connectionString,\n      trigger,\n    })\n  }\n\n  return (\n    <TextConfirmModal\n      variant={'warning'}\n      visible={visible}\n      onCancel={() => setVisible('')}\n      onConfirm={handleDelete}\n      title=\"Delete this trigger\"\n      loading={isLoading}\n      confirmLabel={`Delete trigger ${name}`}\n      confirmPlaceholder=\"Type in name of trigger\"",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Triggers/ChooseFunctionForm.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/DeleteEventTrigger.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/TriggerSheet.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/Triggers.constants.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Triggers/DeleteTrigger.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/ChooseFunctionForm.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/DeleteEventTrigger.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/TriggerSheet.tsx",
+    "apps/studio/components/interfaces/Database/Triggers/Triggers.constants.ts"
+  ],
+  "smell_id": "heuristic_props_1360",
+  "symbol_name": "DeleteTrigger",
+  "target_file": "apps/studio/components/interfaces/Database/Triggers/DeleteTrigger.tsx",
+  "task_id": "task_9e8ab8adac"
+}

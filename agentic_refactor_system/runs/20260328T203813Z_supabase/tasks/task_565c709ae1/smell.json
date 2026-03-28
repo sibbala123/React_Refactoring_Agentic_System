@@ -1,0 +1,14 @@
+{
+  "component_name": "SqlMonacoBlock",
+  "confidence": 0.4,
+  "detector_metadata": {
+    "reason": "destructured parameter count=8",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "apps/studio/components/interfaces/QueryPerformance/SqlMonacoBlock.tsx",
+  "line_end": 18,
+  "line_start": 18,
+  "severity": "low",
+  "smell_id": "heuristic_props_1922",
+  "smell_type": "Too Many Props"
+}

@@ -1,0 +1,29 @@
+{
+  "line_end": 38,
+  "line_start": 38,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import {\n  Button,\n  cn,\n  Command_Shadcn_ as Command,\n  CommandEmpty_Shadcn_ as CommandEmpty,\n  CommandInput_Shadcn_ as CommandInput,\n  CommandItem_Shadcn_,\n  CommandList_Shadcn_ as CommandList,\n} from 'ui'\nimport { z } from 'zod'\n\nexport interface ReportSelectOption {\n  label: React.ReactNode\n  value: string\n  description?: string\n}\n\nexport const selectFilterSchema = z.array(z.string())\nexport type SelectFilters = z.infer<typeof selectFilterSchema>\n\ninterface ReportsSelectFilterProps {\n  label: string\n  options: ReportSelectOption[]\n  value: SelectFilters\n  onChange: (value: SelectFilters) => void\n  isLoading?: boolean\n  className?: string\n  showSearch?: boolean\n}\n\nexport const ReportsSelectFilter = ({\n  label,\n  options,\n  value,\n  onChange,\n  isLoading = false,\n  className,\n  showSearch = false,\n}: ReportsSelectFilterProps) => {\n  const [open, setOpen] = useState(false)\n  const [tempValue, setTempValue] = useState<SelectFilters>(value)\n\n  const isActive = tempValue.length > 0\n\n  useEffect(() => {\n    if (!open) {\n      setTempValue(value)\n    }\n  }, [open, value])\n\n  const handleApply = () => {\n    onChange(tempValue)\n    setOpen(false)\n  }\n\n  const handleClearAll = () => {\n    setTempValue([])\n  }\n\n  const handleKeyDown = (e: React.KeyboardEvent) => {\n    if (e.key === 'Enter') {",
+    "end_line": 68,
+    "start_line": 8
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Reports/v2/ReportChartUpsell.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportChartV2.test.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportChartV2.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportSectionHeader.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportsNumericFilter.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Reports/v2/ReportsSelectFilter.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportChartUpsell.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportChartV2.test.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportChartV2.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportSectionHeader.tsx",
+    "apps/studio/components/interfaces/Reports/v2/ReportsNumericFilter.tsx"
+  ],
+  "smell_id": "heuristic_props_1983",
+  "symbol_name": "ReportsSelectFilter",
+  "target_file": "apps/studio/components/interfaces/Reports/v2/ReportsSelectFilter.tsx",
+  "task_id": "task_e2ae2cab35"
+}

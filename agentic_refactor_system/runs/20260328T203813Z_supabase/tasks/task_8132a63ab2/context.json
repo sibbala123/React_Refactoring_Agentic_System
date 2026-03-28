@@ -1,0 +1,31 @@
+{
+  "line_end": 13,
+  "line_start": 13,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Edge } from '@xyflow/react'\nimport { createContext, useContext, type ReactNode } from 'react'\n\nexport type SchemaGraphContextType = {\n  isDownloading: boolean\n  selectedEdge: Edge | undefined\n  onEditColumn: (tableId: number, columnId: string) => void\n  onEditTable: (tableId: number) => void\n}\n\nexport const SchemaGraphContext = createContext<SchemaGraphContextType | null>(null)\n\nexport const SchemaGraphContextProvider = ({\n  children,\n  value,\n}: {\n  children: ReactNode\n  value: SchemaGraphContextType\n}) => <SchemaGraphContext.Provider value={value}>{children}</SchemaGraphContext.Provider>\n\nexport const useSchemaGraphContext = () => {\n  const context = useContext(SchemaGraphContext)\n  if (!context)\n    throw new Error('useSchemaGraphContext must be used inside a <SchemaGraphContextProvider>')\n  return context\n}",
+    "end_line": 26,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Schemas/DefaultEdge.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/SchemaGraph.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/SchemaGraphLegend.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/SchemaTableNode.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/Schemas.constants.ts",
+    "apps/studio/components/interfaces/Database/Schemas/Schemas.utils.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Schemas/SchemaGraphContext.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/DefaultEdge.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/SchemaGraph.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/SchemaGraphLegend.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/SchemaTableNode.tsx",
+    "apps/studio/components/interfaces/Database/Schemas/Schemas.constants.ts",
+    "apps/studio/components/interfaces/Database/Schemas/Schemas.utils.ts"
+  ],
+  "smell_id": "heuristic_props_1347",
+  "symbol_name": "SchemaGraphContextProvider",
+  "target_file": "apps/studio/components/interfaces/Database/Schemas/SchemaGraphContext.tsx",
+  "task_id": "task_8132a63ab2"
+}

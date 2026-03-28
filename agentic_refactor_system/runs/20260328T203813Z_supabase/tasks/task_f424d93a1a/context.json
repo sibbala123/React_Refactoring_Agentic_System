@@ -1,0 +1,30 @@
+{
+  "line_end": 34,
+  "line_start": 34,
+  "local_imports": [
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx"
+  ],
+  "primary_snippet": {
+    "content": "\nimport AlertError from 'components/ui/AlertError'\nimport Panel from 'components/ui/Panel'\nimport { PricingMetric } from 'data/analytics/org-daily-stats-query'\nimport { useOrgProjectsInfiniteQuery } from 'data/projects/org-projects-infinite-query'\nimport type { OrgSubscription } from 'data/subscriptions/types'\nimport { OrgUsageResponse } from 'data/usage/org-usage-query'\nimport { PROJECT_STATUS } from 'lib/constants'\nimport {\n  Alert_Shadcn_,\n  AlertDescription_Shadcn_,\n  AlertTitle_Shadcn_,\n  Button,\n  CriticalIcon,\n} from 'ui'\nimport { InfoTooltip } from 'ui-patterns/info-tooltip'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\nimport { SectionContent } from '../SectionContent'\nimport { CategoryAttribute } from '../Usage.constants'\n\nexport interface DiskUsageProps {\n  slug: string\n  projectRef?: string | null\n  attribute: CategoryAttribute\n  subscription?: OrgSubscription\n  usage?: OrgUsageResponse\n\n  currentBillingCycleSelected: boolean\n}\n\nexport const DiskUsage = ({\n  slug,\n  projectRef,\n  attribute,\n  subscription,\n  usage,\n  currentBillingCycleSelected,\n}: DiskUsageProps) => {\n  const {\n    data,\n    isError,\n    isPending: isLoading,\n    isSuccess,\n    error,\n  } = useOrgProjectsInfiniteQuery({ slug }, { enabled: currentBillingCycleSelected })\n  const projects = useMemo(() => data?.pages.flatMap((page) => page.projects) || [], [data?.pages])\n\n  const relevantProjects = useMemo(() => {\n    return isSuccess\n      ? projects\n          .filter((project) => {\n            // We do want to show branches that are exceeding the 8 GB limit, as people could have persistent or very long-living branches\n            const isBranchExceedingFreeQuota =\n              project.is_branch && project.databases.some((db) => (db.disk_volume_size_gb ?? 8) > 8)\n\n            const isActiveProject = project.status !== PROJECT_STATUS.INACTIVE\n\n            const isHostedOnAws = project.databases.every((db) => db.cloud_provider === 'AWS')\n\n            return (\n              (!project.is_branch || isBranchExceedingFreeQuota) && isActiveProject && isHostedOnAws",
+    "end_line": 64,
+    "start_line": 4
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/SectionContent.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/Usage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/AttributeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/DatabaseSizeUsage.tsx",
+    "apps/studio/components/interfaces/Organization/Usage/UsageSection/UsageSection.tsx"
+  ],
+  "smell_id": "heuristic_props_1770",
+  "symbol_name": "DiskUsage",
+  "target_file": "apps/studio/components/interfaces/Organization/Usage/UsageSection/DiskUsage.tsx",
+  "task_id": "task_f424d93a1a"
+}

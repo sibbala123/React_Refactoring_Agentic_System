@@ -1,0 +1,14 @@
+{
+  "component_name": "FeatureFlagProvider",
+  "confidence": 0.45,
+  "detector_metadata": {
+    "reason": "file exceeds line threshold",
+    "source": "heuristic_fallback"
+  },
+  "file_path": "packages/common/feature-flags.tsx",
+  "line_end": 279,
+  "line_start": 1,
+  "severity": "medium",
+  "smell_id": "heuristic_large_5629",
+  "smell_type": "Large Component"
+}

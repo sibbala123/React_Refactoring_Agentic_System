@@ -1,0 +1,41 @@
+{
+  "line_end": 23,
+  "line_start": 23,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Loader2 } from 'lucide-react'\n\nimport { useParams } from 'common'\nimport { InlineLink } from 'components/ui/InlineLink'\nimport { ReplicationPipelineStatusData } from 'data/replication/pipeline-status-query'\nimport { PipelineStatusRequestStatus } from 'state/replication-pipeline-request-status'\nimport type { ResponseError } from 'types'\nimport { Badge, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\nimport { ShimmeringLoader } from 'ui-patterns/ShimmeringLoader'\nimport { getPipelineStateMessages } from './Pipeline.utils'\nimport { PipelineStatusName } from './Replication.constants'\n\ninterface PipelineStatusProps {\n  pipelineStatus: ReplicationPipelineStatusData['status'] | undefined\n  error: ResponseError | null\n  isLoading: boolean\n  isError: boolean\n  isSuccess: boolean\n  requestStatus?: PipelineStatusRequestStatus\n  pipelineId?: number\n}\n\nexport const PipelineStatus = ({\n  pipelineStatus,\n  error,\n  isLoading,\n  isError,\n  isSuccess,\n  requestStatus,\n  pipelineId,\n}: PipelineStatusProps) => {\n  const { ref } = useParams()\n\n  // Map backend statuses to UX-friendly display\n  const getStatusConfig = (): {\n    label: string\n    type?: 'failure' | 'warning' | 'loading' | 'success' | 'idle'\n    tooltip: string\n  } => {\n    const statusName =\n      pipelineStatus && typeof pipelineStatus === 'object' && 'name' in pipelineStatus\n        ? pipelineStatus.name\n        : undefined\n\n    // Get consistent tooltip message using the same logic as other components\n    const stateMessages = getPipelineStateMessages(requestStatus, statusName)\n\n    // Show optimistic request state while backend still reports steady states\n    switch (requestStatus) {\n      case PipelineStatusRequestStatus.RestartRequested:\n        return { label: 'Restarting', type: 'loading', tooltip: stateMessages.message }\n      case PipelineStatusRequestStatus.StartRequested:\n        return { label: 'Starting', type: 'loading', tooltip: stateMessages.message }",
+    "end_line": 53,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Database/Replication/BatchRestartDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DeleteDestination.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Destinations.tsx",
+    "apps/studio/components/interfaces/Database/Replication/EnableReplicationCallout.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErrorDetailsDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Pipeline.utils.ts",
+    "apps/studio/components/interfaces/Database/Replication/Replication.constants.ts",
+    "apps/studio/components/interfaces/Database/Replication/RestartTableDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/RetryCountdown.tsx",
+    "apps/studio/components/interfaces/Database/Replication/RowMenu.tsx",
+    "apps/studio/components/interfaces/Database/Replication/UpdateVersionModal.tsx",
+    "apps/studio/components/interfaces/Database/Replication/useDestinationInformation.ts",
+    "apps/studio/components/interfaces/Database/Replication/useIsETLPrivateAlpha.ts"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Database/Replication/PipelineStatus.tsx",
+    "apps/studio/components/interfaces/Database/Replication/BatchRestartDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DeleteDestination.tsx",
+    "apps/studio/components/interfaces/Database/Replication/DestinationRow.tsx",
+    "apps/studio/components/interfaces/Database/Replication/Destinations.tsx",
+    "apps/studio/components/interfaces/Database/Replication/EnableReplicationCallout.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErrorDetailsDialog.tsx",
+    "apps/studio/components/interfaces/Database/Replication/ErroredTableDetails.tsx"
+  ],
+  "smell_id": "heuristic_props_1317",
+  "symbol_name": "PipelineStatus",
+  "target_file": "apps/studio/components/interfaces/Database/Replication/PipelineStatus.tsx",
+  "task_id": "task_5c2306e885"
+}

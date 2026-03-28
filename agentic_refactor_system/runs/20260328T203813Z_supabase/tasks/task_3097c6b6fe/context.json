@@ -1,0 +1,27 @@
+{
+  "line_end": 18,
+  "line_start": 18,
+  "local_imports": [],
+  "primary_snippet": {
+    "content": "import { Code, GripHorizontal } from 'lucide-react'\nimport { DragEvent, PropsWithChildren, ReactNode } from 'react'\n\nimport { cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'\n\ninterface ReportBlockContainerProps {\n  icon?: ReactNode\n  label: string\n  badge?: ReactNode\n  actions: ReactNode\n  loading?: boolean\n  draggable?: boolean\n  showDragHandle?: boolean\n  tooltip?: ReactNode\n  onDragStart?: (e: DragEvent) => void\n}\n\nexport const ReportBlockContainer = ({\n  icon,\n  label,\n  badge,\n  actions,\n  loading = false,\n  draggable = false,\n  showDragHandle = false,\n  tooltip,\n  onDragStart,\n  children,\n}: PropsWithChildren<ReportBlockContainerProps>) => {\n  const hasChildren = Array.isArray(children)\n    ? children.filter(Boolean).filter((x) => !!x.props.children).length > 0\n    : !!children\n\n  return (\n    <div\n      draggable={draggable}\n      unselectable={draggable ? 'on' : undefined}\n      onDragStart={onDragStart}\n      className=\"h-full flex flex-col overflow-hidden bg-surface-100 border-overlay relative rounded border shadow-sm\"\n    >\n      <Tooltip>\n        <TooltipTrigger asChild>\n          <div\n            className={cn(\n              'grid-item-drag-handle flex py-1 pl-3 pr-1 items-center gap-2 z-10 shrink-0 group h-9',\n              draggable && 'cursor-move'\n            )}\n          >",
+    "end_line": 48,
+    "start_line": 1
+  },
+  "related_files": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.constants.ts",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx"
+  ],
+  "relevant_context_files": [
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/DeprecatedChartBlock.tsx",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.constants.ts",
+    "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlock.tsx"
+  ],
+  "smell_id": "heuristic_props_1959",
+  "symbol_name": "ReportBlockContainer",
+  "target_file": "apps/studio/components/interfaces/Reports/ReportBlock/ReportBlockContainer.tsx",
+  "task_id": "task_3097c6b6fe"
+}
