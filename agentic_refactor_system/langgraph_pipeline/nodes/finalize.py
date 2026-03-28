@@ -40,6 +40,8 @@ def finalize_node(state: TaskState) -> dict[str, Any]:
     verification_result = state.get("verification_result") or {}
     skip_reason = state.get("skip_reason")
 
+    critique_result = state.get("critique_result") or {}
+
     # ── Determine terminal status ──────────────────────────────────────────────
     if error:
         terminal_status = STATUS_FAILED
@@ -53,6 +55,11 @@ def finalize_node(state: TaskState) -> dict[str, Any]:
                 f"smell classified as '{actionability['label']}': "
                 f"{actionability.get('rationale', '')}"
             )
+
+    elif critique_result and not critique_result.get("passed", True):
+        # Critique ran and the plan did not meet the quality threshold
+        # (retry limit was exhausted before the plan improved).
+        terminal_status = STATUS_REJECTED
 
     elif len(changed_files) == 0:
         # No edits on an actionable smell = rejected (C3 rule).
@@ -83,7 +90,9 @@ def finalize_node(state: TaskState) -> dict[str, Any]:
         "actionability": state.get("actionability"),
         "plan": state.get("plan"),
         "changed_files": changed_files,
+        "critique_result": critique_result,
         "verification_result": verification_result,
+        "retry_count": state.get("retry_count", 0),
         "artifact_paths": state.get("artifact_paths", {}),
     }
 

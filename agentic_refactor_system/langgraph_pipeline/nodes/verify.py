@@ -42,9 +42,9 @@ def verify_node(state: TaskState) -> dict[str, Any]:
             "passed": passed,
             "checks": {
                 "no_op": no_op_check,
-                "parse": "skipped",        # C4
-                "build": "skipped",        # C4
-                "typecheck": "skipped",    # C4
+                "parse": "skipped",           # C4
+                "build": "skipped",           # C4
+                "typecheck": "skipped",       # C4
                 "smell_resolved": "skipped",  # C5
             },
         }

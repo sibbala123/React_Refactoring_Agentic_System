@@ -11,6 +11,7 @@ STATUS_PENDING = "pending"
 STATUS_CLASSIFYING = "classifying"
 STATUS_PLANNING = "planning"
 STATUS_EDITING = "editing"
+STATUS_CRITIQUING = "critiquing"
 STATUS_VERIFYING = "verifying"
 STATUS_ACCEPTED = "accepted"
 STATUS_REJECTED = "rejected"
@@ -22,12 +23,17 @@ TASK_STATUSES: frozenset[str] = frozenset({
     STATUS_CLASSIFYING,
     STATUS_PLANNING,
     STATUS_EDITING,
+    STATUS_CRITIQUING,
     STATUS_VERIFYING,
     STATUS_ACCEPTED,
     STATUS_REJECTED,
     STATUS_SKIPPED,
     STATUS_FAILED,
 })
+
+# Maximum number of plan retries allowed (applies to both critique and verify loops).
+# With MAX_PLAN_RETRIES = 3 the pipeline makes at most 4 plan attempts total.
+MAX_PLAN_RETRIES = 3
 
 
 class TaskState(TypedDict):
@@ -98,8 +104,9 @@ class TaskState(TypedDict):
     # None until the verify node runs.
     verification_result: dict[str, Any] | None
 
-    # ── Critique output (written by critique node — future story) ─────────────
+    # ── Critique output (written by critique node) ────────────────────────────
     # None until the critique node runs.
+    # Shape: {score, passed, issues, feedback, threshold}
     critique_result: dict[str, Any] | None
 
     # ── Control flow ──────────────────────────────────────────────────────────
@@ -112,8 +119,15 @@ class TaskState(TypedDict):
     # Set when status is FAILED; records the exception or error message.
     error: str | None
 
-    # Number of edit-verify-critique cycles attempted so far.
+    # Number of plan retries completed so far (0 on first attempt).
+    # Incremented by plan_node each time it is called with feedback.
+    # Capped at MAX_PLAN_RETRIES by the routing logic.
     retry_count: int
+
+    # Feedback passed to the plan node on retry.  Set by critique_node when
+    # score < threshold, or by verify_node when verification fails.
+    # Cleared to None by plan_node after it reads the feedback.
+    plan_feedback: str | None
 
     # ── Artifact tracking ─────────────────────────────────────────────────────
     # Maps node name → absolute path of the artifact file written by that node.
@@ -151,5 +165,6 @@ def make_initial_state(
         skip_reason=None,
         error=None,
         retry_count=0,
+        plan_feedback=None,
         artifact_paths={},
     )

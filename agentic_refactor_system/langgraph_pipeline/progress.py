@@ -78,6 +78,23 @@ def _node_summary(node: str, updates: dict[str, Any]) -> str:
             return "stub  (0 files changed)"
         return "0 files changed"
 
+    if node == "critique":
+        cr = updates.get("critique_result") or {}
+        if not cr:
+            return "ran (no result written)"
+        if cr.get("skipped"):
+            return "skipped (no plan to evaluate)"
+        score = cr.get("score", 0.0)
+        passed = cr.get("passed", False)
+        issues_count = len(cr.get("issues") or [])
+        result = f"{'PASS' if passed else 'FAIL'}  score={score:.2f}"
+        if not passed and issues_count:
+            result += f"  {issues_count} issue(s)"
+        retry_count = updates.get("retry_count")
+        if retry_count:
+            result += f"  (retry {retry_count})"
+        return result
+
     if node == "verify":
         vr = updates.get("verification_result") or {}
         if vr.get("stub"):
@@ -129,6 +146,9 @@ class ProgressPrinter:
         if node == "classify":
             label = (updates.get("actionability") or {}).get("label", "")
             colour = _GREEN if label == "actionable" else _YELLOW if label == "needs_review" else _DIM
+        elif node == "critique":
+            cr = (updates.get("critique_result") or {})
+            colour = _GREEN if cr.get("passed", True) else _YELLOW
         elif node == "finalize":
             status = updates.get("status", "")
             colour = _STATUS_COLOUR.get(status, _RESET)

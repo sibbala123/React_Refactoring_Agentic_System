@@ -14,7 +14,7 @@ from ..schemas.plan import (
     RefactorPlan,
     validate_refactor_plan,
 )
-from ..state import TaskState, STATUS_PLANNING, STATUS_SKIPPED
+from ..state import TaskState, STATUS_PLANNING, STATUS_SKIPPED, MAX_PLAN_RETRIES
 from ..tactics import get_tactic, tactic_names_for_smell
 
 logger = logging.getLogger(__name__)
@@ -106,6 +106,31 @@ Rules
 """
 
 
+def _build_feedback_header(state: TaskState) -> list[str]:
+    """
+    Return a header block injected at the top of the user prompt when the
+    plan node is being called as a retry (plan_feedback is set in state).
+    """
+    feedback = state.get("plan_feedback") or ""
+    retry_num = state.get("retry_count", 0) + 1  # will be incremented after this call
+    lines = [
+        f"⚠  REVISION REQUESTED  "
+        f"(attempt {retry_num + 1} of {MAX_PLAN_RETRIES + 1}  —  retry {retry_num})",
+        "=" * 70,
+        "",
+        "Your previous plan was evaluated and found to need improvement.",
+        "Please address all of the following before producing your revised plan.",
+        "",
+        "Feedback from previous attempt:",
+        "───────────────────────────────",
+        feedback,
+        "",
+        "─" * 70,
+        "",
+    ]
+    return lines
+
+
 def _build_user_prompt(state: TaskState) -> str:
     smell = state["smell"]
     context = state["context"]
@@ -185,7 +210,14 @@ def _build_user_prompt(state: TaskState) -> str:
     else:
         lines += ["", "(No candidate tactics found for this smell type — use NO_TACTIC)"]
 
-    return "\n".join(lines)
+    body = "\n".join(lines)
+
+    # Prepend feedback header when this is a retry attempt.
+    if state.get("plan_feedback"):
+        header = "\n".join(_build_feedback_header(state))
+        return header + body
+
+    return body
 
 
 def plan_node(state: TaskState) -> dict[str, Any]:
@@ -203,8 +235,15 @@ def plan_node(state: TaskState) -> dict[str, Any]:
     smell_type = state["smell"].get("smell_type", "unknown")
     actionability = state.get("actionability")
     label = actionability["label"] if actionability else "unknown"
+    is_retry = bool(state.get("plan_feedback"))
 
-    logger.info("[%s] plan | smell_type=%s | actionability=%s | calling OpenAI", task_id, smell_type, label)
+    logger.info(
+        "[%s] plan | smell_type=%s | actionability=%s | retry=%s | calling OpenAI",
+        task_id,
+        smell_type,
+        label,
+        is_retry,
+    )
 
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
@@ -235,10 +274,14 @@ def plan_node(state: TaskState) -> dict[str, Any]:
     if raw.get("tactic_name") == "NO_TACTIC":
         reason = raw.get("expected_smell_resolution", "Planner found no applicable tactic.")
         logger.info("[%s] plan | NO_TACTIC -> skipping | reason=%s", task_id, reason[:120])
-        return {
+        result: dict = {
             "status": STATUS_SKIPPED,
             "skip_reason": reason,
         }
+        if is_retry:
+            result["retry_count"] = state.get("retry_count", 0) + 1
+            result["plan_feedback"] = None
+        return result
 
     allowed_files: list[str] = (
         state["manifest_task"]
@@ -262,14 +305,20 @@ def plan_node(state: TaskState) -> dict[str, Any]:
     }
 
     logger.info(
-        "[%s] plan | tactic=%s | risk=%s | files=%s",
+        "[%s] plan | tactic=%s | risk=%s | files=%s | retry=%s",
         task_id,
         plan["tactic_name"],
         plan["risk_level"],
         plan["files_to_edit"],
+        is_retry,
     )
 
-    return {
+    final: dict = {
         "status": STATUS_PLANNING,
         "plan": plan,
     }
+    # On retry: increment counter and clear the consumed feedback.
+    if is_retry:
+        final["retry_count"] = state.get("retry_count", 0) + 1
+        final["plan_feedback"] = None
+    return final
