@@ -1,0 +1,13 @@
+id,file,Component,Smell,Details,"Em uma escala de 1 a 5, como você avalia a relevância desse smell?
+1 = smell não é importante e, provavelmente, não será refatorado
+5 = smell é muito importante e, provavelmente, será refatorado em breve.",Observação
+1,C:\Users\jayan\7000 project\agentic_refactor_system\runs\design_system_filtered\detector\reactsniffer_input\registry\default\example\data-grid-demo.tsx,DataGridDemo,Large Component,LOC: 144; Number of props: 10; Number of attributes: 0; Number of methods: 0,,
+2,C:\Users\jayan\7000 project\agentic_refactor_system\runs\design_system_filtered\detector\reactsniffer_input\registry\default\example\form-patterns-pagelayout.tsx,FormPatternsPageLayout,Large Component,LOC: 663; Number of props: 10; Number of attributes: 0; Number of methods: 1,,
+3,C:\Users\jayan\7000 project\agentic_refactor_system\runs\design_system_filtered\detector\reactsniffer_input\registry\default\example\form-patterns-pagelayout.tsx,FormPatternsPageLayout,Uncontrolled component,"Line 296: <input
+Line 348: <input
+",,
+4,C:\Users\jayan\7000 project\agentic_refactor_system\runs\design_system_filtered\detector\reactsniffer_input\registry\default\example\form-patterns-sidepanel.tsx,FormPatternsSidePanel,Large Component,LOC: 704; Number of props: 10; Number of attributes: 0; Number of methods: 1,,
+5,C:\Users\jayan\7000 project\agentic_refactor_system\runs\design_system_filtered\detector\reactsniffer_input\registry\default\example\form-patterns-sidepanel.tsx,FormPatternsSidePanel,Uncontrolled component,"Line 314: <input
+Line 368: <input
+",,
+6,C:\Users\jayan\7000 project\agentic_refactor_system\runs\design_system_filtered\detector\reactsniffer_input\registry\default\example\page-layout-settings.tsx,PageLayoutSettings,Large Component,LOC: 199; Number of props: 3; Number of attributes: 0; Number of methods: 0,,
