@@ -1,0 +1,255 @@
+You are a senior React refactoring agent.
+
+Task ID: task_dc851cf3c2
+Repository: supabase_design_system
+Target root: C:\Users\jayan\supabase-master\apps\design-system
+
+Refactor objective:
+- Smell type: Large Component
+- Target file: registry/default/example/data-grid-demo.tsx
+- Symbol: DataGridDemo
+- Line range: 1-144
+
+Relevant context files:
+- registry/default/example/data-grid-demo.tsx
+- registry/default/example/data-grid-empty-state.tsx
+- registry/default/example/data-input-demo.tsx
+- registry/default/example/data-input-with-copy-secret.tsx
+- registry/default/example/data-input-with-copy.tsx
+- registry/default/example/data-table-demo.tsx
+
+Allowed edit scope:
+{
+  "allowed_files": [
+    "registry/default/example/data-grid-demo.tsx"
+  ],
+  "mode": "bounded_file_and_local_imports"
+}
+
+Constraints:
+- Preserve behavior.
+- Minimize changes.
+- Keep public APIs intact unless explicitly justified.
+- Avoid edits outside the allowed scope.
+- If scope expansion is necessary, explain why before proposing it.
+- Prefer small, local refactors over architectural rewrites.
+- Keep imports, exports, and types valid.
+
+Context summary:
+Primary file: registry/default/example/data-grid-demo.tsx
+Component or symbol: DataGridDemo
+Line focus: 1-144
+Nearby summary:
+import { useState } from 'react'
+import DataGrid, { Column, useRowSelection } from 'react-data-grid'
+
+import 'react-data-grid/lib/styles.css'
+
+import { Checkbox_Shadcn_, cn } from 'ui'
+
+type User = {
+  id: string
+  name: string
+  email: string
+  phone: string
+}
+
+/**
+ * Render a data grid demo with selectable rows and sample user data.
+ *
+ * Renders a DataGrid configured with a checkbox column for per-row selection, columns for display name,
+ * email, and phone, and ten hard-coded sample users. Selection state is managed internally and applied
+ * to row styling.
+ *
+ * @returns A React element that renders the configured DataGrid with row selection and sample rows.
+ */
+export default function DataGridDemo() {
+  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set())
+
+  const columns: Column<User>[] = [
+    {
+      key: 'checkbox',
+      name: '',
+      width: 50,
+      resizable: false,
+      headerCellClass: 'border-default border-r border-b',
+      renderCell: ({ row }) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const { isRowSelected, onRowSelectionChange } = useRowSelection()
+
+        return (
+          <div className="flex items-center justify-center h-full">
+            <Checkbox_Shadcn_
+              checked={isRowSelected}
+              onClick={(e) => {
+                e.stopPropagation()
+                onRowSelectionChange({
+                  row,
+                  checked: !isRowSelected,
+                  isShiftClick: e.shiftKey,
+                })
+              }}
+            />
+          </div>
+        )
+      },
+    },
+    {
+      key: 'name',
+      name: 'Display name',
+      minWidth: 200,
+      resizable: true,
+      headerCellClass: 'border-default border-r border-b',
+    },
+    {
+      key: 'email',
+      name: 'Email',
+      minWidth: 250,
+      resizable: true,
+      headerCellClass: 'border-default border-r border-b',
+    },
+    {
+      key: 'phone',
+      name: 'Phone',
+      minWidth: 150,
+      resizable: true,
+      headerCellClass: 'border-default border-b',
+    },
+  ]
+
+  const rows: User[] = [
+    {
+      id: '1',
+      name: 'Wallace',
+      email: 'wallace@example.com',
+      phone: '+44 1234 567890',
+    },
+    {
+      id: '2',
+      name: 'Gromit',
+      email: 'gromit@example.com',
+      phone: '+44 1234 567891',
+    },
+    {
+      id: '3',
+      name: 'Wendolene Ramsbottom',
+      email: 'wendolene@example.com',
+      phone: '+44 1234 567892',
+    },
+    {
+      id: '4',
+      name: 'Feathers McGraw',
+      email: 'feathers@example.com',
+      phone: '+44 1234 567893',
+    },
+    {
+      id: '5',
+      name: 'Preston',
+      email: 'preston@example.com',
+      phone: '+44 1234 567894',
+    },
+    {
+      id: '6',
+      name: 'Piella Bakewell',
+      email: 'piella@example.com',
+      phone: '+44 1234 567895',
+    },
+    {
+      id: '7',
+      name: 'Victor Quartermaine',
+      email: 'victor@example.com',
+      phone: '+44 1234 567896',
+    },
+    {
+      id: '8',
+      name: 'Lady Tottington',
+      email: 'lady@example.com',
+      phone: '+44 1234 567897',
+    },
+    {
+      id: '9',
+      name: 'Shaun',
+      email: 'shaun@example.com',
+      phone: '+44 1234 567898',
+    },
+    {
+      id: '10',
+      name: 'Hutch',
+      email: 'hutch@example.com',
+      phone: '+44 1234 567899',
+    },
+  ]
+
+  return (
+    <div className="h-full w-full flex flex-col relative min-h-[400px] rounded-md border overflow-hidden">
+      <DataGrid
+        className="flex-grow border-t-0 bg-dash-canvas"
+        rowHeight={44}
+        headerRowHeight={36}
+        columns={columns}
+        rows={rows}
+        rowKeyGetter={(row: User) => row.id}
+        rowClass={(row, idx) => {
+          const isSelected = selectedRows.has(row.id)
+          const isLastRow = idx === rows.length - 1
+          return cn(
+            'bg-surface-75',
+            isSelected && 'bg-surface-200',
+            '[&>.rdg-cell]:border-box [&>.rdg-cell]:outline-none [&>.rdg-cell]:shadow-none',
+            '[&>.rdg-cell]:border-secondary [&>.rdg-cell:not(:last-child)]:border-r',
+            !isLastRow && '[&>.rdg-cell]:border-b',
+            '[&>.rdg-cell:nth-child(2)>div]:ml-8'
+          )
+        }}
+        selectedRows={selectedRows}
+        onSelectedRowsChange={setSelectedRows}
+      />
+    </div>
+  )
+}
+
+Imported local dependencies:
+- none
+
+Nearby tests and sibling files:
+- registry/default/example/data-grid-empty-state.tsx
+- registry/default/example/data-input-demo.tsx
+- registry/default/example/data-input-with-copy-secret.tsx
+- registry/default/example/data-input-with-copy.tsx
+- registry/default/example/data-table-demo.tsx
+
+
+Task metadata:
+{
+  "confidence": 0.85,
+  "context_file_count": 6,
+  "detector_metadata": {
+    "details": "LOC: 144; Number of props: 10; Number of attributes: 0; Number of methods: 0",
+    "raw_row": {
+      "Component": "DataGridDemo",
+      "Details": "LOC: 144; Number of props: 10; Number of attributes: 0; Number of methods: 0",
+      "Em uma escala de 1 a 5, como voc\u00ea avalia a relev\u00e2ncia desse smell?\n1 = smell n\u00e3o \u00e9 importante e, provavelmente, n\u00e3o ser\u00e1 refatorado\n5 = smell \u00e9 muito importante e, provavelmente, ser\u00e1 refatorado em breve.": "",
+      "Observa\u00e7\u00e3o": "",
+      "Smell": "Large Component",
+      "file": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\detector\\reactsniffer_input\\registry\\default\\example\\data-grid-demo.tsx",
+      "id": "1"
+    },
+    "react_compat": {
+      "line_offset": 0,
+      "prepended_default_import": false,
+      "react_import_rewritten": true
+    },
+    "source": "reactsniffer_csv"
+  },
+  "severity": "medium"
+}
+
+Output format:
+- Provide either a unified patch or full-file replacement blocks.
+- If emitting file blocks, use:
+  BEGIN_FILE: relative/path
+  ```language
+  ...full file content...
+  ```
+  END_FILE
+- If no safe refactor is possible, say so explicitly and explain the blocker.

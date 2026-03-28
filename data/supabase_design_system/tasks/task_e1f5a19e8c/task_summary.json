@@ -1,0 +1,42 @@
+{
+  "agent_execution": {
+    "critique": {
+      "acceptable": false,
+      "adapter": "mock_critique",
+      "issues": [
+        "Mock refactor adapter did not generate real edits.",
+        "No repository changes were applied, so the smell remains unresolved."
+      ],
+      "prompt_excerpt": "You are a React refactor critic.\n\nReview a proposed refactor for:\n- behavior preservation risk\n- API compatibility\n- unnecessary scope expansion\n- missing imports or broken exports\n- incomplete smell remediation\n\nReturn JSON with:\n- acceptable\n- score\n- issues\n- recommendations\n\nTask metadata:\n\n{\n  \"allowed_edit_scope\": {\n    \"allowed_files\": [\n      \"registry/default/example/form-patterns-sidepanel.tsx\"\n    ],\n    \"mode\": \"bounded_file_and_local_imports\"\n  },\n  \"smell_type\": \"Uncontrolled Component\",\n  \"symbol_name\": \"FormPatternsSidePanel\",\n  \"target_file\": \"registry/default/example/form-patterns-sidepanel.tsx\",\n  \"task_id\": \"task_e1f5a19e8c\"\n}\n\nRefactor prompt context:\n\nYou are a senior React refactoring agent.\n\nTask ID: task_e1f5a19e8c\nRepository: supabase_design_system\nTarget root: C:",
+      "recommendations": [
+        "Replace the mock refactor adapter with a real editing agent.",
+        "Require the refactor agent to emit valid full-file blocks only for allowed files."
+      ],
+      "score": 0.35,
+      "status": "mock_completed"
+    },
+    "refactor": {
+      "adapter": "mock_refactor",
+      "applied_changes": false,
+      "detected_file_blocks": 1,
+      "notes": [
+        "This adapter is for integration testing of prompt and critique flow.",
+        "Swap with a real editing agent for actual code changes."
+      ],
+      "response_text": "Task: task_e1f5a19e8c\nAdapter: mock_refactor\nResult: no repository edits were applied.\n\nProposed plan:\n- Inspect registry/default/example/form-patterns-sidepanel.tsx\n- Refactor smell: Uncontrolled Component\n- Keep changes inside allowed scope\n\nBEGIN_FILE: registry/default/example/form-patterns-sidepanel.tsx\n```tsx\n// Mock adapter does not modify files. This is a placeholder artifact only.\n```\nEND_FILE",
+      "status": "mock_completed"
+    }
+  },
+  "artifacts": {
+    "attempt_log": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\refactor_attempt1.log",
+    "attempt_text": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\refactor_attempt1.txt",
+    "critique_log": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\critique_attempt1.log",
+    "critique_prompt": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\critique_prompt.txt",
+    "critique_text": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\critique_attempt1.txt",
+    "pre_snapshot": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\pre_snapshot.json",
+    "prompt": "C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\runs\\design_system_filtered\\tasks\\task_e1f5a19e8c\\prompt.txt"
+  },
+  "smell_type": "Uncontrolled Component",
+  "target_file": "registry/default/example/form-patterns-sidepanel.tsx",
+  "task_id": "task_e1f5a19e8c"
+}
