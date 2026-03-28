@@ -105,7 +105,7 @@ def run_pipeline(args: argparse.Namespace) -> Path:
     run_refactor_tasks(
         target_root=target_root,
         run_root=run_root,
-        agent_adapter=args.agent_adapter,
+        refactor_adapter=args.agent_adapter,
         dry_run=args.dry_run,
     )
 

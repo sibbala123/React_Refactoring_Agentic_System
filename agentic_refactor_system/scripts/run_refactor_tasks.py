@@ -243,6 +243,91 @@ class OpenHandsRefactorAgentAdapter(BaseRefactorAgentAdapter):
         return payload
 
 
+class DirectEditorAgentAdapter(BaseRefactorAgentAdapter):
+    """Zero-dependency Editor Agent perfectly matching the project tech stack, using urllib."""
+
+    def __init__(
+        self,
+        model: str = "gpt-4o",
+        base_url: str = "https://api.openai.com/v1",
+        **kwargs: Any,
+    ) -> None:
+        import os
+        if model == "gpt-5.2-codex":
+            model = "gpt-4o"
+        self.model = model
+        self.api_key = os.environ.get("OPENAI_API_KEY", "")
+        self.base_url = base_url.rstrip("/")
+
+    def execute(
+        self,
+        task: dict[str, Any],
+        prompt_text: str,
+        task_output_dir: Path,
+        workspace: Path,
+        attempt: int,
+    ) -> dict[str, Any]:
+        import urllib.request
+        import urllib.error
+        
+        system_prompt = (
+            "You are the Final Editor Agent. Your sole job is to execute the instructions in the finalized plan.\n"
+            "Output the full updated file contents wrapped in BEGIN_FILE/END_FILE blocks.\n"
+            "Example:\n"
+            "BEGIN_FILE: path/to/file.tsx\n"
+            "```tsx\n"
+            "// ... whole file content ...\n"
+            "```\n"
+            "END_FILE\n"
+            "Do NOT output unified diffs. Output ONLY full-file contents for allowed files."
+        )
+
+        prompt_path = task_output_dir / f"prompt_runtime_attempt{attempt}.txt"
+        prompt_path.write_text(prompt_text + "\n\n" + system_prompt, encoding="utf-8")
+        
+        response_path = task_output_dir / f"refactor_attempt{attempt}.txt"
+        result_path = task_output_dir / f"refactor_attempt{attempt}.result.json"
+        
+        if not self.api_key:
+            raise ValueError("OPENAI_API_KEY environment variable is not set. Cannot run DirectEditorAgentAdapter.")
+            
+        data = {
+            "model": self.model,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt_text}
+            ],
+            "temperature": 0.2,
+        }
+        
+        req = urllib.request.Request(
+            f"{self.base_url}/chat/completions",
+            data=json.dumps(data).encode("utf-8"),
+            headers={"Content-Type": "application/json", "Authorization": f"Bearer {self.api_key}"},
+        )
+        
+        try:
+            with urllib.request.urlopen(req) as response:
+                resp_data = json.loads(response.read().decode("utf-8"))
+            response_text = resp_data["choices"][0]["message"]["content"]
+            
+            response_path.write_text(response_text, encoding="utf-8")
+            
+            payload = {
+                "status": "completed",
+                "adapter": "direct_editor",
+                "response_text": response_text,
+                "model": self.model,
+                "usage": resp_data.get("usage", {})
+            }
+            write_json(result_path, payload)
+            return payload
+            
+        except urllib.error.URLError as e:
+            (task_output_dir / f"refactor_attempt{attempt}.log").write_text(f"API Call Failed: {str(e)}", encoding="utf-8")
+            raise RuntimeError(f"Direct Editor agent API call failed: {str(e)}")
+
+
 class OpenHandsCritiqueAgentAdapter(BaseCritiqueAgentAdapter):
     """OpenHands-backed critique adapter using a local SDK venv bridge."""
 
@@ -379,10 +464,11 @@ def resolve_openhands_python(openhands_root: Path, explicit_python: str = "") ->
     for candidate in candidates:
         if candidate.exists():
             return candidate.resolve()
-    raise FileNotFoundError(
-        "Could not find an OpenHands Python interpreter. "
-        "Pass --openhands-python explicitly."
-    )
+            
+    # Fallback to current Python interpreter
+    import sys
+    LOGGER.warning("Could not find OpenHands in %s. Falling back to the current Python interpreter.", openhands_root)
+    return Path(sys.executable).resolve()
 
 
 def build_refactor_adapter(
@@ -405,6 +491,10 @@ def build_refactor_adapter(
             max_iterations=openhands_max_iterations,
             force_login=force_openhands_login,
             use_delegate=use_delegate,
+        )
+    if normalized == "direct_editor":
+        return DirectEditorAgentAdapter(
+            model=openhands_model or "gpt-4o",
         )
     raise ValueError(f"Unsupported refactor adapter: {name}")
 
