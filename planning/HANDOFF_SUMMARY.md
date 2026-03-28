@@ -1,9 +1,10 @@
 # LangGraph Refactor Pipeline — Handoff Summary
 
-**Date:** 2026-03-26
-**Author:** Jayanth (primary implementer for this sprint segment)
+**Date:** 2026-03-27 *(updated)*
+**Original author:** Jayanth
+**Updated by:** Soham
 **Repo:** https://github.com/sibbala123/React_Refactoring_Agentic_System
-**Purpose:** Bring Soham and Ved up to speed on what has been built so far, what the architecture looks like, and exactly what to implement next.
+**Purpose:** Up-to-date reference for the full team on what is built, what is stubbed, and what remains.
 
 ---
 
@@ -11,43 +12,38 @@
 
 An agentic React refactoring system that:
 1. Detects code smells in React codebases using ReactSniffer
-2. Classifies each smell as actionable/non-actionable using an LLM
+2. Classifies each smell as actionable / non-actionable using an LLM
 3. Plans a bounded, tactic-guided refactor for actionable smells
 4. Applies the edit via an agent
 5. Verifies the result (build, type check, smell resolution)
-6. Produces structured artifacts for every step
+6. Critiques the result and retries the plan up to 3 times if quality is low
+7. Produces structured JSON artifacts for every step
 
-The existing system (`agentic_refactor_system/scripts/`) is a working linear 7-stage pipeline. **We are migrating it to LangGraph** — a graph-based orchestration framework where each stage is an explicit node. The new code lives in `agentic_refactor_system/langgraph_pipeline/`.
+The existing system (`agentic_refactor_system/scripts/`) is a working linear 7-stage pipeline. **We are migrating it to LangGraph** — a graph-based orchestration framework where each stage is an explicit node. All new code lives in `agentic_refactor_system/langgraph_pipeline/`.
 
 ---
 
-## Directory Structure (What Was Built)
+## Directory Structure (Current State)
 
 ```
 agentic_refactor_system/
-  langgraph_pipeline/               ← ALL NEW CODE IS HERE
+  langgraph_pipeline/
     __init__.py
-    state.py                        ← A1: TaskState TypedDict (shared state container)
-    graph.py                        ← A2: LangGraph StateGraph wiring
-    runner.py                       ← A2: run_task() and run_tasks() entry points
-    tactics.py                      ← B5: React tactic library (23 tactics, 19 smell types)
+    state.py          ← A1: TaskState TypedDict + all status constants + MAX_PLAN_RETRIES
+    graph.py          ← A2: Full StateGraph topology with 6 nodes + retry routing
+    runner.py         ← A2: run_task() and run_tasks() entry points
+    tactics.py        ← B5: 25 React tactics across 19 smell types
+    progress.py       ← A5: CLI progress printer with colour support
     schemas/
-      __init__.py
-      actionability.py              ← B1: ActionabilityResult TypedDict + validation
-      plan.py                       ← B3: RefactorPlan TypedDict + validation
+      actionability.py  ← B1: ActionabilityResult TypedDict + validation
+      plan.py           ← B3: RefactorPlan TypedDict + validation
     nodes/
-      __init__.py
-      classify.py                   ← B2: REAL classifier node (OpenAI API)
-      plan.py                       ← B4 stub: returns status=planning, plan=None
-      edit.py                       ← stub: returns no changes
-      verify.py                     ← C4 stub: returns all checks skipped
-      finalize.py                   ← REAL: determines terminal status, writes task_summary.json
-
-  schemas/                          ← existing + 3 new JSON schemas
-    langgraph_task_state.schema.json   ← A1
-    actionability_result.schema.json   ← B1
-    refactor_plan.schema.json          ← B3
-    (existing schemas unchanged)
+      classify.py     ← B2: REAL — OpenAI classifier with hard gate
+      plan.py         ← B4: REAL — OpenAI planner with retry feedback
+      edit.py         ← B6: STUB — always returns empty changed_files
+      verify.py       ← C3: REAL no-op check / C4+C5: STUB (skipped)
+      critique.py     ← REAL — OpenAI plan scorer with stub-mode awareness
+      finalize.py     ← REAL — terminal status logic + task_summary.json
 ```
 
 ---
@@ -55,70 +51,99 @@ agentic_refactor_system/
 ## Architecture: How Data Flows
 
 ```
-Existing pipeline stages (unchanged):
+Existing pipeline (unchanged):
   detect_smells.py → gather_context.py → build_manifest.py
-                                              ↓
-                                      manifest.json (list of tasks)
-                                              ↓
-                              NEW: langgraph_pipeline/runner.py
-                                   run_tasks(tasks, smell_map, context_map)
-                                              ↓
-                              For each task → LangGraph graph:
+                                               ↓
+                                       manifest.json
+                                               ↓
+                           NEW: langgraph_pipeline/runner.py
+                                run_tasks(tasks, smell_map, context_map)
+                                               ↓
+                           For each task → LangGraph graph:
 
   [START]
      ↓
-  classify_node   ← reads: smell, context, manifest_task
-     ↓                writes: actionability (ActionabilityResult)
+  classify_node    ← reads: smell, context, manifest_task
+     ↓               writes: actionability
   [route]
-     ├── if non_actionable or needs_review → finalize_node (SKIPPED)
-     └── if actionable ──────────────────→ plan_node
-                                               ↓
-                                          edit_node
-                                               ↓
-                                          verify_node
-                                               ↓
-                                          finalize_node → task_summary.json
-                                               ↓
-                                            [END]
+     ├── non_actionable or needs_review ──────────────→ finalize_node
+     └── actionable ──────────────────────────────────→ plan_node
+                                                            ↓
+                                                        edit_node  (STUB)
+                                                            ↓
+                                                        verify_node  (partial)
+                                                            ↓
+                                                        critique_node
+                                                            ↓
+                                                    [route by score]
+                                                        ├── passed ──────────→ finalize_node
+                                                        ├── failed + retries → plan_node (loop)
+                                                        └── retry limit hit ─→ finalize_node
+                                                                                     ↓
+                                                                                   [END]
 ```
+
+**Retry loop:** `plan → edit → verify → critique → plan` up to `MAX_PLAN_RETRIES = 3` times.
+On each retry, `critique_node` writes structured feedback to `state["plan_feedback"]` which `plan_node` prepends to its next prompt.
 
 ---
 
-## Key Data Contracts (Read These First)
+## Node Status at a Glance
+
+| Node | Story | Status | What it does |
+|------|-------|--------|-------------|
+| `classify_node` | B2 | **REAL** | Calls OpenAI gpt-4o-mini; hard-gates unknown smell types; returns ActionabilityResult |
+| `plan_node` | B4 | **REAL** | Calls OpenAI gpt-4o-mini; picks tactic from library; handles retry feedback; returns RefactorPlan |
+| `edit_node` | B6 | **STUB** | Returns `changed_files=[]`, `edit_result={"stub": True}` — no file changes ever |
+| `verify_node` | C3/C4/C5 | **PARTIAL** | C3 no-op check is real; `parse`, `build`, `typecheck`, `smell_resolved` all return `"skipped"` |
+| `critique_node` | — | **REAL** | Calls OpenAI gpt-4o-mini; scores plan 0.0–1.0; sets `plan_feedback` on failure; stub-mode aware |
+| `finalize_node` | — | **REAL** | Determines terminal status (ACCEPTED/REJECTED/SKIPPED/FAILED); writes task_summary.json |
+
+---
+
+## Key Data Contracts
 
 ### TaskState (`state.py`)
-The single dict that flows through every node. Nodes receive the full state and return only the fields they changed.
-
 ```python
 class TaskState(TypedDict):
-    # Input (populated before graph runs)
+    # Input
     task_id: str
     repo_name: str
     target_file: str
-    smell: dict          # full smell object from detect_smells.py
-    context: dict        # full context object from gather_context.py
-    manifest_task: dict  # full manifest task from build_manifest.py
+    smell: dict            # from detect_smells.py
+    context: dict          # from gather_context.py
+    manifest_task: dict    # from build_manifest.py
 
-    # Set by classify_node (B2)
+    # classify_node (B2)
     actionability: ActionabilityResult | None
 
-    # Set by plan_node (B4) — YOUR STORY SOHAM
+    # plan_node (B4)
     plan: RefactorPlan | None
 
-    # Set by edit_node (future)
+    # edit_node (B6 — stub)
     edit_result: dict | None
     changed_files: list[str]
 
-    # Set by verify_node (C4/C5) — YOUR STORY SOHAM/VED
+    # verify_node (C3 real / C4+C5 stub)
     verification_result: dict | None
 
+    # critique_node
+    critique_result: dict | None   # {score, passed, issues, feedback, threshold}
+
     # Control flow
-    status: str   # pending|classifying|planning|editing|verifying|accepted|rejected|skipped|failed
+    status: str            # pending|classifying|planning|editing|critiquing|
+                           #   verifying|accepted|rejected|skipped|failed
     skip_reason: str | None
     error: str | None
-    retry_count: int
-    artifact_paths: dict[str, str]  # node_name -> written file path
+    retry_count: int       # incremented by plan_node on each retry
+    plan_feedback: str | None  # set by critique_node; cleared by plan_node after reading
+
+    artifact_paths: dict[str, str]   # node_name → file path
 ```
+
+**Constants:**
+- `MAX_PLAN_RETRIES = 3` — plan + edit + verify + critique cycles before giving up
+- `CRITIQUE_THRESHOLD = 0.7` — score below this triggers a retry
 
 ### ActionabilityResult (`schemas/actionability.py`)
 ```python
@@ -126,7 +151,7 @@ class ActionabilityResult(TypedDict):
     label: str           # "actionable" | "non_actionable" | "needs_review"
     rationale: str       # mandatory, must not be empty
     confidence: float    # 0.0 – 1.0
-    no_op_acceptable: bool  # False when label is actionable
+    no_op_acceptable: bool
     caveats: list[str]
 ```
 
@@ -143,39 +168,35 @@ class RefactorPlan(TypedDict):
 
 ---
 
-## The Classifier (B2) — What It Does
+## The Classifier (B2)
 
-**File:** `langgraph_pipeline/nodes/classify.py`
+**File:** `nodes/classify.py`
 
-- Uses **OpenAI gpt-4o-mini** with function calling
-- Requires `OPENAI_API_KEY` environment variable
-- **Hard gate first:** if `smell_type` not in `KNOWN_ACTIONABLE_SMELL_TYPES` → returns `non_actionable` immediately, no API call
-- System prompt includes the full smell-to-refactoring reference table
+- Uses **gpt-4o-mini** with function calling, `temperature=0`
+- **Hard gate first:** if `smell_type` not in `KNOWN_ACTIONABLE_SMELL_TYPES` (19 types) → returns `non_actionable` immediately, no API call
+- This eliminates `Large File` (42% of supabase_full) with zero API cost
 - Returns a validated `ActionabilityResult`
-
-The 19 known actionable smell types are defined in `KNOWN_ACTIONABLE_SMELL_TYPES` in `classify.py`. Any smell type outside this set is immediately non-actionable.
-
-**Tested on:** 14 real Supabase smells across 7 types (Large File, Large Component, Uncontrolled Component, Force Update, Too Many Props, Direct DOM Manipulation, Inheritance Instead of Composition). All labels were sensible.
 
 ---
 
-## The Tactic Library (B5) — What It Contains
+## The Planner (B4)
 
-**File:** `langgraph_pipeline/tactics.py`
+**File:** `nodes/plan.py`
 
-23 tactics covering all 19 smell types. Each tactic has:
-- `name` — unique ID (e.g. `"extract_component"`)
-- `display_name` — human readable
-- `applies_to_smells` — list of smell types it fixes
-- `preconditions` — must be true before applying
-- `edit_shape` — concrete description of what the edit does
-- `invariants` — what must not change (enforced by verifier)
-- `risks` — `"low"` | `"medium"` | `"high"`
-- `abort_if` — conditions where the edit node should stop
+- Uses **gpt-4o-mini** with function calling, `temperature=0`
+- Receives full tactic definitions from `tactics.py` for all candidate tactics
+- If model returns `tactic_name="NO_TACTIC"` → sets `skip_reason`, status=skipped
+- **Retry-aware:** reads `state["plan_feedback"]`, prepends a "REVISION REQUESTED" block to the prompt, increments `retry_count`, clears `plan_feedback` after reading
+- Validates plan against `allowed_files` from manifest before accepting
 
-**Smell → Tactics mapping:**
-| Smell | Tactic(s) |
-|-------|-----------|
+---
+
+## The Tactic Library (B5)
+
+**File:** `tactics.py` — **25 tactics** across 19 smell types.
+
+| Smell Type | Tactic(s) |
+|------------|-----------|
 | Large Component | `extract_component`, `extract_logic_to_custom_hook`, `split_component` |
 | Uncontrolled Component | `add_controlled_state` |
 | Too Many Props | `split_component`, `remove_unused_props` |
@@ -196,162 +217,149 @@ The 19 known actionable smell types are defined in `KNOWN_ACTIONABLE_SMELL_TYPES
 | Dependency Smell | `replace_third_party_with_own` |
 | Prop Drilling | `extract_to_context` |
 
-**Helper functions:**
 ```python
 from agentic_refactor_system.langgraph_pipeline.tactics import (
-    get_tactic,                  # get_tactic("extract_component") -> dict
-    get_tactics_for_smell,       # get_tactics_for_smell("Large Component") -> [dict, ...]
-    tactic_names_for_smell,      # tactic_names_for_smell("Large Component") -> ["extract_component", ...]
+    get_tactic,               # get_tactic("extract_component") -> dict
+    get_tactics_for_smell,    # get_tactics_for_smell("Large Component") -> [dict, ...]
+    tactic_names_for_smell,   # tactic_names_for_smell("Large Component") -> ["extract_component", ...]
 )
 ```
 
 ---
 
-## What Is NOT Done Yet (What Soham and Ved Need to Build)
+## The Critique Node
 
-### B4 — Planner Node (Soham, primary) ← BUILD THIS NEXT
+**File:** `nodes/critique.py`
 
-**File to edit:** `langgraph_pipeline/nodes/plan.py`
-**Current state:** Stub — returns `status=planning`, `plan=None`
-**What to implement:** Replace the stub body with a real OpenAI call.
-
-The planner node must:
-1. Read `state["actionability"]` (label, rationale, caveats from B2)
-2. Read `state["smell"]` and `state["context"]`
-3. Read `state["manifest_task"]["allowed_edit_scope"]["allowed_files"]`
-4. Look up available tactics: `tactic_names_for_smell(state["smell"]["smell_type"])`
-5. Call OpenAI with a function that returns a `RefactorPlan`
-6. Validate with `validate_refactor_plan(raw, allowed_files=allowed_files)`
-7. Return `{"status": STATUS_PLANNING, "plan": plan}`
-
-The function definition for the OpenAI call should match `RefactorPlan` exactly (same pattern as the classifier's `_CLASSIFY_FUNCTION`).
-
-The prompt should include:
-- The smell details and code snippet
-- The actionability rationale (from B2)
-- The list of available tactic names for this smell type (from `tactic_names_for_smell`)
-- The full tactic definition for each candidate (from `get_tactic(name)`)
-- The allowed file scope
-
-If no tactic applies or the planner judges the edit too risky, it should set `skip_reason` and return `status=skipped` rather than producing a bad plan.
+- Uses **gpt-4o-mini** with function calling, `CRITIQUE_THRESHOLD = 0.7`
+- Scores the plan on 5 criteria: verification results, edit adherence, invariant specificity, abort reason concreteness, tactic appropriateness
+- **Stub-mode aware:** when `edit_result["stub"] == True`, skips criteria 1 and 2 (no file changes to evaluate) and scores on plan quality alone — plans with specific invariants and concrete abort_reasons score >= 0.8
+- If `score < 0.7`: writes structured feedback to `state["plan_feedback"]` (includes verification failures + issue list + guidance)
+- `_route_after_critique()` in graph.py then routes back to `plan_node` if retries remain
 
 ---
 
-### A3 — Preserve Existing Artifact Flow in LangGraph (Ved, primary)
+## What Is NOT Done Yet
 
-**What to implement:** Each node that produces output should write a JSON artifact into the existing run directory structure (`runs/{run_id}/tasks/{task_id}/`).
+### B6 — Tactic-Guided Edit Node (Ved, primary) ← HIGHEST PRIORITY
+**File:** `nodes/edit.py`
+**Current state:** Stub — always returns `changed_files=[]`
 
-The `task_dir` path is already recorded in `state["artifact_paths"]["task_dir"]` when `run_task()` is called with `run_root`. Nodes should write their outputs like:
-
-```python
-from pathlib import Path
-from ....utils.json_utils import write_json
-
-task_dir = Path(state["artifact_paths"].get("task_dir", ""))
-if task_dir:
-    write_json(task_dir / "actionability.json", actionability)
-    state["artifact_paths"]["classify"] = str(task_dir / "actionability.json")
-```
-
-**Finalize node already does this** for `task_summary.json` — use it as a reference.
-
----
-
-### C4 — Verification Scaffold (Ved, primary)
-
-**File to edit:** `langgraph_pipeline/nodes/verify.py`
-**Current state:** Stub — all checks return "skipped"
-**What to implement:**
-1. Read `state["plan"]["invariants"]` — these are the things that must not change
-2. Run the configured build command from `state["manifest_task"]["build_command"]`
-3. Record structured results: `{"passed": bool, "checks": {"build": "pass"|"fail"|"skipped", ...}}`
-4. Return `{"verification_result": result}`
-
-Reference: the existing `validate_build.py` stage has build command execution logic to reuse.
-
----
-
-### C3 — No-Op Rejection Rule (Soham, primary)
-
-Already partially enforced in `finalize_node` — if `changed_files == []` and label was `actionable`, status becomes `REJECTED`. Soham needs to:
-1. Confirm this rule is correctly applied
-2. Add it to the verification node as an explicit check so it appears in `verification_result["checks"]`
-
----
-
-### B6 — Tactic-Guided Edit Prompts (Ved, primary)
-
-**File to edit:** `langgraph_pipeline/nodes/edit.py`
-**Current state:** Stub — records no changes
-**What to implement:**
+Must implement:
 1. Read `state["plan"]` — `tactic_name`, `files_to_edit`, `invariants`, `abort_reasons`
-2. Fetch the full tactic definition: `get_tactic(state["plan"]["tactic_name"])`
-3. Build a prompt that includes: tactic `edit_shape`, `invariants`, `abort_if`, code snippet, allowed files
-4. Call the LLM (OpenAI) to generate the file edits
-5. Apply edits to the files in the agent workspace
-6. Populate `changed_files` and `edit_result`
+2. Fetch full tactic: `get_tactic(state["plan"]["tactic_name"])`
+3. Build prompt with: `edit_shape`, `invariants`, `abort_if`, code snippet, allowed files
+4. Call LLM to generate file edits
+5. Apply edits to files in workspace
+6. Populate `changed_files` and `edit_result` (include `edit_result["diffs"]` for critique)
 
----
+Once B6 is done, critique will be able to check edit adherence and the pipeline will produce first `ACCEPTED` outcomes.
+
+### C4 — Build Verification (Ved, primary)
+**File:** `nodes/verify.py`
+**Current state:** `parse`, `build`, `typecheck` all return `"skipped"`
+
+Must implement:
+1. Run `state["manifest_task"]["build_command"]` in the repo workspace
+2. Record `"pass"` or `"fail"` per check
+3. Surface failures as input to critique's feedback generation
+
+Reference: existing `validate_build.py` stage has build command execution logic.
 
 ### C2 — Curated Demo Benchmark (Soham, primary)
+Create `data/benchmark.json` — 25–40 manually labeled tasks sampled from `supabase_full`:
+- Fields: `smell_type`, `file_path`, `component`, `line_start`, `line_end`, `expected_actionability`, `expected_tactic`, `difficulty`, `reviewer_notes`
+- Source: `data/supabase_full/detector/normalized_smells.json` (2095 smells) + `data/supabase_design_system/`
+- Required for RQ1 and RQ2 in Milestone 3
 
-Create a JSON/CSV benchmark of 25-40 labeled tasks from the Supabase design system run. Each task should have:
-- `smell_type`, `file_path`, `component`, `line_start`, `line_end`
-- `actionability_label` (expected: actionable/non_actionable)
-- `expected_tactic` (from the tactic library)
-- `difficulty` (easy/medium/hard)
-- `reviewer_notes`
+### C5 — Smell-Resolution Checks (Soham, primary)
+**File:** `nodes/verify.py`
+**Current state:** `smell_resolved` returns `"skipped"`
 
-Source data: `agentic_refactor_system/runs/design_system_filtered/manifest.json` (6 tasks) and `runs/supabase_reactsniffer2/detector/normalized_smells.json` (2095 smells to sample from).
+Extend verify_node to confirm the target smell is no longer present after the edit. Implement independently of C4.
+
+### C6 — Demo Report (Soham)
+Blocked until D1 (end-to-end demo) is done.
+
+### D1 — End-to-End Demo Flow (Ved)
+Blocked until B6 and C4 are done.
 
 ---
 
-## How to Run the Pipeline Today
+## Story Status (Updated 2026-03-27)
+
+| StoryID | Title | Owner | Status |
+|---------|-------|-------|--------|
+| A1 | LangGraph State Schema | Ved | **Done** |
+| A2 | Minimal LangGraph Pipeline | Ved | **Done** |
+| A5 | Node-Level CLI Progress | Jayanth | **Done** |
+| B1 | Actionability Classification Schema | Jayanth | **Done** |
+| B2 | Actionability Classifier Node | Jayanth | **Done** |
+| B3 | Refactor Plan Schema | Soham | **Done** |
+| B4 | Refactor Planner Node | Soham | **Done** |
+| B5 | React Tactic Library | Jayanth | **Done** |
+| C3 | No-Op Rejection Rule | Soham | **Done** |
+| Critique Node | Plan scoring + retry loop | Jayanth | **Done** |
+| B6 | Tactic-Guided Edit Node | Ved | **Not Started** ← critical path |
+| C4 | Build Verification Scaffold | Ved | **Not Started** |
+| C2 | Curated Demo Benchmark | Soham | **Not Started** |
+| C5 | Smell-Resolution Checks | Soham | **Not Started** |
+| A3 | Preserve Artifact Flow | Ved | **Not Started** |
+| A4 | Resume/Retry From Node | Ved | **Not Started** |
+| D1 | End-to-End Demo Flow | Ved | **Not Started** (blocked on B6, C4) |
+| C6 | Demo Report | Soham | **Not Started** (blocked on D1) |
+
+**Critical path to first ACCEPTED outcome:** B6 → D1
+
+---
+
+## How to Run
+
+```bash
+# activate venv
+source venv/Scripts/activate   # Windows: venv\Scripts\activate
+
+# ensure API key is set in .env
+# OPENAI_API_KEY=sk-...
+
+# run integration test (10 tasks, classify + plan + critique)
+python test_pipeline.py
+```
 
 ```python
 from agentic_refactor_system.langgraph_pipeline.runner import run_task
+from pathlib import Path
 
-# Single task
 final_state = run_task(
     manifest_task=manifest["tasks"][0],
     smell=smell_report["smells"][0],
     context=context_index["contexts"][0],
     run_root=Path("agentic_refactor_system/runs/design_system_filtered"),
 )
-print(final_state["status"])        # "rejected" (no edits yet — edit node is stub)
-print(final_state["actionability"]) # populated by real classifier
-print(final_state["plan"])          # None until B4 is implemented
+
+print(final_state["status"])          # "rejected" (edit stub → C3 no-op fires)
+print(final_state["actionability"])   # populated by real classifier
+print(final_state["plan"])            # populated by real planner
+print(final_state["critique_result"]) # populated by real critique node
+```
+
+**Expected current output per task:**
+```
+classify   → actionable / non_actionable / needs_review
+plan       → tactic + risk + invariants + abort_reasons  (if actionable)
+edit       → stub (0 files changed)
+verify     → FAIL  no_op=fail  (C3)
+critique   → score >= 0.8 in stub mode (does not penalise for missing edits)
+finalize   → REJECTED  (no file changes on actionable task)
 ```
 
 ---
 
-## Environment Setup
+## Environment
 
 ```bash
-pip install langgraph openai PyYAML jsonschema typing_extensions
-export OPENAI_API_KEY=sk-your-key   # required for classify_node
+pip install -r requirements.txt   # langgraph openai PyYAML jsonschema typing_extensions python-dotenv
+# set OPENAI_API_KEY in .env
 ```
 
----
-
-## Story Status at Handoff
-
-| StoryID | Title | Owner | Status |
-|---------|-------|-------|--------|
-| A1 | LangGraph State Schema | Ved | **Done** |
-| B1 | Actionability Classification Schema | Jayanth | **Done** |
-| B3 | Refactor Plan Schema | Soham | **Done** |
-| A2 | Minimal LangGraph Pipeline | Ved | **Done** |
-| B2 | Actionability Classifier Node | Jayanth | **Done** |
-| B5 | React Tactic Library | Jayanth | **Done** |
-| B4 | Refactor Planner Node | Soham | **Not Started** ← next priority |
-| A3 | Preserve Artifact Flow | Ved | **Not Started** ← next priority |
-| C4 | Verification Scaffold | Ved | **Not Started** |
-| C2 | Curated Demo Benchmark | Soham | **Not Started** |
-| C3 | No-Op Rejection Rule | Soham | **Partial** (in finalize_node) |
-| B6 | Tactic-Guided Edit Prompts | Ved | **Not Started** (blocked on B4, B5 ✓) |
-| C5 | Smell-Resolution Checks | Soham | **Not Started** |
-| A4 | Resume/Retry From Node | Ved | **Not Started** |
-| A5 | Node-Level CLI Progress | Jayanth | **Not Started** |
-| D1 | End-to-End Demo Flow | Ved | **Not Started** |
-| C6 | Demo Report | Soham | **Not Started** |
+Required for: `classify_node`, `plan_node`, `critique_node` (all three call OpenAI).
