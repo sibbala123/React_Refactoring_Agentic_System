@@ -1,9 +1,9 @@
 {
   "detector": {
-    "analysis_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T212311Z_supabase_design_system\\detector\\reactsniffer_input",
-    "command_used": "node D:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer\\index.js reactsniffer_input",
+    "analysis_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T212311Z_supabase_design_system\\detector\\reactsniffer_input",
+    "command_used": "node C:\\Users\\Admin\\Desktop\\React Refactor\\vendor\\reactsniffer\\index.js reactsniffer_input",
     "compat_copy_enabled": true,
-    "reactsniffer_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer",
+    "reactsniffer_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\vendor\\reactsniffer",
     "returncode": 1
   },
   "repo_name": "supabase_design_system",
@@ -192,5 +192,5 @@
       "smell_type": "Large Component"
     }
   ],
-  "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system"
+  "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system"
 }

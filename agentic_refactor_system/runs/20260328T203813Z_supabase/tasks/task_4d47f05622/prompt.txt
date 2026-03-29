@@ -2,7 +2,7 @@ You are a senior React refactoring agent.
 
 Task ID: task_4d47f05622
 Repository: supabase
-Target root: D:\Agentic\React\supabase
+Target root: C:\Users\Admin\Desktop\supabase
 
 Refactor objective:
 - Smell type: Too Many Props

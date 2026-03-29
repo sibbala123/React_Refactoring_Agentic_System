@@ -1,14 +1,14 @@
 cli_args:
-  target_root: D:\Agentic\React\supabase
+  target_root: C:\Users\Admin\Desktop\supabase
   repo_name: supabase
   reactsniffer_root: d:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer
   reactsniffer_command: ''
   build_command: pnpm build
-  output_root: D:\Agentic\React_Refactoring_Agentic_System\agentic_refactor_system\runs
+  output_root: C:\Users\Admin\Desktop\React Refactor\agentic_refactor_system\runs
   max_tasks: 2
   smell_types: []
   dry_run: true
-  config: D:\Agentic\React_Refactoring_Agentic_System\agentic_refactor_system\config\default_config.yaml
+  config: C:\Users\Admin\Desktop\React Refactor\agentic_refactor_system\config\default_config.yaml
   agent_adapter: direct_editor
   verbose: false
 default_config:
@@ -50,7 +50,7 @@ default_config:
   artifacts:
     output_root: agentic_refactor_system/runs
 resolved:
-  target_root: D:\Agentic\React\supabase
-  output_root: D:\Agentic\React_Refactoring_Agentic_System\agentic_refactor_system\runs
+  target_root: C:\Users\Admin\Desktop\supabase
+  output_root: C:\Users\Admin\Desktop\React Refactor\agentic_refactor_system\runs
   build_command: pnpm build
   reactsniffer_command: ''

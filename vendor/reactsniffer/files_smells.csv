@@ -1,0 +1,4 @@
+id,Large File,File URL,LOC,N_Components,N_Functions,N_Imports,"Em uma escala de 1 a 5, como você avalia a relevância desse smell?
+1 = smell não é importante e, provavelmente, não será refatorado
+5 = smell é muito importante e, provavelmente, será refatorado em breve.",Observação
+1,C:\Users\Admin\Desktop\supabase\apps\design-system\registry\default\example\page-layout-list.tsx,C:\Users\Admin\Desktop\supabase\apps\design-system\registry\default\example\page-layout-list.tsx,128,1,0,23,,

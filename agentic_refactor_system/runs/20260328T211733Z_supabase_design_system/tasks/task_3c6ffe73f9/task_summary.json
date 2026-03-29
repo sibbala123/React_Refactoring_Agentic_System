@@ -21,15 +21,15 @@
     }
   },
   "artifacts": {
-    "agent_workspace": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\agent_workspace",
-    "attempt_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\refactor_attempt1.log",
-    "attempt_text": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\refactor_attempt1.txt",
-    "critique_log": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_attempt1.log",
-    "critique_prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_prompt.txt",
-    "critique_text": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_attempt1.txt",
-    "post_snapshot": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\post_snapshot.json",
-    "pre_snapshot": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\pre_snapshot.json",
-    "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\prompt.txt"
+    "agent_workspace": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\agent_workspace",
+    "attempt_log": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\refactor_attempt1.log",
+    "attempt_text": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\refactor_attempt1.txt",
+    "critique_log": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_attempt1.log",
+    "critique_prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_prompt.txt",
+    "critique_text": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\critique_attempt1.txt",
+    "post_snapshot": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\post_snapshot.json",
+    "pre_snapshot": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\pre_snapshot.json",
+    "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\prompt.txt"
   },
   "attempts": [],
   "changed_files": [],

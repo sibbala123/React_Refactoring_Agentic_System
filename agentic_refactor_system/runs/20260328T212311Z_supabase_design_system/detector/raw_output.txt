@@ -1,4 +1,4 @@
-$ node 'D:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer\index.js' reactsniffer_input
+$ node 'C:\Users\Admin\Desktop\React Refactor\vendor\reactsniffer\index.js' reactsniffer_input
 
 STDOUT:
 
@@ -10,9 +10,9 @@ node:internal/modules/cjs/loader:1423
 
 Error: Cannot find module '@babel/parser'
 Require stack:
-- D:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer\src\generate_ast.js
-- D:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer\src\filter_react_files.js
-- D:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer\index.js
+- C:\Users\Admin\Desktop\React Refactor\vendor\reactsniffer\src\generate_ast.js
+- C:\Users\Admin\Desktop\React Refactor\vendor\reactsniffer\src\filter_react_files.js
+- C:\Users\Admin\Desktop\React Refactor\vendor\reactsniffer\index.js
     at Module._resolveFilename (node:internal/modules/cjs/loader:1420:15)
     at defaultResolveImpl (node:internal/modules/cjs/loader:1058:19)
     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1063:22)
@@ -21,13 +21,13 @@ Require stack:
     at wrapModuleLoad (node:internal/modules/cjs/loader:244:24)
     at Module.require (node:internal/modules/cjs/loader:1503:12)
     at require (node:internal/modules/helpers:152:16)
-    at Object.<anonymous> (D:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer\src\generate_ast.js:1:21)
+    at Object.<anonymous> (C:\Users\Admin\Desktop\React Refactor\vendor\reactsniffer\src\generate_ast.js:1:21)
     at Module._compile (node:internal/modules/cjs/loader:1760:14) {
   code: 'MODULE_NOT_FOUND',
   requireStack: [
-    'D:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer\\src\\generate_ast.js',
-    'D:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer\\src\\filter_react_files.js',
-    'D:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer\\index.js'
+    'C:\\Users\\Admin\\Desktop\\React Refactor\\vendor\\reactsniffer\\src\\generate_ast.js',
+    'C:\\Users\\Admin\\Desktop\\React Refactor\\vendor\\reactsniffer\\src\\filter_react_files.js',
+    'C:\\Users\\Admin\\Desktop\\React Refactor\\vendor\\reactsniffer\\index.js'
   ]
 }
 

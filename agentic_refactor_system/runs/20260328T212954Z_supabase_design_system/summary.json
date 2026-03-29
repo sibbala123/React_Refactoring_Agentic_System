@@ -2,7 +2,7 @@
   "builds_failed": 1,
   "builds_passed": 0,
   "builds_skipped": 0,
-  "run_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system",
+  "run_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system",
   "smells_detected": 13,
   "task_count": 1,
   "tasks": [
@@ -10,9 +10,9 @@
       "accepted_attempt": null,
       "agent_status": "completed",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system\\tasks\\task_471d709a96\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system\\tasks\\task_471d709a96\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system\\tasks\\task_471d709a96\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system\\tasks\\task_471d709a96\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system\\tasks\\task_471d709a96\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T212954Z_supabase_design_system\\tasks\\task_471d709a96\\validation.json"
       },
       "attempt_count": 2,
       "smell_type": "Too Many Props",

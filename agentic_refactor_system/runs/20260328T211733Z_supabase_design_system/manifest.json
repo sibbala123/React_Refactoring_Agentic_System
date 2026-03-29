@@ -1,7 +1,7 @@
 {
   "repo_name": "supabase_design_system",
-  "run_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system",
-  "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+  "run_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system",
+  "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
   "task_count": 13,
   "tasks": [
     {
@@ -39,7 +39,7 @@
       "smell_type": "Too Many Props",
       "symbol_name": "CodeFragment",
       "target_file": "components/code-fragment.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_471d709a96/prompt.txt",
       "validation_commands": []
     },
@@ -78,7 +78,7 @@
       "smell_type": "Too Many Props",
       "symbol_name": "ComponentExample",
       "target_file": "components/component-example.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_3c6ffe73f9/prompt.txt",
       "validation_commands": []
     },
@@ -117,7 +117,7 @@
       "smell_type": "Too Many Props",
       "symbol_name": "ComponentPreview",
       "target_file": "components/component-preview.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_0fd508880b/prompt.txt",
       "validation_commands": []
     },
@@ -156,7 +156,7 @@
       "smell_type": "Too Many Props",
       "symbol_name": "CopyButton",
       "target_file": "components/copy-button.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_0bb8076a5c/prompt.txt",
       "validation_commands": []
     },
@@ -199,7 +199,7 @@
       "smell_type": "Large Component",
       "symbol_name": "Mdx",
       "target_file": "components/mdx-components.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_8d0d67772c/prompt.txt",
       "validation_commands": []
     },
@@ -238,7 +238,7 @@
       "smell_type": "Large Component",
       "symbol_name": "ShadcnPanel",
       "target_file": "components/source-panel.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_899bfa2ab5/prompt.txt",
       "validation_commands": []
     },
@@ -277,7 +277,7 @@
       "smell_type": "Large Component",
       "symbol_name": "DataTableDemo",
       "target_file": "registry/default/example/data-table-demo.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_909ce35787/prompt.txt",
       "validation_commands": []
     },
@@ -316,7 +316,7 @@
       "smell_type": "Large Component",
       "symbol_name": "FormPatternsPageLayout",
       "target_file": "registry/default/example/form-patterns-pagelayout.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_e9f8a87287/prompt.txt",
       "validation_commands": []
     },
@@ -355,7 +355,7 @@
       "smell_type": "Large Component",
       "symbol_name": "FormPatternsSidePanel",
       "target_file": "registry/default/example/form-patterns-sidepanel.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_77fe152959/prompt.txt",
       "validation_commands": []
     },
@@ -394,7 +394,7 @@
       "smell_type": "Large Component",
       "symbol_name": "PageLayoutSettings",
       "target_file": "registry/default/example/page-layout-settings.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_32f400451f/prompt.txt",
       "validation_commands": []
     },
@@ -433,7 +433,7 @@
       "smell_type": "Large Component",
       "symbol_name": "SheetConfirmOnCloseDemo",
       "target_file": "registry/default/example/sheet-confirm-on-close-demo.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_2e70077825/prompt.txt",
       "validation_commands": []
     },
@@ -472,7 +472,7 @@
       "smell_type": "Large Component",
       "symbol_name": "MultiSelectDemo",
       "target_file": "registry/default/example/toc-demo.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_5fac2256da/prompt.txt",
       "validation_commands": []
     },
@@ -511,7 +511,7 @@
       "smell_type": "Large Component",
       "symbol_name": "MultiSelectDemo",
       "target_file": "registry/default/example/toc-single-demo.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_db08d4ed68/prompt.txt",
       "validation_commands": []
     }

@@ -5,10 +5,11 @@ const detect_smells = require('./src/detect_smells');
 const compute_thresholds = require('./src/thresholds');
 const csvWriter = require('./src/utils/csv-writer');
 
+const path = require('path');
 var dirname = process.argv.slice(2)[0];
 
-if (!dirname.startsWith('/'))
-	dirname = process.cwd() + "/" +process.argv.slice(2);
+if (!path.isAbsolute(dirname))
+	dirname = path.join(process.cwd(), dirname);
 
 ast_react_files = filter_react_files(dirname);
 

@@ -139,6 +139,7 @@ from agentic_refactor_system.langgraph_pipeline.runner import run_task  # noqa: 
 results = []
 for i, (mt, smell, ctx) in enumerate(all_test_tasks, 1):
     print(f"\n[{i:02d}/{len(all_test_tasks)}] task={mt['id']}  type={smell.get('smell_type')}  file={mt['target_file']}")
+    mt["build_command"] = ""
     state = run_task(mt, smell, ctx, show_progress=True)
     results.append(state)
 

@@ -17,7 +17,7 @@ def main():
     # Configure root logging so we see what the pipeline does
     logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(name)s | %(message)s")
 
-    root = Path(r"D:\Agentic\React_Refactoring_Agentic_System")
+    root = Path(r"C:\Users\Admin\Desktop\React Refactor")
     ds_dir = root / "data" / "supabase_design_system"
     
     manifest = json.loads((ds_dir / "manifest.json").read_text(encoding="utf-8"))
@@ -30,7 +30,7 @@ def main():
     
     # Critical: Override target root with the real physical supabase repo!
     # The tasks target `apps/design-system` files like `registry/default/example/data-grid-demo.tsx`
-    mt["target_root"] = r"D:\Agentic\React\supabase\apps\design-system"
+    mt["target_root"] = r"C:\Users\Admin\Desktop\supabase\apps\design-system"
     
     # We will skip the pnpm build check for this test since pnpm is not in PATH
     mt["build_command"] = ""

@@ -1,7 +1,7 @@
 {
   "repo_name": "supabase_design_system",
-  "run_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T212827Z_supabase_design_system",
-  "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+  "run_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T212827Z_supabase_design_system",
+  "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
   "task_count": 1,
   "tasks": [
     {
@@ -39,7 +39,7 @@
       "smell_type": "Too Many Props",
       "symbol_name": "CodeFragment",
       "target_file": "components/code-fragment.tsx",
-      "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system",
+      "target_root": "C:\\Users\\Admin\\Desktop\\supabase\\apps\\design-system",
       "task_prompt_file": "tasks/task_471d709a96/prompt.txt",
       "validation_commands": []
     }

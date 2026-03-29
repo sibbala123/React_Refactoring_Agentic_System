@@ -1,0 +1,167 @@
+[
+  {
+    "id": "eval_reactsniffer_component_696",
+    "type": "Large Component",
+    "status": "accepted",
+    "plan_loops": 1,
+    "edit_loops": 1,
+    "verify_loops": 1,
+    "pass_at_1": true,
+    "pass_at_k": false,
+    "skip_reason": null
+  },
+  {
+    "id": "eval_reactsniffer_component_1114",
+    "type": "Large Component",
+    "status": "accepted",
+    "plan_loops": 1,
+    "edit_loops": 1,
+    "verify_loops": 1,
+    "pass_at_1": true,
+    "pass_at_k": false,
+    "skip_reason": null
+  },
+  {
+    "id": "eval_reactsniffer_component_570",
+    "type": "Large Component",
+    "status": "accepted",
+    "plan_loops": 1,
+    "edit_loops": 1,
+    "verify_loops": 1,
+    "pass_at_1": true,
+    "pass_at_k": false,
+    "skip_reason": null
+  },
+  {
+    "id": "eval_reactsniffer_component_472",
+    "type": "Large Component",
+    "status": "accepted",
+    "plan_loops": 1,
+    "edit_loops": 1,
+    "verify_loops": 1,
+    "pass_at_1": true,
+    "pass_at_k": false,
+    "skip_reason": null
+  },
+  {
+    "id": "eval_reactsniffer_component_86",
+    "type": "Large Component",
+    "status": "accepted",
+    "plan_loops": 1,
+    "edit_loops": 1,
+    "verify_loops": 1,
+    "pass_at_1": true,
+    "pass_at_k": false,
+    "skip_reason": null
+  },
+  {
+    "id": "eval_reactsniffer_component_702",
+    "type": "Too Many Props",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': The code snippet provided does not contain any component definition or props usage, making it impossible to assess whether there are too many props. The detector likely flagged this based on the file's context rather than specific code patterns. Without seeing the actual component implementation, we cannot determine if the props are excessive or if they serve a specific purpose. Therefore, this smell is not actionable at this time."
+  },
+  {
+    "id": "eval_reactsniffer_component_590",
+    "type": "Too Many Props",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': The code snippet provided does not contain any props or component logic, making it impossible to assess whether there are too many props. The detector's confidence is relatively high, but without the actual component implementation, we cannot determine if this is a genuine issue or if the pattern is intentional. Therefore, it is not actionable at this time."
+  },
+  {
+    "id": "eval_reactsniffer_component_516",
+    "type": "Too Many Props",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'needs_review': The code snippet provided does not contain enough information to determine if the component has too many props. The snippet only includes import statements and does not show the component's definition or its props. Without seeing how props are being used or defined, it's unclear if the number of props is excessive or if they are necessary for the component's functionality. Therefore, a human review is needed to assess the component's structure and prop usage."
+  },
+  {
+    "id": "eval_reactsniffer_component_271",
+    "type": "Too Many Props",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'needs_review': The code snippet provided does not contain any props or component logic, making it impossible to assess whether the component has too many props. Without the actual component implementation, we cannot determine if the props are excessive or if they serve a specific purpose. Therefore, a human review is necessary to evaluate the component's design and prop usage."
+  },
+  {
+    "id": "eval_reactsniffer_component_350",
+    "type": "Too Many Props",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'needs_review': The code snippet provided does not contain any props or component logic, making it impossible to assess whether there are too many props or if they are being used appropriately. Without additional context or the full component code, it's unclear if the detected smell is genuine or if the pattern is intentional. Therefore, a human review is necessary to determine the intent and context of the props usage."
+  },
+  {
+    "id": "eval_reactsniffer_file_751",
+    "type": "Large File",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': Smell type 'Large File' is not in the known refactoring table. No bounded automated fix exists for this pattern."
+  },
+  {
+    "id": "eval_reactsniffer_file_722",
+    "type": "Large File",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': Smell type 'Large File' is not in the known refactoring table. No bounded automated fix exists for this pattern."
+  },
+  {
+    "id": "eval_reactsniffer_file_60",
+    "type": "Large File",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': Smell type 'Large File' is not in the known refactoring table. No bounded automated fix exists for this pattern."
+  },
+  {
+    "id": "eval_reactsniffer_file_39",
+    "type": "Large File",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': Smell type 'Large File' is not in the known refactoring table. No bounded automated fix exists for this pattern."
+  },
+  {
+    "id": "eval_reactsniffer_file_245",
+    "type": "Large File",
+    "status": "skipped",
+    "plan_loops": 0,
+    "edit_loops": 0,
+    "verify_loops": 0,
+    "pass_at_1": false,
+    "pass_at_k": false,
+    "skip_reason": "smell classified as 'non_actionable': Smell type 'Large File' is not in the known refactoring table. No bounded automated fix exists for this pattern."
+  }
+]

@@ -300,16 +300,17 @@ Blocked until B6 and C4 are done.
 | B5 | React Tactic Library | Jayanth | **Done** |
 | C3 | No-Op Rejection Rule | Soham | **Done** |
 | Critique Node | Plan scoring + retry loop | Jayanth | **Done** |
-| B6 | Tactic-Guided Edit Node | Ved | **Not Started** ← critical path |
-| C4 | Build Verification Scaffold | Ved | **Not Started** |
-| C2 | Curated Demo Benchmark | Soham | **Not Started** |
-| C5 | Smell-Resolution Checks | Soham | **Not Started** |
+| B6 | Tactic-Guided Edit Node | Ved | **Done** |
+| C4 | Build Verification Scaffold | Ved | **Done** |
+| C2 | Curated Demo Benchmark | Soham | **Done** |
+| C5 | Smell-Resolution Checks | Soham | **Done** |
 | A3 | Preserve Artifact Flow | Ved | **Not Started** |
 | A4 | Resume/Retry From Node | Ved | **Not Started** |
-| D1 | End-to-End Demo Flow | Ved | **Not Started** (blocked on B6, C4) |
-| C6 | Demo Report | Soham | **Not Started** (blocked on D1) |
+| D1 | End-to-End Demo Flow | Ved | **Done** |
+| C6 | Demo Report | Soham | **Done** |
 
-**Critical path to first ACCEPTED outcome:** B6 → D1
+**Critical path to first ACCEPTED outcome:** B6 → D1 (COMPLETED DURING MILESTONE 3)
+
 
 ---
 

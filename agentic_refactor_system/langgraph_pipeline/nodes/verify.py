@@ -45,10 +45,10 @@ def verify_node(state: TaskState) -> dict[str, Any]:
     smell_type = state["smell"].get("smell_type")
     
     if no_op_check == "pass" and build_check in ("pass", "skipped") and target_root and target_root.exists() and smell_type:
-        reactsniffer_root = r"D:\Agentic\React_Refactoring_Agentic_System\vendor\reactsniffer"
+        reactsniffer_root = Path(__file__).resolve().parent.parent.parent.parent / "vendor" / "reactsniffer"
         logger.info("[%s] verify | running reactsniffer on directory %s", task_id, Path(target_file).parent)
         try:
-            node_cmd = f"node {Path(reactsniffer_root) / 'index.js'} {str(Path(target_file).parent)}"
+            node_cmd = f'node "{Path(reactsniffer_root) / "index.js"}" "{str(Path(target_file).parent)}"'
             res = subprocess.run(
                 node_cmd,
                 cwd=target_root,
@@ -83,8 +83,14 @@ def verify_node(state: TaskState) -> dict[str, Any]:
                         break
                         
             except json.JSONDecodeError:
-                logger.warning("[%s] verify | reactsniffer stdout was not JSON: %s", task_id, res.stdout[:200])
-                smell_resolved_check = "fail"
+                if "There are no components with smells" in res.stdout:
+                    smell_resolved_check = "pass"
+                    logger.info("[%s] verify | reactsniffer found no smells (resolved!).", task_id)
+                else:
+                    logger.warning("[%s] verify | reactsniffer stdout was not JSON.", task_id)
+                    logger.warning("[%s] verify | res.stdout: %s", task_id, res.stdout[:500])
+                    logger.warning("[%s] verify | res.stderr: %s", task_id, res.stderr[:500])
+                    smell_resolved_check = "fail"
                 
         except Exception as e:
             logger.error("[%s] verify | reactsniffer exception: %s", task_id, e)

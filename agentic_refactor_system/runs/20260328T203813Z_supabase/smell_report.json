@@ -1,7 +1,7 @@
 {
   "detector": {
-    "analysis_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T203813Z_supabase\\detector\\reactsniffer_input",
-    "command_used": "node D:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer\\index.js reactsniffer_input",
+    "analysis_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T203813Z_supabase\\detector\\reactsniffer_input",
+    "command_used": "node C:\\Users\\Admin\\Desktop\\React Refactor\\vendor\\reactsniffer\\index.js reactsniffer_input",
     "compat_copy_enabled": true,
     "reactsniffer_root": "d:\\Agentic\\React_Refactoring_Agentic_System\\vendor\\reactsniffer",
     "returncode": 1
@@ -14248,5 +14248,5 @@
       "smell_type": "Too Many Props"
     }
   ],
-  "target_root": "D:\\Agentic\\React\\supabase"
+  "target_root": "C:\\Users\\Admin\\Desktop\\supabase"
 }

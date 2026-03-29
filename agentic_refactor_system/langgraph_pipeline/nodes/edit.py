@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import difflib
 import logging
 import os
 import re
@@ -9,6 +10,7 @@ from typing import Any
 from openai import OpenAI
 
 from ..state import TaskState, STATUS_EDITING
+from ..tactics import get_tactic
 
 logger = logging.getLogger(__name__)
 
@@ -49,11 +51,19 @@ def edit_node(state: TaskState) -> dict[str, Any]:
             "changed_files": [],
         }
 
-    tactic = plan["tactic_name"]
+    tactic_name = plan["tactic_name"]
+    tactic = get_tactic(tactic_name)
+    if not tactic:
+        return {
+            "status": STATUS_EDITING,
+            "edit_result": {"applied": False, "reason": f"Unknown tactic: {tactic_name}"},
+            "changed_files": [],
+        }
+
     target_root = Path(state["manifest_task"].get("target_root", "."))
     files_to_edit = plan.get("files_to_edit", [])
     
-    logger.info("[%s] edit | tactic=%s | loading %d files", task_id, tactic, len(files_to_edit))
+    logger.info("[%s] edit | tactic=%s | loading %d files", task_id, tactic_name, len(files_to_edit))
 
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
@@ -73,13 +83,18 @@ def edit_node(state: TaskState) -> dict[str, Any]:
     user_prompt = "\n\n".join([
         f"Task: {task_id}",
         "PLAN DETAILS:",
-        f"Tactic: {tactic}",
+        f"Tactic: {tactic_name}",
         f"Risk Level: {plan.get('risk_level', 'unknown')}",
+        f"Tactic Edit Shape:\n{tactic.get('edit_shape', '')}",
         f"Expected Resolution: {plan.get('expected_smell_resolution', '')}",
+        "Preconditions for Edit:",
+        *("- " + pre for pre in tactic.get("preconditions", [])),
         "Invariants to Maintain:",
         *("- " + inv for inv in plan.get("invariants", [])),
-        "Abort Reasons (if you see these, do not edit):",
+        "Abort Reasons (from plan):",
         *("- " + abr for abr in plan.get("abort_reasons", [])),
+        "Abort Reasons (inherent to tactic):",
+        *("- " + t_abr for t_abr in tactic.get("abort_if", [])),
         "CURRENT FILES:",
         *file_contents,
         "\nPlease output the modified files wrapped in BEGIN_FILE / END_FILE markers."
@@ -99,6 +114,7 @@ def edit_node(state: TaskState) -> dict[str, Any]:
 
     # Apply file blocks back to target_root
     changed_files = []
+    diffs = {}
     if response_text:
         for match in FILE_BLOCK_RE.finditer(response_text):
             rel_path = match.group("path").strip().replace("\\", "/")
@@ -112,8 +128,23 @@ def edit_node(state: TaskState) -> dict[str, Any]:
                 logger.warning("[%s] edit | Skipping unsafe file path %s", task_id, rel_path)
                 continue
 
+            old_content = ""
+            if file_path.exists():
+                old_content = file_path.read_text(encoding="utf-8", errors="replace")
+                
+            new_content = match.group("body")
+            
+            diff_lines = list(difflib.unified_diff(
+                old_content.splitlines(keepends=True),
+                new_content.splitlines(keepends=True),
+                fromfile=rel_path,
+                tofile=rel_path
+            ))
+            if diff_lines:
+                diffs[rel_path] = "".join(diff_lines)
+
             file_path.parent.mkdir(parents=True, exist_ok=True)
-            file_path.write_text(match.group("body"), encoding="utf-8")
+            file_path.write_text(new_content, encoding="utf-8")
             changed_files.append(rel_path)
 
     logger.info("[%s] edit | applied %d files", task_id, len(changed_files))
@@ -123,6 +154,7 @@ def edit_node(state: TaskState) -> dict[str, Any]:
         "edit_result": {
             "applied": bool(changed_files),
             "response_text": response_text,
+            "diffs": diffs,
             "usage": dict(response.usage) if response.usage else {}
         },
         "changed_files": changed_files,

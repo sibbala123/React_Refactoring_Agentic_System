@@ -2,7 +2,7 @@
   "builds_failed": 0,
   "builds_passed": 0,
   "builds_skipped": 13,
-  "run_root": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system",
+  "run_root": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system",
   "smells_detected": 13,
   "task_count": 13,
   "tasks": [
@@ -10,9 +10,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_471d709a96\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Too Many Props",
@@ -24,9 +24,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_3c6ffe73f9\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Too Many Props",
@@ -38,9 +38,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0fd508880b\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Too Many Props",
@@ -52,9 +52,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_0bb8076a5c\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Too Many Props",
@@ -66,9 +66,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_8d0d67772c\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -80,9 +80,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_899bfa2ab5\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -94,9 +94,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_909ce35787\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -108,9 +108,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_e9f8a87287\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -122,9 +122,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_77fe152959\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -136,9 +136,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_32f400451f\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -150,9 +150,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_2e70077825\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -164,9 +164,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_5fac2256da\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
@@ -178,9 +178,9 @@
       "accepted_attempt": null,
       "agent_status": "skipped",
       "artifacts": {
-        "prompt": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\prompt.txt",
-        "task_summary": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\task_summary.json",
-        "validation": "D:\\Agentic\\React_Refactoring_Agentic_System\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\validation.json"
+        "prompt": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\prompt.txt",
+        "task_summary": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\task_summary.json",
+        "validation": "C:\\Users\\Admin\\Desktop\\React Refactor\\agentic_refactor_system\\runs\\20260328T211733Z_supabase_design_system\\tasks\\task_db08d4ed68\\validation.json"
       },
       "attempt_count": 0,
       "smell_type": "Large Component",
