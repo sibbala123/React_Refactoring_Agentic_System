@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 import traceback
 from pathlib import Path
@@ -28,6 +29,7 @@ def run_task(
     context: dict[str, Any],
     *,
     run_root: Path | None = None,
+    debug_dir: Path | None = None,
     show_progress: bool = True,
 ) -> TaskState:
     """
@@ -84,15 +86,29 @@ def run_task(
         graph = _get_graph()
         final_state: TaskState = initial_state
 
+        if debug_dir:
+            debug_dir = Path(debug_dir)
+            debug_dir.mkdir(parents=True, exist_ok=True)
+            with open(debug_dir / "00_initial_state.json", "w", encoding="utf-8") as f:
+                json.dump(initial_state, f, indent=2, default=str)
+
         # Use stream() so we get per-node events for progress output.
         # stream_mode="updates" yields {node_name: state_updates} dicts.
+        step_idx = 1
         for event in graph.stream(initial_state, stream_mode="updates"):
             for node_name, updates in event.items():
                 logger.debug("[%s] node=%s updates=%s", task_id, node_name, list(updates.keys()))
                 if printer:
                     printer.node_done(node_name, updates)
+                
                 # Merge updates into final_state so we have the complete state at the end.
                 final_state = {**final_state, **updates}
+                
+                if debug_dir:
+                    out_path = debug_dir / f"{step_idx:02d}_{node_name}_output.json"
+                    with open(out_path, "w", encoding="utf-8") as f:
+                        json.dump(final_state, f, indent=2, default=str)
+                    step_idx += 1
 
     except Exception as exc:
         logger.error("[%s] graph raised an exception: %s", task_id, exc)
