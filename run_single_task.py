@@ -17,19 +17,22 @@ def main():
         sys.exit("ERROR: OPENAI_API_KEY not set.")
 
     if len(sys.argv) < 2:
-        print("Usage: python run_single_task.py <target_file>")
+        print("Usage: python run_single_task.py <target_file> [smell_type]")
         sys.exit(1)
 
     target_path = Path(sys.argv[1]).resolve()
     if not target_path.exists() or not target_path.is_file():
         print(f"Error: Target file does not exist or is not a file: {target_path}")
         sys.exit(1)
+        
+    smell_type = sys.argv[2] if len(sys.argv) >= 3 else "Generic Code Quality Refactor"
 
     # Configure root logging so we see what the pipeline does
     logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(name)s | %(message)s")
 
     print("=" * 70)
     print(f"RUNNING PIPELINE ON SINGLE FILE: {target_path}")
+    print(f"SMELL TYPE: {smell_type}")
     print("=" * 70)
 
     # 1. Synthesise Manifest Task
@@ -40,7 +43,7 @@ def main():
         "target_file": str(target_path),
         "target_root": str(target_path.parent),
         "smell_id": f"smell_{task_id}",
-        "smell_type": "Generic Code Quality Refactor",
+        "smell_type": smell_type,
         "symbol_name": "unknown",
         "line_start": 1,
         "line_end": 500,

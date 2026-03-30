@@ -1,0 +1,102 @@
+{
+  "task_id": "task_20260329_231823",
+  "repo_name": "local",
+  "target_file": "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx",
+  "smell": {
+    "smell_id": "smell_task_20260329_231823",
+    "smell_type": "Large Component",
+    "file_path": "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx",
+    "line_start": 1,
+    "line_end": 276,
+    "component_name": "unknown",
+    "severity": "medium",
+    "confidence": 0.8,
+    "detector_metadata": {
+      "note": "Synthesised for single-file run"
+    }
+  },
+  "context": {
+    "task_id": "task_20260329_231823",
+    "smell_id": "smell_task_20260329_231823",
+    "target_file": "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx",
+    "symbol_name": "unknown",
+    "line_start": 1,
+    "line_end": 276,
+    "primary_snippet": {
+      "content": "import { PermissionAction } from '@supabase/shared-types/out/constants'\nimport { useTheme } from 'next-themes'\nimport Image from 'next/image'\nimport Link from 'next/link'\nimport { useEffect, useState } from 'react'\nimport { toast } from 'sonner'\n\nimport { useParams } from 'common'\nimport Table from 'components/to-be-cleaned/Table'\nimport { useOrgSubscriptionQuery } from 'data/subscriptions/org-subscription-query'\nimport { useOrgSubscriptionUpdateMutation } from 'data/subscriptions/org-subscription-update-mutation'\nimport { useAsyncCheckPermissions } from 'hooks/misc/useCheckPermissions'\nimport { BASE_PATH, DOCS_URL, PRICING_TIER_PRODUCT_IDS } from 'lib/constants'\nimport { ChevronRight, ExternalLink } from 'lucide-react'\nimport { pricing } from 'shared-data/pricing'\nimport { useOrgSettingsPageStateSnapshot } from 'state/organization-settings'\nimport { Button, Collapsible, SidePanel, cn } from 'ui'\nimport { Admonition } from 'ui-patterns/admonition'\n\nconst SPEND_CAP_OPTIONS: {\n  name: string\n  value: 'on' | 'off'\n  imageUrl: string\n  imageUrlLight: string\n}[] = [\n  {\n    name: 'Spend cap enabled',\n    value: 'on',\n    imageUrl: `${BASE_PATH}/img/spend-cap-on.png`,\n    imageUrlLight: `${BASE_PATH}/img/spend-cap-on--light.png`,\n  },\n  {\n    name: 'Spend cap disabled',\n    value: 'off',\n    imageUrl: `${BASE_PATH}/img/spend-cap-off.png`,\n    imageUrlLight: `${BASE_PATH}/img/spend-cap-off--light.png`,\n  },\n]\n\nconst SpendCapSidePanel = () => {\n  const { slug } = useParams()\n  const { resolvedTheme } = useTheme()\n\n  const [showUsageCosts, setShowUsageCosts] = useState(false)\n  const [selectedOption, setSelectedOption] = useState<'on' | 'off'>()\n\n  const { can: canUpdateSpendCap } = useAsyncCheckPermissions(\n    PermissionAction.BILLING_WRITE,\n    'stripe.subscriptions'\n  )\n\n  const snap = useOrgSettingsPageStateSnapshot()\n  const visible = snap.panelKey === 'costControl'\n  const onClose = () => snap.setPanelKey(undefined)\n\n  const { data: subscription, isPending: isLoading } = useOrgSubscriptionQuery({ orgSlug: slug })\n  const { mutate: updateOrgSubscription, isPending: isUpdating } = useOrgSubscriptionUpdateMutation(\n    {\n      onSuccess: () => {\n        toast.success(`Successfully ${isTurningOnCap ? 'enabled' : 'disabled'} spend cap`)\n        onClose()\n      },\n      onError: (error) => {\n        toast.error(`Failed to toggle spend cap: ${error.message}`)\n      },\n    }\n  )\n\n  const isFreePlan = subscription?.plan?.id === 'free'\n  const isSpendCapOn = !subscription?.usage_billing_enabled\n  const isTurningOnCap = !isSpendCapOn && selectedOption === 'on'\n  const hasChanges = selectedOption !== (isSpendCapOn ? 'on' : 'off')\n\n  useEffect(() => {\n    if (visible && subscription !== undefined) {\n      setSelectedOption(isSpendCapOn ? 'on' : 'off')\n    }\n  }, [visible, isLoading, subscription, isSpendCapOn])\n\n  const onConfirm = async () => {\n    if (!slug) return console.error('Org slug is required')\n\n    const tier = (\n      selectedOption === 'on' ? PRICING_TIER_PRODUCT_IDS.PRO : PRICING_TIER_PRODUCT_IDS.PAYG\n    ) as 'tier_pro' | 'tier_payg'\n\n    updateOrgSubscription({ slug, tier })\n  }\n\n  const billingMetricCategories: (keyof typeof pricing)[] = [\n    'database',\n    'auth',\n    'storage',\n    'realtime',\n    'edge_functions',\n  ]\n\n  return (\n    <SidePanel\n      size=\"large\"\n      loading={isLoading || isUpdating}\n      disabled={isFreePlan || isLoading || !hasChanges || isUpdating || !canUpdateSpendCap}\n      visible={visible}\n      onCancel={onClose}\n      onConfirm={onConfirm}\n      header={\n        <div className=\"flex items-center justify-between\">\n          <h4>Spend cap</h4>\n          <Button asChild type=\"default\" icon={<ExternalLink strokeWidth={1.5} />}>\n            <Link\n              href={`${DOCS_URL}/guides/platform/cost-control#spend-cap`}\n              target=\"_blank\"\n              rel=\"noreferrer\"\n            >\n              About spend cap\n            </Link>\n          </Button>\n        </div>\n      }\n      tooltip={!canUpdateSpendCap ? 'You do not have permission to update spend cap' : undefined}\n    >\n      <SidePanel.Content>\n        <div className=\"py-6 space-y-4\">\n          <p className=\"text-sm\">\n            Use the spend cap to manage project usage and costs, and control whether the project can\n            exceed the included quota allowance of any billed line item in a billing cycle\n          </p>\n\n          <Collapsible open={showUsageCosts} onOpenChange={setShowUsageCosts}>\n            <Collapsible.Trigger asChild>\n              <div className=\"flex items-center space-x-2 cursor-pointer\">\n                <ChevronRight\n                  strokeWidth={1.5}\n                  size={16}\n                  className={showUsageCosts ? 'rotate-90' : ''}\n                />\n                <p className=\"text-sm text-foreground-light\">\n                  How are each resource charged after exceeding the included quota?\n                </p>\n              </div>\n            </Collapsible.Trigger>\n            <Collapsible.Content asChild>\n              <Table\n                className=\"mt-4\"\n                head={\n                  <>\n                    <Table.th>\n                      <p className=\"text-xs\">Item</p>\n                    </Table.th>\n                    <Table.th>\n                      <p className=\"text-xs\">Rate</p>\n                    </Table.th>\n                  </>\n                }\n                body={billingMetricCategories.map((categoryId) => {\n                  const category = pricing[categoryId]\n                  const usageItems = category.features.filter((it: any) => it.usage_based)\n\n                  return (\n                    <>\n                      <Table.tr key={categoryId}>\n                        <Table.td>\n                          <p className=\"text-xs text-foreground\">{category.title}</p>\n                        </Table.td>\n                        <Table.td>{null}</Table.td>\n                      </Table.tr>\n                      {usageItems.map((item: any) => {\n                        return (\n                          <Table.tr key={item.title}>\n                            <Table.td>\n                              <p className=\"text-xs pl-4\">{item.title}</p>\n                            </Table.td>\n                            <Table.td>\n                              <p className=\"text-xs pl-4\">{item.plans['pro']}</p>\n                            </Table.td>\n                          </Table.tr>\n                        )\n                      })}\n                    </>\n                  )\n                })}\n              />\n            </Collapsible.Content>\n          </Collapsible>\n\n          {isFreePlan && (\n            <Admonition\n              type=\"note\"\n              layout=\"horizontal\"\n              title=\"Toggling of the spend cap is only available on the Pro Plan\"\n              description=\"Upgrade your plan to disable the spend cap\"\n              actions={\n                <Button type=\"default\" onClick={() => snap.setPanelKey('subscriptionPlan')}>\n                  View available plans\n                </Button>\n              }\n            />\n          )}\n\n          <div className=\"!mt-8 pb-4\">\n            <div className=\"flex gap-3\">\n              {SPEND_CAP_OPTIONS.map((option) => {\n                const isSelected = selectedOption === option.value\n\n                return (\n                  <div\n                    key={option.value}\n                    className={cn('col-span-4 group space-y-1', isFreePlan && 'opacity-75')}\n                    onClick={() => !isFreePlan && setSelectedOption(option.value)}\n                  >\n                    <Image\n                      alt=\"Spend Cap\"\n                      className={cn(\n                        'relative rounded-xl transition border bg-no-repeat bg-center bg-cover w-[160px] h-[96px]',\n                        isSelected\n                          ? 'border-foreground'\n                          : 'border-foreground-muted opacity-50 group-hover:border-foreground-lighter group-hover:opacity-100',\n                        !isFreePlan && 'cursor-pointer',\n                        !isFreePlan && !isSelected && 'group-hover:border-foreground-light'\n                      )}\n                      width={160}\n                      height={96}\n                      src={resolvedTheme?.includes('dark') ? option.imageUrl : option.imageUrlLight}\n                    />\n\n                    <p\n                      className={cn(\n                        'text-sm transition',\n                        !isFreePlan && 'group-hover:text-foreground',\n                        isSelected ? 'text-foreground' : 'text-foreground-light'\n                      )}\n                    >\n                      {option.name}\n                    </p>\n                  </div>\n                )\n              })}\n            </div>\n          </div>\n\n          {selectedOption === 'on' ? (\n            <Admonition\n              type=\"warning\"\n              title=\"Your projects could become unresponsive or enter read only mode\"\n              description=\"Exceeding the included quota allowance with spend cap enabled can cause your projects\n              to become unresponsive or enter read only mode.\"\n            />\n          ) : (\n            <Admonition\n              type=\"note\"\n              title=\"Charges apply for usage beyond included quota allowance\"\n              description=\"Your projects will always remain responsive and active, and charges only apply when\n              exceeding the included quota limit.\"\n            />\n          )}\n\n          {hasChanges && (\n            <>\n              <p className=\"text-sm\">\n                {selectedOption === 'on'\n                  ? 'Upon clicking confirm, spend cap will be enabled for your organization and you will no longer be charged any extra for usage.'\n                  : 'Upon clicking confirm, spend cap will be disabled for your organization and you will be charged for any usage beyond the included quota.'}\n              </p>\n              <p className=\"text-sm\">\n                Toggling spend cap triggers an invoice and there might be prorated charges for any\n                usage beyond the Pro Plans quota during this billing cycle.\n              </p>\n            </>\n          )}\n        </div>\n      </SidePanel.Content>\n    </SidePanel>\n  )\n}\n\nexport default SpendCapSidePanel\n",
+      "start_line": 1,
+      "end_line": 276
+    },
+    "local_imports": [],
+    "related_files": [],
+    "relevant_context_files": [
+      "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx"
+    ]
+  },
+  "manifest_task": {
+    "id": "task_20260329_231823",
+    "repo_name": "local",
+    "target_file": "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx",
+    "target_root": "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl",
+    "smell_id": "smell_task_20260329_231823",
+    "smell_type": "Large Component",
+    "symbol_name": "unknown",
+    "line_start": 1,
+    "line_end": 276,
+    "allowed_edit_scope": {
+      "mode": "bounded_file_and_local_imports",
+      "allowed_files": [
+        "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx"
+      ]
+    },
+    "build_command": "",
+    "validation_commands": [],
+    "metadata": {
+      "severity": "medium",
+      "confidence": 0.8,
+      "detector_metadata": {
+        "note": "Synthesised for single-file run"
+      }
+    },
+    "relevant_context_files": [
+      "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx"
+    ]
+  },
+  "actionability": {
+    "label": "actionable",
+    "rationale": "The detected smell is a Large Component, which is confirmed by the code snippet being 276 lines long. The component can be refactored by splitting it into smaller components, such as extracting the JSX for the spend cap options, the admonitions, and the collapsible table into separate components. This would improve readability and maintainability. The risk of breaking behavior is low to medium as the component's logic is relatively straightforward and can be modularized without altering its core functionality.",
+    "confidence": 0.9,
+    "no_op_acceptable": false,
+    "caveats": [
+      "Split Component, Extract Component, Extract Logic to Custom Hook"
+    ]
+  },
+  "plan": {
+    "tactic_name": "extract_component",
+    "files_to_edit": [
+      "D:\\Agentic\\React\\supabase\\apps\\studio\\components\\interfaces\\Organization\\BillingSettings\\CostControl\\SpendCapSidePanel.tsx"
+    ],
+    "risk_level": "medium",
+    "invariants": [
+      "Exported component name and its props API are unchanged",
+      "Rendered output is identical",
+      "No new files are created \u2014 new component lives in the same file"
+    ],
+    "expected_smell_resolution": "By extracting self-contained JSX blocks into smaller components, the overall size of the SpendCapSidePanel component will be reduced, improving readability and maintainability without altering its core functionality.",
+    "abort_reasons": [
+      "No clearly separable block exists",
+      "The candidate block shares mutable state with sibling blocks",
+      "Extraction would require passing more than 5 props to the new component"
+    ]
+  },
+  "edit_result": null,
+  "changed_files": [],
+  "verification_result": null,
+  "critique_result": null,
+  "status": "planning",
+  "skip_reason": null,
+  "error": null,
+  "retry_count": 0,
+  "plan_feedback": null,
+  "artifact_paths": {}
+}

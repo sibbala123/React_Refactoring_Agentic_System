@@ -1,0 +1,85 @@
+{
+  "task_id": "task_20260329_230455",
+  "repo_name": "local",
+  "target_file": "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx",
+  "smell": {
+    "smell_id": "smell_task_20260329_230455",
+    "smell_type": "Generic Code Quality Refactor",
+    "file_path": "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx",
+    "line_start": 1,
+    "line_end": 186,
+    "component_name": "unknown",
+    "severity": "medium",
+    "confidence": 0.8,
+    "detector_metadata": {
+      "note": "Synthesised for single-file run"
+    }
+  },
+  "context": {
+    "task_id": "task_20260329_230455",
+    "smell_id": "smell_task_20260329_230455",
+    "target_file": "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx",
+    "symbol_name": "unknown",
+    "line_start": 1,
+    "line_end": 186,
+    "primary_snippet": {
+      "content": "import { useState } from 'react'\nimport DataGrid, { Column, useRowSelection } from 'react-data-grid'\n\nimport 'react-data-grid/lib/styles.css'\n\nimport { Checkbox_Shadcn_, cn } from 'ui'\n\ntype User = {\n  id: string\n  name: string\n  email: string\n  phone: string\n}\n\n/**\n * Render a data grid demo with selectable rows and sample user data.\n *\n * Renders a DataGrid configured with a checkbox column for per-row selection, columns for display name,\n * email, and phone, and ten hard-coded sample users. Selection state is managed internally and applied\n * to row styling.\n *\n * @returns A React element that renders the configured DataGrid with row selection and sample rows.\n */\nexport default function DataGridDemo() {\n  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set())\n\n  const columns: Column<User>[] = [\n    {\n      key: 'checkbox',\n      name: '',\n      width: 50,\n      resizable: false,\n      headerCellClass: 'border-default border-r border-b',\n      renderCell: (props) => <CheckboxCell {...props} />,\n    },\n    {\n      key: 'name',\n      name: 'Display name',\n      minWidth: 200,\n      resizable: true,\n      headerCellClass: 'border-default border-r border-b',\n    },\n    {\n      key: 'email',\n      name: 'Email',\n      minWidth: 250,\n      resizable: true,\n      headerCellClass: 'border-default border-r border-b',\n    },\n    {\n      key: 'phone',\n      name: 'Phone',\n      minWidth: 150,\n      resizable: true,\n      headerCellClass: 'border-default border-b',\n    },\n  ]\n\n  const rows: User[] = [\n    {\n      id: '1',\n      name: 'Wallace',\n      email: 'wallace@example.com',\n      phone: '+44 1234 567890',\n    },\n    {\n      id: '2',\n      name: 'Gromit',\n      email: 'gromit@example.com',\n      phone: '+44 1234 567891',\n    },\n    {\n      id: '3',\n      name: 'Wendolene Ramsbottom',\n      email: 'wendolene@example.com',\n      phone: '+44 1234 567892',\n    },\n    {\n      id: '4',\n      name: 'Feathers McGraw',\n      email: 'feathers@example.com',\n      phone: '+44 1234 567893',\n    },\n    {\n      id: '5',\n      name: 'Preston',\n      email: 'preston@example.com',\n      phone: '+44 1234 567894',\n    },\n    {\n      id: '6',\n      name: 'Piella Bakewell',\n      email: 'piella@example.com',\n      phone: '+44 1234 567895',\n    },\n    {\n      id: '7',\n      name: 'Victor Quartermaine',\n      email: 'victor@example.com',\n      phone: '+44 1234 567896',\n    },\n    {\n      id: '8',\n      name: 'Lady Tottington',\n      email: 'lady@example.com',\n      phone: '+44 1234 567897',\n    },\n    {\n      id: '9',\n      name: 'Shaun',\n      email: 'shaun@example.com',\n      phone: '+44 1234 567898',\n    },\n    {\n      id: '10',\n      name: 'Hutch',\n      email: 'hutch@example.com',\n      phone: '+44 1234 567899',\n    },\n  ]\n\n  return (\n    <div className=\"h-full w-full flex flex-col relative min-h-[400px] rounded-md border overflow-hidden\">\n      <DataGridComponent\n        columns={columns}\n        rows={rows}\n        selectedRows={selectedRows}\n        onSelectedRowsChange={setSelectedRows}\n      />\n    </div>\n  )\n}\n\nfunction DataGridComponent({ columns, rows, selectedRows, onSelectedRowsChange }: {\n  columns: Column<User>[],\n  rows: User[],\n  selectedRows: Set<string>,\n  onSelectedRowsChange: (selectedRows: Set<string>) => void\n}) {\n  return (\n    <DataGrid\n      className=\"flex-grow border-t-0 bg-dash-canvas\"\n      rowHeight={44}\n      headerRowHeight={36}\n      columns={columns}\n      rows={rows}\n      rowKeyGetter={(row: User) => row.id}\n      rowClass={(row, idx) => <RowClassComponent row={row} idx={idx} selectedRows={selectedRows} rows={rows} />}\n      selectedRows={selectedRows}\n      onSelectedRowsChange={onSelectedRowsChange}\n    />\n  )\n}\n\nfunction CheckboxCell({ row }: { row: User }) {\n  const { isRowSelected, onRowSelectionChange } = useRowSelection()\n\n  return (\n    <div className=\"flex items-center justify-center h-full\">\n      <Checkbox_Shadcn_\n        checked={isRowSelected}\n        onClick={(e) => {\n          e.stopPropagation()\n          onRowSelectionChange({\n            row,\n            checked: !isRowSelected,\n            isShiftClick: e.shiftKey,\n          })\n        }}\n      />\n    </div>\n  )\n}\n\nfunction RowClassComponent({ row, idx, selectedRows, rows }: { row: User, idx: number, selectedRows: Set<string>, rows: User[] }) {\n  const isSelected = selectedRows.has(row.id)\n  const isLastRow = idx === rows.length - 1\n  return cn(\n    'bg-surface-75',\n    isSelected && 'bg-surface-200',\n    '[&>.rdg-cell]:border-box [&>.rdg-cell]:outline-none [&>.rdg-cell]:shadow-none',\n    '[&>.rdg-cell]:border-secondary [&>.rdg-cell:not(:last-child)]:border-r',\n    !isLastRow && '[&>.rdg-cell]:border-b',\n    '[&>.rdg-cell:nth-child(2)>div]:ml-8'\n  )\n}",
+      "start_line": 1,
+      "end_line": 186
+    },
+    "local_imports": [],
+    "related_files": [],
+    "relevant_context_files": [
+      "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx"
+    ]
+  },
+  "manifest_task": {
+    "id": "task_20260329_230455",
+    "repo_name": "local",
+    "target_file": "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx",
+    "target_root": "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example",
+    "smell_id": "smell_task_20260329_230455",
+    "smell_type": "Generic Code Quality Refactor",
+    "symbol_name": "unknown",
+    "line_start": 1,
+    "line_end": 186,
+    "allowed_edit_scope": {
+      "mode": "bounded_file_and_local_imports",
+      "allowed_files": [
+        "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx"
+      ]
+    },
+    "build_command": "",
+    "validation_commands": [],
+    "metadata": {
+      "severity": "medium",
+      "confidence": 0.8,
+      "detector_metadata": {
+        "note": "Synthesised for single-file run"
+      }
+    },
+    "relevant_context_files": [
+      "D:\\Agentic\\React\\supabase\\apps\\design-system\\registry\\default\\example\\data-grid-demo.tsx"
+    ]
+  },
+  "actionability": {
+    "label": "non_actionable",
+    "rationale": "Smell type 'Generic Code Quality Refactor' is not in the known refactoring table. No bounded automated fix exists for this pattern.",
+    "confidence": 1.0,
+    "no_op_acceptable": true,
+    "caveats": [
+      "Unknown smell type: 'Generic Code Quality Refactor'"
+    ]
+  },
+  "plan": null,
+  "edit_result": null,
+  "changed_files": [],
+  "verification_result": null,
+  "critique_result": null,
+  "status": "classifying",
+  "skip_reason": null,
+  "error": null,
+  "retry_count": 0,
+  "plan_feedback": null,
+  "artifact_paths": {}
+}
