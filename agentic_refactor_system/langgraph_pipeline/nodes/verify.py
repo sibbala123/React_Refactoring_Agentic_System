@@ -15,7 +15,7 @@ def _run_tsc_on_file(file_path: Path, cwd: Path) -> tuple[int, str]:
     """Run tsc --noEmit --skipLibCheck --isolatedModules on a single file."""
     try:
         res = subprocess.run(
-            f'npx tsc --noEmit --skipLibCheck --isolatedModules --jsx react --esModuleInterop "{file_path}"',
+            f'npx --yes tsc --noEmit --skipLibCheck --isolatedModules --jsx react --esModuleInterop "{file_path}"',
             cwd=cwd,
             shell=True,
             capture_output=True,
@@ -23,8 +23,11 @@ def _run_tsc_on_file(file_path: Path, cwd: Path) -> tuple[int, str]:
             encoding="utf-8",
             errors="replace",
             check=False,
+            timeout=30,
         )
         return res.returncode, res.stdout + res.stderr
+    except subprocess.TimeoutExpired as e:
+        return 1, f"TSC timeout after 30 seconds: {e}"
     except Exception as e:
         return 1, str(e)
 
@@ -109,7 +112,8 @@ def verify_node(state: TaskState) -> dict[str, Any]:
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
-                check=False
+                check=False,
+                timeout=30
             )
             
             smell_resolved_check = "pass" # innocent until proven guilty

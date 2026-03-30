@@ -40,7 +40,7 @@ def main():
     mt = {
         "id": task_id,
         "repo_name": "local",
-        "target_file": str(target_path),
+        "target_file": target_path.name,
         "target_root": str(target_path.parent),
         "smell_id": f"smell_{task_id}",
         "smell_type": smell_type,
@@ -49,7 +49,7 @@ def main():
         "line_end": 500,
         "allowed_edit_scope": {
             "mode": "bounded_file_and_local_imports",
-            "allowed_files": [str(target_path)],
+            "allowed_files": [target_path.name],
         },
         "build_command": "",
         "validation_commands": [],
@@ -58,7 +58,7 @@ def main():
             "confidence": 0.8,
             "detector_metadata": {"note": "Synthesised for single-file run"}
         },
-        "relevant_context_files": [str(target_path)],
+        "relevant_context_files": [target_path.name],
     }
 
     # Optional: Read snippet content
@@ -74,7 +74,7 @@ def main():
     smell = {
         "smell_id": mt["smell_id"],
         "smell_type": mt["smell_type"],
-        "file_path": str(target_path),
+        "file_path": target_path.name,
         "line_start": 1,
         "line_end": num_lines,
         "component_name": "unknown",
@@ -87,7 +87,7 @@ def main():
     ctx = {
         "task_id": mt["id"],
         "smell_id": mt["smell_id"],
-        "target_file": str(target_path),
+        "target_file": target_path.name,
         "symbol_name": "unknown",
         "line_start": 1,
         "line_end": num_lines,
@@ -98,7 +98,7 @@ def main():
         },
         "local_imports": [],
         "related_files": [],
-        "relevant_context_files": [str(target_path)],
+        "relevant_context_files": [target_path.name],
     }
 
     # Setup specific run directory
