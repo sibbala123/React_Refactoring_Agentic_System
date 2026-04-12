@@ -3,3 +3,8 @@ openai
 PyYAML
 jsonschema
 typing_extensions
+fastapi
+uvicorn[standard]
+sse-starlette
+pydantic
+python-dotenv
