@@ -4,7 +4,7 @@ import json
 import logging
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from .graph import build_graph
 from .progress import ProgressPrinter, print_run_summary
@@ -31,6 +31,7 @@ def run_task(
     run_root: Path | None = None,
     debug_dir: Path | None = None,
     show_progress: bool = True,
+    on_node_done: Callable[[str, dict], None] | None = None,
 ) -> TaskState:
     """
     Run a single task through the LangGraph pipeline.
@@ -100,7 +101,9 @@ def run_task(
                 logger.debug("[%s] node=%s updates=%s", task_id, node_name, list(updates.keys()))
                 if printer:
                     printer.node_done(node_name, updates)
-                
+                if on_node_done:
+                    on_node_done(node_name, updates)
+
                 # Merge updates into final_state so we have the complete state at the end.
                 final_state = {**final_state, **updates}
                 
