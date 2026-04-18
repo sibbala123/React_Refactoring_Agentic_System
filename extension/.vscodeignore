@@ -11,3 +11,4 @@ package-lock.json
 **/experiments/**
 **/.git/**
 **/node_modules/**
+!vendor/reactsniffer/node_modules/**

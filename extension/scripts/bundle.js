@@ -20,13 +20,27 @@ const COPIES = [
 
 const EXCLUDE_DIRS = new Set(['runs', '__pycache__', '.git', 'node_modules', '.pytest_cache']);
 
-function copyRecursive(src, dest) {
+// Paths (relative to PROJECT_ROOT) whose node_modules must be included because
+// the tool won't run without them in a bundled/installed context.
+const INCLUDE_NODE_MODULES = new Set([
+    path.join('vendor', 'reactsniffer'),
+]);
+
+function copyRecursive(src, dest, relFromProject = '') {
     const stat = fs.statSync(src);
     if (stat.isDirectory()) {
         fs.mkdirSync(dest, { recursive: true });
         for (const entry of fs.readdirSync(src)) {
-            if (EXCLUDE_DIRS.has(entry)) { continue; }
-            copyRecursive(path.join(src, entry), path.join(dest, entry));
+            const childRel = relFromProject ? path.join(relFromProject, entry) : entry;
+            if (EXCLUDE_DIRS.has(entry)) {
+                // Allow node_modules for explicitly whitelisted parent paths
+                if (entry === 'node_modules' && INCLUDE_NODE_MODULES.has(relFromProject)) {
+                    // fall through to copy
+                } else {
+                    continue;
+                }
+            }
+            copyRecursive(path.join(src, entry), path.join(dest, entry), childRel);
         }
     } else {
         fs.copyFileSync(src, dest);
@@ -45,7 +59,7 @@ for (const { src, dest } of COPIES) {
 
     console.log(`[bundle] Copying ${src} → extension/${dest}`);
     try {
-        copyRecursive(srcPath, destPath);
+        copyRecursive(srcPath, destPath, src);
     } catch (err) {
         console.error(`[bundle] ERROR copying ${src}: ${err.message}`);
         ok = false;

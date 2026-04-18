@@ -70,6 +70,10 @@ _SEVERITY_BY_TYPE: dict[str, str] = {
 
 def _apply_severity(smells: list[dict[str, Any]]) -> None:
     for smell in smells:
+        # Preserve "low" set by detect_smells for library/shared-package paths — those
+        # smells are deprioritised by design and should not be promoted by smell type.
+        if smell.get("severity") == "low":
+            continue
         smell["severity"] = _SEVERITY_BY_TYPE.get(smell.get("smell_type", ""), "medium")
 
 

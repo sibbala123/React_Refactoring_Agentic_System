@@ -164,16 +164,33 @@ async function detectPython(outputChannel, context) {
 /**
  * Spawns the FastAPI server and waits until /health responds.
  */
+/**
+ * Resolves a project-relative path, checking the bundled location inside the
+ * extension first (VSIX install) then falling back to the sibling dev layout.
+ */
+function resolveProjectPath(extensionPath, ...segments) {
+    const bundled = path.join(extensionPath, ...segments);
+    if (fs.existsSync(bundled)) {
+        return bundled;
+    }
+    return path.join(extensionPath, '..', ...segments);
+}
 async function startServer(pythonPath, outputChannel, extensionPath) {
-    const serverScript = path.join(extensionPath, '..', 'server', 'app.py');
+    const serverScript = resolveProjectPath(extensionPath, 'server', 'app.py');
+    const serverCwd = path.dirname(path.dirname(serverScript)); // project root
     if (!fs.existsSync(serverScript)) {
         outputChannel.appendLine(`[ReactRefactor] ERROR: server/app.py not found at ${serverScript}`);
         return false;
     }
     outputChannel.appendLine(`[ReactRefactor] Starting server: ${pythonPath} ${serverScript}`);
+    const apiKey = vscode.workspace.getConfiguration('reactRefactor').get('openaiApiKey') ?? '';
+    const env = { ...process.env };
+    if (apiKey) {
+        env['OPENAI_API_KEY'] = apiKey;
+    }
     serverProcess = cp.spawn(pythonPath, [serverScript, '--port', String(SERVER_PORT)], {
-        cwd: path.join(extensionPath, '..'),
-        env: { ...process.env },
+        cwd: serverCwd,
+        env,
         stdio: ['ignore', 'pipe', 'pipe'],
     });
     serverProcess.stdout?.on('data', (data) => {
