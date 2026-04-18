@@ -1,7 +1,8 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { detectPython, startServer, stopServer } from './serverManager';
 import { ensureDependencies } from './dependencyInstaller';
-import { SmellsProvider, runScan, SERVER_PORT, FixStatus } from './smellsProvider';
+import { SmellsProvider, SmellItem, runScan, SERVER_PORT, FixStatus } from './smellsProvider';
 
 let outputChannel: vscode.OutputChannel;
 
@@ -58,12 +59,128 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         }
     });
 
-    // --- E3-S3: stream live fix progress via SSE ---
+    // --- E4-S1: run summary Webview panel ---
+    function showReportPanel(
+        workspace: string,
+        summary: Record<string, number>,
+        results: ReturnType<SmellsProvider['getFixResults']>,
+    ): void {
+        const panel = vscode.window.createWebviewPanel(
+            'reactRefactorReport',
+            'ReactRefactor — Fix Report',
+            vscode.ViewColumn.One,
+            { enableScripts: true },
+        );
+
+        const hasErrors = results.some(r => r.error);
+        const rows = results.map(({ smell, status, error }) => {
+            const colors: Record<string, string> = {
+                accepted: '#4caf50', rejected: '#f44336', skipped: '#ff9800',
+                failed: '#e91e63', queued: '#9e9e9e', running: '#2196f3',
+            };
+            const color = colors[status] ?? '#9e9e9e';
+            const file = smell.file_path.split(/[\\/]/).pop() ?? smell.file_path;
+            const component = smell.component_name ?? '—';
+            const errorCell = hasErrors
+                ? `<td class="error-cell">${error ?? ''}</td>`
+                : '';
+            return `<tr>
+                <td>${component}</td>
+                <td title="${smell.file_path}">${file}</td>
+                <td>${smell.smell_type}</td>
+                <td><span class="badge" style="background:${color}">${status}</span></td>
+                ${errorCell}
+            </tr>`;
+        }).join('');
+
+        const acceptedCount = results.filter(r => r.status === 'accepted').length;
+
+        panel.webview.html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 16px; }
+  h2 { margin-top: 0; }
+  .summary { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat { background: var(--vscode-editor-inactiveSelectionBackground); border-radius: 6px; padding: 8px 16px; }
+  .stat span { font-size: 1.6em; font-weight: bold; display: block; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; border-bottom: 1px solid var(--vscode-panel-border); padding: 6px 8px; }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--vscode-panel-border); }
+  .badge { border-radius: 4px; padding: 2px 8px; color: #fff; font-size: 0.85em; }
+  button { margin-top: 20px; padding: 8px 18px; background: var(--vscode-button-background);
+           color: var(--vscode-button-foreground); border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
+  button:hover { background: var(--vscode-button-hoverBackground); }
+  button:disabled { opacity: 0.4; cursor: default; }
+  .error-cell { color: var(--vscode-errorForeground); font-size: 0.85em; max-width: 300px; }
+</style>
+</head>
+<body>
+<h2>Fix Report</h2>
+<div class="summary">
+  <div class="stat"><span>${summary.accepted ?? 0}</span>Accepted</div>
+  <div class="stat"><span>${summary.rejected ?? 0}</span>Rejected</div>
+  <div class="stat"><span>${summary.skipped ?? 0}</span>Skipped</div>
+  <div class="stat"><span>${summary.failed ?? 0}</span>Failed</div>
+</div>
+<table>
+  <thead><tr><th>Component</th><th>File</th><th>Smell Type</th><th>Status</th>${hasErrors ? '<th>Error</th>' : ''}</tr></thead>
+  <tbody>${rows}</tbody>
+</table>
+${acceptedCount > 0 ? `<button id="revertAll">Revert All Accepted (${acceptedCount})</button>` : ''}
+<script>
+  const vscode = acquireVsCodeApi();
+  const btn = document.getElementById('revertAll');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      btn.textContent = 'Reverting…';
+      vscode.postMessage({ command: 'revertAll' });
+    });
+  }
+  window.addEventListener('message', e => {
+    if (e.data.command === 'revertDone') {
+      if (btn) { btn.textContent = e.data.success ? 'Reverted' : 'Revert failed'; }
+    }
+  });
+</script>
+</body>
+</html>`;
+
+        // Handle "Revert All" from Webview
+        panel.webview.onDidReceiveMessage(async msg => {
+            if (msg.command !== 'revertAll') { return; }
+            const accepted = results.filter(r => r.status === 'accepted');
+            let failed = 0;
+            for (const { smell } of accepted) {
+                try {
+                    const res = await fetch(`http://localhost:${SERVER_PORT}/revert`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ workspace, file: smell.file_path }),
+                    });
+                    if (!res.ok) { failed++; }
+                } catch { failed++; }
+            }
+            panel.webview.postMessage({ command: 'revertDone', success: failed === 0 });
+            if (failed === 0) {
+                vscode.window.showInformationMessage(`ReactRefactor: reverted ${accepted.length} file(s).`);
+            } else {
+                vscode.window.showWarningMessage(`ReactRefactor: ${failed} revert(s) failed. Check Output Channel.`);
+            }
+        });
+    }
+
+    // --- E3-S3 / E3-S4: stream live fix progress via SSE, with cancel support ---
+    let _currentJobId: string | null = null;
+
     async function runFix(workspace: string, selected: ReturnType<SmellsProvider['getSelectedSmells']>): Promise<void> {
         outputChannel.appendLine(`[ReactRefactor] Fixing ${selected.length} smell(s)…`);
 
         for (const s of selected) { smellsProvider.setFixStatus(s.smell_id, 'queued'); }
         statusBar.text = `$(sync~spin) Fixing ${selected.length} smell(s)…`;
+        vscode.commands.executeCommand('setContext', 'reactRefactor.fixRunning', true);
 
         try {
             const fixRes = await fetch(`http://localhost:${SERVER_PORT}/fix`, {
@@ -75,6 +192,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                 throw new Error(`Server returned ${fixRes.status}: ${await fixRes.text()}`);
             }
             const { job_id } = await fixRes.json() as { job_id: string; total_tasks: number };
+            _currentJobId = job_id;
             outputChannel.appendLine(`[ReactRefactor] Job started: ${job_id}`);
 
             const progRes = await fetch(`http://localhost:${SERVER_PORT}/progress/${job_id}`);
@@ -106,13 +224,22 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                         smellsProvider.setFixStatus(event.smell_id as string, 'running');
                         outputChannel.appendLine(`  node: ${event.node}  (${event.smell_id})`);
                     } else if (event.type === 'task_done') {
-                        smellsProvider.setFixStatus(event.smell_id as string, event.status as FixStatus);
-                        outputChannel.appendLine(`  task done: ${event.smell_id} → ${event.status} (retries=${event.retry_count})`);
+                        const taskError = event.error != null ? String(event.error) : undefined;
+                        smellsProvider.setFixStatus(event.smell_id as string, event.status as FixStatus, taskError);
+                        outputChannel.appendLine(`  task done: ${event.smell_id} → ${event.status} (retries=${event.retry_count})${taskError ? ` error: ${taskError}` : ''}`);
                     } else if (event.type === 'run_complete') {
                         const s = event.summary as Record<string, number>;
                         outputChannel.appendLine(`[ReactRefactor] Run complete — accepted:${s.accepted} rejected:${s.rejected} skipped:${s.skipped} failed:${s.failed}`);
+                        showReportPanel(workspace, s, smellsProvider.getFixResults());
                         vscode.window.showInformationMessage(
-                            `ReactRefactor: ${s.accepted} fixed, ${s.rejected} rejected, ${s.skipped} skipped`
+                            `ReactRefactor: ${s.accepted} fixed, ${s.rejected} rejected, ${s.skipped} skipped, ${s.failed} failed`
+                        );
+                        break outer;
+                    } else if (event.type === 'cancelled') {
+                        const s = event.summary as Record<string, number>;
+                        outputChannel.appendLine(`[ReactRefactor] Job cancelled — completed:${event.completed as number} cancelled:${s.cancelled}`);
+                        vscode.window.showWarningMessage(
+                            `ReactRefactor: job cancelled (${event.completed as number} task(s) completed before cancel)`
                         );
                         break outer;
                     }
@@ -124,6 +251,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             vscode.window.showErrorMessage(`ReactRefactor fix failed: ${msg}`);
             smellsProvider.clearFixStatus();
         } finally {
+            _currentJobId = null;
+            vscode.commands.executeCommand('setContext', 'reactRefactor.fixRunning', false);
             const count = smellsProvider.getSelectedCount();
             if (count === 0) {
                 statusBar.text = '$(check) 0 smells selected';
@@ -161,6 +290,25 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     });
     context.subscriptions.push(fixSelectedCommand);
 
+    // Cancel a running fix job
+    const cancelFixCommand = vscode.commands.registerCommand('reactRefactor.cancelFix', async () => {
+        if (!_currentJobId) { return; }
+        try {
+            const res = await fetch(`http://localhost:${SERVER_PORT}/jobs/${_currentJobId}`, { method: 'DELETE' });
+            if (res.status === 409) {
+                vscode.window.showInformationMessage('ReactRefactor: job already finished.');
+            } else if (!res.ok) {
+                throw new Error(`Server returned ${res.status}`);
+            } else {
+                outputChannel.appendLine(`[ReactRefactor] Cancel requested for job ${_currentJobId}`);
+            }
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            vscode.window.showErrorMessage(`ReactRefactor: cancel failed — ${msg}`);
+        }
+    });
+    context.subscriptions.push(cancelFixCommand);
+
     // Open a file and highlight the smell's line range
     const openSmellCommand = vscode.commands.registerCommand(
         'reactRefactor.openSmell',
@@ -176,6 +324,111 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         }
     );
     context.subscriptions.push(openSmellCommand);
+
+    // --- E4-S2: inline diff view ---
+    // Virtual document provider — serves git-original content fetched from /original
+    const _originalCache = new Map<string, string>();
+    const originalProvider = vscode.workspace.registerTextDocumentContentProvider(
+        'reactrefactor-original',
+        { provideTextDocumentContent(uri: vscode.Uri): string { return _originalCache.get(uri.toString()) ?? ''; } },
+    );
+    context.subscriptions.push(originalProvider);
+
+    const viewDiffCommand = vscode.commands.registerCommand(
+        'reactRefactor.viewDiff',
+        async (smell: SmellItem, status: FixStatus) => {
+            const folders = vscode.workspace.workspaceFolders;
+            const workspace = folders?.[0]?.uri.fsPath ?? '';
+
+            // For non-accepted smells just show what happened
+            if (status !== 'accepted') {
+                const label: Record<string, string> = {
+                    rejected: 'The pipeline rejected this fix — no changes were made.',
+                    skipped:  'This smell was skipped by the pipeline.',
+                    failed:   'The pipeline failed to process this smell.',
+                };
+                vscode.window.showInformationMessage(
+                    `ReactRefactor (${status}): ${label[status] ?? 'No diff available.'}`
+                );
+                return;
+            }
+
+            // Derive relative path for git (server expects forward-slash relative path)
+            const relFile = path.relative(workspace, smell.file_path).replace(/\\/g, '/');
+
+            try {
+                const res = await fetch(
+                    `http://localhost:${SERVER_PORT}/original?` +
+                    `file=${encodeURIComponent(relFile)}&workspace=${encodeURIComponent(workspace)}`
+                );
+                if (res.status === 404) {
+                    vscode.window.showInformationMessage(
+                        `ReactRefactor: "${relFile}" is not tracked by git — cannot show original.`
+                    );
+                    return;
+                }
+                if (!res.ok) { throw new Error(`Server returned ${res.status}`); }
+
+                const data = await res.json() as { content: string };
+
+                // Cache content under a stable URI and open diff
+                const originalUri = vscode.Uri.parse(
+                    `reactrefactor-original:/${encodeURIComponent(relFile)}`
+                );
+                _originalCache.set(originalUri.toString(), data.content);
+
+                const currentUri = vscode.Uri.file(smell.file_path);
+                const title = `${smell.component_name ?? smell.smell_type}: original ↔ current`;
+                await vscode.commands.executeCommand('vscode.diff', originalUri, currentUri, title);
+
+            } catch (err: unknown) {
+                const msg = err instanceof Error ? err.message : String(err);
+                vscode.window.showErrorMessage(`ReactRefactor: diff failed — ${msg}`);
+            }
+        }
+    );
+    context.subscriptions.push(viewDiffCommand);
+
+    // --- E4-S4: inline revert action on accepted smells ---
+    const revertSmellCommand = vscode.commands.registerCommand(
+        'reactRefactor.revertSmell',
+        async (smell: SmellItem) => {
+            const folders = vscode.workspace.workspaceFolders;
+            const workspace = folders?.[0]?.uri.fsPath ?? '';
+            const relFile = path.relative(workspace, smell.file_path).replace(/\\/g, '/');
+
+            try {
+                const res = await fetch(`http://localhost:${SERVER_PORT}/revert`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ workspace, file: relFile }),
+                });
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Server returned ${res.status}: ${text}`);
+                }
+                smellsProvider.setFixStatus(smell.smell_id, 'reverted');
+                vscode.window.showInformationMessage(`ReactRefactor: reverted ${smell.component_name ?? smell.smell_type} in ${path.basename(smell.file_path)}.`);
+            } catch (err: unknown) {
+                const msg = err instanceof Error ? err.message : String(err);
+                vscode.window.showErrorMessage(`ReactRefactor: revert failed — ${msg}`);
+            }
+        }
+    );
+    context.subscriptions.push(revertSmellCommand);
+
+    // Select top 100 smells by severity
+    const selectTop100Command = vscode.commands.registerCommand('reactRefactor.selectTop100', () => {
+        const total = smellsProvider.getSmells().length;
+        if (total === 0) {
+            vscode.window.showWarningMessage('ReactRefactor: No smells loaded. Run a scan first.');
+            return;
+        }
+        smellsProvider.selectTopN(100);
+        const selected = smellsProvider.getSelectedCount();
+        vscode.window.showInformationMessage(`ReactRefactor: Selected top ${selected} smell${selected !== 1 ? 's' : ''} by severity.`);
+    });
+    context.subscriptions.push(selectTop100Command);
 
     // Register the scan command
     const scanCommand = vscode.commands.registerCommand('reactRefactor.scanProject', async () => {

@@ -16,6 +16,7 @@ import logging
 import math
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -250,15 +251,10 @@ async def _run_fix_job(job_id: str) -> None:
     event_queue: asyncio.Queue = _job_events[job_id]
 
     semaphore = asyncio.Semaphore(_MAX_PIPELINE_WORKERS)
-
     loop = asyncio.get_running_loop()
 
     async def _run_one(task_entry: dict[str, Any], smell: dict[str, Any]) -> None:
         async with semaphore:
-            if job["cancel_flag"]:
-                task_entry["status"] = "cancelled"
-                return
-
             file_key = smell.get("file_path", "")
             if file_key not in _file_locks:
                 _file_locks[file_key] = asyncio.Lock()
@@ -266,18 +262,15 @@ async def _run_fix_job(job_id: str) -> None:
             task_entry["status"] = "running"
             logger.info(f"[job:{job_id}] starting task smell_id={smell['smell_id']}")
 
-            # Thread-safe callback — called from within asyncio.to_thread()
             def _node_done_cb(node_name: str, _: dict) -> None:
-                event = {
+                loop.call_soon_threadsafe(event_queue.put_nowait, {
                     "type": "node_done",
                     "smell_id": smell["smell_id"],
                     "node": node_name,
                     "status": "done",
-                }
-                loop.call_soon_threadsafe(event_queue.put_nowait, event)
+                })
 
             try:
-                # Gather context (I/O bound — run in thread)
                 context = await asyncio.to_thread(
                     _gather_context_for_smell,
                     smell=smell,
@@ -286,7 +279,6 @@ async def _run_fix_job(job_id: str) -> None:
                 )
                 manifest_task = _build_manifest_task(smell, workspace, repo_name, context)
 
-                # Run pipeline (network/CPU bound — run in thread, per-file lock held)
                 async with _file_locks[file_key]:
                     final_state = await asyncio.to_thread(
                         _run_pipeline_task,
@@ -299,10 +291,21 @@ async def _run_fix_job(job_id: str) -> None:
 
                 status = final_state.get("status", "failed")
                 plan   = final_state.get("plan") or {}
-                task_entry["status"]        = status
-                task_entry["tactic"]        = plan.get("tactic")
-                task_entry["retry_count"]   = final_state.get("retry_count", 0)
+                task_entry["status"]         = status
+                task_entry["tactic"]         = plan.get("tactic")
+                task_entry["retry_count"]    = final_state.get("retry_count", 0)
                 task_entry["critique_score"] = final_state.get("critique_score")
+                raw_error = (
+                    final_state.get("error")
+                    or final_state.get("last_error")
+                    or final_state.get("error_message")
+                )
+                if raw_error:
+                    # Extract last non-empty line (the actual exception message)
+                    lines = [l.strip() for l in str(raw_error).splitlines() if l.strip()]
+                    task_entry["error"] = lines[-1] if lines else str(raw_error)
+                else:
+                    task_entry["error"] = None
 
             except Exception as exc:
                 logger.error(f"[job:{job_id}] task failed: {exc}")
@@ -310,38 +313,49 @@ async def _run_fix_job(job_id: str) -> None:
                 task_entry["error"]  = str(exc)
 
             job["completed_tasks"] += 1
-
             await event_queue.put({
-                "type": "task_done",
-                "smell_id": smell["smell_id"],
+                "type":           "task_done",
+                "smell_id":       smell["smell_id"],
                 "component_name": smell.get("component_name"),
-                "file": smell.get("file_path"),
-                "status": task_entry["status"],
-                "tactic": task_entry.get("tactic"),
-                "retry_count": task_entry.get("retry_count", 0),
+                "file":           smell.get("file_path"),
+                "status":         task_entry["status"],
+                "tactic":         task_entry.get("tactic"),
+                "retry_count":    task_entry.get("retry_count", 0),
                 "critique_score": task_entry.get("critique_score"),
-                "error": task_entry.get("error"),
+                "error":          task_entry.get("error"),
             })
 
-    await asyncio.gather(*[
-        _run_one(task_entry, smell)
-        for task_entry, smell in zip(job["tasks"], job["smells"])
-    ])
+    try:
+        await asyncio.gather(*[
+            _run_one(task_entry, smell)
+            for task_entry, smell in zip(job["tasks"], job["smells"])
+        ])
+        statuses = [t["status"] for t in job["tasks"]]
+        summary = {
+            "accepted":  statuses.count("accepted"),
+            "rejected":  statuses.count("rejected"),
+            "skipped":   statuses.count("skipped"),
+            "failed":    statuses.count("failed"),
+            "cancelled": 0,
+            "total":     job["total_tasks"],
+        }
+        job["status"]  = "complete"
+        job["summary"] = summary
+        await event_queue.put({"type": "run_complete", "job_id": job_id, "summary": summary})
 
-    statuses = [t["status"] for t in job["tasks"]]
-    summary = {
-        "accepted":  statuses.count("accepted"),
-        "rejected":  statuses.count("rejected"),
-        "skipped":   statuses.count("skipped"),
-        "failed":    statuses.count("failed"),
-        "cancelled": statuses.count("cancelled"),
-        "total":     job["total_tasks"],
-    }
-    job["status"]  = "complete"
-    job["summary"] = summary
+    except asyncio.CancelledError:
+        completed = job["completed_tasks"]
+        job["status"] = "cancelled"
+        job["summary"] = {"completed": completed, "total": job["total_tasks"]}
+        await event_queue.put({
+            "type":      "cancelled",
+            "job_id":    job_id,
+            "completed": completed,
+            "total":     job["total_tasks"],
+        })
 
-    await event_queue.put({"type": "run_complete", "job_id": job_id, "summary": summary})
-    await event_queue.put(None)  # sentinel — tells SSE stream to close
+    finally:
+        await event_queue.put(None)  # sentinel — tells SSE stream to close
 
 # ---------------------------------------------------------------------------
 # Request / Response models
@@ -462,11 +476,12 @@ async def fix(req: FixRequest):
         "smells": smells,
         "workspace": req.workspace,
         "summary": None,
-        "cancel_flag": False,
+        "task": None,
     }
     _job_events[job_id] = asyncio.Queue()
 
-    asyncio.create_task(_run_fix_job(job_id))
+    task = asyncio.create_task(_run_fix_job(job_id))
+    _jobs[job_id]["task"] = task
 
     return {
         "job_id": job_id,
@@ -491,9 +506,17 @@ async def progress(job_id: str, request: Request):
     async def event_generator() -> AsyncGenerator[dict, None]:
         job = _jobs[job_id]
 
-        # Reconnect: job already finished — replay run_complete and close.
+        # Reconnect: job already finished — replay terminal event and close.
         if job["status"] == "complete":
             yield {"data": json.dumps({"type": "run_complete", "job_id": job_id, "summary": job.get("summary", {})})}
+            return
+        if job["status"] == "cancelled":
+            yield {"data": json.dumps({
+                "type":      "cancelled",
+                "job_id":    job_id,
+                "completed": job["completed_tasks"],
+                "total":     job["total_tasks"],
+            })}
             return
 
         queue: asyncio.Queue = _job_events[job_id]
@@ -538,57 +561,82 @@ async def get_job(job_id: str):
 
 @app.delete("/jobs/{job_id}")
 async def cancel_job(job_id: str):
-    """
-    Cancel a running job.
-    Real implementation: E3-S4 (Jayanth).
-    """
+    """Cancel a running job by cancelling its asyncio task immediately."""
     if job_id not in _jobs:
         raise HTTPException(status_code=404, detail="job not found")
 
     job = _jobs[job_id]
-    if job["status"] == "complete":
-        raise HTTPException(status_code=409, detail="job already complete")
+    if job["status"] in ("complete", "cancelled"):
+        raise HTTPException(status_code=409, detail=f"job already {job['status']}")
 
-    completed = job["completed_tasks"]
-    remaining = job["total_tasks"] - completed
-
-    # TODO (E3-S4): set cancel_flag so workers stop picking up new tasks
-    job["status"] = "cancelled"
-    job["cancel_flag"] = True
+    task: asyncio.Task | None = job.get("task")
+    if task and not task.done():
+        task.cancel()
 
     return {
         "cancelled": True,
         "job_id": job_id,
-        "completed_before_cancel": completed,
-        "remaining_cancelled": remaining,
+        "completed_before_cancel": job["completed_tasks"],
     }
 
 
 @app.post("/revert")
 async def revert(req: RevertRequest):
-    """
-    Revert a file to its last git commit state.
-    STUB: always returns success.
-    Real implementation: E4-S3 (Soham).
-    """
+    """Revert a file to its last git commit state via git checkout -- <file>."""
+    workspace = Path(req.workspace)
+    if not workspace.exists():
+        raise HTTPException(status_code=422, detail=f"Workspace not found: {req.workspace}")
+
     logger.info(f"[revert] workspace={req.workspace} file={req.file}")
 
-    # TODO (E4-S3): run  git checkout -- <file>  in req.workspace
+    try:
+        result = await asyncio.to_thread(
+            subprocess.run,
+            ["git", "checkout", "--", req.file],
+            cwd=str(workspace),
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="git not found on PATH")
+
+    if result.returncode != 0:
+        raise HTTPException(
+            status_code=500,
+            detail=result.stderr.strip() or f"git checkout failed (exit {result.returncode})",
+        )
+
     return {"success": True, "file": req.file}
 
 
 @app.get("/original")
 async def get_original(file: str, workspace: str):
-    """
-    Return original file content from git HEAD.
-    STUB: returns placeholder content.
-    Real implementation: E4-S3 (Soham).
-    """
+    """Return original file content from git HEAD via git show HEAD:<file>."""
+    ws = Path(workspace)
+    if not ws.exists():
+        raise HTTPException(status_code=422, detail=f"Workspace not found: {workspace}")
+
     logger.info(f"[original] workspace={workspace} file={file}")
 
-    # TODO (E4-S3): run  git show HEAD:<file>  in workspace
+    try:
+        result = await asyncio.to_thread(
+            subprocess.run,
+            ["git", "show", f"HEAD:{file}"],
+            cwd=str(ws),
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="git not found on PATH")
+
+    if result.returncode != 0:
+        err = result.stderr.strip()
+        if "does not exist" in err or "exists on disk" in err or "pathspec" in err:
+            raise HTTPException(status_code=404, detail=f"File not tracked by git: {file}")
+        raise HTTPException(status_code=500, detail=err or f"git show failed (exit {result.returncode})")
+
     return {
-        "content": f"// Original content of {file} would appear here (git HEAD)\n",
+        "content": result.stdout,
         "file": file,
         "commit": "HEAD",
     }

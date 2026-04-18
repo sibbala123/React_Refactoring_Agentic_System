@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 export const SERVER_PORT = 7432;
 
-export type FixStatus = 'queued' | 'running' | 'accepted' | 'rejected' | 'skipped' | 'failed';
+export type FixStatus = 'queued' | 'running' | 'accepted' | 'rejected' | 'skipped' | 'failed' | 'reverted';
 
 // ---------------------------------------------------------------------------
 // Data types
@@ -70,6 +70,7 @@ function fixStatusIcon(status: FixStatus): vscode.ThemeIcon {
         case 'rejected': return new vscode.ThemeIcon('x',     new vscode.ThemeColor('testing.iconFailed'));
         case 'skipped':  return new vscode.ThemeIcon('circle-slash');
         case 'failed':   return new vscode.ThemeIcon('warning', new vscode.ThemeColor('list.warningForeground'));
+        case 'reverted': return new vscode.ThemeIcon('history');
         default:         return new vscode.ThemeIcon('circle-outline');
     }
 }
@@ -90,6 +91,7 @@ export class SmellsProvider implements vscode.TreeDataProvider<SmellNode> {
     private _smells: SmellItem[] = [];
     private _selected = new Set<string>(); // smell_id
     private _fixStatus = new Map<string, FixStatus>(); // smell_id → fix status
+    private _fixErrors = new Map<string, string>(); // smell_id → error message
     private _loading = false;
     private _error: string | null = null;
 
@@ -120,13 +122,36 @@ export class SmellsProvider implements vscode.TreeDataProvider<SmellNode> {
     getSelectedSmells(): SmellItem[] { return this._smells.filter(s => this._selected.has(s.smell_id)); }
     getSelectedCount(): number { return this._selected.size; }
 
-    setFixStatus(smellId: string, status: FixStatus): void {
+    selectTopN(n: number): void {
+        const sorted = [...this._smells].sort((a, b) =>
+            SEVERITY_RANK[b.severity] - SEVERITY_RANK[a.severity]
+        );
+        this._selected.clear();
+        for (const smell of sorted.slice(0, n)) {
+            this._selected.add(smell.smell_id);
+        }
+        this._onDidChangeTreeData.fire();
+        this._onDidChangeSelection.fire(this._selected.size);
+    }
+    getFixResults(): { smell: SmellItem; status: FixStatus; error?: string }[] {
+        return this._smells
+            .filter(s => this._fixStatus.has(s.smell_id))
+            .map(s => ({
+                smell: s,
+                status: this._fixStatus.get(s.smell_id)!,
+                error: this._fixErrors.get(s.smell_id),
+            }));
+    }
+
+    setFixStatus(smellId: string, status: FixStatus, error?: string): void {
         this._fixStatus.set(smellId, status);
+        if (error) { this._fixErrors.set(smellId, error); }
         this._onDidChangeTreeData.fire();
     }
 
     clearFixStatus(): void {
         this._fixStatus.clear();
+        this._fixErrors.clear();
         this._onDidChangeTreeData.fire();
     }
 
@@ -202,12 +227,21 @@ export class SmellsProvider implements vscode.TreeDataProvider<SmellNode> {
         item.checkboxState = this._selected.has(smell.smell_id)
             ? vscode.TreeItemCheckboxState.Checked
             : vscode.TreeItemCheckboxState.Unchecked;
-        item.contextValue = 'smellLeaf';
-        item.command = {
-            command: 'reactRefactor.openSmell',
-            title: 'Go to smell',
-            arguments: [smell.file_path, smell.line_start, smell.line_end],
-        };
+        item.contextValue = fs ? `smellLeaf-${fs}` : 'smellLeaf';
+
+        if (fs === 'accepted' || fs === 'rejected' || fs === 'skipped' || fs === 'failed') {
+            item.command = {
+                command: 'reactRefactor.viewDiff',
+                title: 'View Diff',
+                arguments: [smell, fs],
+            };
+        } else {
+            item.command = {
+                command: 'reactRefactor.openSmell',
+                title: 'Go to smell',
+                arguments: [smell.file_path, smell.line_start, smell.line_end],
+            };
+        }
         return item;
     }
 

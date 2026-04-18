@@ -34,7 +34,10 @@ export async function ensureDependencies(
     statusItem.tooltip = 'Installing Python dependencies for ReactRefactor';
     statusItem.show();
 
-    const requirementsPath = path.join(context.extensionPath, '..', 'requirements.txt');
+    const bundled = path.join(context.extensionPath, 'requirements.txt');
+    const requirementsPath = require('fs').existsSync(bundled)
+        ? bundled
+        : path.join(context.extensionPath, '..', 'requirements.txt');
 
     try {
         const success = await runPipInstall(pythonPath, requirementsPath, outputChannel);

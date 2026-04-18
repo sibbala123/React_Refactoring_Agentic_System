@@ -1,0 +1,13 @@
+src/**
+scripts/**
+.vscode/**
+.gitignore
+tsconfig.json
+package-lock.json
+**/__pycache__/**
+**/*.pyc
+**/runs/**
+**/data/**
+**/experiments/**
+**/.git/**
+**/node_modules/**

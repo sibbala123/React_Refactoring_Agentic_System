@@ -10,25 +10,109 @@
   "categories": ["Other"],
   "activationEvents": [
     "workspaceContains:**/*.tsx",
-    "workspaceContains:**/*.jsx"
+    "workspaceContains:**/*.jsx",
+    "workspaceContains:**/*.js"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "ReactRefactor",
+      "properties": {
+        "reactRefactor.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Your OpenAI API key (`sk-...`). Used by the refactoring pipeline. If empty, falls back to the `OPENAI_API_KEY` environment variable.",
+          "secret": true
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "reactRefactorContainer",
+          "title": "ReactRefactor",
+          "icon": "resources/react-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "reactRefactorContainer": [
+        {
+          "id": "reactRefactorSmells",
+          "name": "Code Smells"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "reactRefactor.scanProject",
-        "title": "ReactRefactor: Scan Project for Code Smells"
+        "title": "ReactRefactor: Scan Project for Code Smells",
+        "icon": "$(search)"
+      },
+      {
+        "command": "reactRefactor.fixSelected",
+        "title": "ReactRefactor: Fix Selected Smells",
+        "icon": "$(wrench)"
+      },
+      {
+        "command": "reactRefactor.cancelFix",
+        "title": "ReactRefactor: Cancel Running Fix",
+        "icon": "$(stop-circle)"
+      },
+      {
+        "command": "reactRefactor.revertSmell",
+        "title": "Revert Fix",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "reactRefactor.selectTop100",
+        "title": "ReactRefactor: Select Top 100 Smells by Severity",
+        "icon": "$(list-ordered)"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "reactRefactor.scanProject",
+          "when": "view == reactRefactorSmells",
+          "group": "navigation"
+        },
+        {
+          "command": "reactRefactor.fixSelected",
+          "when": "view == reactRefactorSmells && reactRefactor.hasSelection && !reactRefactor.fixRunning",
+          "group": "navigation"
+        },
+        {
+          "command": "reactRefactor.cancelFix",
+          "when": "view == reactRefactorSmells && reactRefactor.fixRunning",
+          "group": "navigation"
+        },
+        {
+          "command": "reactRefactor.selectTop100",
+          "when": "view == reactRefactorSmells && !reactRefactor.fixRunning",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "reactRefactor.revertSmell",
+          "when": "view == reactRefactorSmells && viewItem == smellLeaf-accepted",
+          "group": "inline"
+        }
+      ]
+    }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run bundle && npm run compile",
+    "bundle": "node scripts/bundle.js",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "package": "npm run vscode:prepublish && vsce package"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
     "typescript": "^5.3.0"
   }
 }
