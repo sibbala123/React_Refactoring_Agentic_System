@@ -254,8 +254,14 @@ ${acceptedCount > 0 ? `<button id="revertAll">Revert All Accepted (${acceptedCou
                     }
                     else if (event.type === 'task_done') {
                         const taskError = event.error != null ? String(event.error) : undefined;
-                        smellsProvider.setFixStatus(event.smell_id, event.status, taskError);
-                        outputChannel.appendLine(`  task done: ${event.smell_id} → ${event.status} (retries=${event.retry_count})${taskError ? ` error: ${taskError}` : ''}`);
+                        const retryCount = typeof event.retry_count === 'number' ? event.retry_count : undefined;
+                        const critiqueScore = event.critique_score != null ? Number(event.critique_score) : undefined;
+                        const rejectionReason = event.rejection_reason != null ? String(event.rejection_reason) : undefined;
+                        smellsProvider.setFixStatus(event.smell_id, event.status, taskError, retryCount, critiqueScore, rejectionReason);
+                        outputChannel.appendLine(`  task done: ${event.smell_id} → ${event.status} (retries=${event.retry_count ?? 0}${critiqueScore !== undefined ? `, score=${critiqueScore.toFixed(2)}` : ''}${taskError ? `, error: ${taskError}` : ''})`);
+                        if (rejectionReason) {
+                            outputChannel.appendLine(`  rejection reason:\n${rejectionReason.split('\n').map(l => `    ${l}`).join('\n')}`);
+                        }
                     }
                     else if (event.type === 'run_complete') {
                         const s = event.summary;
