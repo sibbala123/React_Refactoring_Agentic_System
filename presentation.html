@@ -90,8 +90,7 @@
 
   .nav-arrow {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 48px;
     width: 54px;
     height: 54px;
     background: rgba(17, 24, 39, 0.6);
@@ -112,12 +111,11 @@
     background: var(--surface2); 
     color: var(--accent-blue); 
     border-color: var(--accent-blue);
-    width: 60px;
-    height: 60px;
+    transform: scale(1.1);
   }
   .nav-arrow-left { left: 32px; }
   .nav-arrow-right { right: 32px; }
-  .nav-arrow.disabled { opacity: 0; pointer-events: none; transform: translateY(-50%) scale(0.8); }
+  .nav-arrow.disabled { opacity: 0; pointer-events: none; transform: scale(0.8); }
 
   .nav-bar {
     position: absolute;
