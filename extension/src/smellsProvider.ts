@@ -90,8 +90,11 @@ export class SmellsProvider implements vscode.TreeDataProvider<SmellNode> {
 
     private _smells: SmellItem[] = [];
     private _selected = new Set<string>(); // smell_id
-    private _fixStatus = new Map<string, FixStatus>(); // smell_id → fix status
-    private _fixErrors = new Map<string, string>(); // smell_id → error message
+    private _fixStatus   = new Map<string, FixStatus>();
+    private _fixErrors   = new Map<string, string>();
+    private _fixRetries  = new Map<string, number>();
+    private _fixScore    = new Map<string, number | null>();
+    private _fixRejection = new Map<string, string>(); // smell_id → rejection reason
     private _loading = false;
     private _error: string | null = null;
 
@@ -143,15 +146,21 @@ export class SmellsProvider implements vscode.TreeDataProvider<SmellNode> {
             }));
     }
 
-    setFixStatus(smellId: string, status: FixStatus, error?: string): void {
+    setFixStatus(smellId: string, status: FixStatus, error?: string | null, retryCount?: number, critiqueScore?: number | null, rejectionReason?: string): void {
         this._fixStatus.set(smellId, status);
         if (error) { this._fixErrors.set(smellId, error); }
+        if (retryCount !== undefined) { this._fixRetries.set(smellId, retryCount); }
+        if (critiqueScore !== undefined) { this._fixScore.set(smellId, critiqueScore); }
+        if (rejectionReason) { this._fixRejection.set(smellId, rejectionReason); }
         this._onDidChangeTreeData.fire();
     }
 
     clearFixStatus(): void {
         this._fixStatus.clear();
         this._fixErrors.clear();
+        this._fixRetries.clear();
+        this._fixScore.clear();
+        this._fixRejection.clear();
         this._onDidChangeTreeData.fire();
     }
 
@@ -216,13 +225,34 @@ export class SmellsProvider implements vscode.TreeDataProvider<SmellNode> {
             : smell.smell_type;
         const item = new vscode.TreeItem(label, vscode.TreeItemCollapsibleState.None);
         item.description = `L${smell.line_start}–${smell.line_end}`;
-        item.tooltip = new vscode.MarkdownString(
+        const fs = this._fixStatus.get(smell.smell_id);
+        let tooltipText =
             `**${smell.smell_type}**\n\n` +
             `Component: ${smell.component_name ?? '—'}\n\n` +
             `Lines: ${smell.line_start}–${smell.line_end}\n\n` +
-            `Severity: **${smell.severity}**`
-        );
-        const fs = this._fixStatus.get(smell.smell_id);
+            `Severity: **${smell.severity}**`;
+        if (fs && fs !== 'queued' && fs !== 'running') {
+            tooltipText += `\n\n---\n\nFix result: **${fs}**`;
+            const retries = this._fixRetries.get(smell.smell_id);
+            if (retries !== undefined && retries > 0) {
+                tooltipText += ` (${retries} retr${retries === 1 ? 'y' : 'ies'})`;
+            }
+            const score = this._fixScore.get(smell.smell_id);
+            if (score !== undefined && score !== null) {
+                tooltipText += `\n\nCritique score: ${score}`;
+            }
+            const err = this._fixErrors.get(smell.smell_id);
+            if (err) {
+                tooltipText += `\n\nError: \`${err}\``;
+            }
+            const rejection = this._fixRejection.get(smell.smell_id);
+            if (rejection) {
+                tooltipText += `\n\n**Why rejected:**\n\`\`\`\n${rejection}\n\`\`\``;
+            } else if (fs === 'rejected') {
+                tooltipText += `\n\n*The pipeline could not produce a fix that passed code review after ${retries ?? 0} attempt(s).*`;
+            }
+        }
+        item.tooltip = new vscode.MarkdownString(tooltipText);
         item.iconPath = fs ? fixStatusIcon(fs) : severityThemeIcon(smell.severity);
         item.checkboxState = this._selected.has(smell.smell_id)
             ? vscode.TreeItemCheckboxState.Checked

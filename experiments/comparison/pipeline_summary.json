@@ -7,7 +7,7 @@
     "status": "rejected",
     "tactic": "extract_component",
     "retry_count": 3,
-    "critique_score": 0.4,
+    "critique_score": 0.5,
     "critique_passed": false,
     "changed_files": [
       "apps/studio/components/interfaces/Database/Publications/PublicationsList.tsx"
@@ -73,7 +73,7 @@
     "component": "SecuritySettings",
     "file": "apps/studio/components/interfaces/Organization/SecuritySettings.tsx",
     "status": "rejected",
-    "tactic": "split_component",
+    "tactic": "extract_component",
     "retry_count": 3,
     "critique_score": 0.4,
     "critique_passed": false,
@@ -89,15 +89,17 @@
     "smell_type": "Large Component",
     "component": "DiskManagementReviewAndSubmitDialog",
     "file": "apps/studio/components/interfaces/DiskManagement/DiskManagementReviewAndSubmitDialog.tsx",
-    "status": "failed",
-    "tactic": "\u2014",
-    "retry_count": 0,
-    "critique_score": null,
-    "critique_passed": null,
-    "changed_files": [],
-    "verify_passed": null,
+    "status": "rejected",
+    "tactic": "extract_component",
+    "retry_count": 3,
+    "critique_score": 0.5,
+    "critique_passed": false,
+    "changed_files": [
+      "apps/studio/components/interfaces/DiskManagement/DiskManagementReviewAndSubmitDialog.tsx"
+    ],
+    "verify_passed": false,
     "skip_reason": null,
-    "error": "Traceback (most recent call last):\n  File \"C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\langgraph_pipeline\\runner.py\", line 89, in run_task\n    for event in graph.stream(initial_state, stream_mode=\"updates\"):\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 2646, in stream\n    for _ in runner.tick(\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\pregel\\_runner.py\", line 167, in tick\n    run_with_retry(\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\pregel\\_retry.py\", line 42, in run_with_retry\n    return task.proc.invoke(task.input, config)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 656, in invoke\n    input = context.run(step.invoke, input, config, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 400, in invoke\n    ret = self.func(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\langgraph_pipeline\\nodes\\edit.py\", line 104, in edit_node\n    response = client.chat.completions.create(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\_utils\\_utils.py\", line 286, in wrapper\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\resources\\chat\\completions\\completions.py\", line 1204, in create\n    return self._post(\n           ^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\_base_client.py\", line 1297, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\_base_client.py\", line 1070, in request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o in organization org-xCORu16wHo0wuFBsp3qe7qS0 on tokens per min (TPM): Limit 30000, Used 28265, Requested 4924. Please try again in 6.378s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}\nDuring task with name 'edit' and id 'c62deb91-3d34-d044-1e93-eccb30c1c3f8'\n"
+    "error": null
   },
   {
     "id": "07",
@@ -107,7 +109,7 @@
     "status": "rejected",
     "tactic": "split_component",
     "retry_count": 3,
-    "critique_score": 0.4,
+    "critique_score": 0.5,
     "critique_passed": false,
     "changed_files": [
       "apps/www/components/Panel/Panel.tsx"
@@ -121,15 +123,17 @@
     "smell_type": "Too Many Props",
     "component": "UserOverview",
     "file": "apps/studio/components/interfaces/Auth/Users/UserOverview.tsx",
-    "status": "failed",
-    "tactic": "\u2014",
-    "retry_count": 0,
-    "critique_score": null,
-    "critique_passed": null,
-    "changed_files": [],
-    "verify_passed": null,
+    "status": "rejected",
+    "tactic": "split_component",
+    "retry_count": 3,
+    "critique_score": 0.5,
+    "critique_passed": false,
+    "changed_files": [
+      "apps/studio/components/interfaces/Auth/Users/UserOverview.tsx"
+    ],
+    "verify_passed": false,
     "skip_reason": null,
-    "error": "Traceback (most recent call last):\n  File \"C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\langgraph_pipeline\\runner.py\", line 89, in run_task\n    for event in graph.stream(initial_state, stream_mode=\"updates\"):\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 2646, in stream\n    for _ in runner.tick(\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\pregel\\_runner.py\", line 167, in tick\n    run_with_retry(\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\pregel\\_retry.py\", line 42, in run_with_retry\n    return task.proc.invoke(task.input, config)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 656, in invoke\n    input = context.run(step.invoke, input, config, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 400, in invoke\n    ret = self.func(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\7000 project\\agentic_refactor_system\\langgraph_pipeline\\nodes\\edit.py\", line 104, in edit_node\n    response = client.chat.completions.create(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\_utils\\_utils.py\", line 286, in wrapper\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\resources\\chat\\completions\\completions.py\", line 1204, in create\n    return self._post(\n           ^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\_base_client.py\", line 1297, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\jayan\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\openai\\_base_client.py\", line 1070, in request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o in organization org-xCORu16wHo0wuFBsp3qe7qS0 on tokens per min (TPM): Limit 30000, Used 27090, Requested 6641. Please try again in 7.462s. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}\nDuring task with name 'edit' and id '09490fc4-4765-97ff-7c60-1e3012ce0b18'\n"
+    "error": null
   },
   {
     "id": "09",
@@ -139,7 +143,7 @@
     "status": "rejected",
     "tactic": "split_component",
     "retry_count": 3,
-    "critique_score": 0.5,
+    "critique_score": 0.6,
     "critique_passed": false,
     "changed_files": [
       "apps/studio/pages/project/[ref]/integrations/index.tsx"
@@ -155,7 +159,7 @@
     "file": "apps/www/components/Products/VectorAI/OpenAIImage.tsx",
     "status": "rejected",
     "tactic": "split_component",
-    "retry_count": 0,
+    "retry_count": 1,
     "critique_score": 0.8,
     "critique_passed": true,
     "changed_files": [
@@ -226,7 +230,7 @@
     "critique_passed": null,
     "changed_files": [],
     "verify_passed": null,
-    "skip_reason": "smell classified as 'non_actionable': The direct DOM manipulation in this component is intentional, as it is setting a base tag and modifying the body class for specific theming purposes. This behavior is likely necessary for the component's functionality and is not a typical React pattern. Refactoring this to avoid direct DOM manipulation could break the intended behavior of the application.",
+    "skip_reason": "smell classified as 'non_actionable': The direct DOM manipulation in this component is intentional, as it is setting a base tag and modifying the body class for specific theming purposes. This behavior is likely necessary for the component's functionality and is not a typical React pattern. Therefore, it should not be refactored automatically.",
     "error": null
   },
   {
@@ -258,7 +262,7 @@
     "critique_passed": null,
     "changed_files": [],
     "verify_passed": null,
-    "skip_reason": "smell classified as 'needs_review': The code snippet indicates that there are multiple loaders being used, which suggests a potential use of inheritance instead of composition. However, without additional context on how these loaders are structured and whether they are intended to be used in this way, it's difficult to determine if this is a genuine code smell or an intentional design choice. The risk of refactoring is also uncertain, as it could affect multiple parts of the application. Therefore, a human review is necessary to assess the intent and implications of refactoring these loaders.",
+    "skip_reason": "smell classified as 'needs_review': The code snippet shows a variety of loaders being instantiated, which suggests a potential use of inheritance instead of composition. However, without additional context on how these loaders are structured and whether they share common functionality that could be abstracted, it's difficult to determine the intent behind their design. Refactoring to use composition could be beneficial, but the risk of breaking existing functionality is high given the interconnected nature of these loaders. A human review is necessary to assess the implications of such a change.",
     "error": null
   },
   {
@@ -268,9 +272,9 @@
     "file": "apps/docs/scripts/search/sources/reference-doc.ts",
     "status": "rejected",
     "tactic": "use_composition",
-    "retry_count": 0,
-    "critique_score": 0.8,
-    "critique_passed": true,
+    "retry_count": 3,
+    "critique_score": 0.5,
+    "critique_passed": false,
     "changed_files": [
       "apps/docs/scripts/search/sources/reference-doc.ts"
     ],
@@ -288,7 +292,9 @@
     "retry_count": 3,
     "critique_score": 0.5,
     "critique_passed": false,
-    "changed_files": [],
+    "changed_files": [
+      "apps/studio/components/interfaces/Auth/Users/UsersGridComponents.tsx"
+    ],
     "verify_passed": false,
     "skip_reason": null,
     "error": null
@@ -318,11 +324,9 @@
     "status": "rejected",
     "tactic": "remove_force_update",
     "retry_count": 3,
-    "critique_score": 0.6,
+    "critique_score": 0.5,
     "critique_passed": false,
-    "changed_files": [
-      "apps/docs/app/error.tsx"
-    ],
+    "changed_files": [],
     "verify_passed": false,
     "skip_reason": null,
     "error": null

@@ -224,9 +224,15 @@ ${acceptedCount > 0 ? `<button id="revertAll">Revert All Accepted (${acceptedCou
                         smellsProvider.setFixStatus(event.smell_id as string, 'running');
                         outputChannel.appendLine(`  node: ${event.node}  (${event.smell_id})`);
                     } else if (event.type === 'task_done') {
-                        const taskError = event.error != null ? String(event.error) : undefined;
-                        smellsProvider.setFixStatus(event.smell_id as string, event.status as FixStatus, taskError);
-                        outputChannel.appendLine(`  task done: ${event.smell_id} → ${event.status} (retries=${event.retry_count})${taskError ? ` error: ${taskError}` : ''}`);
+                        const taskError        = event.error != null ? String(event.error) : undefined;
+                        const retryCount       = typeof event.retry_count === 'number' ? event.retry_count : undefined;
+                        const critiqueScore    = event.critique_score != null ? Number(event.critique_score) : undefined;
+                        const rejectionReason  = event.rejection_reason != null ? String(event.rejection_reason) : undefined;
+                        smellsProvider.setFixStatus(event.smell_id as string, event.status as FixStatus, taskError, retryCount, critiqueScore, rejectionReason);
+                        outputChannel.appendLine(`  task done: ${event.smell_id} → ${event.status} (retries=${event.retry_count ?? 0}${critiqueScore !== undefined ? `, score=${critiqueScore.toFixed(2)}` : ''}${taskError ? `, error: ${taskError}` : ''})`);
+                        if (rejectionReason) {
+                            outputChannel.appendLine(`  rejection reason:\n${rejectionReason.split('\n').map(l => `    ${l}`).join('\n')}`);
+                        }
                     } else if (event.type === 'run_complete') {
                         const s = event.summary as Record<string, number>;
                         outputChannel.appendLine(`[ReactRefactor] Run complete — accepted:${s.accepted} rejected:${s.rejected} skipped:${s.skipped} failed:${s.failed}`);

@@ -293,12 +293,15 @@ async def _run_fix_job(job_id: str) -> None:
                         on_node_done=_node_done_cb,
                     )
 
-                status = final_state.get("status", "failed")
-                plan   = final_state.get("plan") or {}
-                task_entry["status"]         = status
-                task_entry["tactic"]         = plan.get("tactic")
-                task_entry["retry_count"]    = final_state.get("retry_count", 0)
-                task_entry["critique_score"] = final_state.get("critique_score")
+                status         = final_state.get("status", "failed")
+                plan           = final_state.get("plan") or {}
+                critique_result = final_state.get("critique_result") or {}
+                task_entry["status"]            = status
+                task_entry["tactic"]            = plan.get("tactic_name")
+                task_entry["retry_count"]       = final_state.get("retry_count", 0)
+                task_entry["critique_score"]    = critique_result.get("score")
+                task_entry["critique_issues"]   = critique_result.get("issues") or []
+                task_entry["rejection_reason"]  = final_state.get("plan_feedback")
                 raw_error = (
                     final_state.get("error")
                     or final_state.get("last_error")
@@ -331,15 +334,17 @@ async def _run_fix_job(job_id: str) -> None:
 
             job["completed_tasks"] += 1
             await event_queue.put({
-                "type":           "task_done",
-                "smell_id":       smell["smell_id"],
-                "component_name": smell.get("component_name"),
-                "file":           smell.get("file_path"),
-                "status":         task_entry["status"],
-                "tactic":         task_entry.get("tactic"),
-                "retry_count":    task_entry.get("retry_count", 0),
-                "critique_score": task_entry.get("critique_score"),
-                "error":          task_entry.get("error"),
+                "type":             "task_done",
+                "smell_id":         smell["smell_id"],
+                "component_name":   smell.get("component_name"),
+                "file":             smell.get("file_path"),
+                "status":           task_entry["status"],
+                "tactic":           task_entry.get("tactic"),
+                "retry_count":      task_entry.get("retry_count", 0),
+                "critique_score":   task_entry.get("critique_score"),
+                "critique_issues":  task_entry.get("critique_issues", []),
+                "rejection_reason": task_entry.get("rejection_reason"),
+                "error":            task_entry.get("error"),
             })
 
     try:

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ReactRefactor - User Interaction Workflow</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f6f8fa;
+    padding: 26px 26px 32px;
+    width: 1140px;
+  }
+
+  .page-title {
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 3px;
+  }
+  .page-subtitle {
+    text-align: center;
+    font-size: 0.68rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.45fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  /* phase block */
+  .phase {
+    border-radius: 9px;
+    border: 1.5px solid;
+    overflow: hidden;
+  }
+  .phase-header {
+    padding: 6px 13px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .phase-num {
+    font-size: 0.58rem;
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .phase-title {
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+  .phase-body {
+    background: white;
+    padding: 10px 12px;
+  }
+
+  /* phase colours */
+  .p1 { border-color: #bfdbfe; }
+  .p1 .phase-header { background: #eff6ff; }
+  .p1 .phase-num    { background: #1d4ed8; color: white; }
+  .p1 .phase-title  { color: #1e40af; }
+  .p1 .step         { border-left-color: #1d4ed8; }
+  .p1 .badge        { background: #dbeafe; color: #1d4ed8; }
+
+  .p2 { border-color: #bbf7d0; }
+  .p2 .phase-header { background: #f0fdf4; }
+  .p2 .phase-num    { background: #15803d; color: white; }
+  .p2 .phase-title  { color: #14532d; }
+  .p2 .step         { border-left-color: #15803d; }
+  .p2 .badge        { background: #dcfce7; color: #15803d; }
+
+  .p3 { border-color: #fde68a; }
+  .p3 .phase-header { background: #fffbeb; }
+  .p3 .phase-num    { background: #b45309; color: white; }
+  .p3 .phase-title  { color: #92400e; }
+  .p3 .step         { border-left-color: #b45309; }
+  .p3 .badge        { background: #fef3c7; color: #b45309; }
+
+  .p4 { border-color: #ddd6fe; }
+  .p4 .phase-header { background: #f5f3ff; }
+  .p4 .phase-num    { background: #7c3aed; color: white; }
+  .p4 .phase-title  { color: #5b21b6; }
+  .p4 .step         { border-left-color: #7c3aed; }
+  .p4 .badge        { background: #ede9fe; color: #7c3aed; }
+
+  .p5 { border-color: #bfdbfe; }
+  .p5 .phase-header { background: #eff6ff; }
+  .p5 .phase-num    { background: #0369a1; color: white; }
+  .p5 .phase-title  { color: #0c4a6e; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 5px; }
+  .step {
+    background: #fafafa;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid;
+    border-radius: 6px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .step-body { flex: 1; }
+  .step-title {
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2px;
+  }
+  .step-desc {
+    font-size: 0.66rem;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+  .badge {
+    font-size: 0.57rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: center;
+    font-family: monospace;
+  }
+  code {
+    font-family: monospace;
+    font-size: 0.66rem;
+    background: #f3f4f6;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #374151;
+  }
+
+  /* arrow between phases in same column */
+  .arrow-down {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* option cards */
+  .option-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 7px;
+  }
+  .option-card {
+    border: 1.5px solid #fde68a;
+    border-radius: 6px;
+    padding: 7px 8px;
+    background: #fffdf5;
+  }
+  .opt-name {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 2px;
+  }
+  .opt-desc {
+    font-size: 0.62rem;
+    color: #6b7280;
+    line-height: 1.3;
+  }
+
+  /* decision */
+  .decision {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .diamond {
+    border: 2px solid #b45309;
+    background: #fffbeb;
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .diamond::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #b45309;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* result cards - 2x2 grid for right column */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+  .result-card {
+    border-radius: 7px;
+    padding: 10px 12px;
+    border: 1.5px solid;
+  }
+  .r-status {
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .r-desc {
+    font-size: 0.67rem;
+    color: #6b7280;
+    line-height: 1.35;
+  }
+  .rc-accepted { border-color: #bbf7d0; background: #f0fdf4; }
+  .rc-accepted .r-status { color: #15803d; }
+  .rc-rejected { border-color: #fecdd3; background: #fff1f2; }
+  .rc-rejected .r-status { color: #be123c; }
+  .rc-skipped  { border-color: #e5e7eb; background: #f9fafb; }
+  .rc-skipped  .r-status { color: #6b7280; }
+  .rc-failed   { border-color: #fde68a; background: #fffbeb; }
+  .rc-failed   .r-status { color: #b45309; }
+
+  /* post actions */
+  .post-label {
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+    margin-bottom: 6px;
+  }
+  .post-steps { display: flex; flex-direction: column; gap: 6px; }
+  .post-step {
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 0.68rem;
+    color: #6b7280;
+    line-height: 1.45;
+  }
+  .post-step strong { color: #374151; }
+
+  /* loop note */
+  .loop-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 0.68rem;
+    color: #15803d;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .loop-icon {
+    width: 13px;
+    height: 13px;
+    border: 2px solid #15803d;
+    border-radius: 50%;
+    border-right-color: transparent;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">ReactRefactor, User Interaction Workflow</div>
+<div class="page-subtitle">From Installation to Refactoring</div>
+
+<div class="columns">
+
+  <!-- COLUMN 1: Phase 1 + Phase 2 -->
+  <div class="col">
+
+    <div class="phase p1">
+      <div class="phase-header">
+        <span class="phase-num">Phase 1</span>
+        <span class="phase-title">Setup and Configuration</span>
+      </div>
+      <div class="phase-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Install the Extension</div>
+              <div class="step-desc">Install from VSIX in VS Code or from the Marketplace. Requires VS Code 1.85 or higher.</div>
+            </div>
+            <span class="badge">VSIX</span>
+          </div>
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Configure OpenAI API Key</div>
+              <div class="step-desc">Set via Settings. Stored in VS Code secret storage. Falls back to the <code>OPENAI_API_KEY</code> environment variable if left empty.</div>
+            </div>
+            <span class="badge">Optional</span>
+          </div>
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Open a React Workspace, Server Starts</div>
+              <div class="step-desc">Auto-activates on <code>.tsx</code>, <code>.jsx</code>, or <code>.js</code> files. Python 3.8 or higher is detected, the stale port 7432 process is killed, and the FastAPI server is spawned.</div>
+            </div>
+            <span class="badge">Port 7432</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">
+      <svg width="14" height="12" viewBox="0 0 14 12"><path d="M7 0 V8 M3 5 L7 9 L11 5" stroke="#d1d5db" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="phase p2">
+      <div class="phase-header">
+        <span class="phase-num">Phase 2</span>
+        <span class="phase-title">Scanning</span>
+      </div>
+      <div class="phase-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Click Scan in the Sidebar</div>
+              <div class="step-desc">Scan button in the Code Smells toolbar. Active filter is reset and a loading indicator shows while the backend runs.</div>
+            </div>
+            <span class="badge">POST /scan</span>
+          </div>
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Server Detects Code Smells</div>
+              <div class="step-desc">ReactSniffer CLI runs AST analysis and outputs CSV files. Heuristic fallback activates if no CSV is produced. Build dirs and <code>node_modules</code> are excluded. Library paths like <code>design-system</code> are downgraded to low severity.</div>
+            </div>
+            <span class="badge">CLI</span>
+          </div>
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Smells Appear in Tree View</div>
+              <div class="step-desc">Grouped by file and sorted by severity. Each leaf shows smell type, component name, and line range with a severity icon.</div>
+            </div>
+            <span class="badge">Tree View</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COLUMN 2: Phase 3 + Phase 4 -->
+  <div class="col">
+
+    <div class="phase p3">
+      <div class="phase-header">
+        <span class="phase-num">Phase 3</span>
+        <span class="phase-title">Selection and Filtering</span>
+      </div>
+      <div class="phase-body">
+        <div class="option-row">
+          <div class="option-card">
+            <div class="opt-name">Manual Checkbox</div>
+            <div class="opt-desc">Click individual smells or a file checkbox to select all children at once.</div>
+          </div>
+          <div class="option-card">
+            <div class="opt-name">Select Top 100</div>
+            <div class="opt-desc">Selects the 100 highest-severity smells sorted high to low in one click.</div>
+          </div>
+          <div class="option-card">
+            <div class="opt-name">Filter by Type</div>
+            <div class="opt-desc">Multi-select dropdown to narrow the tree view by smell type.</div>
+          </div>
+          <div class="option-card">
+            <div class="opt-name">Go to Smell</div>
+            <div class="opt-desc">Click any unfixed smell to jump to its exact line in the editor.</div>
+          </div>
+        </div>
+        <div class="decision">
+          <div class="diamond">Any smells selected?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">
+      <svg width="14" height="12" viewBox="0 0 14 12"><path d="M7 0 V8 M3 5 L7 9 L11 5" stroke="#d1d5db" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="phase p4">
+      <div class="phase-header">
+        <span class="phase-num">Phase 4</span>
+        <span class="phase-title">Fix Pipeline</span>
+      </div>
+      <div class="phase-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Click Fix Selected</div>
+              <div class="step-desc">Wrench button is enabled only when smells are selected and no fix is running. A cancel button replaces it while the pipeline is active.</div>
+            </div>
+            <span class="badge">POST /fix</span>
+          </div>
+          <div class="step">
+            <div class="step-body">
+              <div class="step-title">Pipeline Runs Per Smell</div>
+              <div class="step-desc">Each smell passes through Classify, Plan, Edit, Verify, Critique, and Finalize nodes. If the critique score is too low, the smell loops back to Plan for another attempt.</div>
+            </div>
+            <span class="badge">SSE stream</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COLUMN 3: Phase 5 (wide) -->
+  <div class="col">
+
+    <div class="phase p5">
+      <div class="phase-header">
+        <span class="phase-num">Phase 5</span>
+        <span class="phase-title">Results and Post-Fix Actions</span>
+      </div>
+      <div class="phase-body">
+
+        <div class="result-grid">
+          <div class="result-card rc-accepted">
+            <div class="r-status">Accepted</div>
+            <div class="r-desc">Fix passed critique. Code changes were applied to the file on disk.</div>
+          </div>
+          <div class="result-card rc-rejected">
+            <div class="r-status">Rejected</div>
+            <div class="r-desc">Pipeline could not produce a passing fix after exhausting all retry attempts.</div>
+          </div>
+          <div class="result-card rc-skipped">
+            <div class="r-status">Skipped</div>
+            <div class="r-desc">Classified as low confidence or out of scope. Requires manual review.</div>
+          </div>
+          <div class="result-card rc-failed">
+            <div class="r-status">Failed</div>
+            <div class="r-desc">A pipeline error occurred, such as an LLM timeout or a parse failure.</div>
+          </div>
+        </div>
+
+        <div class="post-label">Post-Fix Actions</div>
+        <div class="post-steps">
+          <div class="post-step">
+            <strong>Click an accepted or rejected smell</strong> to open a VS Code diff editor. It compares the original file fetched via <code>git show HEAD</code> against the current file on disk. This requires the workspace to be a git-initialized repository.
+            <br/><br/>
+            Endpoint used: <code>GET /original</code>
+          </div>
+          <div class="post-step">
+            <strong>Right-click an accepted smell and select Revert Fix</strong> to restore the original file content from the backup saved before the fix was applied. The smell status resets and it becomes selectable again.
+            <br/><br/>
+            Endpoint used: <code>POST /revert</code>
+          </div>
+          <div class="post-step">
+            <strong>Hover over any smell</strong> to see a detailed tooltip showing the smell type, component name, line range, severity level, number of retry attempts, critique score, and the rejection reason if the fix was rejected.
+          </div>
+        </div>
+
+        <div class="loop-note">
+          <div class="loop-icon"></div>
+          Run another Scan to pick up newly introduced smells, or change the filter and fix a different smell type in a new batch.
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

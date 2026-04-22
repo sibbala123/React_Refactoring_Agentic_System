@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ReactRefactor — System Architecture</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    min-height: 100vh;
+    padding: 40px 24px 60px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+    background: linear-gradient(90deg, #58a6ff, #bc8cff, #3fb950);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    text-align: center;
+    color: #8b949e;
+    font-size: 0.88rem;
+    margin-bottom: 48px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .arch {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  .layer {
+    border-radius: 14px;
+    border: 1px solid;
+    padding: 22px 20px 18px;
+    position: relative;
+  }
+  .layer-label {
+    position: absolute;
+    top: -13px;
+    left: 20px;
+    padding: 2px 14px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .layer-vscode   { border-color: #1f3a5f; background: #0e1620; }
+  .layer-vscode   .layer-label { background: #1f3a5f; color: #58a6ff; }
+  .layer-server   { border-color: #2d1f42; background: #110d1a; }
+  .layer-server   .layer-label { background: #2d1f42; color: #bc8cff; }
+  .layer-detect   { border-color: #1a3025; background: #0b160f; }
+  .layer-detect   .layer-label { background: #1a3025; color: #3fb950; }
+  .layer-pipeline { border-color: #2e2210; background: #140e00; }
+  .layer-pipeline .layer-label { background: #2e2210; color: #d29922; }
+  .layer-external { border-color: #2e1515; background: #140808; }
+  .layer-external .layer-label { background: #2e1515; color: #f85149; }
+
+  .inner-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 14px 0 6px 2px;
+  }
+
+  .card-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1;
+    min-width: 160px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .card:hover { border-color: #58a6ff33; }
+  .card-icon { font-size: 1.3rem; }
+  .card-name { font-size: 0.88rem; font-weight: 700; color: #e6edf3; }
+  .card-file { font-size: 0.72rem; color: #58a6ff; font-family: monospace; }
+  .card-desc { font-size: 0.76rem; color: #8b949e; line-height: 1.5; margin-top: 3px; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .tag {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .tag-blue   { background: #1f3a5f; color: #58a6ff; }
+  .tag-purple { background: #2d1f42; color: #bc8cff; }
+  .tag-green  { background: #1a3025; color: #3fb950; }
+  .tag-yellow { background: #2e2210; color: #d29922; }
+  .tag-red    { background: #2e1515; color: #f85149; }
+  .tag-gray   { background: #21262d; color: #8b949e; }
+
+  .card.ab { border-color: #1f3a5f; }
+  .card.ap { border-color: #2d1f42; }
+  .card.ag { border-color: #1a3025; }
+  .card.ay { border-color: #2e2210; }
+  .card.ar { border-color: #2e1515; }
+
+  /* endpoint table */
+  .etable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    margin-top: 8px;
+  }
+  .etable th {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8b949e;
+    padding: 4px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .etable td {
+    padding: 9px 12px;
+    font-size: 0.8rem;
+    background: #161b22;
+    border-top: 1px solid #21262d;
+    border-bottom: 1px solid #21262d;
+  }
+  .etable td:first-child { border-left: 1px solid #21262d; border-radius: 8px 0 0 8px; }
+  .etable td:last-child  { border-right: 1px solid #21262d; border-radius: 0 8px 8px 0; }
+  .method {
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 0.73rem;
+    padding: 2px 8px;
+    border-radius: 5px;
+    display: inline-block;
+    min-width: 44px;
+    text-align: center;
+  }
+  .mg { background: #1a3025; color: #3fb950; }
+  .mp { background: #1f3a5f; color: #58a6ff; }
+  .epath { font-family: monospace; color: #bc8cff; font-size: 0.83rem; }
+  .edesc { color: #8b949e; }
+  .ecaller { color: #58a6ff; font-size: 0.73rem; font-family: monospace; }
+
+  /* pipeline chain */
+  .pchain {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .pnode {
+    background: #161b22;
+    border: 1px solid #2e2210;
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+  .pnode-icon { font-size: 1.1rem; }
+  .pnode-name { font-size: 0.78rem; font-weight: 700; color: #d29922; margin-top: 3px; }
+  .pnode-file { font-size: 0.62rem; color: #8b949e; font-family: monospace; margin-top: 2px; }
+  .pnode-desc { font-size: 0.66rem; color: #8b949e; margin-top: 3px; max-width: 86px; line-height: 1.35; }
+  .pnode.final { border-color: #1a3025; }
+  .pnode.final .pnode-name { color: #3fb950; }
+
+  .parr {
+    color: #30363d;
+    font-size: 1.2rem;
+    align-self: center;
+    padding: 0 4px;
+    margin-bottom: 30px;
+  }
+  .loop-note {
+    font-size: 0.68rem;
+    color: #d29922;
+    margin: 4px 0 10px 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* connector between layers */
+  .connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .cline { flex: 1; max-width: 280px; height: 1px; background: #21262d; }
+  .clabel {
+    font-size: 0.7rem;
+    color: #8b949e;
+    white-space: nowrap;
+    border: 1px solid #21262d;
+    padding: 3px 12px;
+    border-radius: 20px;
+    background: #0d1117;
+  }
+
+  /* two-col */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .row-card {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .row-card:last-child { margin-bottom: 0; }
+  .row-card-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .row-card-name { font-size: 0.82rem; font-weight: 700; color: #e6edf3; margin-bottom: 3px; }
+  .row-card-desc { font-size: 0.74rem; color: #8b949e; line-height: 1.45; }
+
+  /* legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 14px 18px;
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    align-items: center;
+  }
+  .legend-title { font-size: 0.7rem; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 0.08em; width: 100%; }
+  .li { display: flex; align-items: center; gap: 7px; font-size: 0.75rem; color: #8b949e; }
+  .ld { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<h1>ReactRefactor — System Architecture</h1>
+<p class="subtitle">VS Code Extension · FastAPI Backend · LangGraph Pipeline · External Services</p>
+
+<div class="arch">
+
+  <!-- ── LAYER 1: VS CODE EXTENSION ── -->
+  <div class="layer layer-vscode">
+    <div class="layer-label">Layer 1 — VS Code Extension (TypeScript)</div>
+
+    <div class="inner-label">Core Modules</div>
+    <div class="card-row">
+      <div class="card ab">
+        <div class="card-icon">🚀</div>
+        <div class="card-name">extension.ts</div>
+        <div class="card-file">src/extension.ts</div>
+        <div class="card-desc">Main entry point. Registers all commands, wires event handlers, orchestrates scan → fix → diff flow. Manages VS Code context keys (<code>hasSelection</code>, <code>fixRunning</code>) for conditional toolbar buttons.</div>
+        <div class="tags">
+          <span class="tag tag-blue">activate()</span>
+          <span class="tag tag-blue">deactivate()</span>
+          <span class="tag tag-gray">command handlers</span>
+          <span class="tag tag-gray">SSE reader</span>
+        </div>
+      </div>
+
+      <div class="card ab">
+        <div class="card-icon">🌳</div>
+        <div class="card-name">SmellsProvider</div>
+        <div class="card-file">src/smellsProvider.ts</div>
+        <div class="card-desc">Implements <code>TreeDataProvider</code>. Owns all smell state: the full smell list, checkbox selections, fix statuses per smell, active filter, critique scores, and rejection reasons. Fires tree-update events on any state change.</div>
+        <div class="tags">
+          <span class="tag tag-blue">TreeDataProvider</span>
+          <span class="tag tag-gray">checkboxState</span>
+          <span class="tag tag-gray">setFilter()</span>
+          <span class="tag tag-gray">selectTopN()</span>
+        </div>
+      </div>
+
+      <div class="card ab">
+        <div class="card-icon">🐍</div>
+        <div class="card-name">ServerManager</div>
+        <div class="card-file">src/serverManager.ts</div>
+        <div class="card-desc">Detects Python 3.8+ (ms-python API → PATH fallback). Kills any stale process on port 7432, spawns FastAPI server as a child process, health-polls <code>/health</code> every 250ms until ready (5s timeout).</div>
+        <div class="tags">
+          <span class="tag tag-blue">detectPython()</span>
+          <span class="tag tag-blue">startServer()</span>
+          <span class="tag tag-blue">stopServer()</span>
+          <span class="tag tag-gray">killPortProcess()</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inner-label">VS Code Contributions (package.json)</div>
+    <div class="card-row">
+      <div class="card" style="min-width:130px;">
+        <div class="card-icon">📌</div>
+        <div class="card-name">Activity Bar</div>
+        <div class="card-desc">Sidebar container with "Code Smells" tree view. Custom SVG icon. Auto-activates on <code>*.tsx / *.jsx / *.js</code> workspaces.</div>
+      </div>
+      <div class="card" style="min-width:130px;">
+        <div class="card-icon">🔧</div>
+        <div class="card-name">Commands</div>
+        <div class="card-desc">Scan, Fix Selected, Cancel Fix, Select Top 100, Filter by Type, Revert Fix, Open Smell, View Diff.</div>
+      </div>
+      <div class="card" style="min-width:130px;">
+        <div class="card-icon">📋</div>
+        <div class="card-name">Menus</div>
+        <div class="card-desc">Toolbar buttons in <code>view/title</code>. Context item "Revert Fix" via <code>view/item/context</code> on accepted smell leaves.</div>
+      </div>
+      <div class="card" style="min-width:130px;">
+        <div class="card-icon">🔑</div>
+        <div class="card-name">Settings</div>
+        <div class="card-desc"><code>reactRefactor.openaiApiKey</code> via VS Code secret storage. Falls back to <code>OPENAI_API_KEY</code> env var injected into server process.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="cline"></div>
+    <div class="clabel">HTTP · localhost:7432 · fetch() API</div>
+    <div class="cline"></div>
+  </div>
+
+  <!-- ── LAYER 2: FASTAPI SERVER ── -->
+  <div class="layer layer-server">
+    <div class="layer-label">Layer 2 — FastAPI Server (Python · server/app.py · Port 7432)</div>
+
+    <table class="etable">
+      <thead>
+        <tr>
+          <th>Method</th><th>Endpoint</th><th>Description</th><th>Called from</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="method mg">GET</span></td>
+          <td class="epath">/health</td>
+          <td class="edesc">Returns <code>{"status":"ok","version":"..."}</code>. Polled every 250ms during server startup.</td>
+          <td class="ecaller">serverManager.ts</td>
+        </tr>
+        <tr>
+          <td><span class="method mp">POST</span></td>
+          <td class="epath">/scan</td>
+          <td class="edesc">Invokes <code>detect_smells.py</code>, enriches line ranges, applies severity rules, returns full smell list as JSON.</td>
+          <td class="ecaller">smellsProvider.ts<br/>runScan()</td>
+        </tr>
+        <tr>
+          <td><span class="method mp">POST</span></td>
+          <td class="epath">/fix</td>
+          <td class="edesc">Accepts array of smell tasks, creates a job, launches LangGraph pipeline runs. Returns <code>job_id</code>.</td>
+          <td class="ecaller">extension.ts<br/>fixSelected cmd</td>
+        </tr>
+        <tr>
+          <td><span class="method mg">GET</span></td>
+          <td class="epath">/progress/{job_id}</td>
+          <td class="edesc">Server-Sent Events stream. Emits per-smell status changes (queued → running → accepted / rejected / skipped / failed) as the pipeline progresses.</td>
+          <td class="ecaller">extension.ts<br/>SSE reader</td>
+        </tr>
+        <tr>
+          <td><span class="method mg">GET</span></td>
+          <td class="epath">/jobs/{job_id}</td>
+          <td class="edesc">Returns final job summary with all task results after SSE stream ends.</td>
+          <td class="ecaller">extension.ts</td>
+        </tr>
+        <tr>
+          <td><span class="method mp">POST</span></td>
+          <td class="epath">/cancel/{job_id}</td>
+          <td class="edesc">Sets a cancellation flag checked by in-flight LangGraph runners, which abort early on next iteration.</td>
+          <td class="ecaller">extension.ts<br/>cancelFix cmd</td>
+        </tr>
+        <tr>
+          <td><span class="method mp">POST</span></td>
+          <td class="epath">/revert</td>
+          <td class="edesc">Restores the file from a backup created before the fix was applied. Resets smell status.</td>
+          <td class="ecaller">extension.ts<br/>revertSmell cmd</td>
+        </tr>
+        <tr>
+          <td><span class="method mg">GET</span></td>
+          <td class="epath">/original</td>
+          <td class="edesc">Runs <code>git show HEAD:&lt;file&gt;</code> to fetch pre-fix content for the diff view. Returns <strong>404</strong> (not 500) when workspace is not a git repo.</td>
+          <td class="ecaller">extension.ts<br/>viewDiff cmd</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="inner-label">Server Internals</div>
+    <div class="card-row">
+      <div class="card ap">
+        <div class="card-icon">⚙️</div>
+        <div class="card-name">_apply_severity()</div>
+        <div class="card-desc">Post-processes smell list. Assigns severity by smell type but skips smells already marked <code>low</code> by the detector (library paths preserved).</div>
+      </div>
+      <div class="card ap">
+        <div class="card-icon">📏</div>
+        <div class="card-name">_enrich_smell_lines()</div>
+        <div class="card-desc">Parses source files to find exact start/end line numbers for named components when the detector omits line info.</div>
+      </div>
+      <div class="card ap">
+        <div class="card-icon">🗂️</div>
+        <div class="card-name">Job State Store</div>
+        <div class="card-desc">In-memory dict of active jobs. Each holds a task list, per-task status, backup file paths, and an async SSE event queue. Cleaned up on job completion.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="cline"></div>
+    <div class="clabel">subprocess · CSV output · smell dicts</div>
+    <div class="cline"></div>
+  </div>
+
+  <!-- ── LAYERS 3 + 4 (two-col) ── -->
+  <div class="two-col">
+
+    <div class="layer layer-detect" style="margin:0;">
+      <div class="layer-label">Layer 3 — Smell Detection</div>
+
+      <div style="margin-top:8px; display:flex; flex-direction:column; gap:10px;">
+        <div class="card ag">
+          <div class="card-icon">🔬</div>
+          <div class="card-name">detect_smells.py</div>
+          <div class="card-file">agentic_refactor_system/scripts/</div>
+          <div class="card-desc">Orchestrates detection. Calls ReactSniffer CLI, reads <code>components_smells.csv</code> and <code>files_smells.csv</code>, deduplicates, applies path filters and severity overrides.</div>
+        </div>
+
+        <div class="card ag">
+          <div class="card-icon">⚛️</div>
+          <div class="card-name">ReactSniffer CLI</div>
+          <div class="card-file">vendor/reactsniffer/</div>
+          <div class="card-desc">Node.js CLI bundled in the VSIX (whitelisted from <code>node_modules</code> exclusion in <code>bundle.js</code> and <code>.vscodeignore</code>). AST-based analysis, outputs two CSV files.</div>
+          <div class="tags">
+            <span class="tag tag-green">AST-based</span>
+            <span class="tag tag-green">CSV output</span>
+          </div>
+        </div>
+
+        <div class="card ag">
+          <div class="card-icon">🛡️</div>
+          <div class="card-name">Heuristic Fallback</div>
+          <div class="card-file">detect_smells.py</div>
+          <div class="card-desc">Activates when ReactSniffer produces no CSV output. File-based heuristics estimate smells. Less precise — noted in output channel logs.</div>
+        </div>
+
+        <div class="card ag">
+          <div class="card-icon">🏷️</div>
+          <div class="card-name">Path Classifier</div>
+          <div class="card-file">detect_smells.py</div>
+          <div class="card-desc">
+            <strong style="color:#f85149;">Excluded entirely:</strong> <code>node_modules/</code>, <code>out/</code>, <code>__generated__/</code>, <code>.cache/</code><br/><br/>
+            <strong style="color:#d29922;">Downgraded → low:</strong> <code>packages/*/</code>, <code>design-system/</code>, <code>ui-kit/</code>, <code>ui-components/</code>, <code>component-library/</code>, <code>primitives/</code>, <code>base-components/</code>
+          </div>
+          <div class="tags">
+            <span class="tag tag-green">Generalizable</span>
+            <span class="tag tag-green">Regex patterns</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer layer-pipeline" style="margin:0;">
+      <div class="layer-label">Layer 4 — LangGraph Fix Pipeline</div>
+
+      <div class="inner-label">Node Graph (graph.py)</div>
+      <div class="pchain">
+        <div class="pnode">
+          <div class="pnode-icon">🔍</div>
+          <div class="pnode-name">Classify</div>
+          <div class="pnode-file">classify.py</div>
+          <div class="pnode-desc">Decides if fixable or should skip</div>
+        </div>
+        <div class="parr">→</div>
+        <div class="pnode">
+          <div class="pnode-icon">📋</div>
+          <div class="pnode-name">Plan</div>
+          <div class="pnode-file">plan.py</div>
+          <div class="pnode-desc">Generates step-by-step fix strategy</div>
+        </div>
+        <div class="parr">→</div>
+        <div class="pnode">
+          <div class="pnode-icon">✏️</div>
+          <div class="pnode-name">Edit</div>
+          <div class="pnode-file">edit.py</div>
+          <div class="pnode-desc">Applies code changes via LLM</div>
+        </div>
+        <div class="parr">→</div>
+        <div class="pnode">
+          <div class="pnode-icon">✅</div>
+          <div class="pnode-name">Verify</div>
+          <div class="pnode-file">verify.py</div>
+          <div class="pnode-desc">Reruns ReactSniffer to confirm smell resolved</div>
+        </div>
+        <div class="parr">→</div>
+        <div class="pnode">
+          <div class="pnode-icon">🧐</div>
+          <div class="pnode-name">Critique</div>
+          <div class="pnode-file">critique.py</div>
+          <div class="pnode-desc">LLM code review, assigns score</div>
+        </div>
+        <div class="parr">→</div>
+        <div class="pnode final">
+          <div class="pnode-icon">🏁</div>
+          <div class="pnode-name">Finalize</div>
+          <div class="pnode-file">finalize.py</div>
+          <div class="pnode-desc">Writes file, emits SSE event, records result</div>
+        </div>
+      </div>
+      <div class="loop-note">↑ <code>needs_review</code> routes back to <strong>Plan</strong> (retry loop in graph.py)</div>
+
+      <div class="inner-label">Supporting Modules</div>
+
+      <div class="row-card ay">
+        <div class="row-card-icon">🗺️</div>
+        <div>
+          <div class="row-card-name">state.py</div>
+          <div class="row-card-desc">LangGraph state schema. Carries smell metadata, plan, edited code, verify result, critique score, and retry count between nodes.</div>
+        </div>
+      </div>
+
+      <div class="row-card ay">
+        <div class="row-card-icon">🔄</div>
+        <div>
+          <div class="row-card-name">runner.py</div>
+          <div class="row-card-desc">Async runner that executes the graph per-smell. Emits progress events. Respects cancellation flag from <code>/cancel</code> endpoint.</div>
+        </div>
+      </div>
+
+      <div class="row-card ay">
+        <div class="row-card-icon">💡</div>
+        <div>
+          <div class="row-card-name">tactics.py</div>
+          <div class="row-card-desc">Smell-type → fix strategy lookup. Maps each smell type to a recommended refactoring tactic fed to the planner.</div>
+        </div>
+      </div>
+
+      <div class="row-card ay">
+        <div class="row-card-icon">📦</div>
+        <div>
+          <div class="row-card-name">ingestion/</div>
+          <div class="row-card-desc">Context-gathering utilities. Reads file contents, extracts component code, builds per-smell prompt payloads for the LLM nodes.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /two-col -->
+
+  <div class="connector">
+    <div class="cline"></div>
+    <div class="clabel">HTTPS · OpenAI API · git CLI · File System</div>
+    <div class="cline"></div>
+  </div>
+
+  <!-- ── LAYER 5: EXTERNAL ── -->
+  <div class="layer layer-external">
+    <div class="layer-label">Layer 5 — External Dependencies</div>
+
+    <div class="card-row" style="margin-top:8px;">
+      <div class="card ar">
+        <div class="card-icon">🤖</div>
+        <div class="card-name">OpenAI API</div>
+        <div class="card-desc">GPT-4o used by Classify, Plan, Edit, and Critique nodes. Key injected from VS Code settings or <code>OPENAI_API_KEY</code> env var into server subprocess.</div>
+        <div class="tags">
+          <span class="tag tag-red">GPT-4o</span>
+          <span class="tag tag-red">chat completions</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🐙</div>
+        <div class="card-name">Git CLI</div>
+        <div class="card-desc">Used by <code>/original</code> endpoint: <code>git show HEAD:&lt;file&gt;</code> with cwd set to workspace root. Returns 404 gracefully if workspace is not a git repo.</div>
+        <div class="tags">
+          <span class="tag tag-gray">git show</span>
+          <span class="tag tag-gray">subprocess</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">⚛️</div>
+        <div class="card-name">Node.js / npm</div>
+        <div class="card-desc">Required by the bundled ReactSniffer CLI at <code>vendor/reactsniffer/</code>. Called via <code>npx</code> subprocess from <code>detect_smells.py</code>.</div>
+        <div class="tags">
+          <span class="tag tag-gray">Node.js 16+</span>
+          <span class="tag tag-gray">npx</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🐍</div>
+        <div class="card-name">Python 3.8+</div>
+        <div class="card-desc">Host machine runtime. Detected via ms-python VS Code extension then PATH fallback. Runs FastAPI server (uvicorn) and the entire LangGraph pipeline.</div>
+        <div class="tags">
+          <span class="tag tag-gray">FastAPI</span>
+          <span class="tag tag-gray">LangGraph</span>
+          <span class="tag tag-gray">uvicorn</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📁</div>
+        <div class="card-name">File System</div>
+        <div class="card-desc">Server reads and writes source files directly. Backs up original content before any fix is applied, enabling <code>/revert</code> to restore prior state reliably.</div>
+        <div class="tags">
+          <span class="tag tag-gray">read / write</span>
+          <span class="tag tag-gray">backups</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LEGEND ── -->
+  <div class="legend">
+    <div class="legend-title">Legend</div>
+    <div class="li"><div class="ld" style="background:#58a6ff;"></div>VS Code Extension (TypeScript)</div>
+    <div class="li"><div class="ld" style="background:#bc8cff;"></div>FastAPI Server (Python)</div>
+    <div class="li"><div class="ld" style="background:#3fb950;"></div>Smell Detection Layer</div>
+    <div class="li"><div class="ld" style="background:#d29922;"></div>LangGraph Fix Pipeline</div>
+    <div class="li"><div class="ld" style="background:#f85149;"></div>External Dependencies</div>
+    <div class="li"><div class="ld" style="background:#21262d;"></div>HTTP / IPC boundary</div>
+    <div class="li" style="margin-left:auto;color:#30363d;">ReactRefactor v0.1.0 · Port 7432</div>
+  </div>
+
+</div><!-- /arch -->
+</body>
+</html>
