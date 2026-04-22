@@ -548,10 +548,13 @@
       An Agentic Pipeline for Automated React Code Smell Remediation using LangGraph, Tactic-Constrained Planning, and Multi-Gate Verification
     </div>
     <div class="divider-center reveal d3" style="width:40px;height:3px;border-radius:2px;background:var(--gradient-1);margin:0 auto 24px;"></div>
-    <div class="title-meta reveal d4">
-      <span>📊 100-smell evaluation on Supabase</span>
-      <span>⚡ 78% Pass@2</span>
-      <span>💰 $0.005 / task</span>
+    <div class="title-meta reveal d4" style="display:flex; flex-direction:column; gap:12px; margin-top:32px; align-items:center;">
+      <div style="font-size:0.95rem; color:var(--text); font-weight:600; letter-spacing:0.02em;">
+        Jayanth Sibbala &nbsp;&middot;&nbsp; Ved Mulik &nbsp;&middot;&nbsp; Soham Sant
+      </div>
+      <div style="font-size:0.75rem; color:var(--accent-blue); font-weight:700; text-transform:uppercase; letter-spacing:0.12em;">
+        CSCI 7000-05 Spring
+      </div>
     </div>
   </div>
 
@@ -883,40 +886,50 @@
     <div class="slide-title reveal d1">Key <span class="gradient">Takeaways</span></div>
     <div class="divider reveal d2"></div>
     <div class="content-area">
-      <div class="col-2" style="flex:1;">
-        <div class="flex flex-col gap-12 reveal d2">
-          <div class="card card-sm" style="border-left:4px solid var(--accent-green);">
-            <div class="card-title" style="color:var(--accent-green);">What Works: Isolated Smells</div>
-            <div class="card-desc">
-              <strong style="color:var(--text);">Standalone Components</strong> (e.g. Navbar, Dashboard) achieve near-perfect acceptance. Isolated logic extraction and props grouping are highly reliable.
+      <div class="col-2" style="flex:1; gap:20px;">
+        <div class="flex flex-col gap-10 reveal d2">
+          <div class="card card-sm" style="padding:12px; border-left:3px solid var(--accent-green); background:rgba(52,211,153,0.02);">
+            <div style="font-size:0.75rem; font-weight:800; color:var(--accent-green); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em;">What Works</div>
+            <div style="font-size:0.68rem; line-height:1.45; color:var(--text-dim);">
+              <strong style="color:var(--text);">Isolated Smells:</strong> Near-perfect acceptance for standalone components (Navbar/Dashboard).<br>
+              <strong style="color:var(--text);">Direct Tactics:</strong> <code>add_controlled_state</code> achieves 100% success with zero retries.
             </div>
           </div>
-          <div class="card card-sm" style="border-left:4px solid var(--accent-blue);">
-            <div class="card-title" style="color:var(--accent-blue);">Uncontrolled Components</div>
-            <div class="card-desc">
-              Classified as <strong style="color:var(--text);">low risk</strong>. Tactic <code>add_controlled_state</code> is deterministic and fast, consistently scoring 0.8+ with zero retries.
+          <div class="card card-sm" style="padding:12px; border-left:3px solid var(--accent-red); background:rgba(248,113,113,0.02);">
+            <div style="font-size:0.75rem; font-weight:800; color:var(--accent-red); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em;">The Challenge</div>
+            <div style="font-size:0.68rem; line-height:1.45; color:var(--text-dim);">
+              <strong style="color:var(--text);">Entanglement:</strong> Multi-component files (Matches.jsx) cause surgical split conflicts.<br>
+              <strong style="color:var(--text);">Dirty State:</strong> Pre-existing uncommitted changes break patch verification gates.
             </div>
           </div>
-          <div class="highlight-card" style="margin-top:auto;">
-             <div style="font-size:0.7rem; font-weight:700; color:var(--accent-green); margin-bottom:4px;">Success Profile</div>
-             <div style="font-size:0.68rem; color:var(--text-dim);">Single-file, single-component refactors are fully autonomous and safe.</div>
+          <div class="card card-sm" style="padding:12px; border-left:3px solid var(--accent-amber); background:rgba(251,191,36,0.02);">
+            <div style="font-size:0.75rem; font-weight:800; color:var(--accent-amber); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em;">Surprising Insights</div>
+            <div style="font-size:0.68rem; line-height:1.45; color:var(--text-dim);">
+              <strong style="color:var(--text);">Failures:</strong> Often path hallucinations (truncated directory names) rather than logic complexity.<br>
+              <strong style="color:var(--text);">Latency:</strong> 10x deviation in large files (AuditLogs.tsx) due to context pressure.
+            </div>
           </div>
         </div>
-        <div class="flex flex-col gap-12 reveal d3">
-          <div class="card card-sm" style="border-left:4px solid var(--accent-red);">
-            <div class="card-title" style="color:var(--accent-red);">The Challenge: Entanglement</div>
-            <div class="card-desc">
-              <strong style="color:var(--text);">Multi-component files</strong> (e.g. <code>Matches.jsx</code>) struggle with sub-component extraction. Co-located components create editing conflicts during surgical splits.
+        <div class="flex flex-col gap-10 reveal d3">
+          <div class="card card-sm" style="padding:12px; border-left:3px solid var(--accent-purple); background:rgba(167,139,250,0.02);">
+            <div style="font-size:0.75rem; font-weight:800; color:var(--accent-purple); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em;">Outliers & Triage</div>
+            <div style="font-size:0.68rem; line-height:1.45; color:var(--text-dim);">
+              <strong style="color:var(--text);">Implicit Triage:</strong> 4 smell categories (Force Update, DOM Manip) were systematically untouched.<br>
+              <strong style="color:var(--text);">Invalid Plans:</strong> Plan-level errors remain unrecoverable by the standard retry loop.
             </div>
           </div>
-          <div class="card card-sm" style="border-left:4px solid var(--accent-amber);">
-            <div class="card-title" style="color:var(--accent-amber);">State Conflict (Dirty Git)</div>
-            <div class="card-desc">
-              Pre-existing modifications (e.g. <code>RecruiterHome.jsx</code>) lead to <strong style="color:var(--text);">verification failure</strong>. Pipeline assumes clean baseline state for accurate patch application.
+          <div class="card card-sm" style="padding:12px; border-left:3px solid var(--accent-blue); background:rgba(59,130,246,0.02);">
+            <div style="font-size:0.75rem; font-weight:800; color:var(--accent-blue); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em;">Lessons Learned</div>
+            <div style="font-size:0.68rem; line-height:1.45; color:var(--text-dim);">
+              <strong style="color:var(--text);">Validation:</strong> Path normalization must precede scope validation.<br>
+              <strong style="color:var(--text);">Strategy:</strong> Reliability is high for <em>self-selected</em> subsets; full-scale coordination is the next frontier.
             </div>
           </div>
-          <div class="finding-box" style="margin-top:auto;">
-             <strong>Conclusion:</strong> Scalability is proven for isolated components ($0.005/task); future work must focus on <strong>cross-component coordination</strong> within entangled files.
+          <div class="finding-box" style="margin-top:auto; padding:10px 14px; background:rgba(34,211,238,0.05); border-left:3px solid var(--accent-cyan);">
+            <div style="font-size:0.7rem; font-weight:800; color:var(--accent-cyan); margin-bottom:2px; text-transform:uppercase; letter-spacing:0.05em;">Conclusion</div>
+            <div style="font-size:0.66rem; line-height:1.4; color:var(--text-dim);">
+              Scalability proven for isolated tasks ($0.005/refactor). <strong>Entangled files</strong> and <strong>global coordination</strong> are the primary failure frontiers.
+            </div>
           </div>
         </div>
       </div>
