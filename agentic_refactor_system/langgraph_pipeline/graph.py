@@ -16,11 +16,12 @@ from .nodes.finalize import finalize_node
 
 def _route_after_classify(state: TaskState) -> str:
     """
-    After classify: skip directly to finalize for non-actionable smells,
-    otherwise proceed to planning.
+    After classify: skip directly to finalize only for non_actionable smells.
+    needs_review smells proceed to the planner — it has its own NO_TACTIC
+    fallback and can make a more informed decision with the full tactic list.
     """
     actionability = state.get("actionability")
-    if actionability is not None and actionability["label"] in (NON_ACTIONABLE, NEEDS_REVIEW):
+    if actionability is not None and actionability["label"] == NON_ACTIONABLE:
         return "finalize"
     return "plan"
 

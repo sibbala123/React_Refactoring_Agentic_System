@@ -112,12 +112,19 @@ Label as NON_ACTIONABLE when:
   because it reads values only on submit via e.target)
 - The detector fired on test/demo/storybook code that should not be refactored
 - The smell type is not in the table (no known bounded fix)
-- The component is so large or entangled that no single bounded refactor applies
 
 Label as NEEDS_REVIEW when:
 - The snippet alone is not enough to determine intent
-- The fix would be high risk (e.g. a 600-line component used across many pages)
-- The smell is genuine but the right refactoring is ambiguous
+- The smell is genuine but the right refactoring is deeply ambiguous
+
+IMPORTANT — Large Component and Too Many Props:
+These two smell types almost always have a viable bounded fix (extract_component,
+split_component, extract_logic_to_custom_hook, remove_unused_props).
+Do NOT mark these as needs_review or non_actionable purely because the component
+is large or used in many places — that is the very definition of these smells.
+The planner and editor have abort conditions to handle cases where a fix is
+genuinely unsafe. Default to ACTIONABLE for these two smell types unless the
+code is clearly a false positive (e.g. test file, generated code).
 
 Always provide a clear, specific rationale referencing the code. Vague
 rationales like "looks fine" or "might be intentional" are not acceptable.

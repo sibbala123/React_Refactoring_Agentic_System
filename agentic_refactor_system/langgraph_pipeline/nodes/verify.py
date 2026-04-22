@@ -1,14 +1,30 @@
 from __future__ import annotations
 
-import json
+import csv
 import logging
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
 from ..state import TaskState
 
 logger = logging.getLogger(__name__)
+
+_SMELL_NAME_MAP = {
+    "large component": "Large Component",
+    "too many props": "Too Many Props",
+    "inheritance instead of composition": "Inheritance Instead of Composition",
+    "props in initial state": "Props in Initial State",
+    "direct dom manipulation": "Direct DOM Manipulation",
+    "force update": "Force Update",
+    "jsx outside the render method": "JSX Outside the Render Method",
+    "uncontrolled component": "Uncontrolled Component",
+}
+
+
+def _normalize_smell_name(raw: str) -> str:
+    return _SMELL_NAME_MAP.get(raw.strip().lower(), raw.strip())
 
 
 def _run_tsc_on_file(file_path: Path, cwd: Path) -> tuple[int, str]:
@@ -104,51 +120,47 @@ def verify_node(state: TaskState) -> dict[str, Any]:
 
         logger.info("[%s] verify | running reactsniffer on %s", task_id, scan_dir)
         try:
-            node_cmd = f'node "{Path(reactsniffer_root) / "index.js"}" "{scan_dir}"'
-            res = subprocess.run(
-                node_cmd,
-                cwd=target_root,
-                shell=True,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                check=False,
-                timeout=30
-            )
-            
-            smell_resolved_check = "pass" # innocent until proven guilty
-            try:
-                # Attempt to extract JSON if there's other CLI clutter
-                stdout_clean = res.stdout
-                if "{" in stdout_clean:
-                    stdout_clean = stdout_clean[stdout_clean.find("{"):]
-                    
-                output_data = json.loads(stdout_clean)
-                smells = output_data.get("smells", [])
-                
-                for s in smells:
-                    if s.get("smell_type") == smell_type:
-                        target_comp = state["smell"].get("component_name")
-                        found_comp = s.get("component_name")
-                        
-                        # Only flag if it's the identical smell on the identical component
-                        if target_comp and found_comp and target_comp != found_comp:
-                            continue 
-                            
-                        smell_resolved_check = "fail"
-                        logger.warning("[%s] verify | smell %s NOT resolved (still present in reactsniffer).", task_id, smell_type)
-                        break
-                        
-            except json.JSONDecodeError:
-                if "There are no components with smells" in res.stdout:
-                    smell_resolved_check = "pass"
-                    logger.info("[%s] verify | reactsniffer found no smells (resolved!).", task_id)
+            with tempfile.TemporaryDirectory() as tmpdir:
+                node_cmd = f'node "{Path(reactsniffer_root) / "index.js"}" "{scan_dir}"'
+                res = subprocess.run(
+                    node_cmd,
+                    cwd=tmpdir,
+                    shell=True,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    check=False,
+                    timeout=30,
+                )
+
+                smell_resolved_check = "pass"
+
+                components_csv = Path(tmpdir) / "components_smells.csv"
+                if not components_csv.exists():
+                    logger.info("[%s] verify | reactsniffer produced no components_smells.csv (resolved).", task_id)
                 else:
-                    logger.warning("[%s] verify | reactsniffer stdout was not JSON.", task_id)
-                    logger.warning("[%s] verify | res.stdout: %s", task_id, res.stdout[:500])
-                    logger.warning("[%s] verify | res.stderr: %s", task_id, res.stderr[:500])
-                    smell_resolved_check = "fail"
-                
+                    abs_file_str = str(abs_file).replace("\\", "/").lower() if abs_file else ""
+                    target_comp = state["smell"].get("component_name")
+
+                    with components_csv.open("r", encoding="utf-8-sig", newline="") as fh:
+                        for row in csv.DictReader(fh):
+                            if _normalize_smell_name(row.get("Smell", "")) != smell_type:
+                                continue
+                            # Only check smells in the specific file we edited.
+                            row_file = row.get("file", "").replace("\\", "/").lower()
+                            if abs_file_str and abs_file_str not in row_file and row_file not in abs_file_str:
+                                continue
+                            # Same file — check component match.
+                            found_comp = row.get("Component") or None
+                            if target_comp and found_comp and target_comp != found_comp:
+                                continue
+                            smell_resolved_check = "fail"
+                            logger.warning(
+                                "[%s] verify | smell %s NOT resolved (still present in %s / %s).",
+                                task_id, smell_type, row_file, found_comp,
+                            )
+                            break
+
         except Exception as e:
             logger.error("[%s] verify | reactsniffer exception: %s", task_id, e)
             smell_resolved_check = "fail"

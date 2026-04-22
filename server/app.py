@@ -305,9 +305,22 @@ async def _run_fix_job(job_id: str) -> None:
                     or final_state.get("error_message")
                 )
                 if raw_error:
-                    # Extract last non-empty line (the actual exception message)
+                    # Find the root-cause exception line from the traceback.
+                    # LangGraph wraps node errors so the last line is often just
+                    # "During task with name 'X'..." — we want the line before it
+                    # that starts with a known exception type.
                     lines = [l.strip() for l in str(raw_error).splitlines() if l.strip()]
-                    task_entry["error"] = lines[-1] if lines else str(raw_error)
+                    root = lines[-1] if lines else str(raw_error)
+                    for line in reversed(lines):
+                        if any(line.startswith(t) for t in (
+                            "EnvironmentError", "ValueError", "TypeError",
+                            "KeyError", "AttributeError", "ImportError",
+                            "ModuleNotFoundError", "RuntimeError", "Exception",
+                            "openai.", "httpx.",
+                        )):
+                            root = line
+                            break
+                    task_entry["error"] = root
                 else:
                     task_entry["error"] = None
 
