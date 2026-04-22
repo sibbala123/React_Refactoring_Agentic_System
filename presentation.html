@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ReactRefactor — Agentic React Refactoring Pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ═══════════════════════════════════════
+     RESET & BASE
+  ═══════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e293b;
+    --border-light: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-blue-dim: #1e3a5f;
+    --accent-purple: #a78bfa;
+    --accent-purple-dim: #2d1f5e;
+    --accent-green: #34d399;
+    --accent-green-dim: #064e3b;
+    --accent-amber: #fbbf24;
+    --accent-amber-dim: #78350f;
+    --accent-red: #f87171;
+    --accent-red-dim: #7f1d1d;
+    --accent-cyan: #22d3ee;
+    --accent-pink: #f472b6;
+    --gradient-1: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    --gradient-2: linear-gradient(135deg, #f472b6 0%, #a78bfa 50%, #3b82f6 100%);
+    --gradient-3: linear-gradient(135deg, #34d399 0%, #3b82f6 100%);
+    --slide-w: 1280px;
+    --slide-h: 720px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Consolas', monospace;
+  }
+
+  html { font-size: 16px; }
+  body {
+    font-family: var(--font);
+    background: #050810;
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ═══════════════════════════════════════
+     SLIDE ENGINE
+  ═══════════════════════════════════════ */
+  .deck {
+    position: relative;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 0 80px rgba(59, 130, 246, 0.08), 0 0 0 1px var(--border);
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    padding: 56px 64px 48px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(60px);
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    will-change: opacity, transform;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+  .slide.exit-right { opacity: 0; transform: translateX(60px); }
+  .slide.enter-left { transform: translateX(-60px); opacity: 0; }
+  .slide.enter-right { transform: translateX(60px); opacity: 0; }
+
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 54px;
+    height: 54px;
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .nav-arrow:hover { 
+    background: var(--surface2); 
+    color: var(--accent-blue); 
+    border-color: var(--accent-blue);
+    width: 60px;
+    height: 60px;
+  }
+  .nav-arrow-left { left: 32px; }
+  .nav-arrow-right { right: 32px; }
+  .nav-arrow.disabled { opacity: 0; pointer-events: none; transform: translateY(-50%) scale(0.8); }
+
+  .nav-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 38px;
+    background: linear-gradient(to top, var(--bg), transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    z-index: 100;
+    user-select: none;
+    border: none;
+  }
+
+  /* ═══════════════════════════════════════
+     TYPOGRAPHY
+  ═══════════════════════════════════════ */
+  .slide-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 8px;
+  }
+  .slide-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .slide-title .gradient { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .slide-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+    max-width: 680px;
+  }
+
+  /* ═══════════════════════════════════════
+     UTILITY CLASSES
+  ═══════════════════════════════════════ */
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .gap-8 { gap: 8px; }
+  .gap-10 { gap: 10px; }
+  .gap-12 { gap: 12px; }
+  .gap-14 { gap: 14px; }
+  .gap-16 { gap: 16px; }
+  .gap-20 { gap: 20px; }
+  .gap-24 { gap: 24px; }
+  .gap-32 { gap: 32px; }
+  .grow { flex: 1; }
+  .items-center { align-items: center; }
+  .items-start { align-items: flex-start; }
+  .justify-center { justify-content: center; }
+  .justify-between { justify-content: space-between; }
+  .text-center { text-align: center; }
+  .mt-auto { margin-top: auto; }
+  .w-full { width: 100%; }
+
+  /* ═══════════════════════════════════════
+     CARDS & CONTAINERS
+  ═══════════════════════════════════════ */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card-sm { padding: 14px 16px; }
+  .card-title { font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; }
+  .card-desc { font-size: 0.72rem; color: var(--text-dim); line-height: 1.5; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.58rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+  .tag-blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
+  .tag-purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+  .tag-green { background: var(--accent-green-dim); color: var(--accent-green); }
+  .tag-amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
+  .tag-red { background: var(--accent-red-dim); color: var(--accent-red); }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-cyan);
+  }
+
+  /* ═══════════════════════════════════════
+     DATA TABLES
+  ═══════════════════════════════════════ */
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 3px;
+    font-size: 0.72rem;
+  }
+  .data-table th {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 8px 12px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .data-table td:first-child { border-left: 1px solid var(--border); border-radius: 8px 0 0 8px; }
+  .data-table td:last-child { border-right: 1px solid var(--border); border-radius: 0 8px 8px 0; }
+  .data-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-weight: 600; }
+  .data-table td.accent-g { color: var(--accent-green); }
+  .data-table td.accent-b { color: var(--accent-blue); }
+  .data-table td.accent-r { color: var(--accent-red); }
+  .data-table td.accent-a { color: var(--accent-amber); }
+  .data-table td.em { font-weight: 700; color: var(--text); }
+  .data-table tbody tr:hover td { background: var(--surface2); }
+
+  /* ═══════════════════════════════════════
+     PIPELINE NODES
+  ═══════════════════════════════════════ */
+  .pipeline { display: flex; align-items: center; gap: 0; }
+  .pnode {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+    min-width: 100px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .pnode:hover { border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(59,130,246,0.15); }
+  .pnode-icon { font-size: 1.2rem; margin-bottom: 4px; }
+  .pnode-name { font-size: 0.72rem; font-weight: 700; }
+  .pnode-sub { font-size: 0.58rem; color: var(--text-muted); margin-top: 2px; }
+  .parrow { color: var(--text-muted); font-size: 1rem; padding: 0 4px; }
+  .pnode.n-blue { border-color: var(--accent-blue-dim); } .pnode.n-blue .pnode-name { color: var(--accent-blue); }
+  .pnode.n-purple { border-color: var(--accent-purple-dim); } .pnode.n-purple .pnode-name { color: var(--accent-purple); }
+  .pnode.n-green { border-color: var(--accent-green-dim); } .pnode.n-green .pnode-name { color: var(--accent-green); }
+  .pnode.n-amber { border-color: var(--accent-amber-dim); } .pnode.n-amber .pnode-name { color: var(--accent-amber); }
+  .pnode.n-red { border-color: var(--accent-red-dim); } .pnode.n-red .pnode-name { color: var(--accent-red); }
+  .pnode.n-cyan { border-color: #164e63; } .pnode.n-cyan .pnode-name { color: var(--accent-cyan); }
+
+  /* ═══════════════════════════════════════
+     BAR CHARTS
+  ═══════════════════════════════════════ */
+  .bar-chart { display: flex; flex-direction: column; gap: 6px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-label { font-size: 0.68rem; color: var(--text-dim); width: 130px; text-align: right; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 22px; background: var(--surface); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill { height: 100%; border-radius: 5px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.62rem; font-weight: 700; color: white; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+  .bar-fill.blue { background: linear-gradient(90deg, #1e40af, #3b82f6); }
+  .bar-fill.green { background: linear-gradient(90deg, #065f46, #34d399); }
+  .bar-fill.purple { background: linear-gradient(90deg, #4c1d95, #a78bfa); }
+  .bar-fill.amber { background: linear-gradient(90deg, #78350f, #fbbf24); }
+  .bar-fill.red { background: linear-gradient(90deg, #7f1d1d, #f87171); }
+  .bar-fill.cyan { background: linear-gradient(90deg, #155e75, #22d3ee); }
+  .bar-value { font-size: 0.72rem; font-weight: 700; width: 50px; text-align: left; font-family: var(--mono); flex-shrink: 0; }
+
+  /* ═══════════════════════════════════════
+     COMPARISON TABLE (RQ5)
+  ═══════════════════════════════════════ */
+  .cmp-cell { text-align: center; font-size: 1rem; }
+  .cmp-pass { color: var(--accent-green); }
+  .cmp-fail { color: var(--accent-red); }
+  .cmp-half { color: var(--accent-amber); }
+
+  /* ═══════════════════════════════════════
+     DONUT
+  ═══════════════════════════════════════ */
+  .donut-wrap { display: flex; align-items: center; gap: 28px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 8px; }
+  .donut-item { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; }
+  .donut-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+  /* ═══════════════════════════════════════
+     STAT BOXES
+  ═══════════════════════════════════════ */
+  .stat-grid { display: grid; gap: 12px; }
+  .stat-grid-2 { grid-template-columns: 1fr 1fr; }
+  .stat-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .stat-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .stat-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-family: var(--mono);
+    line-height: 1;
+  }
+  .stat-value.blue { color: var(--accent-blue); }
+  .stat-value.green { color: var(--accent-green); }
+  .stat-value.purple { color: var(--accent-purple); }
+  .stat-value.amber { color: var(--accent-amber); }
+  .stat-value.red { color: var(--accent-red); }
+  .stat-value.cyan { color: var(--accent-cyan); }
+  .stat-label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-top: 4px;
+  }
+
+  /* ═══════════════════════════════════════
+     TITLE SLIDE SPECIAL
+  ═══════════════════════════════════════ */
+  .title-slide {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse at 70% 80%, rgba(139,92,246,0.05) 0%, transparent 60%),
+                var(--bg);
+  }
+  .title-main {
+    font-size: 2.4rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .title-sub {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    max-width: 640px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .title-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 24px;
+  }
+  .title-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* decorative orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.12;
+  }
+  .orb-1 { width: 400px; height: 400px; background: #3b82f6; top: -100px; left: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: #8b5cf6; bottom: -80px; right: -60px; }
+  .orb-3 { width: 200px; height: 200px; background: #06b6d4; top: 100px; right: 200px; }
+
+  /* divider */
+  .divider {
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--gradient-1);
+    margin: 14px 0;
+  }
+  .divider-center { margin: 14px auto; }
+
+  /* columns */
+  .col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .col-2-wide { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; }
+  .col-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  /* feedback/highlight card */
+  .highlight-card {
+    background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.08) 100%);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+
+  /* bullet list */
+  .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .bullet-list li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .bullet-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+  }
+  .bullet-list li strong { color: var(--text); }
+
+  /* code block */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .kw { color: #c084fc; }
+  .code-block .fn { color: #60a5fa; }
+  .code-block .str { color: #34d399; }
+  .code-block .cmt { color: #475569; font-style: italic; }
+  .code-block .hl { color: #fbbf24; }
+  .code-block .err { color: #f87171; text-decoration: underline wavy; }
+
+  /* retry loop SVG */
+  .retry-badge {
+    background: var(--accent-amber-dim);
+    color: var(--accent-amber);
+    font-size: 0.58rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Reveal animation helpers */
+  .reveal { opacity: 0; transform: translateY(12px); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .slide.active .reveal { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 0.1s; }
+  .d2 { transition-delay: 0.2s; }
+  .d3 { transition-delay: 0.3s; }
+  .d4 { transition-delay: 0.4s; }
+  .d5 { transition-delay: 0.5s; }
+
+  /* section number badge */
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-num.blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
+  .section-num.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+  .section-num.green { background: var(--accent-green-dim); color: var(--accent-green); }
+  .section-num.amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
+  .section-num.red { background: var(--accent-red-dim); color: var(--accent-red); }
+
+  /* icon stat */
+  .icon-stat { display: flex; align-items: center; gap: 10px; }
+  .icon-stat-icon { font-size: 1.4rem; }
+  .icon-stat-val { font-size: 1.2rem; font-weight: 800; font-family: var(--mono); }
+  .icon-stat-lbl { font-size: 0.62rem; color: var(--text-muted); }
+
+  /* key finding box */
+  .finding-box {
+    border-left: 3px solid var(--accent-amber);
+    background: rgba(251,191,36,0.05);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .finding-box strong { color: var(--accent-amber); }
+
+  /* overall layout for content area */
+  .content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 1 — TITLE
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide title-slide active" id="slide-0">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="reveal" style="margin-bottom:8px;">
+      <span class="tag tag-blue" style="font-size:0.62rem;">CSCI 7000 · Final Presentation</span>
+    </div>
+    <div class="title-main reveal d1">
+      <span class="gradient">ReactRefactor</span>
+    </div>
+    <div class="title-sub reveal d2">
+      An Agentic Pipeline for Automated React Code Smell Remediation using LangGraph, Tactic-Constrained Planning, and Multi-Gate Verification
+    </div>
+    <div class="divider-center reveal d3" style="width:40px;height:3px;border-radius:2px;background:var(--gradient-1);margin:0 auto 24px;"></div>
+    <div class="title-meta reveal d4">
+      <span>📊 100-smell evaluation on Supabase</span>
+      <span>⚡ 78% Pass@2</span>
+      <span>💰 $0.005 / task</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 2 — THE PROBLEM
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-1">
+    <div class="slide-label reveal">The Problem</div>
+    <div class="slide-title reveal d1">Why is Automated React Refactoring <span class="gradient">Hard?</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area">
+      <div class="col-2" style="flex:1;">
+        <div class="flex flex-col gap-10 reveal d2">
+          <div class="card card-sm">
+            <div class="flex gap-8 items-start">
+              <div class="section-num red">1</div>
+              <div>
+                <div class="card-title" style="color:var(--accent-red);">Silent Behavioral Regressions</div>
+                <div class="card-desc">Dropping a React context provider passes TypeScript but silently breaks form validation at runtime — invisible to static analysis.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="flex gap-8 items-start">
+              <div class="section-num amber">2</div>
+              <div>
+                <div class="card-title" style="color:var(--accent-amber);">State & Side-Effect Complexity</div>
+                <div class="card-desc">Hooks, <code>useEffect</code> dependencies, memoization — moving code between components can introduce stale closures and referential equality bugs.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="flex gap-8 items-start">
+              <div class="section-num purple">3</div>
+              <div>
+                <div class="card-title" style="color:var(--accent-purple);">Component Interdependence</div>
+                <div class="card-desc">Props, shared context, and rendering hierarchies create tight coupling. Changing a prop surface must be consistent with every call site.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="flex gap-8 items-start">
+              <div class="section-num blue">4</div>
+              <div>
+                <div class="card-title" style="color:var(--accent-blue);">Verification Limitations</div>
+                <div class="card-desc">TypeScript + linting are necessary but insufficient. Passing static checks ≠ runtime correctness. Most projects lack adequate test coverage.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12 reveal d3">
+          <div class="highlight-card">
+            <div style="font-size:0.7rem;font-weight:700;color:var(--accent-blue);margin-bottom:8px;">Key Insight</div>
+            <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.55;">
+              We tested GPT-4o-mini and GPT-4o directly on real Supabase components with neutral refactoring prompts.<br><br>
+              <strong style="color:var(--accent-red);">Both models dropped the <code>&lt;Form_Shadcn_&gt;</code> context provider</strong> — a hallucination invisible to TypeScript that silently breaks all form validation at runtime.<br><br>
+              The answer to <em>"can an LLM refactor React code reliably with a generic prompt?"</em> is <strong style="color:var(--accent-red);">no</strong>.
+            </div>
+          </div>
+          <div class="finding-box">
+            <strong>Conclusion:</strong> Single-shot LLM refactoring is unsafe. We need structured coordination: classification, planning constraints, verification gates, and self-correction.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 3 — RELATED WORKS
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label reveal">Foundation</div>
+    <div class="slide-title reveal d1">Related <span class="gradient">Works</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area">
+      <div class="col-2" style="flex:1;">
+        <div class="flex flex-col gap-16 reveal d2">
+          <div class="highlight-card">
+            <div style="font-size:0.75rem;font-weight:700;color:var(--accent-blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;">State of the Art</div>
+            <div style="font-size:0.85rem;color:var(--text);line-height:1.6;">
+              Recent work spans <strong>AST-based React smell detection</strong> (ReactSniffer, IST 2023), <strong>TypeScript/TSX extensions</strong> (IST 2025), <strong>AST vs AI-based correction</strong> comparisons (SSRN 2025), and <strong>MANTRA-style multi-agent refactoring</strong> systems for end-to-end automated repair.
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="card-title" style="color:var(--accent-purple);">Contextual Gap</div>
+            <div class="card-desc">While detection is mature, reliable <strong>automated remediation</strong> at scale remains challenging due to framework-specific structural invariants that general-purpose LLMs often violate.</div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12 reveal d3">
+           <div class="card" style="border-color:var(--accent-cyan-dim);">
+             <div class="card-title" style="color:var(--accent-cyan);">The Research Frontier</div>
+             <div class="card-desc">Current tools either rely on rigid AST transforms (low flexibility) or raw LLM prompts (low reliability). ReactRefactor bridge this by using <strong>Agentic Workflows</strong> to apply AST-validated framework maneuvers.</div>
+           </div>
+           <div class="finding-box" style="margin-top:10px;">
+             <strong>Focus:</strong> Moving from "Detecting technical debt" to "Reliable, autonomous debt retirement" in complex frontend ecosystems.
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 4 — RESEARCH QUESTIONS (1/2)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label reveal">Inquiry</div>
+    <div class="slide-title reveal d1">Research Questions — <span class="gradient">Phase I</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area">
+      <div class="flex flex-col gap-12 reveal d2">
+        <div class="card card-sm" style="border-left:4px solid var(--accent-blue);">
+          <div class="flex gap-12 items-center">
+             <div class="tag tag-blue" style="font-size:0.7rem; padding:4px 12px; min-width:45px; justify-content:center;">RQ1</div>
+             <div>
+               <div style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:2px;">Actionability of Detected Smells</div>
+               <div style="font-size:0.7rem; color:var(--text-dim);">To what extent are the smells detected by static analysis (ReactSniffer) genuinely refactorable in a production context?</div>
+             </div>
+          </div>
+        </div>
+        <div class="card card-sm" style="border-left:4px solid var(--accent-purple);">
+          <div class="flex gap-12 items-center">
+             <div class="tag tag-purple" style="font-size:0.7rem; padding:4px 12px; min-width:45px; justify-content:center;">RQ2</div>
+             <div>
+               <div style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:2px;">Success Rate (Pass@k)</div>
+               <div style="font-size:0.7rem; color:var(--text-dim);">How effectively does the multi-stage agentic pipeline generate correct, bug-free refactoring solutions on first and subsequent attempts?</div>
+             </div>
+          </div>
+        </div>
+        <div class="card card-sm" style="border-left:4px solid var(--accent-green);">
+          <div class="flex gap-12 items-center">
+             <div class="tag tag-green" style="font-size:0.7rem; padding:4px 12px; min-width:45px; justify-content:center;">RQ3</div>
+             <div>
+               <div style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:2px;">Safety & Hallucination Avoidance</div>
+               <div style="font-size:0.7rem; color:var(--text-dim);">Does the pipeline maintain structural integrity and avoid common LLM pitfalls like dropping context providers or inventing non-existent hooks?</div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 5 — RESEARCH QUESTIONS (2/2)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label reveal">Inquiry</div>
+    <div class="slide-title reveal d1">Research Questions — <span class="gradient">Phase II</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area">
+      <div class="flex flex-col gap-12 reveal d2">
+        <div class="card card-sm" style="border-left:4px solid var(--accent-amber);">
+          <div class="flex gap-12 items-center">
+             <div class="tag tag-amber" style="font-size:0.7rem; padding:4px 12px; min-width:45px; justify-content:center;">RQ4</div>
+             <div>
+               <div style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:2px;">Computational Cost & Scalability</div>
+               <div style="font-size:0.7rem; color:var(--text-dim);">What is the economic viability of agentic refactoring compared to manual developer time? Does it scale linearly with project size?</div>
+             </div>
+          </div>
+        </div>
+        <div class="card card-sm" style="border-left:4px solid var(--accent-red);">
+          <div class="flex gap-12 items-center">
+             <div class="tag tag-red" style="font-size:0.7rem; padding:4px 12px; min-width:45px; justify-content:center;">RQ5</div>
+             <div>
+               <div style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:2px;">Pipeline vs. Naive LLM Baseline</div>
+               <div style="font-size:0.7rem; color:var(--text-dim);">Does adding agentic structure, planning, and verification provide a measurable safety gain over standard single-prompt LLM interactions?</div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 6 — SYSTEM ARCHITECTURE (1/2)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label reveal">Architecture</div>
+    <div class="slide-title reveal d1">System Design — <span class="gradient">Layers 1 & 2</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area justify-center items-center">
+      <div class="flex gap-20 w-full h-full reveal d2" style="max-height:480px; align-items:center;">
+        <img src="diagrams/screenshots/layerl 1.png" style="width:48%; height:auto; max-height:100%; object-fit:contain;" />
+        <img src="diagrams/screenshots/layer 2.png" style="width:48%; height:auto; max-height:100%; object-fit:contain;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 7 — SYSTEM ARCHITECTURE (2/3)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-6">
+    <div class="slide-label reveal">Architecture</div>
+    <div class="slide-title reveal d1">System Design — <span class="gradient">Layers 3 & 4</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area justify-center items-center">
+      <div class="flex gap-20 w-full h-full reveal d2" style="max-height:480px; align-items:center;">
+         <img src="diagrams/screenshots/layer 3.png" style="width:48%; height:auto; max-height:100%; object-fit:contain;" />
+         <img src="diagrams/screenshots/layer 4.png" style="width:48%; height:auto; max-height:100%; object-fit:contain;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 8 — SYSTEM ARCHITECTURE (3/3)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-7">
+    <div class="slide-label reveal">Architecture</div>
+    <div class="slide-title reveal d1">System Design — <span class="gradient">Layer 5</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area justify-center items-center">
+      <div class="flex w-full h-full reveal d2" style="max-height:480px; align-items:center; justify-content:center;">
+        <img src="diagrams/screenshots/layer 5.png" style="max-width:90%; height:auto; max-height:100%; object-fit:contain;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 9 — USER INTERACTION WORKFLOW
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-8">
+    <div class="slide-label reveal">Workflow</div>
+    <div class="slide-title reveal d1">User Interaction <span class="gradient">Architecture</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area justify-center items-center">
+      <div class="flex w-full h-full items-center justify-center reveal d2" style="max-height:500px;">
+        <img src="diagrams/screenshots/User workflow.png" style="width:100%; height:100%; object-fit:contain;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 10 — EMPIRICAL METHODOLOGY
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-9">
+    <div class="slide-label reveal">Evaluation</div>
+    <div class="slide-title reveal d1">Empirical Evaluation <span class="gradient">Methodology</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area justify-center items-center">
+      <div class="flex w-full h-full items-center justify-center reveal d2" style="max-height:500px;">
+        <img src="diagrams/screenshots/empirical methodology.png" style="width:100%; height:100%; object-fit:contain;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 11 — QUANTITATIVE RESULTS SUMMARY
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-10">
+    <div class="slide-label reveal">Results</div>
+    <div class="slide-title reveal d1">Quantitative <span class="gradient">Evaluation Summary</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area">
+      <div class="flex flex-col gap-24 reveal d2">
+        <div>
+          <div style="font-size:0.68rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Experiment 1: Performance Across Repositories</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Repository</th>
+                <th style="text-align:center;">Accepted</th>
+                <th style="text-align:center;">Rejected</th>
+                <th style="text-align:center;">Skipped/Failed</th>
+                <th style="text-align:right;">Pass Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="em">Jumble (Selection)</td>
+                <td style="text-align:center;" class="accent-g">16</td>
+                <td style="text-align:center;" class="accent-r">7</td>
+                <td style="text-align:center;">0</td>
+                <td style="text-align:right; font-weight:700;">69.6%</td>
+              </tr>
+              <tr>
+                <td class="em">Excalidraw</td>
+                <td style="text-align:center;" class="accent-g">95</td>
+                <td style="text-align:center;" class="accent-r">1</td>
+                <td style="text-align:center;">4</td>
+                <td style="text-align:right; font-weight:700;">95.0%</td>
+              </tr>
+              <tr>
+                <td class="em">Supabase</td>
+                <td style="text-align:center;" class="accent-g">99</td>
+                <td style="text-align:center;" class="accent-r">0</td>
+                <td style="text-align:center;">1</td>
+                <td style="text-align:right; font-weight:700;" class="accent-b">99.1%</td>
+              </tr>
+              <tr style="background:var(--surface2);">
+                <td style="font-weight:800;">TOTAL</td>
+                <td style="text-align:center; font-weight:800;">210</td>
+                <td style="text-align:center; font-weight:800;">8</td>
+                <td style="text-align:center; font-weight:800;">5</td>
+                <td style="text-align:right; font-weight:900; color:var(--accent-green);">94.1%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div style="font-size:0.68rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Experiment 2: Baseline Comparison (Pass@1)</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th style="text-align:center;">Weak LLM (GPT-4o-mini)</th>
+                <th style="text-align:center;">Strong LLM (GPT-4o)</th>
+                <th style="text-align:center; background:rgba(59,130,246,0.1);">Our Pipeline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="em" style="font-size:0.8rem;">Overall Pass Rate</td>
+                <td style="text-align:center; color:var(--accent-red);">7/20 (35%)</td>
+                <td style="text-align:center; color:var(--accent-amber);">6/20 (30%)</td>
+                <td style="text-align:center; font-weight:800; color:var(--accent-green); background:rgba(59,130,246,0.05);">14/20 (70%)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 12 — KEY TAKEAWAYS
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-11">
+    <div class="slide-label reveal">Conclusion</div>
+    <div class="slide-title reveal d1">Key <span class="gradient">Takeaways</span></div>
+    <div class="divider reveal d2"></div>
+    <div class="content-area">
+      <div class="col-2" style="flex:1;">
+        <div class="flex flex-col gap-12 reveal d2">
+          <div class="card card-sm" style="border-left:4px solid var(--accent-green);">
+            <div class="card-title" style="color:var(--accent-green);">What Works: Isolated Smells</div>
+            <div class="card-desc">
+              <strong style="color:var(--text);">Standalone Components</strong> (e.g. Navbar, Dashboard) achieve near-perfect acceptance. Isolated logic extraction and props grouping are highly reliable.
+            </div>
+          </div>
+          <div class="card card-sm" style="border-left:4px solid var(--accent-blue);">
+            <div class="card-title" style="color:var(--accent-blue);">Uncontrolled Components</div>
+            <div class="card-desc">
+              Classified as <strong style="color:var(--text);">low risk</strong>. Tactic <code>add_controlled_state</code> is deterministic and fast, consistently scoring 0.8+ with zero retries.
+            </div>
+          </div>
+          <div class="highlight-card" style="margin-top:auto;">
+             <div style="font-size:0.7rem; font-weight:700; color:var(--accent-green); margin-bottom:4px;">Success Profile</div>
+             <div style="font-size:0.68rem; color:var(--text-dim);">Single-file, single-component refactors are fully autonomous and safe.</div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12 reveal d3">
+          <div class="card card-sm" style="border-left:4px solid var(--accent-red);">
+            <div class="card-title" style="color:var(--accent-red);">The Challenge: Entanglement</div>
+            <div class="card-desc">
+              <strong style="color:var(--text);">Multi-component files</strong> (e.g. <code>Matches.jsx</code>) struggle with sub-component extraction. Co-located components create editing conflicts during surgical splits.
+            </div>
+          </div>
+          <div class="card card-sm" style="border-left:4px solid var(--accent-amber);">
+            <div class="card-title" style="color:var(--accent-amber);">State Conflict (Dirty Git)</div>
+            <div class="card-desc">
+              Pre-existing modifications (e.g. <code>RecruiterHome.jsx</code>) lead to <strong style="color:var(--text);">verification failure</strong>. Pipeline assumes clean baseline state for accurate patch application.
+            </div>
+          </div>
+          <div class="finding-box" style="margin-top:auto;">
+             <strong>Conclusion:</strong> Scalability is proven for isolated components ($0.005/task); future work must focus on <strong>cross-component coordination</strong> within entangled files.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 13 — DEMO
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-12">
+    <div class="content-area justify-center items-center">
+      <div class="reveal" style="font-size: 8rem; font-weight: 900; letter-spacing: -0.02em; filter: drop-shadow(0 10px 30px rgba(59,130,246,0.3));">
+        <span class="gradient">DEMO</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <div class="nav-arrow nav-arrow-left" id="prev-btn" onclick="navigate(-1)">←</div>
+  <div class="nav-arrow nav-arrow-right" id="next-btn" onclick="navigate(1)">→</div>
+
+  <!-- NAV BAR -->
+  <div class="nav-bar">
+    <div class="nav-counter" id="counter">1 / 13</div>
+  </div>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total || idx === current) return;
+    
+    const dir = idx > current ? 1 : -1;
+    const oldSlide = slides[current];
+    const newSlide = slides[idx];
+
+    // Remove previous state
+    oldSlide.classList.remove('active', 'exit-left', 'exit-right');
+    // Add exit animation
+    oldSlide.classList.add(dir > 0 ? 'exit-left' : 'exit-right');
+
+    current = idx;
+    
+    // Prepare next slide
+    newSlide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
+    newSlide.classList.add(dir > 0 ? 'enter-right' : 'enter-left');
+    
+    // Trigger transition
+    requestAnimationFrame(() => {
+      newSlide.classList.add('active');
+      newSlide.classList.remove('enter-right', 'enter-left');
+    });
+
+    updateUI();
+  }
+
+  function navigate(dir) { goTo(current + dir); }
+
+  function updateUI() {
+    document.getElementById('counter').textContent = `${current + 1} / ${total}`;
+    document.getElementById('prev-btn').classList.toggle('disabled', current === 0);
+    document.getElementById('next-btn').classList.toggle('disabled', current === total - 1);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+
+  updateUI();
+</script>
+</body>
+</html>
