@@ -1,0 +1,58 @@
+{
+  "task_id": "task_d36ad6032f",
+  "repo_name": "apache__superset",
+  "project": "apache/superset",
+  "fix_sha": "4bb29b6f04c2c23585805bbac7349f2d2c9876bb",
+  "parent_sha": "89f5785666c225de2ef271e1ff8759e3af36ab7b",
+  "target_file": "superset-frontend/src/dashboard/components/SaveModal.tsx",
+  "smell_type": "Dead Code",
+  "status": "accepted",
+  "skip_reason": null,
+  "error": null,
+  "actionability": {
+    "label": "actionable",
+    "rationale": "The code contains unused props and state variables that can be removed, which qualifies as dead code. The detector has high confidence (0.8) in identifying this smell, and the refactoring options include removing unused props and state. The risk of breaking behavior is low, as these elements are not utilized in the component's logic.",
+    "confidence": 0.8,
+    "no_op_acceptable": false,
+    "caveats": [
+      "Remove unused props",
+      "Remove unused state"
+    ]
+  },
+  "plan": {
+    "tactic_name": "remove_unused_props",
+    "files_to_edit": [
+      "superset-frontend/src/dashboard/components/SaveModal.tsx"
+    ],
+    "risk_level": "low",
+    "invariants": [
+      "Component behaviour is unchanged",
+      "Rendered output is identical",
+      "No used props are accidentally removed"
+    ],
+    "expected_smell_resolution": "By removing the unused props from the SaveModal component, we eliminate dead code, making the component cleaner and easier to maintain without affecting its functionality.",
+    "abort_reasons": [
+      "Prop appears unused but is accessed via props spread or rest forwarding",
+      "Prop is referenced in a dynamic key expression"
+    ]
+  },
+  "changed_files": [
+    "superset-frontend/src/dashboard/components/SaveModal.tsx"
+  ],
+  "critique_result": {
+    "score": 0.8,
+    "passed": true,
+    "issues": [],
+    "feedback": "",
+    "threshold": 0.7
+  },
+  "verification_result": {
+    "passed": true,
+    "checks": {
+      "no_op": "pass",
+      "typecheck": "pass",
+      "smell_resolved": "pass"
+    }
+  },
+  "retry_count": 0
+}

@@ -1,0 +1,13 @@
+diff --git a/client/components/admin/info/UsageSection.js b/client/components/admin/info/UsageSection.js
+index 82deef45ba..6de5076943 100644
+--- a/client/components/admin/info/UsageSection.js
++++ b/client/components/admin/info/UsageSection.js
+@@ -1,7 +1,7 @@
+ import { Text } from '@rocket.chat/fuselage';
+ import React from 'react';
+ 
+-import { useTranslation } from '../../providers/TranslationProvider';
++import { useTranslation } from '../../../contexts/TranslationContext';
+ import { DescriptionList } from './DescriptionList';
+ import { formatMemorySize } from './formatters';
+ 

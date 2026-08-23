@@ -1,0 +1,60 @@
+{
+  "task_id": "task_2096bf69f7",
+  "repo_name": "prometheus__prometheus",
+  "project": "prometheus/prometheus",
+  "fix_sha": "8a9509b0a85430532ee9a01a9f8086ca916275bc",
+  "parent_sha": "a85e7aac0e4b32bcc6fabbb6f4059842124bc05a",
+  "target_file": "web/ui/react-app/src/pages/Status.tsx",
+  "smell_type": "Large Component",
+  "status": "accepted",
+  "skip_reason": null,
+  "error": null,
+  "actionability": {
+    "label": "actionable",
+    "rationale": "The detected smell is a Large Component, which is confirmed by the code snippet being 122 lines long and containing multiple responsibilities such as fetching data, rendering different sections, and handling loading/error states. The refactorings applicable here include splitting the component into smaller components for better readability and maintainability, as well as extracting logic into custom hooks if necessary. The risk of breaking behavior is low to medium as the component's functionality can be preserved while refactoring.",
+    "confidence": 0.8,
+    "no_op_acceptable": false,
+    "caveats": [
+      "Split Component",
+      "Extract Component",
+      "Extract Logic to Custom Hook"
+    ]
+  },
+  "plan": {
+    "tactic_name": "extract_component",
+    "files_to_edit": [
+      "web/ui/react-app/src/pages/Status.tsx"
+    ],
+    "risk_level": "medium",
+    "invariants": [
+      "Exported component name and its props API are unchanged",
+      "Rendered output is identical",
+      "No new files are created \u2014 new component lives in the same file"
+    ],
+    "expected_smell_resolution": "By extracting a self-contained JSX block into a new component within the same file, the Status component will become more manageable and focused, improving readability and maintainability while preserving its functionality.",
+    "abort_reasons": [
+      "No clearly separable block exists",
+      "The candidate block shares mutable state with sibling blocks",
+      "Extraction would require passing more than 5 props to the new component"
+    ]
+  },
+  "changed_files": [
+    "web/ui/react-app/src/pages/Status.tsx"
+  ],
+  "critique_result": {
+    "score": 0.9,
+    "passed": true,
+    "issues": [],
+    "feedback": "",
+    "threshold": 0.7
+  },
+  "verification_result": {
+    "passed": true,
+    "checks": {
+      "no_op": "pass",
+      "typecheck": "pass",
+      "smell_resolved": "pass"
+    }
+  },
+  "retry_count": 0
+}

@@ -1,0 +1,35 @@
+--- a/packages/jaeger-ui-components/src/TraceTimelineViewer/Ticks.tsx
++++ b/packages/jaeger-ui-components/src/TraceTimelineViewer/Ticks.tsx
+@@ -46,21 +46,19 @@
+ });
+ 
+ type TicksProps = {
+-  endTime?: number | TNil;
+   numTicks: number;
+   showLabels?: boolean | TNil;
+-  startTime?: number | TNil;
+ };
+ 
+ export default function Ticks(props: TicksProps) {
+-  const { endTime, numTicks, showLabels, startTime } = props;
++  const { numTicks, showLabels } = props;
+ 
+   let labels: undefined | string[];
+   if (showLabels) {
+     labels = [];
+-    const viewingDuration = (endTime || 0) - (startTime || 0);
++    const viewingDuration = 0; // endTime and startTime are removed, so viewingDuration is always 0
+     for (let i = 0; i < numTicks; i++) {
+-      const durationAtTick = (startTime || 0) + (i / (numTicks - 1)) * viewingDuration;
++      const durationAtTick = 0; // startTime is removed, so durationAtTick is always 0
+       labels.push(formatDuration(durationAtTick));
+     }
+   }
+@@ -86,7 +84,5 @@
+ }
+ 
+ Ticks.defaultProps = {
+-  endTime: null,
+   showLabels: null,
+-  startTime: null,
+ };

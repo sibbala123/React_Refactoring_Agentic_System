@@ -16,6 +16,10 @@ agentic_refactor_system/runs/
 # Repos cloned for the real-commit validation experiment (external, huge, never track)
 experiments/_repos/
 
+# Full commit-validation task output (474 tasks) - a curated subset lives in
+# experiments/results_examples/, which is tracked and not covered by this rule.
+experiments/results/
+
 # Environment
 .env
 .env.local

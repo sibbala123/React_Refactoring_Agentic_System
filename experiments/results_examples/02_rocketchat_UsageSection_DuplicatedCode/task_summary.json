@@ -1,0 +1,56 @@
+{
+  "task_id": "task_080d892b52",
+  "repo_name": "RocketChat__Rocket.Chat",
+  "project": "RocketChat/Rocket.Chat",
+  "fix_sha": "c8a36350ac7718b303f24fe19663e155756030dc",
+  "parent_sha": "50c69e22f6ddeb0e8066c93f41ffeaf82028fe60",
+  "target_file": "client/components/admin/info/UsageSection.js",
+  "smell_type": "Duplicated Code",
+  "status": "accepted",
+  "skip_reason": null,
+  "error": null,
+  "actionability": {
+    "label": "actionable",
+    "rationale": "The detected smell is 'Duplicated Code' as there are multiple instances of similar JSX entries for rendering statistics in the UsageSection component. Each entry follows a repetitive pattern of using <DescriptionList.Entry> with a label and a value derived from the statistics object. This is a clear case where the logic can be extracted into a reusable component or function to reduce duplication. The refactorings 'Extract Component' or 'Extract Logic to Custom Hook' are applicable here, as we can create a new component that takes a label and a value as props and renders the <DescriptionList.Entry> accordingly. The risk of breaking behavior is low, as the extraction would not change the existing functionality, just reduce code duplication.",
+    "confidence": 0.8,
+    "no_op_acceptable": false,
+    "caveats": [
+      "Extract Component, Extract Logic to Custom Hook"
+    ]
+  },
+  "plan": {
+    "tactic_name": "extract_duplicated_jsx_to_component",
+    "files_to_edit": [
+      "client/components/admin/info/UsageSection.js"
+    ],
+    "risk_level": "low",
+    "invariants": [
+      "Rendered output is identical at each usage site",
+      "Exported component API is unchanged"
+    ],
+    "expected_smell_resolution": "By extracting the duplicated JSX for the <DescriptionList.Entry> into a new reusable component, we reduce code duplication and improve maintainability. Each instance will now use the new component, which takes the label and value as props, streamlining the code.",
+    "abort_reasons": [
+      "The duplication is intentional for readability",
+      "The duplicated JSX differs enough that a shared component would be harder to read"
+    ]
+  },
+  "changed_files": [
+    "client/components/admin/info/UsageSection.js"
+  ],
+  "critique_result": {
+    "score": 0.9,
+    "passed": true,
+    "issues": [],
+    "feedback": "",
+    "threshold": 0.7
+  },
+  "verification_result": {
+    "passed": true,
+    "checks": {
+      "no_op": "pass",
+      "typecheck": "pass",
+      "smell_resolved": "pass"
+    }
+  },
+  "retry_count": 0
+}
