@@ -11,8 +11,10 @@ build/
 venv/
 
 # Run artifacts (large, auto-generated)
-agentic_refactor_system/runs/supabase_reactsniffer2/
-agentic_refactor_system/runs/*/detector/reactsniffer_input/
+agentic_refactor_system/runs/
+
+# Repos cloned for the real-commit validation experiment (external, huge, never track)
+experiments/_repos/
 
 # Environment
 .env
