@@ -10,11 +10,13 @@ from dotenv import load_dotenv
 # Ensure we import from the local package
 sys.path.insert(0, str(Path(__file__).parent))
 from agentic_refactor_system.langgraph_pipeline.runner import run_task
+from agentic_refactor_system.utils.openai_key import ensure_openai_api_key
 
 def main():
     load_dotenv()
+    ensure_openai_api_key()
     if not os.environ.get("OPENAI_API_KEY"):
-        sys.exit("ERROR: OPENAI_API_KEY not set.")
+        sys.exit("ERROR: OPENAI_API_KEY not set (checked environment and VS Code's reactRefactor.openaiApiKey setting).")
 
     if len(sys.argv) < 2:
         print("Usage: python run_single_task.py <target_file> [smell_type]")
