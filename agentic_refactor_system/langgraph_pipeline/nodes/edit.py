@@ -115,6 +115,7 @@ def edit_node(state: TaskState) -> dict[str, Any]:
     # Apply file blocks back to target_root
     changed_files = []
     diffs = {}
+    before_contents = {}
     if response_text:
         for match in FILE_BLOCK_RE.finditer(response_text):
             rel_path = match.group("path").strip().replace("\\", "/")
@@ -131,7 +132,8 @@ def edit_node(state: TaskState) -> dict[str, Any]:
             old_content = ""
             if file_path.exists():
                 old_content = file_path.read_text(encoding="utf-8", errors="replace")
-                
+            before_contents[rel_path] = old_content
+
             new_content = match.group("body")
             
             diff_lines = list(difflib.unified_diff(
@@ -155,6 +157,7 @@ def edit_node(state: TaskState) -> dict[str, Any]:
             "applied": bool(changed_files),
             "response_text": response_text,
             "diffs": diffs,
+            "before_contents": before_contents,
             "usage": dict(response.usage) if response.usage else {}
         },
         "changed_files": changed_files,

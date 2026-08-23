@@ -174,6 +174,13 @@ def _build_user_prompt(state: TaskState) -> str:
         lines.append(f"Overall: {'PASS' if vr_passed else 'FAIL'}")
         for check_name, check_result in vr_checks.items():
             lines.append(f"  {check_name:<16}: {check_result}")
+        flagged_identifiers = verification_result.get("flagged_identifiers")
+        if flagged_identifiers:
+            lines.append(
+                "  usage_safety FAILED: these removed prop/state names are still referenced "
+                "elsewhere in the original file and must NOT be deleted: "
+                + ", ".join(flagged_identifiers)
+            )
 
     # ── Edit result ────────────────────────────────────────────────────────────
     lines += ["", "Edit Result", "───────────"]
@@ -319,6 +326,12 @@ def critique_node(state: TaskState) -> dict[str, Any]:
                 parts.append("\nVerification failures:")
                 for fc in failed_checks:
                     parts.append(f"  - {fc}: {vr_checks[fc]}")
+                    if fc == "usage_safety" and vr.get("flagged_identifiers"):
+                        parts.append(
+                            "    These names are still referenced elsewhere in the "
+                            "original file and must be KEPT, not removed: "
+                            + ", ".join(vr["flagged_identifiers"])
+                        )
         if issues:
             parts.append("\nPlan quality issues:")
             for issue in issues:
